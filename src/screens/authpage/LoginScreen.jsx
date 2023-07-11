@@ -1,4 +1,4 @@
-import Logintempate from "../../components/templates/authSreens/Logintempate";
+import Logintempate from "../../components/templates/authSreens/Logintemplate";
 
 
 function LoginScreen({navigation}) {

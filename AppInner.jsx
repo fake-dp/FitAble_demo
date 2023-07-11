@@ -12,7 +12,14 @@ import SignupScreen from './src/screens/authpage/SignupScreen';
 
 import { useRecoilState } from 'recoil';
 import { isLoginState } from "./src/store/atom";
+import PassScreen from './src/screens/authpage/PassScreen';
+import AuthPassword from './src/screens/authpage/AuthPassword';
+import AgreementScreen from './src/screens/authpage/AgreementScreen';
 
+import { COLORS } from './src/constants/color';
+
+import { StyleSheet,TouchableOpacity, Image } from 'react-native';
+import BackIcon from './src/assets/img/back_arrow.svg'
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
   
@@ -59,6 +66,41 @@ console.log('AppInner',isLoggedIn);
             component={SignupScreen}
             // options={{headerShown: false}}
             options={{title: '회원가입'}}
+          />
+           <Stack.Screen
+            name="Pass"
+            component={PassScreen}
+            options={({ navigation }) => ({
+                headerShown: true, // 헤더 숨기기
+                // headerLeft: () => (
+                //     <TouchableOpacity onPress={() => navigation.goBack()} >
+                //       <Image source={BackIcon}style={styles.backIcon} />
+                //     </TouchableOpacity>
+                //   ),
+                
+                headerStyle: {
+                    backgroundColor: COLORS.sub, // 헤더 배경색
+                    shadowColor: 'transparent', // ios
+                    elevation: 0, // android
+                },
+                headerTitleStyle: {
+                    fontWeight: 'bold', // 글자 굵기
+                },
+                headerTintColor: COLORS.main, // 헤더 글자색
+                title:'',
+                })}
+          />
+            <Stack.Screen
+            name="Password"
+            component={AuthPassword}
+            // options={{headerShown: false}}
+            options={{title: '비밀번호'}}
+          />
+            <Stack.Screen
+            name="Agreement"
+            component={AgreementScreen}
+            // options={{headerShown: false}}
+            options={{title: '약관동의'}}
           />
         </Stack.Navigator>
       )}
