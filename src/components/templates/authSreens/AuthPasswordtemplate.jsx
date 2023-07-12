@@ -35,10 +35,8 @@ padding: 44px 20px 0 20px;
 const AuthText = styled.Text`
 color: ${COLORS.white};
 font-size: 28px;
-font-family: Pretendard;
 font-weight: 500;
 line-height: 37.80px;
-word-wrap: break-word;
 `;
 
 const PassBtnContainer = styled.View`

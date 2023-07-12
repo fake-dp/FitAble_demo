@@ -19,7 +19,6 @@ const StyledPressable = styled.Pressable`
 const StyledText = styled.Text`
 color: ${COLORS.white};
 font-size: 20px;
-font-family: Pretendard;
 font-weight: 500;
 
 `

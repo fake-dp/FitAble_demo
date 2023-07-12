@@ -18,8 +18,7 @@ import AgreementScreen from './src/screens/authpage/AgreementScreen';
 
 import { COLORS } from './src/constants/color';
 
-import { StyleSheet,TouchableOpacity, Image } from 'react-native';
-import BackIcon from './src/assets/img/back_arrow.svg'
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
   
@@ -72,12 +71,6 @@ console.log('AppInner',isLoggedIn);
             component={PassScreen}
             options={({ navigation }) => ({
                 headerShown: true, // 헤더 숨기기
-                // headerLeft: () => (
-                //     <TouchableOpacity onPress={() => navigation.goBack()} >
-                //       <Image source={BackIcon}style={styles.backIcon} />
-                //     </TouchableOpacity>
-                //   ),
-                
                 headerStyle: {
                     backgroundColor: COLORS.sub, // 헤더 배경색
                     shadowColor: 'transparent', // ios
@@ -94,13 +87,37 @@ console.log('AppInner',isLoggedIn);
             name="Password"
             component={AuthPassword}
             // options={{headerShown: false}}
-            options={{title: '비밀번호'}}
+            options={({ navigation }) => ({
+                headerShown: true, // 헤더 숨기기
+                headerStyle: {
+                    backgroundColor: COLORS.sub, // 헤더 배경색
+                    shadowColor: 'transparent', // ios
+                    elevation: 0, // android
+                },
+                headerTitleStyle: {
+                    fontWeight: 'bold', // 글자 굵기
+                },
+                headerTintColor: COLORS.main, // 헤더 글자색
+                title:'',
+                })}
           />
             <Stack.Screen
             name="Agreement"
             component={AgreementScreen}
             // options={{headerShown: false}}
-            options={{title: '약관동의'}}
+            options={({ navigation }) => ({
+                headerShown: true, // 헤더 숨기기
+                headerStyle: {
+                    backgroundColor: COLORS.sub, // 헤더 배경색
+                    shadowColor: 'transparent', // ios
+                    elevation: 0, // android
+                },
+                headerTitleStyle: {
+                    fontWeight: 'bold', // 글자 굵기
+                },
+                headerTintColor: COLORS.main, // 헤더 글자색
+                title:'',
+                })}
           />
         </Stack.Navigator>
       )}

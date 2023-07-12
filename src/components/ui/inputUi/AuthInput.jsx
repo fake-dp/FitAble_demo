@@ -1,7 +1,18 @@
 // UI-loinput
-import { View,Text,TextInput } from "react-native";
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
+
+
+function AuthInput({children}) {
+    return (
+            <AuthTextInput
+                placeholder={children}
+            />
+    );
+}
+
+export default AuthInput;
+
 const AuthTextInput = styled.TextInput`
     width: 350px;
     height: 60px;
@@ -12,15 +23,3 @@ const AuthTextInput = styled.TextInput`
     color: ${COLORS.white};
 
 `
-
-function AuthInput({children}) {
-    return (
-        <View>
-            <AuthTextInput
-                placeholder={children}
-            />
-        </View>
-    );
-}
-
-export default AuthInput;
