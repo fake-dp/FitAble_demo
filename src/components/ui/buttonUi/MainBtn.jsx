@@ -4,7 +4,9 @@ import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 
 
-function MainBtn({children, onPress}) {
+function MainBtn({children, onPress, colorProp,disabled}) {
+
+
 
     const handlePress = () => {
         console.log('MainBtn pressed');
@@ -12,26 +14,34 @@ function MainBtn({children, onPress}) {
     }
 
     return (
-        <View>
             <StyledPressable
                 onPress={handlePress}
+                colorProp={colorProp}
+                // disabled={!colorProp || disabled} 
             >
-                <Text>{children}</Text>
+                <StyledText
+                colorProp={colorProp}
+                >{children}</StyledText>
             </StyledPressable>
-        </View>
     );
 }
 
 export default MainBtn;
 
+
+
+
 const StyledPressable = styled.Pressable`
-    background-color: #000;
     width: 350px;
     height: 60px;
     border-radius: 50px;
     justify-content: center;
     align-items: center;
-    background-color: ${COLORS.main};
+    background-color: ${({ colorProp }) => (colorProp ? COLORS.main : COLORS.box)};
     margin-top: 49px;
     margin-bottom: 23px;
+`
+
+const StyledText = styled.Text`
+     color: ${({ colorProp }) => (colorProp ? COLORS.sub : COLORS.gray_300)};
 `

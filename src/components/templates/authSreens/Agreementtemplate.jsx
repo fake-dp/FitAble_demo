@@ -108,7 +108,9 @@ function Agreementtemplate(props) {
 
       <BottomBtnContainer>
         {
-            checkedCount >= 3 ? <MainBtn>다음</MainBtn> : ''
+            checkedCount >= 3 ? <MainBtn
+            colorProp={checkedCount >=3 ? true : false}
+            >다음</MainBtn> : ''
         }
            
             </BottomBtnContainer>
@@ -141,6 +143,7 @@ const ListContainer = styled.View`
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
+
 margin-top: 30px;
 padding: ${Platform.OS === 'ios' ? '0 20px 0 10px' : '0 19px 0 10px'};
 `;

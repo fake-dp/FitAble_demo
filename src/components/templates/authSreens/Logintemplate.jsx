@@ -12,7 +12,8 @@ import { isLoginState } from '../../../store/atom';
 function Logintempate({navigation}) {
 
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
     console.log('Logintempate',isLoggedIn)
 
     // 회원가입 페이지 이동
@@ -27,18 +28,38 @@ function Logintempate({navigation}) {
 
 
     const handleLogin = () => {
-        console.log('로그인');
-        // setIsLoggedIn(true);
+     
+        if (phoneNumber.length > 5  && password.length > 5) {
+            // setIsLoggedIn(true);
+            console.log('로그인 성공')
+        }else{
+            console.log('로그인 실패')
+        }
     }
 
+    const isInputValid = phoneNumber.length > 5  && password.length > 5;
+
+    console.log('phoneNumber',phoneNumber, 'password',password, 'isInputValid',isInputValid)
 
     return (
         <LoginScreenView> 
             <TitleLogo source={require('../../../assets/img/mainLogo.png')}/>
-            <AuthInput>핸드폰 번호</AuthInput>
-            <AuthInput>비밀번호</AuthInput>
+            <AuthInput
+             value={phoneNumber}
+             onChangeText={setPhoneNumber}
+             placeholder="핸드폰 번호"
+            />
+
+            <AuthInput
+              value={password}
+              onChangeText={setPassword}
+              placeholder="비밀번호"
+            />
+            
             <MainBtn
             onPress={handleLogin}
+            // disabled={!isInputValid}
+            colorProp={isInputValid}
             >로그인</MainBtn>
 
             <AboutContainer>
@@ -55,6 +76,7 @@ function Logintempate({navigation}) {
 }
 
 export default Logintempate;
+
 
 const LoginScreenView = styled.View`
     flex:1;
@@ -88,4 +110,7 @@ const AboutTextRigth = styled.Text`
 color: ${COLORS.gray_300};
 flex: 1;
 text-align: left;
+`
+const StyledText = styled.Text`
+color:red;
 `

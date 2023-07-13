@@ -3,9 +3,6 @@ import { COLORS } from "../../../constants/color";
 import { styled } from "styled-components/native";
 
 
-
-
-
 function EctInput(props) {
     return (
         <AuthTextInput />
