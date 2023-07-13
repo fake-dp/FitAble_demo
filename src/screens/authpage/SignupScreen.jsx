@@ -1,10 +1,9 @@
-import { View,Text } from "react-native";
-
-function SignupScreen(props) {
+import AuthPasswordtemplate from '../../components/templates/authSreens/AuthPasswordtemplate';
+function SignupScreen({navigation}) {
     return (
-        <View>
-            <Text>회원가입</Text>
-        </View>
+        <AuthPasswordtemplate 
+        navigation={navigation}
+        />
     );
 }
 

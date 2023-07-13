@@ -17,7 +17,7 @@ function MainBtn({children, onPress, colorProp,disabled}) {
             <StyledPressable
                 onPress={handlePress}
                 colorProp={colorProp}
-                // disabled={!colorProp || disabled} 
+                disabled={!colorProp || disabled} 
             >
                 <StyledText
                 colorProp={colorProp}

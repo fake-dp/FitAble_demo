@@ -68,7 +68,7 @@ function Logintempate({navigation}) {
                 >비밀번호 찾기</AboutTextLeft>
                 <AboutTextLine>|</AboutTextLine>
                 <AboutTextRigth
-                onPress={toPass}
+                onPress={toSignUp}
                 >회원가입</AboutTextRigth>
             </AboutContainer>
         </LoginScreenView>

@@ -69,6 +69,10 @@ function Agreementtemplate(props) {
       setSelectedItem(null);
     };
 
+    const handlePass = () => {
+        console.log('home으로 고고씽')
+    }
+
 
     return (
         <AuthContainer>
@@ -110,6 +114,7 @@ function Agreementtemplate(props) {
         {
             checkedCount >= 3 ? <MainBtn
             colorProp={checkedCount >=3 ? true : false}
+            onPress={handlePass}
             >다음</MainBtn> : ''
         }
            

@@ -1,7 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {useState} from 'react';
 
 import HomeSreen from './src/screens/mainpage/HomeSreen';
 import MainExerciseSreen from './src/screens/exercisepage/MainExerciseSreen';
@@ -17,6 +16,7 @@ import AuthPassword from './src/screens/authpage/AuthPassword';
 import AgreementScreen from './src/screens/authpage/AgreementScreen';
 
 import { COLORS } from './src/constants/color';
+import AuthNewPassword from './src/screens/authpage/AuthNewPassword';
 
 
 const Tab = createBottomTabNavigator();
@@ -63,8 +63,19 @@ console.log('AppInner',isLoggedIn);
           <Stack.Screen
             name="SignUp"
             component={SignupScreen}
-            // options={{headerShown: false}}
-            options={{title: '회원가입'}}
+            options={({ navigation }) => ({
+              headerShown: true, // 헤더 숨기기
+              headerStyle: {
+                  backgroundColor: COLORS.sub, // 헤더 배경색
+                  shadowColor: 'transparent', // ios
+                  elevation: 0, // android
+              },
+              headerTitleStyle: {
+                  fontWeight: 'bold', // 글자 굵기
+              },
+              headerTintColor: COLORS.white, // 헤더 글자색
+              title:'',
+              })}
           />
            <Stack.Screen
             name="Pass"
@@ -79,7 +90,7 @@ console.log('AppInner',isLoggedIn);
                 headerTitleStyle: {
                     fontWeight: 'bold', // 글자 굵기
                 },
-                headerTintColor: COLORS.main, // 헤더 글자색
+                headerTintColor: COLORS.white, // 헤더 글자색
                 title:'',
                 })}
           />
@@ -97,7 +108,25 @@ console.log('AppInner',isLoggedIn);
                 headerTitleStyle: {
                     fontWeight: 'bold', // 글자 굵기
                 },
-                headerTintColor: COLORS.main, // 헤더 글자색
+                headerTintColor: COLORS.white, // 헤더 글자색
+                title:'',
+                })}
+          />
+            <Stack.Screen
+            name="NewPassword"
+            component={AuthNewPassword}
+            // options={{headerShown: false}}
+            options={({ navigation }) => ({
+                headerShown: true, // 헤더 숨기기
+                headerStyle: {
+                    backgroundColor: COLORS.sub, // 헤더 배경색
+                    shadowColor: 'transparent', // ios
+                    elevation: 0, // android
+                },
+                headerTitleStyle: {
+                    fontWeight: 'bold', // 글자 굵기
+                },
+                headerTintColor: COLORS.white, // 헤더 글자색
                 title:'',
                 })}
           />
@@ -115,7 +144,7 @@ console.log('AppInner',isLoggedIn);
                 headerTitleStyle: {
                     fontWeight: 'bold', // 글자 굵기
                 },
-                headerTintColor: COLORS.main, // 헤더 글자색
+                headerTintColor: COLORS.white, // 헤더 글자색
                 title:'',
                 })}
           />

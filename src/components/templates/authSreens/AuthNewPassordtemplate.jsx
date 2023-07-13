@@ -2,45 +2,39 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import EctInput from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {validatePassword} from '../../../utils/CustomUtils'
 
-function AuthUsePasswordtemplate({navigation}) {
+function AuthNewPassordtemplate({navigation}) {
 
-    // 비밀번호 상태관리
-    const [password, setPassword] = useState('');
-    const [passwordCheck, setPasswordCheck] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+  // 비밀번호 상태관리
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-    // 비밀번호 입력
-    const handlePassword = (text) => {
-        setPassword(text);
-        
-    }
+  // 비밀번호 입력
+  const handlePassword = (text) => {
+      setPassword(text);
+      
+  }
 
-    // 비밀번호 확인 입력
-    const handlePasswordCheck = (text) => {
-        setPasswordCheck(text);
-    }
+  // 비밀번호 확인 입력
+  const handlePasswordCheck = (text) => {
+      setPasswordCheck(text);
+  }
 
-    // 비밀번호 검증
-  const validatePasswordInput = () => {
-    const isValid = validatePassword(password);
-    setPasswordError(isValid && password.length > 1 ? '' : '형식에 맞게 설정해주세요');
-  };
+  // 비밀번호 검증
+const validatePasswordInput = () => {
+  const isValid = validatePassword(password);
+  setPasswordError(isValid && password.length > 1 ? '' : '형식에 맞게 설정해주세요');
+};
 
 
 
-  const isSamePassword = password === passwordCheck;
+const isSamePassword = password === passwordCheck;
 
-    // 약관동의 페이지 이동
     const toAuthAgree = useCallback(() => {
-        // 비밀번호와 확인창 초기화
-        setPassword('');
-        setPasswordCheck('');
-        setPasswordError('');
-  
-        navigation.navigate('Agreement');
+        console.log('home으로 고고씽')
         }, [navigation]);
 
         useEffect(() => {
@@ -54,10 +48,10 @@ function AuthUsePasswordtemplate({navigation}) {
         
             return unsubscribe;
           }, [navigation]);
-     
+
     return (
         <AuthContainer>
-             <AuthText>사용하실 비밀번호를</AuthText>
+             <AuthText>사용하실 새 비밀번호를</AuthText>
              <AuthText>입력해주세요</AuthText>
              <BtnContainer>
                 <EctInput 
@@ -79,7 +73,7 @@ function AuthUsePasswordtemplate({navigation}) {
                 value={passwordCheck}
                 onChangeText={handlePasswordCheck}
                 />
-                {
+                       {
                    !isSamePassword && passwordCheck.length > 7 &&
                    <ErrorTextContainer>
                    <ErrorText>비밀번호가 일치하지 않습니다</ErrorText> 
@@ -97,7 +91,8 @@ function AuthUsePasswordtemplate({navigation}) {
     );
 }
 
-export default AuthUsePasswordtemplate;
+
+export default AuthNewPassordtemplate;
 
 
 const AuthContainer = styled.View`

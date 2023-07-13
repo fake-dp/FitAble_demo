@@ -1,4 +1,4 @@
-import React from 'react';
+
 import AuthPasswordtemplate from '../../components/templates/authSreens/AuthPasswordtemplate';
 function PassScreen({navigation}) {
     return (

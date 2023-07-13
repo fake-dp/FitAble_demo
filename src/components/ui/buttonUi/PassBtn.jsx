@@ -1,7 +1,28 @@
 // UI-passbtn
-import { View,Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
+
+function PassBtn({onPress, screenName}) {
+
+    const handlePress = () => {
+        console.log('PassBtn pressed',screenName);
+        onPress()
+    }
+
+    return (
+        <View>
+            <StyledPressable
+            onPress={handlePress}
+            >
+                <StyledText>패스 인증하기</StyledText>
+                <Image source={require('../../../assets/img/passicon.png')}/>
+            </StyledPressable>
+        </View>
+    );
+}
+
+export default PassBtn;
 
 const StyledPressable = styled.Pressable`
     background-color: #FF3A4A;
@@ -20,27 +41,4 @@ const StyledText = styled.Text`
 color: ${COLORS.white};
 font-size: 20px;
 font-weight: 500;
-
-`
-
-function PassBtn({onPress}) {
-
-
-    const handlePress = () => {
-        console.log('PassBtn pressed');
-        onPress()
-    }
-
-    return (
-        <View>
-            <StyledPressable
-            onPress={handlePress}
-            >
-                <StyledText>패스 인증하기</StyledText>
-                <Image source={require('../../../assets/img/passicon.png')}/>
-            </StyledPressable>
-        </View>
-    );
-}
-
-export default PassBtn;
+`;
