@@ -1,0 +1,43 @@
+export const userCardData = [
+    {
+        id: 0,
+        location: '에이블짐 천호역점',
+        sportswear: true,
+        locker: true,
+        label: '이용중',
+        des:'개인 P.T * 최진원 선생님',
+        period:'3개월',
+        number:50,
+        startdate:'2023.06.05',
+        enddate:'2023.08.05',
+        expiration:25,
+    },
+    {
+        id: 1,
+        location: '에이블짐 천호역점',
+        sportswear: false,
+        locker: true,
+        label: '중지',
+        des:'개인 P.T * 최진원 선생님',
+        period:'3개월',
+        number:50,
+        startdate:'2023.06.05',
+        enddate:'2023.08.05',
+        expiration:7,
+    },
+    {
+        id: 2,
+        location: '에이블짐 천호역점',
+        sportswear: true,
+        locker: false,
+        label: '이용중',
+        des:'개인 P.T * 최진원 선생님',
+        period:'3개월',
+        number:50,
+        startdate:'2023.06.05',
+        enddate:'2023.08.05',
+        expiration:36,
+    },
+]
+
+// export const userCardData = []

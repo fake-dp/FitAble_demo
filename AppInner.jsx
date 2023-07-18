@@ -2,7 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import HomeSreen from './src/screens/mainpage/HomeSreen';
+import HomeScreen from './src/screens/mainpage/HomeScreen';
 import MainExerciseSreen from './src/screens/exercisepage/MainExerciseSreen';
 import StoreScreen from './src/screens/storepage/StoreScreen';
 import MyScreen from './src/screens/mypage/MyScreen';
@@ -17,6 +17,9 @@ import AgreementScreen from './src/screens/authpage/AgreementScreen';
 
 import { COLORS } from './src/constants/color';
 import AuthNewPassword from './src/screens/authpage/AuthNewPassword';
+import HomeHeader from './src/components/ui/custom/HomeHeader';
+
+import { Image, View } from 'react-native';
 
 
 const Tab = createBottomTabNavigator();
@@ -28,29 +31,127 @@ function AppInner() {
 const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
 console.log('AppInner',isLoggedIn);
 
+
+
+
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Tab.Navigator>
+        <Tab.Navigator
+       
+
+        >
           <Tab.Screen
-            name="Home"
-            component={HomeSreen}
-            options={{title: '홈'}}
-          />
+          name="Home"
+          component={HomeScreen}
+          options={({ navigation }) => ({
+            title: '홈',
+           
+            tabBarIcon: ({ focused }) => (
+              <Image
+                source={require('./src/assets/img/home_active.png')}
+                style={{ 
+                  width: 18, 
+                  height: 18.75, 
+                  tintColor: focused ? 'white' : COLORS.gray_400 }}
+              />
+            ),
+            tabBarLabelStyle:({ focused }) => ({
+              color: focused ? 'white' : COLORS.gray_400,
+              fontSize: 12,
+              fontWeight: 'bold',
+            }),
+            tabBarStyle: {
+              backgroundColor: COLORS.sub,
+            },
+            tabBarActiveTintColor: 'white',
+            headerStyle: {
+              backgroundColor: COLORS.sub,
+            },
+            headerShown: false,
+            
+          })}
+        
+          
+        />
           <Tab.Screen
             name="Exercise"
             component={MainExerciseSreen}
-            options={{title: '운동하기'}}
+            options={{
+              title: '운동하기',
+              tabBarIcon: ({ focused }) => (
+                <Image
+                  source={require('./src/assets/img/sports_active.png')}
+                  style={{ 
+                    width: 18, 
+                    height: 18.75, 
+                    tintColor: focused ? 'white' : COLORS.gray_400 }}
+                />
+              ),
+              tabBarLabelStyle:({ focused }) => ({
+                color: focused ? 'white' : COLORS.gray_400,
+                fontSize: 12,
+                fontWeight: 'bold',
+              }),
+              tabBarStyle: {
+                backgroundColor: COLORS.sub,
+              },
+              tabBarActiveTintColor: 'white',
+              headerShown: false,
+            }}
           />
           <Tab.Screen
             name="Store"
             component={StoreScreen}
-            options={{title: '스토어'}}
+            options={{
+              title: '스토어',
+              tabBarIcon: ({ focused }) => (
+                <Image
+                  source={require('./src/assets/img/store_active.png')}
+                  style={{ 
+                    width: 18, 
+                    height: 18.75, 
+                    tintColor: focused ? 'white' : COLORS.gray_400 }}
+                />
+              ),
+              tabBarLabelStyle:({ focused }) => ({
+                color: focused ? 'white' : COLORS.gray_400,
+                fontSize: 12,
+                fontWeight: 'bold',
+              }),
+              tabBarStyle: {
+                backgroundColor: COLORS.sub,
+              },
+              tabBarActiveTintColor: 'white',
+              headerShown: false,
+            }}
           />
             <Tab.Screen
             name="Mypage"
             component={MyScreen}
-            options={{title: '마이'}}
+            options={{
+              title: '마이',
+
+              tabBarIcon: ({ focused }) => (
+                <Image
+                  source={require('./src/assets/img/mypage_active.png')}
+                  style={{ 
+                    width: 18, 
+                    height: 18.75, 
+                    tintColor: focused ? 'white' : COLORS.gray_400 }}
+                />
+              ),
+              tabBarLabelStyle:({ focused }) => ({
+                color: focused ? 'white' : COLORS.gray_400,
+                fontSize: 12,
+                fontWeight: 'bold',
+              }),
+              tabBarStyle: {
+                backgroundColor: COLORS.sub,
+              },
+              tabBarActiveTintColor: 'white',
+              headerShown: false,
+            }}
           />
         </Tab.Navigator>
       ) : (

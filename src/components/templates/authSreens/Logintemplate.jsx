@@ -30,7 +30,7 @@ function Logintempate({navigation}) {
     const handleLogin = () => {
      
         if (phoneNumber.length > 5  && password.length > 5) {
-            // setIsLoggedIn(true);
+            setIsLoggedIn(true);
             console.log('로그인 성공')
         }else{
             console.log('로그인 실패')

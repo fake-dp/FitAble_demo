@@ -1,8 +1,7 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import CheckBox from '@react-native-community/checkbox';
-import { Text, StyleSheet, View} from 'react-native';
-import { useState } from 'react';
+
 
 
 function CheckBtn({ onPress, allCheck}) {
@@ -17,13 +16,34 @@ function CheckBtn({ onPress, allCheck}) {
             <CheckBoxStyle
                value={allCheck}
                onValueChange={onPress}
-               tintColors={{ true: COLORS.sub, false: COLORS.main }}
+               on={true}
+               enabled={true}
+               tintColors={{ true: COLORS.main, false: COLORS.main }}
+            //    offAnimationType={'none'}
+            //    animateTransitions={false}
 
-               onCheckColor={COLORS.main}
-               onFillColor={COLORS.box}
-               onTintColor={COLORS.box}
+            // animationDuration={5}
+            // onAnimationType={'none'}
+            //    onCheckColor={COLORS.main}
+            //    onFillColor={COLORS.box}
+            //    onTintColor={COLORS.box}
+            //    boxType={'square'}
+            //    tintColor={COLORS.main}
+            //    hideBox={true}
+            animated={false}
+               onAnimationDidStop={() => console.log('onAnimationDidStop')}
+               lineWidth={2}
+               hideBox={
+                allCheck ? false : true
+               }
                boxType={'square'}
                tintColor={COLORS.main}
+               onCheckColor={COLORS.sub}
+               onFillColor={COLORS.box}
+               onTintColor={COLORS.box}
+            //    animationDuration={0.5}
+            //    onAnimationType={'bounce'}
+            //    offAnimationType={'bounce'}
             />
         </StyledPressable>
     );
@@ -33,12 +53,10 @@ function CheckBtn({ onPress, allCheck}) {
 export default CheckBtn;
 
 const StyledPressable = styled.View`
-    background-color: #000;
     width: 100%;
     height: 60px;
     border-radius: 13px;
     padding: 0 20px;
-    /* background-color: ${COLORS.box}; */
     
     background-color: ${({ allCheck }) => allCheck ? COLORS.main : COLORS.box};
     margin-top: 29px;

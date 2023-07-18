@@ -14,7 +14,7 @@ function AuthPasswordtemplate({navigation}) {
 
     // authpassword 페이지 이동
     const toAuthPassword = useCallback(() => {
-        if(screenName === 'Pass'){
+        if(screenName === 'SignUp'){
             navigation.navigate('Password');
         }else{
             navigation.navigate('NewPassword');
