@@ -14,6 +14,11 @@ function BellTemplate(props) {
     return (
         <Container>
         <FlatList
+             bounces={false}
+         
+             showsVerticalScrollIndicator={false}
+             overScrollMode="never"
+
             data={bellList}
             renderItem={({ item }) => <BellList data={item.data} maindate={item.maindate} />}
             keyExtractor={(item) => item.id}

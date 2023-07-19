@@ -8,14 +8,19 @@ import FloatingBtn from '../../ui/buttonUi/FloatingBtn';
 import UserTicketCard from '../../ui/card/UserTicketCard';
 import {userCardData} from '../../../data/UserTicketData'
 import UserTicketNoneCard from '../../ui/card/UserTicketNoneCard';
-
+import { useNavigation } from '@react-navigation/native';
 
 function HomeMainTemplate(props) {
 
-    const handleFloatingButtonPress = () => {
-        // 플로팅 버튼을 눌렀을 때 실행될 동작을 구현합니다.
-        console.log('Floating Button Pressed',userCardData);
+    const navigation = useNavigation();
+
+    const goDetailCenterScreen = () => {
+        navigation.navigate('DetailCenter');
       };
+
+    const goSearchCenterScreen = () => {
+        navigation.navigate('SearchCenter');
+      }
 
     return (
         <Container>
@@ -27,11 +32,17 @@ function HomeMainTemplate(props) {
         </SubContainer>
  {
     userCardData.length === 0 ?
-    <UserTicketNoneCard />
+    <UserTicketNoneCard 
+    onPress={goSearchCenterScreen}
+    />
     :
     <>
     <ScrollView
     horizontal={true}
+    bounces={false}
+
+    showsVerticalScrollIndicator={false}
+    overScrollMode="never"
     >
     {userCardData.map((item, index) => (
         <UserTicketCard
@@ -40,7 +51,7 @@ function HomeMainTemplate(props) {
         />
         ))}
     </ScrollView>
-    <FloatingBtn onPress={handleFloatingButtonPress} />
+    <FloatingBtn onPress={goDetailCenterScreen} />
     </>
  }
 

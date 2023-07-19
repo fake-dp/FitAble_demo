@@ -4,13 +4,13 @@ import { Platform, Image ,View} from 'react-native';
 import SmallLabel from '../label/SmallLabel';
 function UserTicketCard({ userCardData }) {
   const { location, sportswear, locker, label, des, period, number, startdate, enddate,expiration } = userCardData;
-  console.log('userCardData', userCardData);
+//   console.log('userCardData', userCardData);
 
   const shirts = require('../../../assets/img/t_shirt.png');
   const lockers = require('../../../assets/img/lockers.png');
  
   const progressPercentage = (1 - expiration/number) * 100;
-  console.log('progressPercentage', progressPercentage)
+//   console.log('progressPercentage', progressPercentage)
   return (
     <Container>
     <CardContainer>

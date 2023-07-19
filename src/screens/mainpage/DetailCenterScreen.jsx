@@ -1,10 +1,8 @@
-import { View, Text } from 'react-native';
+import DetailCenterTemplate from '../../components/templates/homSreens/DetailCenterTemplate';
 
 function DetailCenterScreen(props) {
     return (
-        <View>
-            <Text>DetailCenterScreen</Text>
-        </View>
+        <DetailCenterTemplate />
     );
 }
 

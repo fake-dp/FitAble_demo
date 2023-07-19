@@ -1,18 +1,17 @@
 import { COLORS } from '../../../constants/color';
 import styled from 'styled-components/native';
 import { Image ,TouchableOpacity} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 
 
-function HomeHeader() {
+function HomeHeader({navigation}) {
     
   const [isBell, setIsBell] = useState(true);
 
-    const navigation = useNavigation();
-
+    // const navigation = useNavigation();
     const goToScanScreen = () => {
-        navigation.navigate('Scan');
+      navigation.navigate('Scan');
     };
 
     const goToBellScreen = () => {
