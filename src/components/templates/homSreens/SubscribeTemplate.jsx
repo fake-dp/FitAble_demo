@@ -7,16 +7,46 @@ import PriceProductGrid from '../../grid/PriceProductGrid';
 
 import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
 import CollsAbleGrid from '../../grid/CollsAbleGrid';
-
+import SelectOptionGrid from '../../grid/SelectOptionGrid';
+import React, { useState } from 'react';
+import SelectCouponGrid from '../../grid/SelectCouponGrid';
 
 function SubscribeTemplate(props) {
 
     const navigation = useNavigation();
 
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    // ... other code ...
+  
+    const handleOptionSelect = (id) => {
+      setSelectedOption(id);
+    };
+
     const goBackScreens = () => {
         navigation.goBack();
     };
 
+    const optionData = [
+        {
+            id: 0,
+            title: '개인 락커',
+            price: '3,000',
+            img: require('../../../assets/img/option_lockers.png'),
+        },
+        {
+            id: 1,
+            title: '운동복',
+            price: '10,000',
+            img: require('../../../assets/img/option_t.png'),
+        },
+        {
+            id: 2,
+            title: '사용 안 함',
+            price: '',
+            img: require('../../../assets/img/option_none.png'),
+        }
+    ]
 
 
     return (
@@ -34,9 +64,16 @@ function SubscribeTemplate(props) {
 
         <CollsAbleGrid />
       
+        <SelectOptionGrid 
+            optionData={optionData}
+            selectedOption={selectedOption}
+            onSelectOption={handleOptionSelect}
+        />
+
+        <SelectCouponGrid />
 
     </ScrollView>
-        <ActiveMainBtn>이용하기</ActiveMainBtn>
+        <ActiveMainBtn>구독하기</ActiveMainBtn>
     </Container>
     );
 }
