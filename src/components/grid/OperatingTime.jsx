@@ -6,7 +6,7 @@ function OperatingTime(props) {
     return (
         <Container>
             <ContainerLine />
-            <MainTitleText>운영 프로그램</MainTitleText>
+            <MainTitleText>운영 시간</MainTitleText>
             <TextContainer>
                 <DateText>평일</DateText>
                 <DateText>오전 10시 ~ 오후 10시</DateText>

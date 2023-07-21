@@ -1,32 +1,28 @@
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 
-function ActiveMainBtn({children}) {
+function ActiveMainBtn({children, onPress}) {
 
     const handlePress = () => {
         console.log('MainBtn pressed');
-
+        onPress();
     }
     
     return (
         <Container>
-
-        <StyledPressable
-        onPress={handlePress}
-        
-        >
-        <StyledText
-
->{children}</StyledText>
-    </StyledPressable>
-</Container>
+            <StyledPressable onPress={handlePress}>
+              <StyledText>{children}</StyledText>
+            </StyledPressable>
+        </Container>
     );
 }
 
 export default ActiveMainBtn;
 
 const Container = styled.View`
-    padding: 0 20px;
+    /* padding: 0 20px; */
+    justify-content: center;
+    align-items: center;
 `
 
 

@@ -89,7 +89,7 @@ function MainTabScreen() {
           
         }}
       /> 
-      <Tab.Screen name="exercise" component={MainExerciseSreen} 
+      <Tab.Screen name="Exercise" component={MainExerciseSreen} 
        options={{
         title: '운동하기',
         tabBarIcon: ({ focused }) => (
@@ -103,7 +103,7 @@ function MainTabScreen() {
         ),
             }}
       />
-      <Tab.Screen name="store" component={StoreScreen} 
+      <Tab.Screen name="Store" component={StoreScreen} 
               options={{
                 title: '스토어',
                 tabBarIcon: ({ focused }) => (
@@ -117,7 +117,7 @@ function MainTabScreen() {
                 ),
                     }}
       />
-      <Tab.Screen name="mypage" component={MyScreen} 
+      <Tab.Screen name="Mypage" component={MyScreen} 
           options={{
             title: '마이',
 
@@ -181,9 +181,10 @@ function AppScreens({navigation}) {
           />
 
           <Stack.Screen name="Subscribe" component={SubscribeScreen} 
-        //   options={{
-        //     headerShown: false,
-        // }}
+          options={{
+            title: '',
+            headerBackVisible: false,
+        }}
           />
           <Stack.Screen name="PT" component={PtScreen} 
         //    options={{

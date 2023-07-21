@@ -68,7 +68,7 @@ margin-top: 20px;
 const AboutContainer = styled.View`
 align-items: center;
 justify-content: center;
-margin-right: 16px;
+margin-right: 7px;
 `
 
 const AboutText = styled.Text`

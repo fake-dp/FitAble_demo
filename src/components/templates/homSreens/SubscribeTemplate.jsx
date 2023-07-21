@@ -2,20 +2,12 @@ import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
-import GymBasicInfoGrid from '../../grid/GymBasicInfoGrid';
-import ThreeBtnGrid from '../../grid/ThreeBtnGrid';
-import OperatingProgram from '../../grid/OperatingProgram';
-import OperaintgTime from '../../grid/OperatingTime';
-import FacilitiesGrid from '../../grid/FacilitiesGrid';
-import PhotoScrollGrid from '../../grid/PhotoScrollGrid';
+import GobackGrid from '../../grid/GobackGrid';
+import PriceProductGrid from '../../grid/PriceProductGrid';
 
 import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
-import AboutChannel from '../../grid/AboutChannel';
-import LongTextGrid from '../../grid/LongTextGrid';
-import ShopTagGrid from '../../grid/ShopTagGrid';
+import CollsAbleGrid from '../../grid/CollsAbleGrid';
 
-const testImg = require('../../../assets/img/detailTest.png');
-const backArrow = require('../../../assets/img/back_arrow.png');
 
 function SubscribeTemplate(props) {
 
@@ -25,54 +17,26 @@ function SubscribeTemplate(props) {
         navigation.goBack();
     };
 
-    const goConsultingScreens = () => {
-        navigation.navigate('Consulting');
-    };
-
-    const handleBtnPress = (screenName) => {
-        navigation.navigate(screenName);
-      };
 
 
     return (
         <Container>
         <ScrollView
           bounces={false}
-     
           showsVerticalScrollIndicator={false}
           overScrollMode="never"
         >
-        <TestImg source={testImg}/>
-        <GobackTouchable onPress={goBackScreens}>
-        <Image source={backArrow}/>
-        </GobackTouchable>
+            <GobackContainer>
+              <GobackGrid onPress={goBackScreens}>결제하기</GobackGrid>
+            </GobackContainer>
 
-        <GymBasicInfoGrid 
-        onPress={goConsultingScreens}
-        />
+        <PriceProductGrid />
 
-    <ThreeBtnGrid
-      onPressSubscribe={() => handleBtnPress('Subscribe')}
-      onPressPT={() => handleBtnPress('PT')}
-      onPressUse={() => handleBtnPress('Use')}
-    />
+        <CollsAbleGrid />
+      
 
-    <LongTextGrid />
-
-    <ShopTagGrid />
-
-    <OperatingProgram />
-
-    <OperaintgTime />
-
-    <FacilitiesGrid />
-
-    <PhotoScrollGrid />
-
-    <AboutChannel />
-
-        <ActiveMainBtn>이용하기</ActiveMainBtn>
     </ScrollView>
+        <ActiveMainBtn>이용하기</ActiveMainBtn>
     </Container>
     );
 }
@@ -82,14 +46,11 @@ export default SubscribeTemplate;
 const Container = styled.View`
     flex: 1;
     background-color: ${COLORS.sub};
+    /* padding: 0 20px; */
 `
 
-const TestImg = styled.Image`
-    width: 100%;
+const GobackContainer = styled.View`
+ padding: 0 20px;
 `
 
-const GobackTouchable = styled.TouchableOpacity`
-position: absolute;
-top: 56px;
-left: 20px;
-`;
+

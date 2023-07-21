@@ -3,8 +3,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
 function ThreeBtnGrid(props) {
-  const { onPressSubscribe, onPressPT, onPressUse } = props;
-  const [activeButton, setActiveButton] = useState('');
+  const { onPressSubscribe, onPressPT, onPressUse ,setActiveButton, activeButton} = props;
 
   const handleButtonPress = (name) => {
     setActiveButton(name);

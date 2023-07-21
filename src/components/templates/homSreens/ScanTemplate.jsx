@@ -1,8 +1,15 @@
-import {Image } from 'react-native';
+import {Image, TouchableOpacity } from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-
+import { useNavigation } from '@react-navigation/native';
 function ScanTemplate(props) {
+
+    const navigation = useNavigation();
+
+    const goStoreScreen = () => {
+        navigation.navigate('Store');
+    }
+
     return (
         <Container>
             <MainContainer>
@@ -11,7 +18,9 @@ function ScanTemplate(props) {
             <Rectangular />
             <SubText>휴대폰을 흔들면 QR코드를 촬영할 수 있어요!</SubText>
             </MainContainer>
-            <ImgContainer>
+            <ImgContainer
+            onPress={goStoreScreen}
+            >
             <Image source={require('../../../assets/img/testimg.png')} />
             </ImgContainer>
         </Container>
@@ -34,7 +43,7 @@ const MainContainer = styled.View`
     justify-content: center;
 `
 
-const ImgContainer = styled.View`
+const ImgContainer = styled.TouchableOpacity`
     position: absolute;
     bottom: 0;
 `

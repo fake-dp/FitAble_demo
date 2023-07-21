@@ -14,19 +14,19 @@ function HomeMainBanner(props) {
         { id: 4, image: require('../../../assets/img/test1.png') },
       ];
 
-    //   useEffect(() => {
-    //     const interval = setInterval(() => {
-    //       const nextIndex = (activeButtonIndex + 1) % bannerImages.length;
-    //       setActiveButtonIndex(nextIndex);
-    //       if (scrollViewRef.current) {
-    //         scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
-    //       }
-    //     }, 2000);
+      // useEffect(() => {
+      //   const interval = setInterval(() => {
+      //     const nextIndex = (activeButtonIndex + 1) % bannerImages.length;
+      //     setActiveButtonIndex(nextIndex);
+      //     if (scrollViewRef.current) {
+      //       scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
+      //     }
+      //   }, 2000);
     
-    //     return () => {
-    //       clearInterval(interval);
-    //     };
-    //   }, [activeButtonIndex]);
+      //   return () => {
+      //     clearInterval(interval);
+      //   };
+      // }, [activeButtonIndex]);
 
 
       const handleScrollToIndex = (index) => {

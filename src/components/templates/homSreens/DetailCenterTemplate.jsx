@@ -14,21 +14,20 @@ import AboutChannel from '../../grid/AboutChannel';
 import LongTextGrid from '../../grid/LongTextGrid';
 import ShopTagGrid from '../../grid/ShopTagGrid';
 
-import { useState } from 'react';
+import { useState ,useRef} from 'react';
 import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
 import MonthTicketGrid from '../../grid/MonthTicketGrid';
 import PtUserListGrid from '../../grid/PtUserListGrid';
 
 function DetailCenterTemplate(props) {
-
+    const scrollViewRef = useRef(null);
     const [btnName, setBtnName] = useState('');
     const [selectedCard, setSelectedCard] = useState(0);
     const [selectedMonthCard, setSelectedMonthCard] = useState(0);
-
+    const [activeButton, setActiveButton] = useState('');
     const handleBtnPress = (name) => {
         setBtnName(name);
     };
-
 
     const navigation = useNavigation();
 
@@ -38,6 +37,24 @@ function DetailCenterTemplate(props) {
 
     const goConsultingScreens = () => {
         navigation.navigate('Consulting');
+    };
+
+    const goSetSubscribeState = () => {
+        setBtnName('Subscribe');
+        setActiveButton('Subscribe');
+        scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
+    }
+
+    const goSubcribePriceScreens = () => {
+        navigation.navigate('Subscribe');
+    };
+
+    const goPtUserListPriceScreens = () => {
+        navigation.navigate('PT');
+    };
+
+    const goUseTicketPriceScreens = () => {
+        navigation.navigate('Use');
     };
 
     const testImg = require('../../../assets/img/detailTest.png');
@@ -89,6 +106,7 @@ function DetailCenterTemplate(props) {
     return (
         <Container>
             <ScrollView
+            ref={scrollViewRef}
               bounces={false}
          
               showsVerticalScrollIndicator={false}
@@ -107,6 +125,8 @@ function DetailCenterTemplate(props) {
           onPressSubscribe={() => handleBtnPress('Subscribe')}
           onPressPT={() => handleBtnPress('PT')}
           onPressUse={() => handleBtnPress('Use')}
+          setActiveButton={setActiveButton}
+            activeButton={activeButton}
         />
         {btnName === 'Subscribe' && (
           <BasicNpremiumCardGrid 
@@ -141,19 +161,27 @@ function DetailCenterTemplate(props) {
         )}            
 
         {btnName === 'Subscribe' && (
-          <ActiveMainBtn>구독하기</ActiveMainBtn>
+          <ActiveMainBtn
+            onPress={goSubcribePriceScreens}
+          >구독하기</ActiveMainBtn>
         )}
 
         {btnName === 'PT' && (
-          <ActiveMainBtn>P.T 상담하기</ActiveMainBtn>
+          <ActiveMainBtn
+            onPress={goPtUserListPriceScreens}
+          >P.T 상담하기</ActiveMainBtn>
         )}
 
         {btnName === 'Use' && (
-          <ActiveMainBtn>구매하기</ActiveMainBtn>
+          <ActiveMainBtn
+            onPress={goUseTicketPriceScreens}
+          >구매하기</ActiveMainBtn>
         )}
 
         {btnName !== 'Subscribe' && btnName !== 'PT' && btnName !== 'Use' && (
-          <ActiveMainBtn>구독하기</ActiveMainBtn>
+          <ActiveMainBtn
+          onPress={goSetSubscribeState}
+          >이용하기</ActiveMainBtn>
         )}
 
 
@@ -168,6 +196,7 @@ export default DetailCenterTemplate;
 const Container = styled.View`
     flex: 1;
     background-color: ${COLORS.sub};
+    /* padding: 0 20px; */
 `
 
 
