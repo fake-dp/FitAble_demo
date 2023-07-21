@@ -1,6 +1,5 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { View , Text} from 'react-native';
 import {bellList} from '../../../data/BellTestData'
 import { FlatList } from 'react-native';
 import BellList from '../../ui/list/BellList';

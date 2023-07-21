@@ -38,7 +38,7 @@ margin-bottom: 14px;
 
 const ContentsContainer = styled.View`
      border-bottom-width: 1px;
-  border-bottom-color: ${COLORS.box};
+     border-bottom-color: ${COLORS.box};
     padding: 10px 0;
     ${(props) =>
     props.isLastItem &&

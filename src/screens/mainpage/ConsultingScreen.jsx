@@ -1,10 +1,8 @@
-import { View, Text } from 'react-native';
+import ConsultingTemplate from '../../components/templates/homSreens/ConsultingTemplate';
 
 function ConsultingScreen(props) {
     return (
-        <View>
-            <Text>ConsultingScreen</Text>
-        </View>
+        <ConsultingTemplate />
     );
 }
 

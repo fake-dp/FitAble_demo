@@ -37,9 +37,9 @@ const Container = styled.View`
   `;
 
 const ShopTagItemContainer = styled.View`
-width: 100%;
+
   flex-direction: row; 
-  background-color: red;
+  flex-wrap: wrap;
 `;
 
 const ShopTagItem = styled.View`

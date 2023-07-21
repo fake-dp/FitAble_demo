@@ -1,6 +1,6 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-import { Image } from 'react-native';
+
 function AboutChannel(props) {
 
     const blog = require('../../assets/img/blog.png');

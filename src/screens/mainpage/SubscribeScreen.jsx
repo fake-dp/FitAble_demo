@@ -1,9 +1,10 @@
 import { View, Text } from 'react-native';
+import SubscribeTemplate from '../../components/templates/homSreens/SubscribeTemplate';
 
 function SubscribeScreen(props) {
     return (
         <View>
-            <Text>SubscribeScreen!!!</Text>
+            <Text>감잡았땅!!@#</Text>
         </View>
     );
 }

@@ -20,8 +20,6 @@ import UseScreen from './src/screens/mainpage/UseScreen';
 import InfoCardScreen from './src/screens/mainpage/InfoCardScreen';
 
 
-
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -169,7 +167,12 @@ function AppScreens({navigation}) {
                 title: '이용권 구매',
             }}
           />
-          <Stack.Screen name="Consulting" component={ConsultingScreen} />
+          <Stack.Screen name="Consulting" component={ConsultingScreen} 
+          options={{
+            title: '',
+            headerBackVisible: false,
+        }}
+          />
 
           <Stack.Screen name="DetailCenter" component={DetailCenterScreen} 
             options={{
@@ -177,9 +180,21 @@ function AppScreens({navigation}) {
             }}
           />
 
-          <Stack.Screen name="Subscribe" component={SubscribeScreen} />
-          <Stack.Screen name="PT" component={PtScreen} />
-          <Stack.Screen name="Use" component={UseScreen} />
+          <Stack.Screen name="Subscribe" component={SubscribeScreen} 
+        //   options={{
+        //     headerShown: false,
+        // }}
+          />
+          <Stack.Screen name="PT" component={PtScreen} 
+        //    options={{
+        //     headerShown: false,
+        // }}
+          />
+          <Stack.Screen name="Use" component={UseScreen} 
+        //    options={{
+        //     headerShown: false,
+        // }}
+          />
 
           <Stack.Screen name="InfoCard" component={InfoCardScreen} />
         {/* 운동하기 스크린 등록 */}

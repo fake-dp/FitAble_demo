@@ -1,13 +1,22 @@
-import { View,Text ,Button} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React, {useState} from 'react';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import { View,Text, SafeAreaView } from "react-native";
 function MainExerciseSreen(props) {
-
+    const [selected, setSelected] = useState('');
 
     return (
-        <View>
-            <Text>운동하기홈</Text>
-        </View>
+        <SafeAreaView>
+
+      <Calendar
+        onDayPress={day => {
+            setSelected(day.dateString);
+        }}
+        markedDates={{
+            [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+        }}
+        />
+        </SafeAreaView>
     );
-}
+  };
 
 export default MainExerciseSreen;
