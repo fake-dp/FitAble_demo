@@ -15,12 +15,23 @@ function SubscribeTemplate(props) {
 
     const navigation = useNavigation();
 
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState([]);
 
     // ... other code ...
   
     const handleOptionSelect = (id) => {
       setSelectedOption(id);
+    // if (id === 2) {
+    //     // "사용 안 함" 옵션을 선택한 경우, 다른 옵션들을 모두 선택 해제
+    //     setSelectedOption([]);
+    //   } else {
+    //     // 다른 옵션들을 선택한 경우, "사용 안 함" 옵션을 선택 해제
+    //     setSelectedOption((prevSelected) =>
+    //       prevSelected.includes(id)
+    //         ? prevSelected.filter((optionId) => optionId !== id)
+    //         : [...prevSelected, id]
+    //     );
+    //   }
     };
 
     const goBackScreens = () => {

@@ -12,11 +12,11 @@ function GymBasicInfoGrid({onPress}) {
         <Container>
             <MainTitleText>에이블짐 노원본점</MainTitleText>
             <SubTextContainer>
-                <Image source={phoneIcon}/>
+                <Image source={mapIcon}/>
                 <SubText>서울 노원구 상계로 77 다나프라자 B1F</SubText>
             </SubTextContainer>
             <SubTextContainer>
-                <Image source={mapIcon}/>
+                <Image source={phoneIcon}/>
                 <SubText>0507-1342-0491</SubText>
             </SubTextContainer>
 

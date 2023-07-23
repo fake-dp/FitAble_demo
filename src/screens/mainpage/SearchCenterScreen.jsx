@@ -1,10 +1,9 @@
 import { View, Text } from 'react-native';
+import SearchCenterTemplate from '../../components/templates/homSreens/SearchCenterTemplate';
 
 function SearchCenterScreen(props) {
     return (
-        <View>
-            <Text>SearchCenterScreen</Text>
-        </View>
+        <SearchCenterTemplate />
     );
 }
 

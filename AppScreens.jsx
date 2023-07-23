@@ -163,9 +163,10 @@ function AppScreens({navigation}) {
         }}
         />
           <Stack.Screen name="SearchCenter" component={SearchCenterScreen} 
-            options={{
-                title: '이용권 구매',
-            }}
+           options={{
+            title: '',
+            headerBackVisible: false,
+        }}
           />
           <Stack.Screen name="Consulting" component={ConsultingScreen} 
           options={{
