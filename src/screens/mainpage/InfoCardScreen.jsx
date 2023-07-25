@@ -1,10 +1,9 @@
-import { View, Text } from 'react-native';
+
+import InfoCardTemplate from '../../components/templates/homSreens/InfoCardTemplate';
 
 function InfoCardScreen(props) {
     return (
-        <View>
-            <Text>BellScreen</Text>
-        </View>
+        <InfoCardTemplate />
     );
 }
 

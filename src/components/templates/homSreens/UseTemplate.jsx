@@ -10,11 +10,13 @@ import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
 import React, { useState } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
+import PriceModal from '../../ui/modal/PriceModal';
 
-function SubscribeTemplate(props) {
+function UseTemplate(props) {
 
     const navigation = useNavigation();
-
+    const [showModal, setShowModal] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState([]);
 
     // ... other code ...
@@ -38,8 +40,12 @@ function SubscribeTemplate(props) {
         navigation.goBack();
     };
 
-    const goCardInfoScreens = () => {
-        navigation.navigate('InfoCard');
+    const goTestModal = () => {
+        setShowModal(true)
+    }
+
+    const closeModal = () => {
+        setShowModal(false)
     }
 
     const optionData = [
@@ -89,13 +95,23 @@ function SubscribeTemplate(props) {
 
     </ScrollView>
         <ActiveMainBtn
-        onPress={goCardInfoScreens}
-        >구독하기</ActiveMainBtn>
+        onPress={goTestModal}
+        >결제하기</ActiveMainBtn>
+        {
+            showModal ?
+            <PriceModal 
+            closeModal={closeModal}
+            modalVisible={modalVisible}
+            />
+            :   
+            null
+            
+        }
     </Container>
     );
 }
 
-export default SubscribeTemplate;
+export default UseTemplate;
 
 const Container = styled.View`
     flex: 1;
@@ -106,5 +122,3 @@ const Container = styled.View`
 const GobackContainer = styled.View`
  padding: 0 20px;
 `
-
-

@@ -146,10 +146,14 @@ function AppScreens({navigation}) {
           headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: COLORS.sub,
+                borderBottomWidth: 0,
               },
               // title 없에기
                 // headerShown: false,
+                headerShadowVisible: false,
                 headerBackTitleVisible: false,
+                shadowColor: 'transparent', // this covers iOS
+                elevation: 0, // this covers Android
           }}
       >
         <Stack.Screen name="MainTab" component={MainTabScreen} options={{ headerShown: false }} />
@@ -193,12 +197,22 @@ function AppScreens({navigation}) {
         // }}
           />
           <Stack.Screen name="Use" component={UseScreen} 
-        //    options={{
-        //     headerShown: false,
-        // }}
+         options={{
+          title: '',
+          headerBackVisible: false,
+      }}
           />
 
-          <Stack.Screen name="InfoCard" component={InfoCardScreen} />
+          <Stack.Screen name="InfoCard" component={InfoCardScreen} 
+           options={{
+            title: '',
+            // headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
         {/* 운동하기 스크린 등록 */}
 
 
