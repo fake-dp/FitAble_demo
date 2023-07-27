@@ -1,10 +1,7 @@
-import { View, Text } from 'react-native';
-
+import PTpriceTemplate from "../../components/templates/homSreens/PTpriceTemplate";
 function PtScreen(props) {
     return (
-        <View>
-            <Text>PtScreen</Text>
-        </View>
+       <PTpriceTemplate />
     );
 }
 

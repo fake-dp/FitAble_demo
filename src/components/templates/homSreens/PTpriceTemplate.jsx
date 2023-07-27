@@ -1,3 +1,4 @@
+
 import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
@@ -12,7 +13,7 @@ import React, { useState } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 
-function UseTemplate(props) {
+function PTpriceTemplate(props) {
 
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
@@ -74,10 +75,11 @@ function UseTemplate(props) {
         }
     ]
 
+
     const priceProduct = [
         {
             title: '프리미엄',
-            src: require('../../../assets/img/pricetestproduct.png'),
+            src: require('../../../assets/img/testptuser.png'),
             products: '정기구독 Premium',
         },
     ]
@@ -95,7 +97,7 @@ function UseTemplate(props) {
             </GobackContainer>
 
         <PriceProductGrid 
-            priceProduct={priceProduct}
+        priceProduct={priceProduct}
         />
 
         <CollsAbleGrid />
@@ -127,7 +129,7 @@ function UseTemplate(props) {
     );
 }
 
-export default UseTemplate;
+export default PTpriceTemplate;
 
 const Container = styled.View`
     flex: 1;

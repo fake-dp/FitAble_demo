@@ -18,6 +18,7 @@ import SubscribeScreen from './src/screens/mainpage/SubscribeScreen';
 import PtScreen from './src/screens/mainpage/PtScreen';
 import UseScreen from './src/screens/mainpage/UseScreen';
 import InfoCardScreen from './src/screens/mainpage/InfoCardScreen';
+import PtDetailSrceen from './src/screens/mainpage/PtDetailSrceen';
 
 
 const Tab = createBottomTabNavigator();
@@ -192,10 +193,17 @@ function AppScreens({navigation}) {
         }}
           />
           <Stack.Screen name="PT" component={PtScreen} 
-        //    options={{
-        //     headerShown: false,
-        // }}
+           options={{
+            title: '',
+            headerBackVisible: false,
+        }}
           />
+          <Stack.Screen name="PtDetail" component={PtDetailSrceen}
+          options={{
+            headerShown: false,
+        }}
+          />
+
           <Stack.Screen name="Use" component={UseScreen} 
          options={{
           title: '',

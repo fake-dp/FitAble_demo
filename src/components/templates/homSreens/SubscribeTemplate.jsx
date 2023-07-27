@@ -63,6 +63,14 @@ function SubscribeTemplate(props) {
         }
     ]
 
+    const priceProduct = [
+        {
+            title: '프리미엄',
+            src: require('../../../assets/img/pricetestproduct.png'),
+            products: '정기구독 Premium',
+        },
+    ]
+
 
     return (
         <Container>
@@ -75,7 +83,9 @@ function SubscribeTemplate(props) {
               <GobackGrid onPress={goBackScreens}>결제하기</GobackGrid>
             </GobackContainer>
 
-        <PriceProductGrid />
+        <PriceProductGrid 
+            priceProduct={priceProduct}
+        />
 
         <CollsAbleGrid />
       

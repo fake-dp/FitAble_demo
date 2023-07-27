@@ -53,9 +53,16 @@ function DetailCenterTemplate(props) {
         navigation.navigate('PT');
     };
 
+  
+
     const goUseTicketPriceScreens = () => {
         navigation.navigate('Use');
     };
+
+    const handleUserClick = (id) => {
+      console.log('id', id)
+      navigation.navigate('PtDetail', {id: id})
+  }
 
     const testImg = require('../../../assets/img/detailTest.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
@@ -137,7 +144,9 @@ function DetailCenterTemplate(props) {
         )}
 
         {btnName === 'PT' && (
-          <PtUserListGrid />
+          <PtUserListGrid 
+          handleUserClick={handleUserClick}
+          />
         )}
 
         {btnName === 'Use' && (
@@ -168,7 +177,7 @@ function DetailCenterTemplate(props) {
 
         {btnName === 'PT' && (
           <ActiveMainBtn
-            onPress={goPtUserListPriceScreens}
+            onPress={goConsultingScreens}
           >P.T 상담하기</ActiveMainBtn>
         )}
 

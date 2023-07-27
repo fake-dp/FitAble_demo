@@ -2,15 +2,15 @@ import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function PriceProductGrid(props) {
+function PriceProductGrid({priceProduct}) {
 
-    const priceProduct = [
-        {
-            title: '프리미엄',
-            src: require('../../assets/img/pricetestproduct.png'),
-            products: '정기구독 Premium',
-        },
-    ]
+    // const priceProduct = [
+    //     {
+    //         title: '프리미엄',
+    //         src: require('../../assets/img/pricetestproduct.png'),
+    //         products: '정기구독 Premium',
+    //     },
+    // ]
 
 
     return (

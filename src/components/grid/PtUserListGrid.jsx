@@ -1,8 +1,8 @@
-import {Image ,View, Text, ScrollView} from 'react-native';
+import {Image ,View, TouchableOpacity, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function PtUserListGrid(props) {
+function PtUserListGrid({handleUserClick}) {
 
     const ptUserList = [
         {
@@ -74,6 +74,7 @@ function PtUserListGrid(props) {
             <ScrollView>
             {
                 ptUserList.map((ptUser) => (
+                    <TouchableOpacity key={ptUser.id} onPress={() => handleUserClick(ptUser.id)}>
                     <PtUserContainer key={ptUser.id}>
                         <PtUserImage source={ptUser.src}/>
                         <PtUserTimeContainer>
@@ -83,6 +84,7 @@ function PtUserListGrid(props) {
                             <PtUserTimeText>주말 : {ptUser.weekendtime}</PtUserTimeText>
                         </PtUserTimeContainer>
                     </PtUserContainer>
+                    </TouchableOpacity>
                 ))
             }
             </ScrollView>

@@ -116,6 +116,10 @@ function SearchCenterTemplate(props) {
       };
 
 
+      const handleGoDetailCenter = (id) => {
+        console.log('id', id)
+        navigation.navigate('DetailCenter')
+    }
 
     const search = require('../../../assets/img/search.png');
     const close = require('../../../assets/img/close_20.png');
@@ -184,6 +188,7 @@ function SearchCenterTemplate(props) {
             <View>
             {searchData.map((item) => (
                 <SearchListBoxGrid 
+                handleGoDetailCenter={handleGoDetailCenter}
                 searchListData={item}
                 />
             ))}

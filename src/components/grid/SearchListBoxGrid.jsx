@@ -1,20 +1,21 @@
 import {Image } from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-
-function SearchListBoxGrid({searchListData}) {
+import {TouchableOpacity} from 'react-native';
+function SearchListBoxGrid({searchListData,handleGoDetailCenter}) {
 
     const {id, title, map, tag, srcimg} = searchListData;
     
     const mapIcon = require('../../assets/img/map.png');
 
     return (
+        <TouchableOpacity   
+        onPress={() => handleGoDetailCenter(id)}>
+            
         <Container key={id}>
-
             <ContentsBox>
             <TitleText>{title}</TitleText>
             <SubTextContainer>
-
             <MapIcon
                 source={mapIcon}
                 />
@@ -36,8 +37,8 @@ function SearchListBoxGrid({searchListData}) {
             <Image
                 source={srcimg}
             />
-
         </Container>
+        </TouchableOpacity>
     );
 }
 
