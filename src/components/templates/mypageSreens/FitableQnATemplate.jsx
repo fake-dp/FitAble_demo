@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-function CenterMarkTemplate(props) {
+function FitableQnATemplate(props) {
 
     const navigation = useNavigation();
 
@@ -12,12 +12,12 @@ function CenterMarkTemplate(props) {
 
     return (
         <Container>
-            <GobackBlackGrid onPress={goBackScreens}/>
+            <GobackBlackGrid onPress={goBackScreens}>핏에이블 문의</GobackBlackGrid>
         </Container>
     );
 }
 
-export default CenterMarkTemplate;
+export default FitableQnATemplate;
 
 const Container = styled.View`
   flex: 1;

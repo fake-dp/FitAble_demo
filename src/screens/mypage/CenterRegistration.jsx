@@ -1,10 +1,8 @@
-import { View ,Text} from "react-native";
+import CenterRegistTemplate from "../../components/templates/mypageSreens/CenterRegistTemplate";
 
 function CenterRegistration(props) {
     return (
-        <View>
-            <Text>CenterRegistration</Text>
-        </View>
+        <CenterRegistTemplate />
     );
 }
 

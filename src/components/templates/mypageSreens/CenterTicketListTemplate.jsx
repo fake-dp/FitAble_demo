@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-function CenterMarkTemplate(props) {
+function CenterTicketListTemplate(props) {
 
     const navigation = useNavigation();
 
@@ -12,12 +12,12 @@ function CenterMarkTemplate(props) {
 
     return (
         <Container>
-            <GobackBlackGrid onPress={goBackScreens}/>
+            <GobackBlackGrid onPress={goBackScreens}>이용권 목록</GobackBlackGrid>
         </Container>
     );
 }
 
-export default CenterMarkTemplate;
+export default CenterTicketListTemplate;
 
 const Container = styled.View`
   flex: 1;

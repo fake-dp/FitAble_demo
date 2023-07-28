@@ -32,6 +32,15 @@ function MyMainTemplate(props) {
         navigation.navigate('MyCenter');
     }
 
+    const goMileageScreen = () => {
+        console.log('@@@@@akakak')
+        navigation.navigate('Mileage');
+    }
+
+    const goFitableQnAScreen = () => {
+        navigation.navigate('FitableQnA');
+    }
+
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
 
@@ -51,7 +60,7 @@ function MyMainTemplate(props) {
 
              <GridLine/>
 
-                <SettingListBtnFirst>
+                <SettingListBtnFirst onPress={goCenterRegistScreen}>
                     <SettingListText>대표 센터</SettingListText>
                     <FirstSettingContainer>
                       <SettingSubText>에이블짐 노원점</SettingSubText>
@@ -62,7 +71,7 @@ function MyMainTemplate(props) {
             
                 <GridLine/>
 
-                <SettingListBtn>
+                <SettingListBtn onPress={goMyBookListScreen}>
                     <SettingListText>전체 예약 목록</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
@@ -73,13 +82,13 @@ function MyMainTemplate(props) {
                 </SettingListBtn>
 
 
-                <SettingListBtn>
+                <SettingListBtn onPress={goCenterMarkScreen}>
                     <SettingListText>내 센터</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
  
 
-                <SettingListBtn>
+                <SettingListBtn onPress={goMileageScreen}>
                     <SettingListText>마일리지</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
@@ -92,7 +101,7 @@ function MyMainTemplate(props) {
                 </SettingListBtn>
  
 
-                <SettingListBtn>
+                <SettingListBtn onPress={goFitableQnAScreen}>
                     <SettingListText>핏에이블 문의</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
