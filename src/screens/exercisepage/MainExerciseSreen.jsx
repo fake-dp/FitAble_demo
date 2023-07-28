@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-import { View,Text, SafeAreaView } from "react-native";
+import { View,Text } from "react-native";
 function MainExerciseSreen(props) {
     const [selected, setSelected] = useState('');
 
     return (
-        <SafeAreaView>
+
 
       <Calendar
         onDayPress={day => {
@@ -15,7 +15,7 @@ function MainExerciseSreen(props) {
             [selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
         }}
         />
-        </SafeAreaView>
+
     );
   };
 

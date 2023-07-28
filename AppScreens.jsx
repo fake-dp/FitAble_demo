@@ -19,6 +19,11 @@ import PtScreen from './src/screens/mainpage/PtScreen';
 import UseScreen from './src/screens/mainpage/UseScreen';
 import InfoCardScreen from './src/screens/mainpage/InfoCardScreen';
 import PtDetailSrceen from './src/screens/mainpage/PtDetailSrceen';
+import MyAppSettingScreen from './src/screens/mypage/MyAppSettingScreen';
+import MyProfileScreen from './src/screens/mypage/MyProfileScreen';
+import CenterRegistration from './src/screens/mypage/CenterRegistration';
+import MyBookListScreen from './src/screens/mypage/MyBookListScreen';
+import MyCenterMarkScreen from './src/screens/mypage/MyCenterMarkScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -54,6 +59,54 @@ function HomeMainScreens({ navigation }) {
   );
 }
 
+// 운동하기
+function ExerciseMainScreens({ navigation }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ExerciseMain" component={MainExerciseSreen}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: COLORS.sub,
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+// 스토어
+function StoreMainScreens({ navigation }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="StoreMain" component={StoreScreen}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: COLORS.sub,
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+// 마이페이지
+function MyMainScreen({ navigation }) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Myheader" component={MyScreen}
+         options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: COLORS.sub,
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 
 function MainTabScreen() {
   return (
@@ -77,7 +130,6 @@ function MainTabScreen() {
       <Tab.Screen name="Home" component={HomeMainScreens} 
         options={{
           title: '홈',
-         
           tabBarIcon: ({ focused }) => (
             <Image
               source={require('./src/assets/img/home_active.png')}
@@ -90,7 +142,7 @@ function MainTabScreen() {
           
         }}
       /> 
-      <Tab.Screen name="Exercise" component={MainExerciseSreen} 
+      <Tab.Screen name="Exercise" component={ExerciseMainScreens} 
        options={{
         title: '운동하기',
         tabBarIcon: ({ focused }) => (
@@ -104,7 +156,7 @@ function MainTabScreen() {
         ),
             }}
       />
-      <Tab.Screen name="Store" component={StoreScreen} 
+      <Tab.Screen name="Store" component={StoreMainScreens} 
               options={{
                 title: '스토어',
                 tabBarIcon: ({ focused }) => (
@@ -118,10 +170,9 @@ function MainTabScreen() {
                 ),
                     }}
       />
-      <Tab.Screen name="Mypage" component={MyScreen} 
+      <Tab.Screen name="Mypage" component={MyMainScreen} 
           options={{
             title: '마이',
-
             tabBarIcon: ({ focused }) => (
               <Image
                 source={require('./src/assets/img/mypage_active.png')}
@@ -227,6 +278,60 @@ function AppScreens({navigation}) {
         {/* 스토어 스크린 등록 */}
 
         {/* 마이 스크린 등록 */}
+        <Stack.Screen name="AppSetting" component={MyAppSettingScreen} 
+           options={{
+            title: '',
+            headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
+
+          <Stack.Screen name="MyProfile" component={MyProfileScreen} 
+           options={{
+            title: '',
+            headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
+
+            <Stack.Screen name="CenterRegist" component={CenterRegistration} 
+           options={{
+            title: '',
+            // headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
+
+            <Stack.Screen name="MyBookList" component={MyBookListScreen} 
+           options={{
+            title: '',
+            // headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
+
+            <Stack.Screen name="MyCenter" component={MyCenterMarkScreen} 
+           options={{
+            title: '',
+            // headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
        
       </Stack.Navigator>
 
