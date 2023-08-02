@@ -4,7 +4,7 @@ import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 import { useState } from 'react';
-import PriceModal from '../../ui/modal/PriceModal';
+import { BookCancelModal } from '../../ui/modal/MyPageCancelModal';
 function MyBookListTemplate(props) {
 
     const navigation = useNavigation();
@@ -73,8 +73,8 @@ function MyBookListTemplate(props) {
     const text = {
         title: '예약 취소',
         content: '수업 예약을 취소하시겠어요?',
-        closeText: '취소',
-        goHomeText: '확인',
+        checkText: '네',
+        closeText: '아니오',
     }
 
     return (
@@ -125,7 +125,7 @@ function MyBookListTemplate(props) {
             </ScrollView>
             {
             showModal ?
-            <PriceModal
+            <BookCancelModal 
             closeModal={closeModal}
             modalVisible={modalVisible}
             text={text}

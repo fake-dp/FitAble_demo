@@ -42,7 +42,7 @@ const ModalContainer = styled.View`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.50);
     align-items: center;
     justify-content: center;
 `
@@ -50,9 +50,9 @@ const ModalContainer = styled.View`
 const ModalView = styled.View`
     align-items: center;
     justify-content: center;
-    height: 208px;
-    width: 315px;
-    background-color: ${COLORS.box};
+    height: 180px;
+    width: 337px;
+    background-color: ${COLORS.sub};
     border-radius: 15px;
 `
 
@@ -84,12 +84,12 @@ const ButtonContainer = styled.View`
 
 const CloseBtn = styled.TouchableOpacity`
 background-color: ${COLORS.white};
-height: 50px;
-width: 95px;
+height: 48px;
+width: 48%;
 
 align-items: center;
 justify-content: center;
-border-radius: 80px;
+border-radius: 10px;
 `
 
 const CloseText = styled.Text`
@@ -100,12 +100,12 @@ font-weight: 600;
 
 const GohomeBtn = styled.TouchableOpacity`
 background-color: ${COLORS.main};
-height: 52px;
-width: 167px;
+height: 48px;
+width: 48%;
 
 align-items: center;
 justify-content: center;
-border-radius: 80px;
+border-radius: 10px;
 `
 
 const GoHomeText = styled.Text`

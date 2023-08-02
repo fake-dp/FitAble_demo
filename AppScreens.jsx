@@ -23,6 +23,9 @@ import MileageScreen from './src/screens/mypage/MileageScreen';
 import FitableQnAScreen from './src/screens/mypage/FitableQnAScreen';
 import CenterTicketListScreen from './src/screens/mypage/CenterTicketListScreen';
 import MyProductScreen from './src/screens/mypage/MyProductScreen';
+import TermsofUseScreen from './src/screens/mypage/TermsofUseScreen';
+import ProductQnAScreen from './src/screens/mypage/ProductQnAScreen';
+import TicketListDetailScreen from './src/screens/mypage/TicketListDetailScreen';
 
 
 
@@ -102,6 +105,10 @@ function AppScreens({navigation}) {
             <Stack.Screen name="Product" component={MyProductScreen}  />
             <Stack.Screen name="FitableQnA" component={FitableQnAScreen}  />
             {/* 문의, 상품 문의 이용약관 정책 이용권 목록 */}
+            <Stack.Screen name='Terms'component={TermsofUseScreen} />
+            <Stack.Screen name='ProductQnA' component={ProductQnAScreen} options={{headerStyle: {backgroundColor: COLORS.gray_100,},}} />
+            <Stack.Screen name='TicketDetail' component={TicketListDetailScreen} options={{headerShown:false}} />
+       
         </Stack.Group>
        
       </Stack.Navigator>

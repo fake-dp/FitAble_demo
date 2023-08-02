@@ -17,8 +17,9 @@ function FitableQnATemplate(props) {
     };
 
     const handleAnswerListBtn = () => {
-        console.log('문의 내역 확인');
+        navigation.navigate('ProductQnA');
     }
+
 
     const plusbtn = require('../../../assets/img/plusbtn.png');
 

@@ -47,11 +47,12 @@ const ModalContainer = styled.View`
 `
 
 const ModalView = styled.View`
-    align-items: center;
-    justify-content: center;
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding: 30px 18px;
     height: 227px;
-    width: 315px;
-    background-color: ${COLORS.box};
+    width: 337px;
+    background-color: ${COLORS.sub};
     border-radius: 15px;
 `
 
@@ -82,25 +83,17 @@ const ButtonContainer = styled.View`
 `
 
 const GoodbyeBtn = styled.TouchableOpacity`
-background-color: ${COLORS.white};
-height: 50px;
-width: 120px;
+background-color: ${COLORS.box};
+height: 48px;
+width: 149px;
 align-items: center;
 justify-content: center;
-border-radius: 80px;
+border-radius: 10px;
 margin: 0 4px;
 `
 
 const CloseText = styled.Text`
 font-size: 16px;
-color: ${COLORS.gray_400};
-font-weight: 600;
-`
-
-
-
-const GoHomeText = styled.Text`
-font-size: 16px;
-color: ${COLORS.sub};
+color: ${COLORS.white};
 font-weight: 600;
 `

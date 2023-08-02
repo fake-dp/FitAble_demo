@@ -23,6 +23,11 @@ function MyAppSettingTemplate(props) {
         navigation.goBack();
     };
 
+
+    const goTermsScreens = () => {
+        navigation.navigate('Terms');
+    };
+
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
     
@@ -44,7 +49,7 @@ function MyAppSettingTemplate(props) {
                     <SettingListText>QR 출입증</SettingListText>
                     <ToggleBtn />
                 </SettingList>
-                <SettingListBtn>
+                <SettingListBtn onPress={goTermsScreens}>
                     <SettingListText>이용약관 및 정책</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
@@ -75,6 +80,7 @@ const Container = styled.View`
   padding: 0 20px;
   background-color: ${COLORS.white};
 `;
+
 
 const SettingList = styled.View`
     flex-direction: row;
