@@ -16,7 +16,6 @@ function MyMainTemplate(props) {
       }
 
     const goEditMyProfileScreen = () => {
-        console.log('goEditMyProfileScreen');
         navigation.navigate('MyProfile');
     }
 
@@ -28,13 +27,20 @@ function MyMainTemplate(props) {
         navigation.navigate('MyBookList');
     }
 
+    const goMyTicketListScreen = () => {
+        navigation.navigate('CenterTicket');
+    }
+
     const goCenterMarkScreen = () => {
         navigation.navigate('MyCenter');
     }
 
     const goMileageScreen = () => {
-        console.log('@@@@@akakak')
         navigation.navigate('Mileage');
+    }
+
+    const goProductScreen = () => {
+        navigation.navigate('Product');
     }
 
     const goFitableQnAScreen = () => {
@@ -76,8 +82,8 @@ function MyMainTemplate(props) {
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
 
-                <SettingListBtn>
-                    <SettingListText>이용권 목록 </SettingListText>
+                <SettingListBtn onPress={goMyTicketListScreen}>
+                    <SettingListText>이용권 목록</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
 
@@ -95,7 +101,7 @@ function MyMainTemplate(props) {
 
                 <GridLine/>
 
-                <SettingListBtn>
+                <SettingListBtn onPress={goProductScreen}>
                     <SettingListText>주문상품 확인</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>

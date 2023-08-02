@@ -20,8 +20,9 @@ import CenterRegistration from './src/screens/mypage/CenterRegistration';
 import MyBookListScreen from './src/screens/mypage/MyBookListScreen';
 import MyCenterMarkScreen from './src/screens/mypage/MyCenterMarkScreen';
 import MileageScreen from './src/screens/mypage/MileageScreen';
-import FitableQnAScreen from './src/screens/mainpage/FitableQnAScreen';
+import FitableQnAScreen from './src/screens/mypage/FitableQnAScreen';
 import CenterTicketListScreen from './src/screens/mypage/CenterTicketListScreen';
+import MyProductScreen from './src/screens/mypage/MyProductScreen';
 
 
 
@@ -91,14 +92,15 @@ function AppScreens({navigation}) {
             },
             headerBackTitleVisible: false,
         }}>
-        <Stack.Screen name="AppSetting" component={MyAppSettingScreen} />
             <Stack.Screen name="MyProfile" component={MyProfileScreen} />
+            <Stack.Screen name="AppSetting" component={MyAppSettingScreen} />
             <Stack.Screen name="CenterRegist" component={CenterRegistration} options={{headerStyle: {backgroundColor: COLORS.sub,},}}/>
             <Stack.Screen name="MyBookList" component={MyBookListScreen}  />
+            <Stack.Screen name="CenterTicket" component={CenterTicketListScreen}  />
             <Stack.Screen name="MyCenter" component={MyCenterMarkScreen}  />
             <Stack.Screen name="Mileage" component={MileageScreen}  />
+            <Stack.Screen name="Product" component={MyProductScreen}  />
             <Stack.Screen name="FitableQnA" component={FitableQnAScreen}  />
-            <Stack.Screen name="CenterTicket" component={CenterTicketListScreen}  />
             {/* 문의, 상품 문의 이용약관 정책 이용권 목록 */}
         </Stack.Group>
        

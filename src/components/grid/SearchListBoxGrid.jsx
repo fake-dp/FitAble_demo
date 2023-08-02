@@ -2,7 +2,7 @@ import {Image } from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
-function SearchListBoxGrid({searchListData,handleGoDetailCenter}) {
+function SearchListBoxGrid({searchListData,onPress, isSelected}) {
 
     const {id, title, map, tag, srcimg} = searchListData;
     
@@ -10,11 +10,11 @@ function SearchListBoxGrid({searchListData,handleGoDetailCenter}) {
 
     return (
         <TouchableOpacity   
-        onPress={() => handleGoDetailCenter(id)}>
+        onPress={() => onPress(id)}>
             
-        <Container key={id}>
+        <Container key={id} isSelected={isSelected}>
             <ContentsBox>
-            <TitleText>{title}</TitleText>
+            <TitleText isSelected={isSelected}>{title}</TitleText>
             <SubTextContainer>
             <MapIcon
                 source={mapIcon}
@@ -49,14 +49,19 @@ const Container = styled.View`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 37px;
-`
+    border-radius: ${(props) => (props.isSelected ? '15px': '0')};
+    padding:${(props) => (props.isSelected ? '15px 5px': '0')};
+    background-color: ${(props) => (props.isSelected ? COLORS.box : 'transparent')}; 
+    box-shadow: ${(props) => (props.isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.3)' : '0px 0px 0px rgba(0, 0, 0, 0)')}; 
+ 
+` 
 
 const ContentsBox = styled.View`
     /* flex-direction: row; */
 `
 
 const TitleText = styled.Text`
-color: ${COLORS.white};
+color: ${(props) => (props.isSelected ? COLORS.main : COLORS.white)};
 font-size: 20px;
 font-weight: 600;
 line-height: 30px;

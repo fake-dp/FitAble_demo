@@ -32,7 +32,7 @@ function HomeMainTemplate(props) {
         </SubContainer>
  {
     // 센터 등록하기 이용권 없을때
-    userCardData.length === 0 ?
+    userCardData.length !== 0 ?
     <UserTicketNoneCard 
     onPress={goSearchCenterScreen}
     />

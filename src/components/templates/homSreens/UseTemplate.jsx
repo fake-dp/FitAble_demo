@@ -82,6 +82,12 @@ function UseTemplate(props) {
         },
     ]
 
+    const text = {
+        title: '결제 완료',
+        content: '결제되었습니다. 운동을 시작해주세요!',
+        closeText: '닫기',
+        goHomeText: '홈으로 가기',
+    }
 
     return (
         <Container>
@@ -118,6 +124,7 @@ function UseTemplate(props) {
             closeModal={closeModal}
             goHomeScreens={goHomeScreens}
             modalVisible={modalVisible}
+            text={text}
             />
             :   
             null

@@ -188,7 +188,8 @@ function SearchCenterTemplate(props) {
             <View>
             {searchData.map((item) => (
                 <SearchListBoxGrid 
-                handleGoDetailCenter={handleGoDetailCenter}
+                key={item.id}
+                onPress={handleGoDetailCenter}
                 searchListData={item}
                 />
             ))}

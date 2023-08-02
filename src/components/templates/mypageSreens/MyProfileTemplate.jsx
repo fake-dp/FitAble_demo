@@ -19,13 +19,15 @@ function MyProfileTemplate(props) {
                 <Titletext>새로운 비밀번호 입력</Titletext>
                 <InputContainer 
                 placeholder="새로운 비밀번호를 입력해주세요."
-                style={{paddingLeft: 16, fontSize: 14}}
+                placeholderTextColor={COLORS.gray_300}
+                style={{paddingLeft: 16, fontSize: 14,}}
                 />
 
                 <Titletext>새로운 비밀번호 입력 확인</Titletext>
                 <InputContainer 
                 placeholder="새로운 비밀번호를 입력해주세요."
-                style={{paddingLeft: 16, fontSize: 14}}
+                placeholderTextColor={COLORS.gray_300}
+                style={{paddingLeft: 16, fontSize: 14,}}
                 />
             </ProfileContainer>
             
@@ -68,7 +70,9 @@ const InputContainer = styled.TextInput`
     margin-top: 10px;
     margin-bottom: 16px;
     height: 50px;
+    /* color: ${COLORS.gray_400}; */
 `
+
 
 const TextContainer = styled.View`
     margin-top: 14px;

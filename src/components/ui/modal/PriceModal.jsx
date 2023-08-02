@@ -1,8 +1,9 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { Modal, ScrollView,Text, Button} from 'react-native';
+import { Modal } from 'react-native';
 
-function PriceModal({closeModal,goHomeScreens}) {
+function PriceModal({closeModal,goHomeScreens ,text}) {
+    console.log('text',text)
     return (
         <Modal
         // visible={modalVisible}
@@ -12,16 +13,16 @@ function PriceModal({closeModal,goHomeScreens}) {
       >
         <ModalContainer>
             <ModalView>
-                <ModalTitle>결제 완료</ModalTitle>
-                <ModalSubTitle>결제되었습니다. 운동을 시작해주세요!</ModalSubTitle>
+                <ModalTitle>{text.title}</ModalTitle>
+                <ModalSubTitle>{text.content}</ModalSubTitle>
 
         <ButtonContainer>
             <CloseBtn onPress={closeModal}>
-                    <CloseText>닫기</CloseText>
+                    <CloseText>{text.closeText}</CloseText>
             </CloseBtn>
 
             <GohomeBtn onPress={goHomeScreens}>
-                    <GoHomeText>홈으로 가기</GoHomeText>
+                    <GoHomeText>{text.goHomeText}</GoHomeText>
             </GohomeBtn>
         </ButtonContainer>
 
