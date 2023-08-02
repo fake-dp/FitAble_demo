@@ -1,4 +1,4 @@
-import CenterRegistTemplate from "../../components/templates/mypageSreens/CenterRegistTemplate";
+import CenterRegistTemplate from "../../components/templates/mypageScreens/CenterRegistTemplate";
 
 function CenterRegistration(props) {
     return (

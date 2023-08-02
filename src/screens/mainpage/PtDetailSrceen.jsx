@@ -1,5 +1,5 @@
 import React from 'react';
-import DetailPtTemplate from '../../components/templates/homSreens/DetailPtTemplate';
+import DetailPtTemplate from '../../components/templates/homScreens/DetailPtTemplate';
 import { useRoute } from '@react-navigation/native'; 
 function PtDetailSrceen() {
     const route = useRoute();

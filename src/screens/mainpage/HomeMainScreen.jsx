@@ -1,4 +1,4 @@
-import HomeMainTemplate from '../../components/templates/homSreens/HomeMainTemplate';
+import HomeMainTemplate from '../../components/templates/homScreens/HomeMainTemplate';
 import HomeHeader from '../../components/ui/custom/HomeHeader';
 
 function HomeMainScreen({ navigation }) {

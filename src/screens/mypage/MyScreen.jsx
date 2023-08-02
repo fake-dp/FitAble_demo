@@ -1,5 +1,5 @@
 
-import MyMainTemplate from "../../components/templates/mypageSreens/MyMainTemplate";
+import MyMainTemplate from "../../components/templates/mypageScreens/MyMainTemplate";
 
 function MyScreen(props) {
     return (

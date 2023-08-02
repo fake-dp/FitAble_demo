@@ -1,5 +1,5 @@
 import React from 'react';
-import MyAppSettingTemplate from '../../components/templates/mypageSreens/MyAppSettingTemplate';
+import MyAppSettingTemplate from '../../components/templates/mypageScreens/MyAppSettingTemplate';
 
 function MyAppSettingScreen(props) {
     return (

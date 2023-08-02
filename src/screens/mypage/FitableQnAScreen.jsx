@@ -1,4 +1,4 @@
-import FitableQnATemplate from '../../components/templates/mypageSreens/FitableQnATemplate';
+import FitableQnATemplate from '../../components/templates/mypageScreens/FitableQnATemplate';
 
 function FitableQnAScreen(props) {
     return (

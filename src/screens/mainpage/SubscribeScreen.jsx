@@ -1,4 +1,4 @@
-import SubscribeTemplate from '../../components/templates/homSreens/SubscribeTemplate';
+import SubscribeTemplate from '../../components/templates/homScreens/SubscribeTemplate';
 
 function SubscribeScreen(props) {
     return (

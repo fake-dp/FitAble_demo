@@ -1,5 +1,5 @@
 import React from 'react';
-import CenterMarkTemplate from '../../components/templates/mypageSreens/CenterMarkTemplate';
+import CenterMarkTemplate from '../../components/templates/mypageScreens/CenterMarkTemplate';
 
 function MyCenterMarkScreen(props) {
     return (

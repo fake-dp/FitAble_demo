@@ -1,4 +1,4 @@
-import ScanTemplate from "../../components/templates/homSreens/ScanTemplate";
+import ScanTemplate from "../../components/templates/homScreens/ScanTemplate";
 
 function HomeScan() {
     return (

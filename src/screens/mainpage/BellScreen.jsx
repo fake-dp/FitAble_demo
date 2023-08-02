@@ -1,4 +1,4 @@
-import BellTemplate from '../../components/templates/homSreens/BellTemplate';
+import BellTemplate from '../../components/templates/homScreens/BellTemplate';
 
 function BellScreen(props) {
     return (

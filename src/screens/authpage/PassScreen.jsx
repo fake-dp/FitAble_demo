@@ -1,5 +1,5 @@
 
-import AuthPasswordtemplate from '../../components/templates/authSreens/AuthPasswordtemplate';
+import AuthPasswordtemplate from '../../components/templates/authScreens/AuthPasswordtemplate';
 function PassScreen({navigation}) {
     return (
         <AuthPasswordtemplate 

@@ -1,4 +1,4 @@
-import AuthNewPassordtemplate from '../../components/templates/authSreens/AuthNewPassordtemplate';
+import AuthNewPassordtemplate from '../../components/templates/authScreens/AuthNewPassordtemplate';
 
 function AuthNewPassword({navigation}) {
     return (

@@ -1,4 +1,4 @@
-import MyProfileTemplate from '../../components/templates/mypageSreens/MyProfileTemplate';
+import MyProfileTemplate from '../../components/templates/mypageScreens/MyProfileTemplate';
 
 function MyProfileScreen(props) {
     return (

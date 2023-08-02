@@ -1,4 +1,4 @@
-import MileageTemplate from '../../components/templates/mypageSreens/MileageTemplate';
+import MileageTemplate from '../../components/templates/mypageScreens/MileageTemplate';
 
 function MileageScreen(props) {
     return (

@@ -1,4 +1,4 @@
-import CenterTicketListTemplate from '../../components/templates/mypageSreens/CenterTicketListTemplate';
+import CenterTicketListTemplate from '../../components/templates/mypageScreens/CenterTicketListTemplate';
 
 function CenterTicketListScreen(props) {
     return (

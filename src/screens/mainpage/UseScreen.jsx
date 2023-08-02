@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import UseTemplate from '../../components/templates/homSreens/UseTemplate';
+import UseTemplate from '../../components/templates/homScreens/UseTemplate';
 
 function UseScreen(props) {
     return (

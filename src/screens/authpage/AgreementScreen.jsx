@@ -1,4 +1,4 @@
-import Agreementtemplate from '../../components/templates/authSreens/Agreementtemplate';
+import Agreementtemplate from '../../components/templates/authScreens/Agreementtemplate';
 
 function AgreementScreen({navigation}) {
     return (

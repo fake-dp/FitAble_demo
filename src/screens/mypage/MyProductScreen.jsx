@@ -1,4 +1,4 @@
-import MyProductTemplate from '../../components/templates/mypageSreens/MyProductTemplate';
+import MyProductTemplate from '../../components/templates/mypageScreens/MyProductTemplate';
 
 function MyProductScreen(props) {
     return (

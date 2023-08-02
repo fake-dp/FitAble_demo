@@ -1,4 +1,4 @@
-import DetailCenterTemplate from '../../components/templates/homSreens/DetailCenterTemplate';
+import DetailCenterTemplate from '../../components/templates/homScreens/DetailCenterTemplate';
 
 function DetailCenterScreen(props) {
     return (

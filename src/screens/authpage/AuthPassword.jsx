@@ -1,4 +1,4 @@
-import AuthUsePasswordtemplate from '../../components/templates/authSreens/AuthUsePasswordtemplate';
+import AuthUsePasswordtemplate from '../../components/templates/authScreens/AuthUsePasswordtemplate';
 function AuthPassword({navigation}) {
     return (
         <AuthUsePasswordtemplate 

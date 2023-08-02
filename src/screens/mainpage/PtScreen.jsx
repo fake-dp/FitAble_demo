@@ -1,4 +1,4 @@
-import PTpriceTemplate from "../../components/templates/homSreens/PTpriceTemplate";
+import PTpriceTemplate from "../../components/templates/homScreens/PTpriceTemplate";
 function PtScreen(props) {
     return (
        <PTpriceTemplate />

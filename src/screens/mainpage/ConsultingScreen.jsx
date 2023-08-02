@@ -1,4 +1,4 @@
-import ConsultingTemplate from '../../components/templates/homSreens/ConsultingTemplate';
+import ConsultingTemplate from '../../components/templates/homScreens/ConsultingTemplate';
 
 function ConsultingScreen(props) {
     return (

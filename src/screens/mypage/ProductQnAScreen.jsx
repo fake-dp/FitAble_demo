@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductQnATemplate from '../../components/templates/mypageSreens/ProductQnATemplate';
+import ProductQnATemplate from '../../components/templates/mypageScreens/ProductQnATemplate';
 
 function ProductQnAScreen(props) {
     return (

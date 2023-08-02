@@ -1,4 +1,4 @@
-import TermsofUseTemplate from '../../components/templates/mypageSreens/TermsofUseTemplate';
+import TermsofUseTemplate from '../../components/templates/mypageScreens/TermsofUseTemplate';
 
 function TermsofUseScreen(props) {
     return (

@@ -1,4 +1,4 @@
-import SearchCenterTemplate from '../../components/templates/homSreens/SearchCenterTemplate';
+import SearchCenterTemplate from '../../components/templates/homScreens/SearchCenterTemplate';
 
 function SearchCenterScreen() {
    

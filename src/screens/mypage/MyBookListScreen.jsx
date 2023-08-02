@@ -1,4 +1,4 @@
-import MyBookListTemplate from '../../components/templates/mypageSreens/MyBookListTemplate';
+import MyBookListTemplate from '../../components/templates/mypageScreens/MyBookListTemplate';
 
 function MyBookListScreen(props) {
     return (

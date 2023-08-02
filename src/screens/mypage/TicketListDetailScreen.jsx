@@ -1,4 +1,4 @@
-import TicketListDetailTemplate from '../../components/templates/mypageSreens/TicketListDetailTemplate';
+import TicketListDetailTemplate from '../../components/templates/mypageScreens/TicketListDetailTemplate';
 
 function TicketListDetailScreen(props) {
     return (

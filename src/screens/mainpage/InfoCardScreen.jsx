@@ -1,5 +1,5 @@
 
-import InfoCardTemplate from '../../components/templates/homSreens/InfoCardTemplate';
+import InfoCardTemplate from '../../components/templates/homScreens/InfoCardTemplate';
 
 function InfoCardScreen(props) {
     return (
