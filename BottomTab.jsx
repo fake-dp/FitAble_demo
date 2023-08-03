@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainExerciseSreen from './src/screens/exercisepage/MainExerciseSreen';
+import MainExerciseSreen from './src/screens/exercisepage/MainExerciseScreen';
 import StoreScreen from './src/screens/storepage/StoreScreen';
 import MyScreen from './src/screens/mypage/MyScreen';
 import HomeMainScreen from './src/screens/mainpage/HomeMainScreen';

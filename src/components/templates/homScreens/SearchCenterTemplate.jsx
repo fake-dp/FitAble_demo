@@ -7,7 +7,7 @@ import GobackGrid from '../../grid/GobackGrid';
 import React, { useState } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
 
-function SearchCenterTemplate(props) {
+function SearchCenterTemplate({searchCenterText}) {
     const navigation = useNavigation();
     const [isTyping, setIsTyping] = useState(false);
     const [recentList, setRecentList] = useState([
@@ -124,10 +124,10 @@ function SearchCenterTemplate(props) {
     const search = require('../../../assets/img/search.png');
     const close = require('../../../assets/img/close_20.png');
    
-
+    console.log('searchCenterText',searchCenterText)
     return (
         <Container>
-            <GobackGrid onPress={goBackScreens}>이용권 구매</GobackGrid>
+            <GobackGrid onPress={goBackScreens}>{searchCenterText ? searchCenterText:'이용권 구매'}</GobackGrid>
             
             {
                 !isTyping && (
