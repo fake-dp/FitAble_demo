@@ -2,9 +2,9 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useState } from 'react';
 import { TouchableHighlight,Text } from 'react-native';
-function CalenderToggleBtn(props) {
+function CalenderToggleBtn({isActive, setIsActive}) {
 
-    const [isActive, setIsActive] = useState(true);
+    // const [isActive, setIsActive] = useState(true);
 
     const handleToggle = () => {
       setIsActive(!isActive);

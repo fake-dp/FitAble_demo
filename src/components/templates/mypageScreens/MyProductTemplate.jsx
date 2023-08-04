@@ -14,6 +14,10 @@ function MyProductTemplate(props) {
     return (
         <Container>
             <GobackBlackGrid onPress={goBackScreens}>주문상품 확인</GobackBlackGrid>
+            <TestGrid>
+
+            <MyProductText>곧 업데이트 예정입니다.</MyProductText>
+            </TestGrid>
         </Container>
     );
 }
@@ -25,3 +29,18 @@ const Container = styled.View`
   padding: 0 20px;
   background-color: ${COLORS.white};
 `;
+
+
+const TestGrid = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`
+
+
+const MyProductText = styled.Text`
+font-size: 16px;
+color: ${COLORS.sub};
+font-weight: 500;
+line-height: 22.40px;
+`

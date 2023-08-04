@@ -21,7 +21,12 @@ const baseOptions = {
 }
 
 const bottonIconSize = {
-  width: 18,
+  width: 18.75,
+  height: 18.75,
+}
+
+const bottonExIconSize = {
+  width: 24.5,
   height: 18.75,
 }
 
@@ -119,7 +124,7 @@ export function MainTabScreen() {
           <Image
             source={require('./src/assets/img/sports_active.png')}
             style={{ 
-              ...bottonIconSize,
+              ...bottonExIconSize,
               tintColor: focused ? COLORS.white : COLORS.gray_400 }}
           />
         ),

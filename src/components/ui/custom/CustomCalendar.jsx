@@ -3,7 +3,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { View, Text } from "react-native";
 import { COLORS } from '../../../constants/color';
 import { themeStyled } from '../../../constants/calendarTheme';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import ToggleBtn from '../toggle/ToggleBtn';
 import CalenderToggleBtn from '../toggle/CalenderToggleBtn';
 LocaleConfig.locales['ko'] = {
@@ -14,9 +14,15 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
-function CustomCalendar(props) {
+function CustomCalendar() {
   const [selected, setSelected] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
+  const [isActive, setIsActive] = useState(true);
+
+  const handleToggle = () => {
+    setIsActive(!isActive);
+  };
+
 
   useEffect(() => {
     // 현재 날짜 정보를 가져와서 초기 월과 년도 설정
@@ -28,42 +34,18 @@ function CustomCalendar(props) {
     return (
       <Container>
         <TitleText>{currentMonth}</TitleText>
-        <CalenderToggleBtn />
+        <CalenderToggleBtn isActive={isActive} setIsActive={setIsActive}/>
       </Container>
     );
   };
-
-  
-  const renderDay = (day) => {
-    // 현재 월의 날짜가 아니면 빈 셀을 반환
-    const isCurrentMonth = day.month === parseInt(currentMonth.split('.')[1]);
-    if (!isCurrentMonth) {
-      return <View />;
-    }
-    // 현재 월의 날짜라면 기본 렌더링
-    return (
-      <View>
-        <Text>{day.day}</Text>
-        {selected === day.dateString && <Dot />} {/* 선택한 날짜에 점 표시 */}
-      </View>
-    );
-  };
-
-  const Dot = styled.View`
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    background-color: orange;
-    position: absolute;
-    top: 0;
-    right: 0;
-  `;
+ 
 
 
   return (
     <>
 
     <Calendar
+   style={isActive ? { height: 320 } : { height: 150 }}
     onMonthChange={(month) => {
         // month에 현재 월 정보가 들어있음
         setCurrentMonth(`${month.year}.${String(month.month).padStart(2, '0')}`);
@@ -78,7 +60,7 @@ function CustomCalendar(props) {
     renderHeader={renderCustomHeader} // 커스텀 헤더 적용
     enableSwipeMonths={true} // 좌우 스크롤로 월 넘기기
     hideArrows={true} // 화살표 숨기기
-    renderDay={renderDay} // 커스텀 날짜 적용
+    // renderDay={renderDay} // 커스텀 날짜 적용
     />
     </>
   );
