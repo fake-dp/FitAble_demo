@@ -5,3 +5,8 @@ export const isLoginState = atom({
     default: false,
 });
 
+export const phoneState = atom({
+    key: 'phoneState',
+    default: '',
+  });
+  

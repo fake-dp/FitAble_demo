@@ -4,17 +4,21 @@ import {COLORS} from '../../../constants/color'
 import AuthInput from "../../ui/inputUi/AuthInput";
 import MainBtn from "../../ui/buttonUi/MainBtn";
 import React, {useCallback, useRef, useState} from 'react';
-import { useRecoilState } from 'recoil';
-import { isLoginState } from '../../../store/atom';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState,phoneState } from '../../../store/atom';
 
-
-
+import { login } from '../../../api/authApi';
+import { Alert } from 'react-native';
+import { setToken, removeToken, getToken ,setRefreshToken} from '../../../api/tokenUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 function Logintempate({navigation}) {
 
-    const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const setIsLoggedIn = useSetRecoilState(isLoginState);
+    const setMyPhone = useSetRecoilState(phoneState);
+
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    console.log('Logintempate',isLoggedIn)
+    console.log('Logintempate',isLoginState,phoneState)
 
     // 회원가입 페이지 이동
     const toSignUp = useCallback(() => {
@@ -27,26 +31,43 @@ function Logintempate({navigation}) {
         }, [navigation]);
 
 
-    const handleLogin = () => {
-     
-        if (phoneNumber.length > 5  && password.length > 5) {
-            setIsLoggedIn(true);
-            console.log('로그인 성공')
-        }else{
-            console.log('로그인 실패')
-        }
+    const handleLogin = async() => {
+        try {
+            const response = await login(phone, password); // 로그인 함수 호출
+            if (response && response.isUseApp && phone.length > 5  && password.length > 3) {
+              // 로그인 성공 처리
+              setMyPhone(phone);
+              setPhone('');
+              setPassword('');
+
+              await setToken(response.accessToken); // 토큰 저장
+              await setRefreshToken(response.refreshToken); // 리프레시 토큰 저장
+
+                // // 리프레쉬 토큰 토큰 조회
+                const token = await getToken();
+                console.log('token',token);
+                // // 리프레쉬 토큰 조회
+                const refreshToken = await AsyncStorage.getItem('refreshToken');
+                console.log('refreshToken',refreshToken);
+
+              Alert.alert('로그인 성공하였습니다. ', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
+            } else {
+              // 로그인 실패 처리
+              Alert.alert('로그인 실패하였습니다. ', '', [{ text: '확인', onPress: () => removeToken() }]);
+            }
+          } catch (error) {
+            console.error('Error during login:', error);
+          }
     }
 
-    const isInputValid = phoneNumber.length > 5  && password.length > 5;
-
-    console.log('phoneNumber',phoneNumber, 'password',password, 'isInputValid',isInputValid)
+    const isInputValid = phone.length > 5  && password.length > 3;
 
     return (
         <LoginScreenView> 
             <TitleLogo source={require('../../../assets/img/mainLogo.png')}/>
             <AuthInput
-             value={phoneNumber}
-             onChangeText={setPhoneNumber}
+             value={phone}
+             onChangeText={setPhone}
              placeholder="핸드폰 번호"
             />
 
