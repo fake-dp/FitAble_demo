@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import {  ScrollView } from 'react-native';
+import {  Button, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import HomeMainBanner from '../../ui/banner/HomeMainBanner';
@@ -9,6 +9,10 @@ import UserTicketCard from '../../ui/card/UserTicketCard';
 import {userCardData} from '../../../data/UserTicketData'
 import UserTicketNoneCard from '../../ui/card/UserTicketNoneCard';
 import { useNavigation } from '@react-navigation/native';
+import { getHomeBanners } from '../../../api/homeApi';
+import { useState, useEffect } from 'react';
+
+
 
 function HomeMainTemplate(props) {
 
@@ -22,12 +26,33 @@ function HomeMainTemplate(props) {
         navigation.navigate('SearchCenter');
       }
 
+    const [fitablesBanners, setFitablesBanners] = useState([]);
+    const [centersBanners, setCentersBanners] = useState([]);
+    
+    const getUseHomeBanners = async () => {
+        try {
+          const response = await getHomeBanners();
+            setFitablesBanners(response.fitables);
+            setCentersBanners(response.centers);
+        } catch (error) {
+          console.error('Error getting home banners:', error.response.config.headers); // 에러 로깅
+        }
+      };
+
+    //   console.log('Home banners response11111:', fitablesBanners); // 응답 로깅
+    //   console.log('Home banners response22222:', centersBanners); // 응답 로깅
+
+   useEffect(() => {
+        getUseHomeBanners();
+    }, []);
+ 
+
     return (
         <Container>
-        <HomeMainBanner />
-
+        <HomeMainBanner fitablesBanners={fitablesBanners}/>
         <SubContainer>
-        <HomeSubBanner />
+        <HomeSubBanner centersBanners={centersBanners}/>
+
         <TitleText>현재 내 이용권</TitleText>
         </SubContainer>
  {

@@ -6,11 +6,10 @@ import MainBtn from "../../ui/buttonUi/MainBtn";
 import React, {useCallback, useRef, useState} from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState,phoneState } from '../../../store/atom';
-
 import { login } from '../../../api/authApi';
 import { Alert } from 'react-native';
-import { setToken, removeToken, getToken ,setRefreshToken} from '../../../api/tokenUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 function Logintempate({navigation}) {
 
     const setIsLoggedIn = useSetRecoilState(isLoginState);
@@ -18,7 +17,6 @@ function Logintempate({navigation}) {
 
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    console.log('Logintempate',isLoginState,phoneState)
 
     // 회원가입 페이지 이동
     const toSignUp = useCallback(() => {
@@ -35,28 +33,22 @@ function Logintempate({navigation}) {
         try {
             const response = await login(phone, password); // 로그인 함수 호출
             if (response && response.isUseApp && phone.length > 5  && password.length > 3) {
+              const { accessToken, refreshToken } = response;
+              await AsyncStorage.setItem("accessToken", accessToken);
+              await AsyncStorage.setItem("refreshToken", refreshToken);
               // 로그인 성공 처리
               setMyPhone(phone);
               setPhone('');
               setPassword('');
 
-              await setToken(response.accessToken); // 토큰 저장
-              await setRefreshToken(response.refreshToken); // 리프레시 토큰 저장
-
-                // // 리프레쉬 토큰 토큰 조회
-                const token = await getToken();
-                console.log('token',token);
-                // // 리프레쉬 토큰 조회
-                const refreshToken = await AsyncStorage.getItem('refreshToken');
-                console.log('refreshToken',refreshToken);
-
               Alert.alert('로그인 성공하였습니다. ', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
             } else {
               // 로그인 실패 처리
-              Alert.alert('로그인 실패하였습니다. ', '', [{ text: '확인', onPress: () => removeToken() }]);
+              Alert.alert('로그인 실패하였습니다. ', '', [{ text: '확인', onPress: () => console.log('실패') }]);
             }
           } catch (error) {
             console.error('Error during login:', error);
+        Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패')  }]);
           }
     }
 

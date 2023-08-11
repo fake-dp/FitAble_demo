@@ -7,7 +7,7 @@ import AppScreens from './AppScreens';
 function AppInner() {
 const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
 const [myPhone, setMyPhone] = useRecoilState(phoneState);
-console.log('AppInner',isLoggedIn,myPhone);
+// console.log('AppInner',isLoggedIn,myPhone);
 
   return (
     <NavigationContainer>

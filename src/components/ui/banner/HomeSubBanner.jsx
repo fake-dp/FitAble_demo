@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { styled } from "styled-components";
 import { COLORS } from "../../../constants/color";
-function HomeSubBanner(props) {
+function HomeSubBanner({centersBanners}) {
     
     const bannerLogo = require("../../../assets/img/bannerLogo.png");
 

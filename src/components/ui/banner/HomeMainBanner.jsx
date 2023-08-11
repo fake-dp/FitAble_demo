@@ -3,30 +3,27 @@ import { View, ScrollView, Image, Dimensions, TouchableOpacity,Text } from 'reac
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 
-function HomeMainBanner(props) {
+function HomeMainBanner({fitablesBanners}) {
     const scrollViewRef = useRef(null);
     const [activeButtonIndex, setActiveButtonIndex] = useState(0); // 상태 값 추가
   
-    const bannerImages = [
-        { id: 1, image: require('../../../assets/img/test1.png') },
-        { id: 2, image: require('../../../assets/img/test1.png') },
-        { id: 3, image: require('../../../assets/img/test1.png') },
-        { id: 4, image: require('../../../assets/img/test1.png') },
-      ];
 
-      // useEffect(() => {
-      //   const interval = setInterval(() => {
-      //     const nextIndex = (activeButtonIndex + 1) % bannerImages.length;
-      //     setActiveButtonIndex(nextIndex);
-      //     if (scrollViewRef.current) {
-      //       scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
-      //     }
-      //   }, 2000);
+
+      console.log('Home banners response11111:', fitablesBanners); // 응답 로깅
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
+          setActiveButtonIndex(nextIndex);
+          if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
+          }
+        }, 2000);
     
-      //   return () => {
-      //     clearInterval(interval);
-      //   };
-      // }, [activeButtonIndex]);
+        return () => {
+          clearInterval(interval);
+        };
+      }, [activeButtonIndex]);
 
 
       const handleScrollToIndex = (index) => {
@@ -36,7 +33,7 @@ function HomeMainBanner(props) {
         setActiveButtonIndex(index);
       };
 
-      const gymIcon = require('../../../assets/img/gymIcon.png');
+      // const gymIcon = require('../../../assets/img/gymIcon.png');
 
     return (
         <BannerContainer>
@@ -46,18 +43,18 @@ function HomeMainBanner(props) {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={(event) => {
-            const pageIndex = Math.floor(event.nativeEvent.contentOffset.x / Dimensions.get('window').width);
-            console.log('Current Page Index:', pageIndex);
+          const pageIndex = Math.floor(event.nativeEvent.contentOffset.x / Dimensions.get('window').width);
+            // console.log('Current Page Index:', pageIndex);
           }}
         >
-          {bannerImages.map((banner) => (
+          {fitablesBanners.map((banner) => (
             <BannerImageContainer key={banner.id}>
-              <BannerImage source={banner.image} resizeMode="cover" />
+              <BannerImage source={{uri:banner.imageUrl}} resizeMode="cover" />
               <BannerMainContainer>
-              <Image source={gymIcon} />
-              <BannerMainText>{' '}{' '}에이블짐 39호점</BannerMainText>
+              {/* <Image source={gymIcon} /> */}
+              {/* <BannerMainText>{' '}{' '}에이블짐 39호점</BannerMainText> */}
               </BannerMainContainer>
-              <BannerSubText>강남역점 오픈</BannerSubText>
+              {/* <BannerSubText>강남역점 오픈</BannerSubText> */}
             </BannerImageContainer>
           ))}
             
@@ -65,7 +62,7 @@ function HomeMainBanner(props) {
   
         <ButtonBar>
    
-          {bannerImages.map((_, index) => (
+          {fitablesBanners.map((_, index) => (
             <Button key={index} onPress={() => handleScrollToIndex(index)}
             active={index === activeButtonIndex}
             >
@@ -95,6 +92,7 @@ const BannerImageContainer = styled.View`
 
 const BannerImage = styled.Image`
   width: 100%;
+  height: 100%;
 `;
 
 const ButtonBar = styled.View`

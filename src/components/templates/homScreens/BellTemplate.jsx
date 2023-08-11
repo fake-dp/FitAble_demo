@@ -5,10 +5,9 @@ import { FlatList } from 'react-native';
 import BellList from '../../ui/list/BellList';
 
 
-
 function BellTemplate(props) {
 
-    console.log(bellList)
+    // console.log(bellList)
 
     return (
         <Container>
