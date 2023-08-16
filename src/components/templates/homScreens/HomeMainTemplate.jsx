@@ -29,6 +29,8 @@ function HomeMainTemplate(props) {
     const [fitablesBanners, setFitablesBanners] = useState([]);
     const [centersBanners, setCentersBanners] = useState([]);
     
+      const data=[]
+
     const getUseHomeBanners = async () => {
         try {
           const response = await getHomeBanners();
@@ -39,9 +41,6 @@ function HomeMainTemplate(props) {
         }
       };
 
-    //   console.log('Home banners response11111:', fitablesBanners); // 응답 로깅
-    //   console.log('Home banners response22222:', centersBanners); // 응답 로깅
-
    useEffect(() => {
         getUseHomeBanners();
     }, []);
@@ -51,7 +50,7 @@ function HomeMainTemplate(props) {
         <Container>
         <HomeMainBanner fitablesBanners={fitablesBanners}/>
         <SubContainer>
-        <HomeSubBanner centersBanners={centersBanners}/>
+        <HomeSubBanner centersBanners={fitablesBanners}/>
 
         <TitleText>현재 내 이용권</TitleText>
         </SubContainer>
@@ -102,5 +101,5 @@ font-size: 20px;
 font-weight: 700;
 line-height: 30px;
 color: ${COLORS.white};
-margin-top: 30px;
+margin-top: 12px;
 `

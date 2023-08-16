@@ -26,6 +26,7 @@ import MyProductScreen from './src/screens/mypage/MyProductScreen';
 import TermsofUseScreen from './src/screens/mypage/TermsofUseScreen';
 import ProductQnAScreen from './src/screens/mypage/ProductQnAScreen';
 import TicketListDetailScreen from './src/screens/mypage/TicketListDetailScreen';
+import WebViewScreen from './src/screens/mainpage/WebViewScreen';
 
 
 
@@ -56,7 +57,8 @@ function AppScreens({navigation}) {
               title: '',
               headerBackVisible: false,
           }}>
-
+            {/* 여기다 웹뷰 스크린 넣어요 ? */}
+          <Stack.Screen name="BannerWebView" component={WebViewScreen} />
           <Stack.Screen name="Scan" component={HomeScan} options={{title: '알람',headerBackVisible:true,}}/>
           <Stack.Screen name="Bell" component={BellScreen} options={{title: '알람',headerBackVisible:true,}}/>
           <Stack.Screen name="SearchCenter" component={SearchCenterScreen}/>

@@ -2,16 +2,21 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, ScrollView, Image, Dimensions, TouchableOpacity,Text } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
+import { useNavigation } from '@react-navigation/native';
 
 function HomeMainBanner({fitablesBanners}) {
+
+    const navigation = useNavigation();
     const scrollViewRef = useRef(null);
     const [activeButtonIndex, setActiveButtonIndex] = useState(0); // 상태 값 추가
-  
 
 
-      console.log('Home banners response11111:', fitablesBanners); // 응답 로깅
+
+
+      // console.log('Home banners response11111:', fitablesBanners); // 응답 로깅
 
       useEffect(() => {
+        if (fitablesBanners && fitablesBanners.length > 0) {
         const interval = setInterval(() => {
           const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
           setActiveButtonIndex(nextIndex);
@@ -23,17 +28,39 @@ function HomeMainBanner({fitablesBanners}) {
         return () => {
           clearInterval(interval);
         };
-      }, [activeButtonIndex]);
+      }
+      }, [activeButtonIndex,fitablesBanners]);
 
 
       const handleScrollToIndex = (index) => {
         if (scrollViewRef.current) {
           scrollViewRef.current.scrollTo({ x: index * Dimensions.get('window').width, animated: true });
         }
+        console.log('Scrolling to index:', index);
         setActiveButtonIndex(index);
       };
 
       // const gymIcon = require('../../../assets/img/gymIcon.png');
+
+      const handleBannerPress = (banner) => {
+        console.log('Banner Pressed',banner.id);
+        switch (banner.pathType) {
+          case 'LINK':
+          case 'NOTICE_DETAIL':
+            // 웹뷰를 사용하여 해당 URL 열기
+            navigation.navigate('BannerWebView', { uri: banner.path });
+            break;
+          case 'STORE':
+          case 'STORE_DETAIL':
+            // 일반 네비게이션을 통해 해당 페이지로 이동
+            // navigation.navigate('StoreScreen', { storeId: banner.path });
+            break;
+          default:
+            console.warn('Unknown pathType:', banner.pathType);
+            break;
+        }
+      };
+
 
     return (
         <BannerContainer>
@@ -44,18 +71,25 @@ function HomeMainBanner({fitablesBanners}) {
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={(event) => {
           const pageIndex = Math.floor(event.nativeEvent.contentOffset.x / Dimensions.get('window').width);
-            // console.log('Current Page Index:', pageIndex);
+          setActiveButtonIndex(pageIndex); // 상태 업데이트
           }}
         >
           {fitablesBanners.map((banner) => (
-            <BannerImageContainer key={banner.id}>
+            <TouchableOpacity key={banner.id} onPress={() => handleBannerPress(banner)}>
+
+            <BannerImageContainer>
               <BannerImage source={{uri:banner.imageUrl}} resizeMode="cover" />
+              
+              
               <BannerMainContainer>
               {/* <Image source={gymIcon} /> */}
               {/* <BannerMainText>{' '}{' '}에이블짐 39호점</BannerMainText> */}
               </BannerMainContainer>
               {/* <BannerSubText>강남역점 오픈</BannerSubText> */}
             </BannerImageContainer>
+
+
+            </TouchableOpacity>
           ))}
             
         </ScrollView>
