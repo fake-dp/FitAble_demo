@@ -1,12 +1,12 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function FacilitiesGrid(props) {
+function FacilitiesGrid({facilities}) {
     return (
         <Container>
         <ContainerLine/>
         <MainTitleText>편의시설</MainTitleText>
-        <MainSubText>운동복, 수건, 락커, 샤워실, Wi-Fi, 체성분 검사</MainSubText>
+        <MainSubText>{facilities}</MainSubText>
     </Container>
     );
 }
@@ -23,7 +23,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
 `
 

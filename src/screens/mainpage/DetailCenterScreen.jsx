@@ -1,8 +1,8 @@
 import DetailCenterTemplate from '../../components/templates/homScreens/DetailCenterTemplate';
 
-function DetailCenterScreen(props) {
+function DetailCenterScreen({ route }) {
     return (
-        <DetailCenterTemplate />
+        <DetailCenterTemplate route={route}/>
     );
 }
 

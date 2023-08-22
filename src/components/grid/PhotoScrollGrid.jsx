@@ -2,8 +2,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { ScrollView } from 'react-native';
 
-function PhotoScrollGrid(props) {
-
+function PhotoScrollGrid({images}) {
     const photo_one = require('../../assets/img/listtest_one.png');
     const photo_two = require('../../assets/img/listtest_two.png');
     const photo_three = require('../../assets/img/listtest_three.png');
@@ -20,14 +19,19 @@ function PhotoScrollGrid(props) {
                overScrollMode="never"
             >
             <PhotoScrollContainer>
-                <PhotoScrollImg source={photo_one}/>
+                {/* <PhotoScrollImg source={photo_one}/>
                 <PhotoScrollImg source={photo_two}/>
                 <PhotoScrollImg source={photo_three}/>
                 <PhotoScrollImg source={photo_four}/>
                 <PhotoScrollImg source={photo_one}/>
                 <PhotoScrollImg source={photo_two}/>
                 <PhotoScrollImg source={photo_three}/>
-                <PhotoScrollImg source={photo_four}/>
+                <PhotoScrollImg source={photo_four}/> */}
+                {
+                    images.map((image, index) => (
+                        <PhotoScrollImg key={index} source={{uri:image}}/>
+                    ))
+                }
             </PhotoScrollContainer>
             </ScrollView>
         </Container>
@@ -43,7 +47,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
 `
 

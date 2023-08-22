@@ -1,7 +1,7 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function ShopTagGrid(props) {
+function ShopTagGrid({tags}) {
     const shopTagData = [
         '#강남헬스',
         '#PT',
@@ -16,10 +16,10 @@ function ShopTagGrid(props) {
     return (
         <Container>
             <ShopTagItemContainer>
-                {shopTagData.map((item, index) => {
+                {tags.map((item, index) => {
                     return (
                         <ShopTagItem key={index}>
-                            <ShopTagText>{item}</ShopTagText>
+                            <ShopTagText>#{item}</ShopTagText>
                         </ShopTagItem>
                     );
                 })}

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
 import React, { useState } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
-
+import { getSearchCenter } from '../../../api/homeApi';
 function SearchCenterTemplate({searchCenterText}) {
     const navigation = useNavigation();
     const [isTyping, setIsTyping] = useState(false);
@@ -105,26 +105,47 @@ function SearchCenterTemplate({searchCenterText}) {
         setRecentList(updatedRecentSearchData);
       };
 
-      const handleSearch = (text) => {
-        // 검색어를 받아와서 searchList를 필터링하여 맞는 결과만 보여주는 함수
-        const filteredList = searchList.filter(
-          (item) =>
-            item.title.includes(text) || // 타이틀에서 검색어가 포함된 경우
-            item.tag.some((tag) => tag.includes(text)) // 태그 중에서 검색어가 포함된 경우
-        );
-        setSearchData(filteredList); // 필터링된 결과를 recentList로 설정하여 화면에 보여줌
+    //   const handleSearch = (text) => {
+    //     // 검색어를 받아와서 searchList를 필터링하여 맞는 결과만 보여주는 함수
+    //     const filteredList = searchList.filter(
+    //       (item) =>
+    //         item.title.includes(text) || // 타이틀에서 검색어가 포함된 경우
+    //         item.tag.some((tag) => tag.includes(text)) // 태그 중에서 검색어가 포함된 경우
+    //     );
+    //     setSearchData(filteredList); // 필터링된 결과를 recentList로 설정하여 화면에 보여줌
+    //   };
+    const handleSearch = async (text) => {
+        try {
+          // 서버로부터 검색 결과 받아오기
+          const response = await getSearchCenter(text);
+          // 서버로부터 받아온 데이터를 컴포넌트에서 사용할 수 있는 형태로 변환
+          const filteredList = response.content.map((item) => ({
+            id: item.id,
+            name: item.name,
+            address: item.address,
+            mainImage: item.mainImage,
+            programs: item.programs,
+          }));
+      
+          // 변환된 결과를 searchData로 설정하여 화면에 보여줌
+          setSearchData(filteredList);
+        } catch (error) {
+          console.error("Error fetching search results:", error);
+          // 적절한 에러 처리 로직
+        }
       };
+      
 
 
       const handleGoDetailCenter = (id) => {
-        console.log('id', id)
-        navigation.navigate('DetailCenter')
+        // console.log('id', id)
+        navigation.navigate('DetailCenter', { id });
     }
 
     const search = require('../../../assets/img/search.png');
     const close = require('../../../assets/img/close_20.png');
    
-    console.log('searchCenterText',searchCenterText)
+    // console.log('searchCenterText',searchCenterText)
     return (
         <Container>
             <GobackGrid onPress={goBackScreens}>{searchCenterText ? searchCenterText:'이용권 구매'}</GobackGrid>
@@ -148,6 +169,8 @@ function SearchCenterTemplate({searchCenterText}) {
             onFocus={handleTextInputFocus}
             onBlur={handleTextInputBlur}
             onChangeText={handleSearch} 
+            // onSubmitEditing={handleSearch}
+            returnKeyType="done"
             />
             </SearchContainer>
 

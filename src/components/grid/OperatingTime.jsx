@@ -2,12 +2,13 @@ import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function OperatingTime(props) {
+function OperatingTime({operationTimes}) {
     return (
         <Container>
             <ContainerLine />
             <MainTitleText>운영 시간</MainTitleText>
-            <TextContainer>
+
+            {/* <TextContainer>
                 <DateText>평일</DateText>
                 <DateText>오전 10시 ~ 오후 10시</DateText>
             </TextContainer>
@@ -18,7 +19,16 @@ function OperatingTime(props) {
             <TextContainer>
                 <DateText>휴관일</DateText>
                 <DateText>일요일 및 공휴일</DateText>
-            </TextContainer>
+            </TextContainer> */}
+            {
+                operationTimes.map((item, index) => {
+                    return (
+                        <TextContainer key={index}>
+                            <DateText>{item.time}</DateText>
+                            <DateText>{item.description}</DateText>
+                        </TextContainer>
+                    )})
+            }
         </Container>
     );
 }
@@ -33,7 +43,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
 `
 

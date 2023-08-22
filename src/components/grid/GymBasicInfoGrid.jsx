@@ -3,22 +3,30 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import ConsultBtn from '../ui/buttonUi/ConsultBtn';
 
-function GymBasicInfoGrid({onPress}) {
-
+function GymBasicInfoGrid({onPress,address,phone,name}) {
+    
     const phoneIcon = require('../../assets/img/phone.png');
     const mapIcon = require('../../assets/img/map.png');
 
     return (
         <Container>
-            <MainTitleText>에이블짐 노원본점</MainTitleText>
-            <SubTextContainer>
-                <Image source={mapIcon}/>
-                <SubText>서울 노원구 상계로 77 다나프라자 B1F</SubText>
-            </SubTextContainer>
-            <SubTextContainer>
-                <Image source={phoneIcon}/>
-                <SubText>0507-1342-0491</SubText>
-            </SubTextContainer>
+            <MainTitleText>{name}</MainTitleText>
+            {
+                address && (
+                <SubTextContainer>
+                    <Image source={mapIcon}/>
+                    <SubText>{address}</SubText>
+                </SubTextContainer>
+                )
+            }
+            {
+                phone && (
+                <SubTextContainer>
+                    <Image source={phoneIcon}/>
+                    <SubText>{phone}</SubText>
+                </SubTextContainer>
+                )
+            }
 
             <ConsultBtn 
             onPress={onPress}
@@ -46,7 +54,7 @@ const MainTitleText = styled.Text`
 
 const SubTextContainer = styled.View`
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
 `
 
 const SubText = styled.Text`

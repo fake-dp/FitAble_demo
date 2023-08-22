@@ -10,3 +10,29 @@ export const phoneState = atom({
     default: '',
   });
   
+
+export const detailCenterState = atom({
+    key: 'detailCenterState',
+    default: {
+      address: "",
+      description: "",
+      facilities: "",
+      id: "",
+      images: [],
+  links: {
+    blog: "",
+    homepage: "",
+    instagram: "",
+    kakao: "",
+  },
+  mainImage: "",
+  name: "",
+  operationTimes: [],
+  phone: "",
+  programs: "",
+  pt: false,
+  subscription: false,
+  tags: [],
+  ticket: false,
+    },
+});

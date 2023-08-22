@@ -2,11 +2,11 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { Text, View } from 'react-native';
 
-function LongTextGrid(props) {
+function LongTextGrid({description}) {
     return (
         <Container>
             <LongText>
-            노원 최대 규모의 피트니스짐 에이블짐은 매일 고객님들이 
+            {/* 노원 최대 규모의 피트니스짐 에이블짐은 매일 고객님들이 
             즐겁게 운동하실 수 있도록 청결을 유지하고 있으며 최신 기구들이 준비되어있습니다. 에이블짐에서 몸과 마음을 건강하게 만들 수 
             있도록 저희가 노력하겠습니다.
 
@@ -18,7 +18,8 @@ function LongTextGrid(props) {
             노원 최대 규모의 피트니스짐 에이블짐은 매일 고객님들이
             즐겁게 운동하실 수 있도록 청결을 유지하고 있으며 최신 
             기구들이 준비되어있습니다. 에이블짐에서 몸과 마음을 
-               건강하게 만들 수 있도록 저희가 노력하겠습니다.
+               건강하게 만들 수 있도록 저희가 노력하겠습니다. */}
+            {description}
             </LongText>
         </Container>
     );

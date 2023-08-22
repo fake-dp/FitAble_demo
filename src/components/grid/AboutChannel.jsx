@@ -48,7 +48,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
 `
 

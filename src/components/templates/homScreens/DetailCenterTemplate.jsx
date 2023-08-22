@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import GymBasicInfoGrid from '../../grid/GymBasicInfoGrid';
 import ThreeBtnGrid from '../../grid/ThreeBtnGrid';
 import OperatingProgram from '../../grid/OperatingProgram';
-import OperaintgTime from '../../grid/OperatingTime';
+import OperatingTime from '../../grid/OperatingTime';
 import FacilitiesGrid from '../../grid/FacilitiesGrid';
 import PhotoScrollGrid from '../../grid/PhotoScrollGrid';
 
@@ -14,17 +14,25 @@ import AboutChannel from '../../grid/AboutChannel';
 import LongTextGrid from '../../grid/LongTextGrid';
 import ShopTagGrid from '../../grid/ShopTagGrid';
 
-import { useState ,useRef} from 'react';
+import { useState ,useRef, useEffect} from 'react';
 import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
 import MonthTicketGrid from '../../grid/MonthTicketGrid';
 import PtUserListGrid from '../../grid/PtUserListGrid';
+import { getDetailSearchCenter } from '../../../api/homeApi';
 
-function DetailCenterTemplate(props) {
+import { useRecoilState } from 'recoil';
+import { detailCenterState } from '../../../store/atom';
+
+function DetailCenterTemplate({ route }) {
+    const { id } = route.params;
     const scrollViewRef = useRef(null);
     const [btnName, setBtnName] = useState('');
     const [selectedCard, setSelectedCard] = useState(0);
     const [selectedMonthCard, setSelectedMonthCard] = useState(0);
     const [activeButton, setActiveButton] = useState('');
+
+    const [detailData, setDetailData] = useRecoilState(detailCenterState);
+
     const handleBtnPress = (name) => {
         setBtnName(name);
     };
@@ -63,6 +71,24 @@ function DetailCenterTemplate(props) {
       console.log('id', id)
       navigation.navigate('PtDetail', {id: id})
   }
+
+
+      const getDetailCenterData = async (id) => {
+        try {
+          console.log('id', id)
+          const response = await getDetailSearchCenter(id);
+          setDetailData(response);
+        } catch (error) {
+          console.error("Error fetching search", error);
+          // 적절한 에러 처리 로직
+        }
+      };
+    
+      console.log('detailData',detailData)
+      
+      useEffect(() => {
+        getDetailCenterData(id)
+      }, []);
 
     const testImg = require('../../../assets/img/detailTest.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
@@ -109,6 +135,7 @@ function DetailCenterTemplate(props) {
             price: '5,000,000',
         }
     ]
+console.log('detailData',detailData.links)
 
     return (
         <Container>
@@ -119,22 +146,36 @@ function DetailCenterTemplate(props) {
               showsVerticalScrollIndicator={false}
               overScrollMode="never"
             >
-            <TestImg source={testImg}/>
+            <MainImg source={{uri:detailData.mainImage}}
+            resizeMode="cover"
+            />
             <GobackTouchable onPress={goBackScreens}>
             <Image source={backArrow}/>
             </GobackTouchable>
 
             <GymBasicInfoGrid 
             onPress={goConsultingScreens}
+            name={detailData.name}
+            address={detailData.address}
+            phone={detailData.phone}
             />
 
-        <ThreeBtnGrid
-          onPressSubscribe={() => handleBtnPress('Subscribe')}
-          onPressPT={() => handleBtnPress('PT')}
-          onPressUse={() => handleBtnPress('Use')}
-          setActiveButton={setActiveButton}
-            activeButton={activeButton}
-        />
+       {
+            detailData.subscription && detailData.pt && detailData.ticket (
+              <ThreeBtnGrid
+              onPressSubscribe={() => handleBtnPress('Subscribe')}
+              onPressPT={() => handleBtnPress('PT')}
+              onPressUse={() => handleBtnPress('Use')}
+              setActiveButton={setActiveButton}
+              activeButton={activeButton}
+              subscription={detailData.subscription}
+              pt={detailData.pt}
+              ticket={detailData.ticket}
+            />
+            )
+       }
+
+
         {btnName === 'Subscribe' && (
           <BasicNpremiumCardGrid 
           ticketData={ticketData} 
@@ -158,14 +199,23 @@ function DetailCenterTemplate(props) {
         )}
 
         {btnName !== 'PT' && (
-            <>
-            <LongTextGrid />
-            <ShopTagGrid />
-            <OperatingProgram />
-            <OperaintgTime />
-            <FacilitiesGrid />
-            <PhotoScrollGrid />
-            <AboutChannel />
+        
+        <>
+        {detailData.description && (<LongTextGrid description={detailData.description} />)}
+        {detailData.tags?.length > 0 && (<ShopTagGrid tags={detailData.tags}/>)}
+        {detailData.programs?.length > 0 && (<OperatingProgram programs={detailData.programs}/>)}
+        {detailData.operationTimes?.length > 0 && (<OperatingTime operationTimes={detailData.operationTimes}/>)}
+        {detailData.facilities?.length > 0 && (<FacilitiesGrid facilities={detailData.facilities}/>)}
+        {detailData.images?.length > 0 && (<PhotoScrollGrid images={detailData.images}/>)}
+           {
+             detailData.links?.homepage && detailData.links?.instagram && detailData.links?.kakao && detailData.links?.blog && (   
+             <AboutChannel
+             homepage={detailData.links?.homepage}
+             instagram={detailData.links?.instagram}
+             kakao={detailData.links?.kakao}
+             blog={detailData.links?.blog}
+             />)
+           }
             </>
         )}            
 
@@ -209,8 +259,9 @@ const Container = styled.View`
 `
 
 
-const TestImg = styled.Image`
+const MainImg = styled.Image`
     width: 100%;
+    height: 310px;
 `
 
 const GobackTouchable = styled.TouchableOpacity`

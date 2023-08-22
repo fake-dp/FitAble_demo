@@ -3,17 +3,19 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
 function ThreeBtnGrid(props) {
-  const { onPressSubscribe, onPressPT, onPressUse ,setActiveButton, activeButton} = props;
+  const { onPressSubscribe, onPressPT, onPressUse ,setActiveButton, activeButton, subscription,pt,ticket} = props;
 
   const handleButtonPress = (name) => {
     setActiveButton(name);
   };
-
+// console.log(subscription,pt,ticket)
   return (
     <Container>
       <ContainerLine />
       <ThreeBtnContainer>
-        <ThreeBtn
+        {
+          subscription && (
+            <ThreeBtn
           active={activeButton === 'Subscribe'}
           onPress={() => {
             handleButtonPress('Subscribe');
@@ -22,24 +24,37 @@ function ThreeBtnGrid(props) {
         >
           <ThreeBtnText active={activeButton === 'Subscribe'}>구독</ThreeBtnText>
         </ThreeBtn>
-        <ThreeBtn
-          active={activeButton === 'PT'}
-          onPress={() => {
-            handleButtonPress('PT');
-            onPressPT();
-          }}
-        >
-          <ThreeBtnText active={activeButton === 'PT'}>P.T</ThreeBtnText>
-        </ThreeBtn>
-        <ThreeBtn
-          active={activeButton === 'Use'}
-          onPress={() => {
-            handleButtonPress('Use');
-            onPressUse();
-          }}
-        >
-          <ThreeBtnText active={activeButton === 'Use'}>이용</ThreeBtnText>
-        </ThreeBtn>
+          )
+        }
+       {
+          pt && (
+            <ThreeBtn
+            active={activeButton === 'PT'}
+            onPress={() => {
+              handleButtonPress('PT');
+              onPressPT();
+            }}
+          >
+            <ThreeBtnText active={activeButton === 'PT'}>P.T</ThreeBtnText>
+          </ThreeBtn>
+          )
+       }
+
+        
+        {
+          ticket && (
+            <ThreeBtn
+            active={activeButton === 'Use'}
+            onPress={() => {
+              handleButtonPress('Use');
+              onPressUse();
+            }}
+          >
+            <ThreeBtnText active={activeButton === 'Use'}>이용</ThreeBtnText>
+          </ThreeBtn>
+          )
+        }
+
       </ThreeBtnContainer>
     </Container>
   );
@@ -54,7 +69,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
   border-top-width: 1px;
-  border-top-color: ${COLORS.white};
+  border-top-color: ${COLORS.gray_500};
   padding: 0 20px;
 `;
 

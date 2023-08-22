@@ -3,12 +3,12 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
 
-function OperatingProgram(props) {
+function OperatingProgram({programs}) {
     return (
         <Container>
             <ContainerLine/>
             <MainTitleText>운영 프로그램</MainTitleText>
-            <MainSubText>헬스, 퍼스널트레이닝, 필라테스, 요가</MainSubText>
+            <MainSubText>{programs}</MainSubText>
         </Container>
     );
 }
@@ -23,7 +23,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
 `
 

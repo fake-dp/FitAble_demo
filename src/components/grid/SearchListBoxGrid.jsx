@@ -4,8 +4,8 @@ import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
 function SearchListBoxGrid({searchListData,onPress, isSelected}) {
 
-    const {id, title, map, tag, srcimg} = searchListData;
-    
+    const {id, name, address, programs, mainImage} = searchListData;
+
     const mapIcon = require('../../assets/img/map.png');
 
     return (
@@ -14,17 +14,17 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
             
         <Container key={id} isSelected={isSelected}>
             <ContentsBox>
-            <TitleText isSelected={isSelected}>{title}</TitleText>
+            <TitleText isSelected={isSelected}>{name}</TitleText>
             <SubTextContainer>
             <MapIcon
                 source={mapIcon}
                 />
-            <MapText>{map}</MapText>
-                </SubTextContainer>
+            <MapText>{address}</MapText>
+            </SubTextContainer>
             
             <TagContainer>
                 {
-                    tag.map((item, index) => {
+                    programs?.map((item, index) => {
                         return (<TagBox
                             key={index}
                         ><TagText key={index}>{item}</TagText></TagBox>)
@@ -34,9 +34,15 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
             </TagContainer>
             </ContentsBox>
 
-            <Image
-                source={srcimg}
-            />
+           {
+            mainImage ? (
+                <MainSpotImage
+                // source={{uri:mainImage}} 
+                source={{ uri: mainImage }}
+                resizeMode="cover" 
+                />
+                ): null
+           }
         </Container>
         </TouchableOpacity>
     );
@@ -58,6 +64,7 @@ const Container = styled.View`
 
 const ContentsBox = styled.View`
     /* flex-direction: row; */
+    width: 50%;
 `
 
 const TitleText = styled.Text`
@@ -69,7 +76,7 @@ line-height: 30px;
 
 const SubTextContainer = styled.View`
 flex-direction: row;
-align-items: center;
+/* align-items: center; */
 margin-top: 8px;
 `
 
@@ -77,6 +84,7 @@ const MapIcon = styled.Image`
 width: 15px;
 height: 15px;
 margin-right: 4px;
+margin-top: 2px;
 `
 
 const MapText = styled.Text`
@@ -89,6 +97,7 @@ line-height: 19.20px;
 const TagContainer = styled.View`
 flex-direction: row;
 flex-wrap: wrap;
+width: 182px;
 margin-top: 23px;
 `
 
@@ -97,11 +106,17 @@ padding: 3px 7px;
 border : 1px solid ${COLORS.gray_200};
 border-radius: 50px;
 margin-right: 4px;
-
+margin-bottom: 4px;
 `
 
 const TagText = styled.Text`
 font-size: 12px;
 color: ${COLORS.gray_200};
 font-weight: 400;
+`
+
+const MainSpotImage = styled.Image`
+width: 130px;
+height: 106px;
+border-radius: 15px;
 `

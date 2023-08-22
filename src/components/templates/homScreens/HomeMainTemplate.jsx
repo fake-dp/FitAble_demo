@@ -29,7 +29,6 @@ function HomeMainTemplate(props) {
     const [fitablesBanners, setFitablesBanners] = useState([]);
     const [centersBanners, setCentersBanners] = useState([]);
     
-      const data=[]
 
     const getUseHomeBanners = async () => {
         try {
@@ -101,5 +100,5 @@ font-size: 20px;
 font-weight: 700;
 line-height: 30px;
 color: ${COLORS.white};
-margin-top: 12px;
+margin-top: 20px;
 `
