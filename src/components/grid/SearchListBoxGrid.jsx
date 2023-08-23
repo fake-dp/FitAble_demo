@@ -7,7 +7,7 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
     const {id, name, address, programs, mainImage} = searchListData;
 
     const mapIcon = require('../../assets/img/map.png');
-
+    const testSearchimg = require('../../assets/img/searchlist_1.png');
     return (
         <TouchableOpacity   
         onPress={() => onPress(id)}>
@@ -41,7 +41,12 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
                 source={{ uri: mainImage }}
                 resizeMode="cover" 
                 />
-                ): null
+                ): (
+                <MainSpotImage
+                source={testSearchimg}
+                resizeMode="cover"
+                />
+                )
            }
         </Container>
         </TouchableOpacity>
@@ -97,7 +102,7 @@ line-height: 19.20px;
 const TagContainer = styled.View`
 flex-direction: row;
 flex-wrap: wrap;
-width: 182px;
+width: 184px;
 margin-top: 23px;
 `
 

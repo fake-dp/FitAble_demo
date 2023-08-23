@@ -18,7 +18,7 @@ import { useState ,useRef, useEffect} from 'react';
 import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
 import MonthTicketGrid from '../../grid/MonthTicketGrid';
 import PtUserListGrid from '../../grid/PtUserListGrid';
-import { getDetailSearchCenter } from '../../../api/homeApi';
+import { getDetailSearchCenter,getTicketType } from '../../../api/homeApi';
 
 import { useRecoilState } from 'recoil';
 import { detailCenterState } from '../../../store/atom';
@@ -33,8 +33,17 @@ function DetailCenterTemplate({ route }) {
 
     const [detailData, setDetailData] = useRecoilState(detailCenterState);
 
-    const handleBtnPress = (name) => {
+    const handleBtnPress = async(id, name) => {
         setBtnName(name);
+
+        try {
+          console.log('id', name)
+          const response = await getTicketType(id, name);
+          console.log('response', response)
+        } catch (error) {
+          console.error("Error fetching search", error);
+          // 적절한 에러 처리 로직
+        }
     };
 
     const navigation = useNavigation();
@@ -48,8 +57,8 @@ function DetailCenterTemplate({ route }) {
     };
 
     const goSetSubscribeState = () => {
-        setBtnName('Subscribe');
-        setActiveButton('Subscribe');
+        setBtnName('SUBSCRIBE');
+        setActiveButton('SUBSCRIBE');
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
     }
 
@@ -60,7 +69,6 @@ function DetailCenterTemplate({ route }) {
     const goPtUserListPriceScreens = () => {
         navigation.navigate('PT');
     };
-
   
 
     const goUseTicketPriceScreens = () => {
@@ -83,8 +91,6 @@ function DetailCenterTemplate({ route }) {
           // 적절한 에러 처리 로직
         }
       };
-    
-      console.log('detailData',detailData)
       
       useEffect(() => {
         getDetailCenterData(id)
@@ -135,7 +141,7 @@ function DetailCenterTemplate({ route }) {
             price: '5,000,000',
         }
     ]
-console.log('detailData',detailData.links)
+
 
     return (
         <Container>
@@ -146,9 +152,17 @@ console.log('detailData',detailData.links)
               showsVerticalScrollIndicator={false}
               overScrollMode="never"
             >
-            <MainImg source={{uri:detailData.mainImage}}
-            resizeMode="cover"
-            />
+              {
+                detailData.images?.length === 0 ? (
+                  <MainImg source={testImg}
+                  resizeMode="cover"
+                  />
+                ):(
+                  <MainImg source={{uri:detailData.mainImage}}
+                   resizeMode="cover"
+                   />
+                )
+              }
             <GobackTouchable onPress={goBackScreens}>
             <Image source={backArrow}/>
             </GobackTouchable>
@@ -160,23 +174,21 @@ console.log('detailData',detailData.links)
             phone={detailData.phone}
             />
 
-       {
-            detailData.subscription && detailData.pt && detailData.ticket (
+
               <ThreeBtnGrid
-              onPressSubscribe={() => handleBtnPress('Subscribe')}
-              onPressPT={() => handleBtnPress('PT')}
-              onPressUse={() => handleBtnPress('Use')}
+              onPressSubscribe={() => handleBtnPress(id,'SUBSCRIBE')}
+              onPressPT={() => handleBtnPress(id,'PT')}
+              onPressUse={() => handleBtnPress(id,'TICKET')}
               setActiveButton={setActiveButton}
               activeButton={activeButton}
               subscription={detailData.subscription}
               pt={detailData.pt}
               ticket={detailData.ticket}
             />
-            )
-       }
+      
 
 
-        {btnName === 'Subscribe' && (
+        {btnName === 'SUBSCRIBE' && (
           <BasicNpremiumCardGrid 
           ticketData={ticketData} 
           selectedCard={selectedCard}
@@ -190,7 +202,7 @@ console.log('detailData',detailData.links)
           />
         )}
 
-        {btnName === 'Use' && (
+        {btnName === 'TICKET' && (
           <MonthTicketGrid 
           monthTicketData={monthTicketData} 
           selectedMonthCard={selectedMonthCard}
@@ -219,7 +231,7 @@ console.log('detailData',detailData.links)
             </>
         )}            
 
-        {btnName === 'Subscribe' && (
+        {btnName === 'SUBSCRIBE' && (
           <ActiveMainBtn
             onPress={goSubcribePriceScreens}
           >구독하기</ActiveMainBtn>
@@ -231,13 +243,13 @@ console.log('detailData',detailData.links)
           >P.T 상담하기</ActiveMainBtn>
         )}
 
-        {btnName === 'Use' && (
+        {btnName === 'TICKET' && (
           <ActiveMainBtn
             onPress={goUseTicketPriceScreens}
           >구매하기</ActiveMainBtn>
         )}
 
-        {btnName !== 'Subscribe' && btnName !== 'PT' && btnName !== 'Use' && (
+        {btnName !== 'SUBSCRIBE' && btnName !== 'PT' && btnName !== 'TICKET' && (
           <ActiveMainBtn
           onPress={goSetSubscribeState}
           >이용하기</ActiveMainBtn>

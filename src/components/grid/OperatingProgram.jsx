@@ -6,9 +6,9 @@ import { COLORS } from '../../constants/color';
 function OperatingProgram({programs}) {
     return (
         <Container>
-            <ContainerLine/>
             <MainTitleText>운영 프로그램</MainTitleText>
             <MainSubText>{programs}</MainSubText>
+            <ContainerLine/>
         </Container>
     );
 }
@@ -18,13 +18,14 @@ export default OperatingProgram;
 
 const Container = styled.View`
  padding: 0 20px;
- margin-top: 35px;
+ /* margin-top: 35px; */
 `
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
     border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
+    margin-top: 35px;
 `
 
 const MainTitleText = styled.Text`

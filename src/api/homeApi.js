@@ -10,6 +10,16 @@ export const getHomeBanners = async () => {
     }
   }
 
+// home qr banners api
+export const getHomeQrBanners = async () => {
+    try {
+      const response = await customAxios.get("/api/members/v1/banners/QR");
+        return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 // center search
 export const getSearchCenter = async (search) => {
     try {
@@ -24,6 +34,56 @@ export const getSearchCenter = async (search) => {
 export const getDetailSearchCenter = async (id) => {
   try {
     const response = await customAxios.get(`/api/members/v1/centers/${id}`); 
+     return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// center Ticket type
+export const getTicketType = async (id, type) => {
+  try {
+    const response = await customAxios.get(`/api/members/v1/centers/${id}/tickets/type/${type}`); 
+     return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// center trainers
+export const getTrainers = async (id) => {
+  try {
+    const response = await customAxios.get(`/api/members/v1/centers/${id}/trainers`); 
+     return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// center detail trainers
+export const getDetailTrainers = async (centerId, trainerId) => {
+  try {
+    const response = await customAxios.get(`/api/members/v1/centers/${centerId}/trainers/${trainerId}`); 
+     return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// center trainers name
+export const getTrainersName = async (centerId) => {
+  try {
+    const response = await customAxios.get(`/api/members/v1/centers/${centerId}/trainers/names`);
+      return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// center detail tickets id
+export const getDetailTickets = async (id) => {
+  try {
+    const response = await customAxios.get(`/api/members/v1/tickets/${id}`); 
      return response.data;
   } catch (error) {
     throw error;

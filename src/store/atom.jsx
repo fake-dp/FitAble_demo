@@ -36,3 +36,28 @@ export const detailCenterState = atom({
   ticket: false,
     },
 });
+
+export const subscribeState = atom({
+  key: 'subscribeState',
+  default: {
+    tickets: [],
+    description: '',
+  },
+});
+
+export const ticketState = atom({
+  key: 'ticketState',
+  default: {
+    tickets: [],
+    description: '',
+  },
+});
+
+
+export const ptState = atom({
+  key: 'ptState',
+  default: {
+    tickets: [],
+    description: '',
+  },
+});

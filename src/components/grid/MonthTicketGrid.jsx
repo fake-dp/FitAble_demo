@@ -53,7 +53,7 @@ color: ${COLORS.gray_300};
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
     margin-top: 30px;
     /* margin-bottom: 40px; */

@@ -5,21 +5,7 @@ import { COLORS } from '../../constants/color';
 function OperatingTime({operationTimes}) {
     return (
         <Container>
-            <ContainerLine />
             <MainTitleText>운영 시간</MainTitleText>
-
-            {/* <TextContainer>
-                <DateText>평일</DateText>
-                <DateText>오전 10시 ~ 오후 10시</DateText>
-            </TextContainer>
-            <TextContainer>
-                <DateText>주말</DateText>
-                <DateText>오전 10시 ~ 오후 6시</DateText>
-            </TextContainer>
-            <TextContainer>
-                <DateText>휴관일</DateText>
-                <DateText>일요일 및 공휴일</DateText>
-            </TextContainer> */}
             {
                 operationTimes.map((item, index) => {
                     return (
@@ -29,6 +15,7 @@ function OperatingTime({operationTimes}) {
                         </TextContainer>
                     )})
             }
+                <ContainerLine />
         </Container>
     );
 }
@@ -38,13 +25,13 @@ export default OperatingTime;
 
 const Container = styled.View`
  padding: 0 20px;
- margin-top: 35px;
-`
+ `
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.gray_500};
-    padding: 0 20px;
+     border-top-color: ${COLORS.gray_500};
+     padding: 0 20px;
+     margin-top: 35px;
 `
 
 const TextContainer = styled.View`

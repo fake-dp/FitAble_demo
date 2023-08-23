@@ -1,5 +1,6 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
+import { Linking } from 'react-native';
 
 function AboutChannel(props) {
 
@@ -8,29 +9,37 @@ function AboutChannel(props) {
     const instar = require('../../assets/img/instar.png');
     const kakao = require('../../assets/img/kakao.png');
 
+    const handleLinkPress = (url) => {
+        Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+            Linking.openURL(url);
+          } else {
+            console.log("Don't know how to open URI: " + url);
+          }
+        });
+      };
 
     return (
         <Container>
-            <ContainerLine/>
             <MainTitleText>바로가기</MainTitleText>
             <AboutChannelContainer>
                 
-                <AboutContainer>
-                <AboutChannelImg source={blog}/>
+                <AboutContainer onPress={()=> handleLinkPress(props.homepage)}>
+                <AboutChannelImg source={homepage}/>
                 <AboutText>홈페이지</AboutText>
                 </AboutContainer>
 
-                <AboutContainer>
-                <AboutChannelImg source={homepage}/>
+                <AboutContainer onPress={()=> handleLinkPress(props.instagram)}>
+                <AboutChannelImg source={instar}/>
                 <AboutText>인스타그램</AboutText>
                 </AboutContainer>
 
-                <AboutContainer>
-                <AboutChannelImg source={instar}/>
+                <AboutContainer onPress={()=> handleLinkPress(props.blog)}>
+                <AboutChannelImg source={blog}/>
                 <AboutText>블로그</AboutText>
                 </AboutContainer>
 
-                <AboutContainer>
+                <AboutContainer onPress={()=> handleLinkPress(props.kakao)}>
                 <AboutChannelImg source={kakao}/>
                 <AboutText>카카오채널</AboutText>
                 </AboutContainer>
@@ -43,13 +52,6 @@ export default AboutChannel;
 
 const Container = styled.View`
  padding: 0 20px;
- margin-top: 35px;
-`
-
-const ContainerLine = styled.View`
-     border-top-width: 1px;
-    border-top-color: ${COLORS.gray_500};
-    padding: 0 20px;
 `
 
 const MainTitleText = styled.Text`
@@ -65,7 +67,7 @@ flex-direction: row;
 margin-top: 20px;
 `
 
-const AboutContainer = styled.View`
+const AboutContainer = styled.TouchableOpacity`
 align-items: center;
 justify-content: center;
 margin-right: 7px;

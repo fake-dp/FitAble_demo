@@ -8,10 +8,12 @@ function ThreeBtnGrid(props) {
   const handleButtonPress = (name) => {
     setActiveButton(name);
   };
-// console.log(subscription,pt,ticket)
+
   return (
     <Container>
-      <ContainerLine />
+      {/* <ContainerLine 
+      styleProps={props}
+      /> */}
       <ThreeBtnContainer>
         {
           subscription && (
@@ -64,17 +66,11 @@ export default ThreeBtnGrid;
 
 const Container = styled.View`
   padding: 0 20px;
-  margin-top: 35px;
-`;
-
-const ContainerLine = styled.View`
-  border-top-width: 1px;
-  border-top-color: ${COLORS.gray_500};
-  padding: 0 20px;
+  /* margin-top: 35px; */
 `;
 
 const ThreeBtnContainer = styled.View`
-  margin-top: 30px;
+  margin-top: 35px;
   flex-direction: row;
 `;
 

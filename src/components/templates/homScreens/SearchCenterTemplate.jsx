@@ -1,91 +1,59 @@
 
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import {Image , ScrollView, TouchableOpacity ,View,TextInput} from 'react-native';
+import { ScrollView, TouchableOpacity ,View,TextInput} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
 import { getSearchCenter } from '../../../api/homeApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 function SearchCenterTemplate({searchCenterText}) {
     const navigation = useNavigation();
     const [isTyping, setIsTyping] = useState(false);
-    const [recentList, setRecentList] = useState([
-        {
-            id: 0,
-            title: '에이블짐 노원점',
-        },
-        {
-            id: 1,
-            title: '노원 에이블짐',
-        },
-        {
-            id: 2,
-            title: '에이블짐 강남점',
-        },
-        {
-            id: 3,
-            title: '강남 에이블짐',
-        },
-        {
-            id: 4,
-            title: '에이블짐 수유점',
-        },
-        {
-            id: 5,
-            title: '에이블짐 천호역점',
-        },
-    ]);
-
+    const [recentList, setRecentList] = useState([]);
     const [searchData, setSearchData] = useState([])
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [searchList, setSearchList] = useState([
-        {
-            id: 0,
-            title: '에이블짐 노원본점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_1.png'),
-            tag:[
-                '헬스','P.T','필라테스','요가'
-            ]
-        },
-        {
-            id: 1,
-            title: '에이블짐 수유점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_2.png'),
-            tag:[
-                '헬스','P.T',
-            ]
-        },
-        {
-            id: 2,
-            title: '에이블짐 천호역점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_3.png'),
-            tag:[
-                '헬스','P.T','골프',
-            ]
-        },
-        {
-            id: 3,
-            title: '에이블짐 마곡역점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_4.png'),
-            tag:[
-                '헬스',
-            ]
-        },
-        {
-            id: 4,
-            title: '에이블짐 삼성역점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_1.png'),
-            tag:[
-                '골프',
-            ]
-        },
-    ]);
+
+    useEffect(() => {
+        const loadRecentSearches = async () => {
+          try {
+            const recentSearches = await AsyncStorage.getItem('recentSearches');
+            if (recentSearches) {
+              setRecentList(JSON.parse(recentSearches));
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        };
+        loadRecentSearches();
+      }, [searchData]);
+    
+      const saveRecentSearch = async (text) => {
+        if (text.trim() === '') {
+          return; 
+        }
+        try {
+          const recentSearches = await AsyncStorage.getItem('recentSearches');
+          const parsedRecentSearches = recentSearches ? JSON.parse(recentSearches) : [];
+          if (parsedRecentSearches.some((item) => item.title === text)) {
+            return;
+          }
+          const updatedRecentSearches = [{ id: new Date().getTime(), title: text }, ...parsedRecentSearches];
+          await AsyncStorage.setItem('recentSearches', JSON.stringify(updatedRecentSearches));
+          setRecentList(updatedRecentSearches);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      
+
+      const handleSearchQueryChange = (text) => {
+        setSearchQuery(text);
+      };
 
     const goBackScreens = () => {
         navigation.goBack();
@@ -99,40 +67,37 @@ function SearchCenterTemplate({searchCenterText}) {
         setIsTyping(false);
       };
 
-      const removeRecentSearch = (id) => {
+      const removeRecentSearch = async(id) => {
         console.log(id)
         const updatedRecentSearchData = recentList.filter((item) => item.id !== id);
         setRecentList(updatedRecentSearchData);
+        try {
+            await AsyncStorage.setItem('recentSearches', JSON.stringify(updatedRecentSearchData));
+          } catch (e) {
+            console.error(e);
+          }
       };
 
-    //   const handleSearch = (text) => {
-    //     // 검색어를 받아와서 searchList를 필터링하여 맞는 결과만 보여주는 함수
-    //     const filteredList = searchList.filter(
-    //       (item) =>
-    //         item.title.includes(text) || // 타이틀에서 검색어가 포함된 경우
-    //         item.tag.some((tag) => tag.includes(text)) // 태그 중에서 검색어가 포함된 경우
-    //     );
-    //     setSearchData(filteredList); // 필터링된 결과를 recentList로 설정하여 화면에 보여줌
-    //   };
-    const handleSearch = async (text) => {
+
+
+    const handleSearch = async () => {
+        setIsLoading(true);
         try {
-          // 서버로부터 검색 결과 받아오기
-          const response = await getSearchCenter(text);
-          // 서버로부터 받아온 데이터를 컴포넌트에서 사용할 수 있는 형태로 변환
+          const response = await getSearchCenter(searchQuery);
           const filteredList = response.content.map((item) => ({
-            id: item.id,
-            name: item.name,
-            address: item.address,
-            mainImage: item.mainImage,
-            programs: item.programs,
-          }));
-      
-          // 변환된 결과를 searchData로 설정하여 화면에 보여줌
-          setSearchData(filteredList);
+              id: item.id,
+              name: item.name,
+              address: item.address,
+              mainImage: item.mainImage,
+              programs: item.programs,
+            }));
+             setSearchData(filteredList);
+             saveRecentSearch(searchQuery);
         } catch (error) {
           console.error("Error fetching search results:", error);
-          // 적절한 에러 처리 로직
         }
+        setIsLoading(false);
+        setIsTyping(true);
       };
       
 
@@ -144,82 +109,87 @@ function SearchCenterTemplate({searchCenterText}) {
 
     const search = require('../../../assets/img/search.png');
     const close = require('../../../assets/img/close_20.png');
-   
     // console.log('searchCenterText',searchCenterText)
     return (
         <Container>
             <GobackGrid onPress={goBackScreens}>{searchCenterText ? searchCenterText:'이용권 구매'}</GobackGrid>
             
-            {
-                !isTyping && (
-                    <TitleContainer>
-                    <TitleText>이용하고 싶은</TitleText>
-                    <TitleText>센터는 어디인가요?</TitleText>
-                    </TitleContainer>
-                )
-            }
-        
-
-            <SearchContainer>
-            <ImageIcon source={search}/>
-            <TextInput
-            style={{marginLeft: 10, fontSize: 16, color: COLORS.white}}
-            placeholder="센터를 입력해 주세요"
-            placeholderTextColor={COLORS.gray_200}
-            onFocus={handleTextInputFocus}
-            onBlur={handleTextInputBlur}
-            onChangeText={handleSearch} 
-            // onSubmitEditing={handleSearch}
-            returnKeyType="done"
-            />
-            </SearchContainer>
-
-          
-            {
-                !isTyping &&(
-            <RecentSearchContainer>
-            <RecentSearchTitle>최근 검색어</RecentSearchTitle>
-
-            <ScrollView
-            bounces={false}
-            showsVerticalScrollIndicator={false}
-            overScrollMode="never"
-            >
-
-            <View>
-            {recentList.map((item, index) => (
-                <RecentSearchBox key={index}>
-                <RecentSearchText>{item.title}</RecentSearchText>
-                <TouchableOpacity onPress={()=>removeRecentSearch(item.id)}>
-                <ImageIcon source={close}/>
-                </TouchableOpacity>
-                </RecentSearchBox>
-            ))}
-            </View>
-            </ScrollView>
-            </RecentSearchContainer>
-                )
-            }
-
-            {/* 검색 데이터 */}
-            {isTyping && searchData.length > 0 && (
-            <ScrollView
-            bounces={false}
-            showsVerticalScrollIndicator={false}
-            overScrollMode="never"
-            >
-            <View>
-            {searchData.map((item) => (
-                <SearchListBoxGrid 
-                key={item.id}
-                onPress={handleGoDetailCenter}
-                searchListData={item}
+           {
+            isLoading ? (
+                <IsLoadingContainer>
+                    <IsLoadingText>검색 중...</IsLoadingText>
+                </IsLoadingContainer>
+            ):(
+                <>
+                {
+                    !isTyping && (
+                        <TitleContainer>
+                        <TitleText>이용하고 싶은</TitleText>
+                        <TitleText>센터는 어디인가요?</TitleText>
+                        </TitleContainer>
+                    )
+                }
+                <SearchContainer>
+                <ImageIcon source={search}/>
+                <TextInput
+                style={{marginLeft: 10, fontSize: 16, color: COLORS.white}}
+                placeholder="센터를 입력해 주세요"
+                placeholderTextColor={COLORS.gray_200}
+                onFocus={handleTextInputFocus}
+                onBlur={handleTextInputBlur}
+                onChangeText={handleSearchQueryChange}
+                onSubmitEditing={handleSearch}
+                returnKeyType="done"
                 />
-            ))}
-            </View>
-            </ScrollView>
-            )}
-
+                </SearchContainer>
+    
+              
+                {
+                    !isTyping &&(
+                <RecentSearchContainer>
+                <RecentSearchTitle>최근 검색어</RecentSearchTitle>
+    
+                <ScrollView
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode="never"
+                >
+    
+                <View>
+                {recentList.map((item, index) => (
+                    <RecentSearchBox key={index}>
+                    <RecentSearchText>{item.title}</RecentSearchText>
+                    <TouchableOpacity onPress={()=>removeRecentSearch(item.id)}>
+                    <ImageIcon source={close}/>
+                    </TouchableOpacity>
+                    </RecentSearchBox>
+                ))}
+                </View>
+                </ScrollView>
+                </RecentSearchContainer>
+                    )
+                }
+                {/* 검색 데이터 */}
+                {isTyping && searchData.length > 0 && (
+                <ScrollView
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+                overScrollMode="never"
+                >
+                <View>
+                {searchData.map((item) => (
+                    <SearchListBoxGrid 
+                    key={item.id}
+                    onPress={handleGoDetailCenter}
+                    searchListData={item}
+                    />
+                ))}
+                </View>
+                </ScrollView>
+                )}
+    </>
+            )
+           }
             
 
         </Container>
@@ -283,4 +253,17 @@ font-size: 16px;
 font-weight: 500;
 line-height: 22.40px;
 color: ${COLORS.gray_200};
+`
+
+const IsLoadingContainer = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`
+
+const IsLoadingText = styled.Text`
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22.40px;
+    color: ${COLORS.white};
 `

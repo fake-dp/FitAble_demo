@@ -10,7 +10,6 @@ function PhotoScrollGrid({images}) {
 
     return (
         <Container>
-            <ContainerLine/>
             <MainTitleText>시설 사진</MainTitleText>
             <ScrollView
                horizontal={true} 
@@ -34,6 +33,7 @@ function PhotoScrollGrid({images}) {
                 }
             </PhotoScrollContainer>
             </ScrollView>
+            <ContainerLine/>
         </Container>
     );
 }
@@ -42,13 +42,13 @@ export default PhotoScrollGrid;
 
 const Container = styled.View`
  padding: 0 20px;
- margin-top: 35px;
-`
+ `
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.gray_500};
-    padding: 0 20px;
+     border-top-color: ${COLORS.gray_500};
+     padding: 0 20px;
+     margin-top: 35px;
 `
 
 const MainTitleText = styled.Text`

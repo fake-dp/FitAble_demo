@@ -1,4 +1,4 @@
-import {Image ,View, Text, ScrollView} from 'react-native';
+import {Image ,Linking,TouchableOpacity,Text, Platform} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import ConsultBtn from '../ui/buttonUi/ConsultBtn';
@@ -7,6 +7,11 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
     
     const phoneIcon = require('../../assets/img/phone.png');
     const mapIcon = require('../../assets/img/map.png');
+
+    const dialCall = (number) => {
+        let phoneNumber = `tel:${number}`;
+        Linking.openURL(phoneNumber);
+      };
 
     return (
         <Container>
@@ -21,16 +26,16 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
             }
             {
                 phone && (
-                <SubTextContainer>
+                <SubTextContainer onPress={() => dialCall(phone)}>
                     <Image source={phoneIcon}/>
                     <SubText>{phone}</SubText>
                 </SubTextContainer>
                 )
             }
-
             <ConsultBtn 
             onPress={onPress}
             />
+            <ContainerLine />
         </Container>
     );
 }
@@ -44,6 +49,13 @@ const Container = styled.View`
 
 `
 
+const ContainerLine = styled.View`
+  border-top-width: 1px;
+  border-top-color: ${COLORS.gray_500};
+  padding: 0 20px;
+  margin-top: 35px;
+`;
+
 const MainTitleText = styled.Text`
     color: ${COLORS.white};
     font-size: 24px;
@@ -52,7 +64,7 @@ const MainTitleText = styled.Text`
     margin-bottom: 12px;
 `
 
-const SubTextContainer = styled.View`
+const SubTextContainer = styled.TouchableOpacity`
     flex-direction: row;
     /* align-items: center; */
 `

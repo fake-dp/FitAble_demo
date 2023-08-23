@@ -4,9 +4,9 @@ import { COLORS } from '../../constants/color';
 function FacilitiesGrid({facilities}) {
     return (
         <Container>
-        <ContainerLine/>
         <MainTitleText>편의시설</MainTitleText>
         <MainSubText>{facilities}</MainSubText>
+        <ContainerLine/>
     </Container>
     );
 }
@@ -18,13 +18,13 @@ export default FacilitiesGrid;
 
 const Container = styled.View`
  padding: 0 20px;
- margin-top: 35px;
-`
+ `
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.gray_500};
-    padding: 0 20px;
+     border-top-color: ${COLORS.gray_500};
+     padding: 0 20px;
+     margin-top: 35px;
 `
 
 const MainTitleText = styled.Text`
