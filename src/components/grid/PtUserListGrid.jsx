@@ -2,86 +2,36 @@ import {Image ,View, TouchableOpacity, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function PtUserListGrid({handleUserClick}) {
+function PtUserListGrid({handleUserClick,ptData,trainersData}) {
 
-    const ptUserList = [
-        {
-            id: 0,
-            name: '김종국',
-            src: require('../../assets/img/user1.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 1,
-            name: '브이',
-            src: require('../../assets/img/user2.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 2,
-            name: '해머',
-            src: require('../../assets/img/user3.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 3,
-            name: '김종국',
-            src: require('../../assets/img/user1.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 4,
-            name: '김종국',
-            src: require('../../assets/img/user1.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 5,
-            name: '브이',
-            src: require('../../assets/img/user2.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 6,
-            name: '해머',
-            src: require('../../assets/img/user3.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-        {
-            id: 7,
-            name: '김종국',
-            src: require('../../assets/img/user1.png'),
-            weekdaytime: '09:00 ~ 22:00',
-            weekendtime: '10:00 ~ 18:00',
-        },
-    ]
+    const detailPtTrainer = (id) => {
+        handleUserClick(id);
+    }
 
 
     return (
         <Container>
              <SubTextContainer>
-            <SubText>· 일반 이용권을 구매할 수 있습니다.</SubText>
-            <SubText>· 헬스장 이용권과 PT 이용권, 이외의 운동을 커스텀하여 이용권을 구매할 수 있습니다.</SubText>
+            <SubText>{ptData.description}</SubText>
+ 
             </SubTextContainer>
             <MainTitleText>트레이너</MainTitleText>
             <ScrollView>
             {
-                ptUserList.map((ptUser) => (
-                    <TouchableOpacity key={ptUser.id} onPress={() => handleUserClick(ptUser.id)}>
-                    <PtUserContainer key={ptUser.id}>
-                        <PtUserImage source={ptUser.src}/>
+                trainersData.content.map((ptUser) => (
+                    <TouchableOpacity key={ptUser.id} onPress={() => detailPtTrainer(ptUser.id)}>
+                    <PtUserContainer>
+                        <PtUserImageContainer>
+                        <PtUserImage source={ptUser.image ? {uri: ptUser.image} : require('../../assets/img/user1.png')} resizeMode="cover"/>
+                        </PtUserImageContainer>
                         <PtUserTimeContainer>
                             <PtUserName>{ptUser.name}</PtUserName>
                             <PtTimeText>수업 가능 시간</PtTimeText>
-                            <PtUserTimeText>평일 : {ptUser.weekdaytime}</PtUserTimeText>
-                            <PtUserTimeText>주말 : {ptUser.weekendtime}</PtUserTimeText>
+                            {
+                                ptUser.times.map((time) => (
+                                    <PtUserTimeText key={time.id}>{time.type} {time.startTime} : {time.endTime}</PtUserTimeText>
+                                ))
+                            }
                         </PtUserTimeContainer>
                     </PtUserContainer>
                     </TouchableOpacity>
@@ -120,6 +70,11 @@ color: ${COLORS.white};
 const PtUserContainer = styled.View`
     flex-direction: row;
     margin-top: 20px;
+`
+
+const PtUserImageContainer = styled.View`
+    border-radius: 15px;
+    background-color: ${COLORS.gray_500};
 `
 
 const PtUserImage = styled.Image`

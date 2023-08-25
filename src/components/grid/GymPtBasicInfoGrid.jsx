@@ -4,21 +4,22 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
 
-function GymPtBasicInfoGrid() {
+function GymPtBasicInfoGrid({detailTrainersData}) {
 
+    const {name, centerName, centerAddress} = detailTrainersData;
     const spaceIcon = require('../../assets/img/spaceIcon.png');
     const mapIcon = require('../../assets/img/map.png');
 
     return (
         <Container>
-            <MainTitleText>브이 트레이너</MainTitleText>
+            <MainTitleText>{name} 트레이너</MainTitleText>
             <SubTextContainer>
                 <Image source={spaceIcon}/>
-                <SubText>0507-1342-0491</SubText>
+                <SubText>{centerName}</SubText>
             </SubTextContainer>
             <SubTextContainer>
                 <Image source={mapIcon}/>
-                <SubText>서울 노원구 상계로 77 다나프라자 B1F</SubText>
+                <SubText>{centerAddress}</SubText>
             </SubTextContainer>
             <ContainerLine/>
         </Container>
@@ -44,7 +45,7 @@ const MainTitleText = styled.Text`
 
 const SubTextContainer = styled.View`
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
 `
 
 const SubText = styled.Text`

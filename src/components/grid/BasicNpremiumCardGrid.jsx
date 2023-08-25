@@ -3,12 +3,12 @@ import BasicNpreTicketCard from '../ui/card/BasicNpreTicketCard';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
 
-function BasicNpremiumCardGrid({ticketData,selectedCard, setSelectedCard}) {
+function BasicNpremiumCardGrid({subscribeData,selectedCard, setSelectedCard}) {
 
     return (
         <Container>
             {
-                ticketData.map((item, index) => {
+                subscribeData.tickets.map((item, index) => {
                     const isSelected = selectedCard === index;
                     return (
                         <TouchableOpacity
@@ -16,8 +16,8 @@ function BasicNpremiumCardGrid({ticketData,selectedCard, setSelectedCard}) {
                               onPress={() => setSelectedCard(index)}>
                         <BasicNpreTicketCard
                             key={index}
-                            title={item.title}
-                            contents={item.contents}
+                            type={item.type}
+                            name={item.name}
                             price={item.price}
                             isSelected={isSelected}
                             />
@@ -27,8 +27,7 @@ function BasicNpremiumCardGrid({ticketData,selectedCard, setSelectedCard}) {
                 )
             }
              <SubTextContainer>
-            <SubText>· 전문 트레이너와 함께 운동할 수 있는 이용권입니다</SubText>
-            <SubText>· 트레이너에 따라 가격이 상이할 수 있습니다</SubText>
+            <SubText>{subscribeData?.description}</SubText>
             </SubTextContainer>
             <ContainerLine/>
         </Container>
@@ -45,7 +44,7 @@ const Container = styled.View`
 
 const ContainerLine = styled.View`
      border-top-width: 1px;
-    border-top-color: ${COLORS.white};
+    border-top-color: ${COLORS.gray_500};
     padding: 0 20px;
     margin-top: 30px;
     /* margin-bottom: 40px; */

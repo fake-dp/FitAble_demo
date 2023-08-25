@@ -61,3 +61,8 @@ export const ptState = atom({
     description: '',
   },
 });
+
+export const centerIdState = atom({
+  key: 'centerIdState',
+  default: '',
+});

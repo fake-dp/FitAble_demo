@@ -3,11 +3,11 @@ import MonthTicketCard from '../ui/card/MonthTicketCard';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
 
-function MonthTicketGrid({monthTicketData, selectedMonthCard, setSelectedMonthCard}) {
+function MonthTicketGrid({ticketData, selectedMonthCard, setSelectedMonthCard}) {
     return (
         <Container>
             {
-                monthTicketData.map((item, index) => {
+                ticketData.tickets.map((item, index) => {
                     const isSelected = selectedMonthCard === index;
                     return (
                         <TouchableOpacity
@@ -15,8 +15,9 @@ function MonthTicketGrid({monthTicketData, selectedMonthCard, setSelectedMonthCa
                          onPress={() => setSelectedMonthCard(index)}>
                         <MonthTicketCard
                             key={index}
-                            title={item.title}
+                            name={item.name}
                             price={item.price}
+                            type={item.type}
                             isSelected={isSelected}
                         />
                         </TouchableOpacity>
@@ -25,8 +26,7 @@ function MonthTicketGrid({monthTicketData, selectedMonthCard, setSelectedMonthCa
                 )
             }
             <SubTextContainer>
-            <SubText>· 일반 이용권을 구매할 수 있습니다.</SubText>
-            <SubText>· 헬스장 이용권과 PT 이용권, 이외의 운동을 커스텀하여 이용권을 구매할 수 있습니다.</SubText>
+            <SubText>{ticketData?.description}</SubText>
             </SubTextContainer>
             <ContainerLine />
         </Container>

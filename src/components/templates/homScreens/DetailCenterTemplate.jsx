@@ -18,10 +18,10 @@ import { useState ,useRef, useEffect} from 'react';
 import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
 import MonthTicketGrid from '../../grid/MonthTicketGrid';
 import PtUserListGrid from '../../grid/PtUserListGrid';
-import { getDetailSearchCenter,getTicketType } from '../../../api/homeApi';
+import { getDetailSearchCenter,getTicketType ,getTrainers} from '../../../api/homeApi';
 
 import { useRecoilState } from 'recoil';
-import { detailCenterState } from '../../../store/atom';
+import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState} from '../../../store/atom';
 
 function DetailCenterTemplate({ route }) {
     const { id } = route.params;
@@ -32,17 +32,28 @@ function DetailCenterTemplate({ route }) {
     const [activeButton, setActiveButton] = useState('');
 
     const [detailData, setDetailData] = useRecoilState(detailCenterState);
+    const [subscribeData, setSubscribeData] = useRecoilState(subscribeState);
+    const [ticketData, setTicketData] = useRecoilState(ticketState);
+    const [ptData, setPtData] = useRecoilState(ptState);
+    const [centerId, setCenterId] = useRecoilState(centerIdState);
+    const [trainersData, setTrainersData] = useState([]);
 
     const handleBtnPress = async(id, name) => {
         setBtnName(name);
-
+        setCenterId(id);
         try {
-          console.log('id', name)
+          console.log('id',id, name)
           const response = await getTicketType(id, name);
-          console.log('response', response)
+        
+          if (name === 'SUBSCRIBE') {
+            setSubscribeData(response);
+          } else if (name === 'PT') {
+            setPtData(response);
+          } else if (name === 'TICKET') {
+            setTicketData(response);
+          }
         } catch (error) {
-          console.error("Error fetching search", error);
-          // 적절한 에러 처리 로직
+          // 에러 처리
         }
     };
 
@@ -66,24 +77,19 @@ function DetailCenterTemplate({ route }) {
         navigation.navigate('Subscribe');
     };
 
-    const goPtUserListPriceScreens = () => {
-        navigation.navigate('PT');
-    };
-  
-
     const goUseTicketPriceScreens = () => {
         navigation.navigate('Use');
     };
 
     const handleUserClick = (id) => {
-      console.log('id', id)
-      navigation.navigate('PtDetail', {id: id})
+      console.log('id@@@@@센터 아이디',id )
+      navigation.navigate('PtDetail', {id})
   }
 
 
       const getDetailCenterData = async (id) => {
         try {
-          console.log('id', id)
+          // console.log('id', id)
           const response = await getDetailSearchCenter(id);
           setDetailData(response);
         } catch (error) {
@@ -91,57 +97,28 @@ function DetailCenterTemplate({ route }) {
           // 적절한 에러 처리 로직
         }
       };
+
+      const getTrainerData = async (id) => {
+        try {
+          // console.log('id', id)
+          const response = await getTrainers(id);
+          setTrainersData(response);
+        } catch (error) {
+          console.error("Error fetching search", error);
+          // 적절한 에러 처리 로직
+        }
+      };
+
       
       useEffect(() => {
         getDetailCenterData(id)
+        getTrainerData(id)
       }, []);
 
     const testImg = require('../../../assets/img/detailTest.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
 
-    const ticketData = [
-        {
-            id: 0,
-            title: 'Basic',
-            contents : '선택한 센터에서만 사용가능',
-            price: '30,000',
-        },
-        {
-            id: 1,
-            title: 'Premium',
-            contents : '모든 센터 사용 가능',
-            price: '119,000',
-        },
-    ]
-
-    const monthTicketData = [
-        {
-            id: 0,
-            title: '1개월 이용권',
-            price: '70,000',
-        },
-        {
-            id: 1,
-            title: '3개월 이용권',
-            price: '210,000',
-        },
-        {
-            id: 2,
-            title: '6개월 이용권',
-            price: '420,000',
-        },
-        {
-            id: 3,
-            title: '12개월 이용권',
-            price: '840,000',
-        },
-        {
-            id: 4,
-            title: '4개월 이용권+PT 이용권',
-            price: '5,000,000',
-        }
-    ]
-
+  
 
     return (
         <Container>
@@ -190,7 +167,7 @@ function DetailCenterTemplate({ route }) {
 
         {btnName === 'SUBSCRIBE' && (
           <BasicNpremiumCardGrid 
-          ticketData={ticketData} 
+          subscribeData={subscribeData} 
           selectedCard={selectedCard}
           setSelectedCard={setSelectedCard}
           />
@@ -199,12 +176,14 @@ function DetailCenterTemplate({ route }) {
         {btnName === 'PT' && (
           <PtUserListGrid 
           handleUserClick={handleUserClick}
+          ptData={ptData}
+          trainersData={trainersData}
           />
         )}
 
         {btnName === 'TICKET' && (
           <MonthTicketGrid 
-          monthTicketData={monthTicketData} 
+          ticketData={ticketData} 
           selectedMonthCard={selectedMonthCard}
           setSelectedMonthCard={setSelectedMonthCard}
           />

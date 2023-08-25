@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 
-function BasicNpreTicketCard({title, contents, price,isSelected}) {
+function BasicNpreTicketCard({name, price,type,isSelected}) {
 
+    console.log('type',type,'SUBSCRIBE_PREMIUM','SUBSCRIBE_BASIC' )
     return (
         <CardContainer
         isSelected={isSelected}
@@ -10,10 +11,10 @@ function BasicNpreTicketCard({title, contents, price,isSelected}) {
             <UpTextContainer>
             <MainTitleText
              isSelected={isSelected}
-            >{title}</MainTitleText>
+            >{name}</MainTitleText>
             <SubContentsText
              isSelected={isSelected}
-            >{contents}</SubContentsText>
+            >{type === 'SUBSCRIBE_PREMIUM' ? '모든 센터 사용 가능' : '선택한 센터에서만 사용가능'}</SubContentsText>
             </UpTextContainer>
 
             <DownTextContainer>

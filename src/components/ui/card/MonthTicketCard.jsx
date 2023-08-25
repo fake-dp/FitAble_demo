@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 
-function MonthTicketCard({ title, price, isSelected }) {
+function MonthTicketCard({ type, name, price, isSelected }) {
     return (
         <CardContainer
         isSelected={isSelected}
@@ -9,7 +9,7 @@ function MonthTicketCard({ title, price, isSelected }) {
             <TextContainer>
                 <MonthTicketText
                 isSelected={isSelected}
-                >{title}</MonthTicketText>
+                >{name}</MonthTicketText>
                 <MonthTicketText
                 isSelected={isSelected}
                 >{price}원</MonthTicketText>

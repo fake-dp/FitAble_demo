@@ -4,12 +4,13 @@ import { COLORS } from '../../constants/color';
 import PtPriceCard from '../ui/card/PtPriceCard';
 
 function PtCardListGrid({ptTicketData,selectedCard ,setSelectedCard}) {
+
     return (
         <Container>
             <ContainerLine/>
             <MainTitleText>P.T</MainTitleText>
             {
-                ptTicketData.map((item, index) => {
+                ptTicketData.tickets.map((item, index) => {
                     const isSelected = selectedCard === index;
                     return (
                         <TouchableOpacity
@@ -25,6 +26,7 @@ function PtCardListGrid({ptTicketData,selectedCard ,setSelectedCard}) {
                 }
                 )
             }
+            <SubText>{ptTicketData.description}</SubText>
         </Container>
     );
 }
@@ -48,4 +50,11 @@ font-weight: 700;
 line-height: 30px;
 color: ${COLORS.white};
 margin-bottom: 18px;
+`
+
+const SubText = styled.Text`
+    font-size: 14px;
+font-weight: 400;
+line-height: 22.40px;
+color: ${COLORS.gray_300};
 `

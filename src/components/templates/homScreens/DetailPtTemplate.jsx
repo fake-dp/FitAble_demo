@@ -2,36 +2,28 @@ import {Button, Image , ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
-import GymBasicInfoGrid from '../../grid/GymBasicInfoGrid';
-import ThreeBtnGrid from '../../grid/ThreeBtnGrid';
-import OperatingProgram from '../../grid/OperatingProgram';
-import OperaintgTime from '../../grid/OperatingTime';
-import FacilitiesGrid from '../../grid/FacilitiesGrid';
-import PhotoScrollGrid from '../../grid/PhotoScrollGrid';
-
-import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
-import AboutChannel from '../../grid/AboutChannel';
 import LongTextGrid from '../../grid/LongTextGrid';
-import ShopTagGrid from '../../grid/ShopTagGrid';
-
-import { useState ,useRef} from 'react';
-import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
-import MonthTicketGrid from '../../grid/MonthTicketGrid';
-import PtUserListGrid from '../../grid/PtUserListGrid';
+import { useState ,useRef,useEffect} from 'react';
 import GymPtBasicInfoGrid from '../../grid/GymPtBasicInfoGrid';
 import PtCareerGrid from '../../grid/PtCareerGrid';
 import PtCardListGrid from '../../grid/PtCardListGrid';
-
-function DetailPtTemplate(props) {
+import { useRecoilState } from 'recoil';
+import {ptState, centerIdState } from '../../../store/atom';
+import { useRoute } from '@react-navigation/native';
+import { getDetailTrainers} from '../../../api/homeApi';
+function DetailPtTemplate() {
+    const route = useRoute();
+    const id = route.params.id;
+    console.log('Received id:', id);
     const scrollViewRef = useRef(null);
-    const [btnName, setBtnName] = useState('');
+
 
     const [selectedCard, setSelectedCard] = useState(0);
-
-    const handleBtnPress = (name) => {
-        setBtnName(name);
-    };
-
+    const [ptData, setPtData] = useRecoilState(ptState);
+    const [centerId, setCenterId] = useRecoilState(centerIdState);
+    const [detailTrainersData, setDetailTrainersData] = useState([]);
+    console.log('reciveve',id, '센터아이디',centerId)
+ 
     const navigation = useNavigation();
 
     const goBackScreens = () => {
@@ -46,45 +38,30 @@ function DetailPtTemplate(props) {
         navigation.navigate('PT');
     };
 
+    const getDetailTrainersData = async ( centerId, id) => {
+        try {
+            const response = await getDetailTrainers(centerId,id);
+            setDetailTrainersData(response);
+        } catch (error) {
+            console.error('Error getting home banners:', error.response.config.headers); // 에러 로깅
+        }
+    };
 
+    useEffect(() => {
+        getDetailTrainersData(centerId,id);
+    }, []);
 
 
     const testImg = require('../../../assets/img/testptuserimgbig.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
 
-   
-
-    const ptTicketData = [
-        {
-            id: 0,
-            title: '1:1 P.T',
-            number: '10',
-            price: '77000',
-        },
-        {
-            id: 1,
-            title: '1:1 P.T',
-            number: '20',
-            price: '67000',
-        },
-        {
-            id: 2,
-            title: '1:1 P.T',
-            number: '30',
-            price: '57000',
-        },
-        {
-            id: 3,
-            title: '맛보기 체험 레슨 1회',
-            number: '1',
-            price: '44000',
-        },
-    ]
+   console.log('detailTrainersData',detailTrainersData.career)
+            const {career, qualifications,description} = detailTrainersData;
 
     return (
         <Container>
             <ScrollView
-            ref={scrollViewRef}
+              ref={scrollViewRef}
               bounces={false}
          
               showsVerticalScrollIndicator={false}
@@ -96,12 +73,23 @@ function DetailPtTemplate(props) {
             </GobackTouchable>
 
 
-            <GymPtBasicInfoGrid />
+            <GymPtBasicInfoGrid 
+            detailTrainersData={detailTrainersData}
+            />
 
-            <LongTextGrid />
-            <PtCareerGrid />
+
+
+            {
+            description &&   <LongTextGrid description={detailTrainersData.description}/>
+            }
+            {
+            career && qualifications &&  <PtCareerGrid detailTrainersData={detailTrainersData}/>
+            }
+
+           
+
             <PtCardListGrid 
-                ptTicketData={ptTicketData}
+                ptTicketData={ptData}
                 selectedCard={selectedCard}
                 setSelectedCard={setSelectedCard}
             />

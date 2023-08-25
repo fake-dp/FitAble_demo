@@ -3,8 +3,8 @@ import { COLORS } from '../../../constants/color';
 
 function PtPriceCard({ptTicketData,isSelected}) {
 
-    console.log('ptTicketData',ptTicketData)
-    const {id, number, price, title} = ptTicketData;
+    // console.log('ptTicketData',ptTicketData)
+    const {id, price, name,pricePerTime} = ptTicketData;
 
     return (
         <CardContainer
@@ -13,20 +13,17 @@ function PtPriceCard({ptTicketData,isSelected}) {
             <TextContainer>
                 <LeftTextContainer>
                 <PtTicketText
-                isSelected={isSelected}>{title}</PtTicketText>
-
-                <PtTicketCountText
-                isSelected={isSelected}>{number}회</PtTicketCountText>
+                isSelected={isSelected}>{name}</PtTicketText>
                 </LeftTextContainer>
 
                 <RightTextContainer>
 
                 <PtTicketText
                 isSelected={isSelected}
-                >{price*number}원</PtTicketText>
+                >{price}원</PtTicketText>
 
                 <PtTicketPriceText
-                isSelected={isSelected}>회당{price}원</PtTicketPriceText>
+                isSelected={isSelected}>회당{pricePerTime}원</PtTicketPriceText>
                
                 </RightTextContainer>
 

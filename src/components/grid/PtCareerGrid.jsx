@@ -2,24 +2,19 @@ import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function PtCareerGrid(props) {
+function PtCareerGrid({detailTrainersData}) {
+
+    const {career, qualifications} = detailTrainersData;
+
     return (
         <Container>
             <ContainerLine />
             <MainTitleText>자격 및 경력사항</MainTitleText>
             <SubText>경력사항</SubText>
-            <SubText>전) 워라벨 피트니스 트레이너</SubText>
-            <SubText>전) 예스짐 피트니스 트레이너</SubText>
-            <SubText>전) 에이블짐 노원역점 트레이너</SubText>
-            <SubTextm>현) 에이블짐 수유점 트레이너</SubTextm>
+            <SubTextm>{career}</SubTextm>
 
             <SubText>자격사항</SubText>
-            <SubText>21 고양시 보디빌딩 스포츠모델 3위</SubText>
-            <SubText>21 PCA KOREA 스포츠모델 4위</SubText>
-            <SubText>CES KOREA 교정운동전문과정 수료</SubText>
-            <SubText>FISAF 국제필라테스 교육과정 수료</SubText>
-            <SubText>바디컨설팅 아카데미 수료</SubText>
-            <SubText>IKA 케틀벨 국제트레이너과정 수료</SubText>
+            <SubText>{qualifications}</SubText>
         </Container>
     );
 }
