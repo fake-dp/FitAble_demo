@@ -3,7 +3,6 @@ import { COLORS } from '../../../constants/color';
 
 function BasicNpreTicketCard({name, price,type,isSelected}) {
 
-    console.log('type',type,'SUBSCRIBE_PREMIUM','SUBSCRIBE_BASIC' )
     return (
         <CardContainer
         isSelected={isSelected}

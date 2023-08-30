@@ -43,6 +43,12 @@ function SearchCenterTemplate({searchCenterText}) {
             return;
           }
           const updatedRecentSearches = [{ id: new Date().getTime(), title: text }, ...parsedRecentSearches];
+         
+          // 여기서 가장 오래된 검색어(가장 마지막 항목)를 제거한다.
+    if (updatedRecentSearches.length > 6) {
+      updatedRecentSearches.pop();
+    }
+         
           await AsyncStorage.setItem('recentSearches', JSON.stringify(updatedRecentSearches));
           setRecentList(updatedRecentSearches);
         } catch (e) {

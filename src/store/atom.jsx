@@ -37,6 +37,16 @@ export const detailCenterState = atom({
     },
 });
 
+export const threeBtnState = atom({
+  key: 'threeBtnState',
+  default: '',
+});
+
+export const btnActiveState = atom({
+  key: 'btnActiveState',
+  default: '',
+});
+
 export const subscribeState = atom({
   key: 'subscribeState',
   default: {

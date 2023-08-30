@@ -43,7 +43,8 @@ function DetailPtTemplate() {
             const response = await getDetailTrainers(centerId,id);
             setDetailTrainersData(response);
         } catch (error) {
-            console.error('Error getting home banners:', error.response.config.headers); // 에러 로깅
+            console.log('id확인',id, '센터아이디',centerId)
+            console.error('Error getting:', error); // 에러 로깅
         }
     };
 
@@ -55,8 +56,8 @@ function DetailPtTemplate() {
     const testImg = require('../../../assets/img/testptuserimgbig.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
 
-   console.log('detailTrainersData',detailTrainersData.career)
-            const {career, qualifications,description} = detailTrainersData;
+//    console.log('detailTrainersData',detailTrainersData.career)
+    const {career, qualifications,description} = detailTrainersData;
 
     return (
         <Container>
@@ -75,18 +76,12 @@ function DetailPtTemplate() {
 
             <GymPtBasicInfoGrid 
             detailTrainersData={detailTrainersData}
+            centerId={centerId}
+            id={id}
             />
 
-
-
-            {
-            description &&   <LongTextGrid description={detailTrainersData.description}/>
-            }
-            {
-            career && qualifications &&  <PtCareerGrid detailTrainersData={detailTrainersData}/>
-            }
-
-           
+            {description && <LongTextGrid description={detailTrainersData.description}/>}
+            {career && qualifications &&  <PtCareerGrid detailTrainersData={detailTrainersData}/>}
 
             <PtCardListGrid 
                 ptTicketData={ptData}

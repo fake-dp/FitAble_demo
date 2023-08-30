@@ -1,4 +1,4 @@
-import {Image ,View, TouchableOpacity, ScrollView} from 'react-native';
+import {Text ,View, TouchableOpacity, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
@@ -18,7 +18,9 @@ function PtUserListGrid({handleUserClick,ptData,trainersData}) {
             <MainTitleText>트레이너</MainTitleText>
             <ScrollView>
             {
-                trainersData.content.map((ptUser) => (
+             trainersData && trainersData.content && trainersData.content.length > 0 ? (
+
+                trainersData?.content.map((ptUser) => (
                     <TouchableOpacity key={ptUser.id} onPress={() => detailPtTrainer(ptUser.id)}>
                     <PtUserContainer>
                         <PtUserImageContainer>
@@ -27,15 +29,17 @@ function PtUserListGrid({handleUserClick,ptData,trainersData}) {
                         <PtUserTimeContainer>
                             <PtUserName>{ptUser.name}</PtUserName>
                             <PtTimeText>수업 가능 시간</PtTimeText>
-                            {
-                                ptUser.times.map((time) => (
-                                    <PtUserTimeText key={time.id}>{time.type} {time.startTime} : {time.endTime}</PtUserTimeText>
-                                ))
-                            }
+                                {
+                                ptUser.times.map((time, index) => (
+                                    <PtUserTimeText key={index}>{time.type} {time.startTime} : {time.endTime}</PtUserTimeText>
+                                    ))
+                                }
                         </PtUserTimeContainer>
                     </PtUserContainer>
                     </TouchableOpacity>
-                ))
+                ))) : (
+                        <TestText>등록된 트레이너가 없습니다</TestText>
+                    )
             }
             </ScrollView>
         </Container>
@@ -107,6 +111,9 @@ const PtUserTimeText = styled.Text`
     font-weight: 400;
     line-height: 22.40px;
     color: ${COLORS.gray_300};
-
 `
 
+const TestText = styled.Text`
+    font-size: 14px;
+    color: ${COLORS.white};
+    `

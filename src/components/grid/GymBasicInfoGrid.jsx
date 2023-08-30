@@ -26,10 +26,10 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
             }
             {
                 phone && (
-                <SubTextContainer onPress={() => dialCall(phone)}>
+                <SubTextContainerBtn onPress={() => dialCall(phone)}>
                     <Image source={phoneIcon}/>
                     <SubText>{phone}</SubText>
-                </SubTextContainer>
+                </SubTextContainerBtn>
                 )
             }
             <ConsultBtn 
@@ -64,10 +64,14 @@ const MainTitleText = styled.Text`
     margin-bottom: 12px;
 `
 
-const SubTextContainer = styled.TouchableOpacity`
+const SubTextContainer = styled.View`
     flex-direction: row;
     /* align-items: center; */
-`
+`;
+
+const SubTextContainerBtn = styled.TouchableOpacity`
+    flex-direction: row;
+`;
 
 const SubText = styled.Text`
     font-size: 14px;

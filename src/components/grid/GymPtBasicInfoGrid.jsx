@@ -2,21 +2,32 @@
 import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
+import { useNavigation } from '@react-navigation/native';
+import { useRecoilState } from 'recoil';
+import {threeBtnState,btnActiveState} from '../../store/atom'
 
-
-function GymPtBasicInfoGrid({detailTrainersData}) {
+function GymPtBasicInfoGrid({detailTrainersData,centerId,id}) {
 
     const {name, centerName, centerAddress} = detailTrainersData;
     const spaceIcon = require('../../assets/img/spaceIcon.png');
     const mapIcon = require('../../assets/img/map.png');
+    const navigation = useNavigation();
+
+    const [threeBtn, setThreeBtn] = useRecoilState(threeBtnState);
+    const [activeButton, setActiveButton] = useRecoilState(btnActiveState);
+    const goBackFirstDetailScreen = () => {
+        // setThreeBtn('');
+        // navigation.navigate('DetailCenter', {centerId, id});
+        console.log('첫 페이지 이동하기 구현해야함')
+    };
 
     return (
         <Container>
             <MainTitleText>{name} 트레이너</MainTitleText>
-            <SubTextContainer>
+            <SubTextContainerBtn onPress={goBackFirstDetailScreen}>
                 <Image source={spaceIcon}/>
                 <SubText>{centerName}</SubText>
-            </SubTextContainer>
+            </SubTextContainerBtn>
             <SubTextContainer>
                 <Image source={mapIcon}/>
                 <SubText>{centerAddress}</SubText>
@@ -44,6 +55,11 @@ const MainTitleText = styled.Text`
 `
 
 const SubTextContainer = styled.View`
+    flex-direction: row;
+    /* align-items: center; */
+`
+
+const SubTextContainerBtn = styled.TouchableOpacity`
     flex-direction: row;
     /* align-items: center; */
 `

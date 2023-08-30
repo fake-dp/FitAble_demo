@@ -18,15 +18,16 @@ import { useState ,useRef, useEffect} from 'react';
 import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
 import MonthTicketGrid from '../../grid/MonthTicketGrid';
 import PtUserListGrid from '../../grid/PtUserListGrid';
-import { getDetailSearchCenter,getTicketType ,getTrainers} from '../../../api/homeApi';
+import { getDetailSearchCenter,getTicketType ,getTrainers ,getTrainersName} from '../../../api/homeApi';
 
 import { useRecoilState } from 'recoil';
-import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState} from '../../../store/atom';
+import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState,threeBtnState,btnActiveState } from '../../../store/atom';
+import CustomPicker from '../../../components/ui/custom/Picker';
 
 function DetailCenterTemplate({ route }) {
     const { id } = route.params;
     const scrollViewRef = useRef(null);
-    const [btnName, setBtnName] = useState('');
+    const [btnName, setBtnName] = useRecoilState(threeBtnState);
     const [selectedCard, setSelectedCard] = useState(0);
     const [selectedMonthCard, setSelectedMonthCard] = useState(0);
     const [activeButton, setActiveButton] = useState('');
@@ -37,6 +38,10 @@ function DetailCenterTemplate({ route }) {
     const [ptData, setPtData] = useRecoilState(ptState);
     const [centerId, setCenterId] = useRecoilState(centerIdState);
     const [trainersData, setTrainersData] = useState([]);
+
+    // 피커 & 트레이너 이름 조회 상태
+    const [trainerName, setTrainerName] = useState('');
+    const [showPicker, setShowPicker] = useState(false);
 
     const handleBtnPress = async(id, name) => {
         setBtnName(name);
@@ -60,11 +65,25 @@ function DetailCenterTemplate({ route }) {
     const navigation = useNavigation();
 
     const goBackScreens = () => {
+        setBtnName('');
+        setActiveButton('');
         navigation.goBack();
     };
 
     const goConsultingScreens = () => {
         navigation.navigate('Consulting');
+    };
+
+    const getTrainersNameData = async (id) => {
+      try {
+        // console.log('id', id)
+        const response = await getTrainersName(id);
+        setTrainerName(response);
+        setShowPicker(true);
+      } catch (error) {
+        console.error("Error fetching search", error);
+        // 적절한 에러 처리 로직
+      }
     };
 
     const goSetSubscribeState = () => {
@@ -123,9 +142,8 @@ function DetailCenterTemplate({ route }) {
     return (
         <Container>
             <ScrollView
-            ref={scrollViewRef}
+              ref={scrollViewRef}
               bounces={false}
-         
               showsVerticalScrollIndicator={false}
               overScrollMode="never"
             >
@@ -163,6 +181,7 @@ function DetailCenterTemplate({ route }) {
               ticket={detailData.ticket}
             />
       
+     
 
 
         {btnName === 'SUBSCRIBE' && (
@@ -218,7 +237,7 @@ function DetailCenterTemplate({ route }) {
 
         {btnName === 'PT' && (
           <ActiveMainBtn
-            onPress={goConsultingScreens}
+            onPress={()=>getTrainersNameData(id)}
           >P.T 상담하기</ActiveMainBtn>
         )}
 
@@ -233,8 +252,14 @@ function DetailCenterTemplate({ route }) {
           onPress={goSetSubscribeState}
           >이용하기</ActiveMainBtn>
         )}
-
-
+        {
+          showPicker && (
+            <CustomPicker
+            trainerName={trainerName}
+            centerId={id}
+            setShowPicker={setShowPicker}
+            />)
+        }
         </ScrollView>
         </Container>
     );
