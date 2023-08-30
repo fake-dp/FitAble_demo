@@ -70,8 +70,8 @@ function DetailCenterTemplate({ route }) {
         navigation.goBack();
     };
 
-    const goConsultingScreens = () => {
-        navigation.navigate('Consulting');
+    const goConsultingScreens = (id) => {
+        navigation.navigate('Consulting', {centerId: id});
     };
 
     const getTrainersNameData = async (id) => {
@@ -101,7 +101,7 @@ function DetailCenterTemplate({ route }) {
     };
 
     const handleUserClick = (id) => {
-      console.log('id@@@@@센터 아이디',id )
+      // console.log('id@@@@@센터 아이디',id )
       navigation.navigate('PtDetail', {id})
   }
 
@@ -163,7 +163,7 @@ function DetailCenterTemplate({ route }) {
             </GobackTouchable>
 
             <GymBasicInfoGrid 
-            onPress={goConsultingScreens}
+            onPress={()=>goConsultingScreens(id)}
             name={detailData.name}
             address={detailData.address}
             phone={detailData.phone}

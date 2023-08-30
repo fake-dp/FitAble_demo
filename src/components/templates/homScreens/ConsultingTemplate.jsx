@@ -5,11 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
 import ConsultingLabelGrid from '../../grid/ConsultingLabelGrid';
 
-import { useState } from 'react';
-import {consultingListData} from '../../../data/ConsultingData';
+import { useState, useEffect } from 'react';
 import ConsultBigBtn from '../../ui/buttonUi/ConsultBigBtn';
 import { useRoute } from '@react-navigation/native';
-import { getTrainersName } from '../../../api/homeApi';
+import { getTrainersName,postConsulting } from '../../../api/homeApi';
+import { Alert } from 'react-native';
 function ConsultingTemplate(props) {
     const route = useRoute();
     const centerId = route.params?.centerId;
@@ -19,6 +19,47 @@ function ConsultingTemplate(props) {
     const [isBoxOpen, setIsBoxOpen] = useState(false);
     const [trainerName, setTrainerName] = useState([]);
     const [selectTrainer, setSelectTrainer] = useState(selectedName);
+    const [selectTrainerId, setSelectTrainerId] = useState(trainerId);
+    // tag post 요청 상태 데이터
+  const [selectPurposeTags, setSelectPurposeTags] = useState([]);
+  const [selectTimeTags, setSelectTimeTags] = useState([]);
+  const [selectPromotionTags, setSelectPromotionTags] = useState([]);
+
+    const [postTagData, setPostTagData] = useState({
+        centerId: centerId,
+        trainerId: selectTrainerId,
+        purpose: selectPurposeTags,
+        time: selectTimeTags,
+        promotion: selectPromotionTags,
+    });
+
+    useEffect(() => {
+
+        if(trainerId){
+            console.log('트레이너 아이디',trainerId)
+                   if (postTagData.purpose !== selectPurposeTags || postTagData.time !== selectTimeTags || postTagData.promotion !== selectPromotionTags) {
+            setPostTagData({
+                centerId: centerId,
+                trainerId: selectTrainerId,
+                purpose: selectPurposeTags,
+                time: selectTimeTags,
+                promotion: selectPromotionTags,
+            });
+        }
+        }else{
+            console.log('트레이너 아이디 없음')
+                   if (postTagData.purpose !== selectPurposeTags || postTagData.time !== selectTimeTags || postTagData.promotion !== selectPromotionTags) {
+            setPostTagData({
+                centerId: centerId,
+                purpose: selectPurposeTags,
+                time: selectTimeTags,
+                promotion: selectPromotionTags,
+            });
+        }
+        }
+       }, [selectPurposeTags, selectTimeTags, selectPromotionTags, centerId, trainerId]);
+
+    console.log('postTagData',postTagData)
 
     const navigation = useNavigation();
 
@@ -32,17 +73,39 @@ function ConsultingTemplate(props) {
           // console.log('id', id)
           const response = await getTrainersName(centerId);
           setTrainerName(response);
-          console.log('트레이너 이름',response, '트레이너 상태',trainerName)
+        //   console.log('트레이너 이름',response, '트레이너 상태',trainerName)
         } catch (error) {
           console.error("Error fetching search", error);
           // 적절한 에러 처리 로직
         }
       };
 
-      const selectTrainerNameBtn = (name) => {
+
+      const selectTrainerNameBtn = (name,id) => {
         setSelectTrainer(name);
+        setSelectTrainerId(id)
         setIsBoxOpen(false);
         };
+
+    const postConsultingBtn = async () => {
+        console.log('요청 버튼 클릭')
+        if(
+            selectPurposeTags.length === 0 ||
+            selectTimeTags.length === 0 ||
+            selectPromotionTags.length === 0
+        ){
+            Alert.alert('모든 항목을 선택해주세요. ', '', [{ text: '확인'}]);
+            return;
+        }else{
+            try{
+                const response = await postConsulting(postTagData);
+                console.log('상담요청',response)
+                Alert.alert('상담요청이 완료되었습니다.', '', [{ text: '확인', onPress: () => navigation.goBack()  }]);
+            }catch(error){
+                console.error("Error fetching search", error);
+            }
+        }
+    };
 
       const downIcon = require('../../../assets/img/downcoupon.png');
       const upIcon = require('../../../assets/img/upcoupon.png');
@@ -55,10 +118,19 @@ function ConsultingTemplate(props) {
               showsVerticalScrollIndicator={false}
               overScrollMode="never">
             <GobackGrid onPress={goBackScreens}>상담하기</GobackGrid>
-            <ConsultingLabelGrid consultingListData={consultingListData}/>
-
+            <ConsultingLabelGrid 
+            selectPurposeTags={selectPurposeTags} 
+            setSelectPurposeTags={setSelectPurposeTags}
+            selectTimeTags={selectTimeTags} 
+            setSelectTimeTags={setSelectTimeTags}
+            selectPromotionTags={selectPromotionTags}
+            setSelectPromotionTags={setSelectPromotionTags}
+            />
+            <InfoContainer>
+                <Title>질병 및 유의사항</Title>
+            </InfoContainer>
             {
-                trainerId && <TrainerInfoContainer>
+                trainerId && <InfoContainer>
                     <Title>트레이너</Title>
                     <SelectContainerBox>
                     <SelectTrainerContainer>
@@ -77,7 +149,7 @@ function ConsultingTemplate(props) {
                            <>
                            {
                              trainerName && trainerName.map((item) => (
-                                 <TouchableOpacity key={item.id} onPress={()=>selectTrainerNameBtn(item.name)}>
+                                 <TouchableOpacity key={item.id} onPress={()=>selectTrainerNameBtn(item.name, item.id)}>
                                  <ListContainer>
                                      <ListText>{item.name}</ListText>
                                  </ListContainer>
@@ -87,10 +159,17 @@ function ConsultingTemplate(props) {
                          </>
                         )}
                         </SelectContainerBox>
-                </TrainerInfoContainer>
+                </InfoContainer>
             }
 
-            <ConsultBigBtn>상담요청</ConsultBigBtn>
+            <ConsultBigBtn
+                isActived={
+                    selectPurposeTags.length > 0 &&
+                    selectTimeTags.length > 0 &&
+                    selectPromotionTags.length > 0
+                }
+                onPress={postConsultingBtn}
+            >상담요청</ConsultBigBtn>
             </ScrollView>
         </Container>
     );
@@ -104,10 +183,10 @@ const Container = styled.View`
     background-color: ${COLORS.sub};
 `
 
-const TrainerInfoContainer = styled.View`
+const InfoContainer = styled.View`
     margin-top: 20px;
-    border-top-width: 1px;
-    border-color: ${COLORS.gray_500};
+    /* border-top-width: 1px; */
+    /* border-color: ${COLORS.gray_500}; */
 `
 
 const Title = styled.Text`

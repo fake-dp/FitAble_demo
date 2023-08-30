@@ -89,3 +89,13 @@ export const getDetailTickets = async (id) => {
     throw error;
   }
 }
+
+// consulting api
+export const postConsulting = async (data) => {
+  try {
+    const response = await customAxios.post(`/api/members/v1/consulting`, data); 
+     return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

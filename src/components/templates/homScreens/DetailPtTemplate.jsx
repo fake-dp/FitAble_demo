@@ -43,7 +43,7 @@ function DetailPtTemplate() {
             const response = await getDetailTrainers(centerId,id);
             setDetailTrainersData(response);
         } catch (error) {
-            console.log('id확인',id, '센터아이디',centerId)
+            // console.log('id확인',id, '센터아이디',centerId)
             console.error('Error getting:', error); // 에러 로깅
         }
     };

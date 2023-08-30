@@ -4,13 +4,16 @@ import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 import ConsultInput from '../inputUi/ConsultInput';
 
-function ConsultLabel({ tag, selected, onPress }) {
+function ConsultLabel({ tag, selected, onPress,customTag, setCustomTag }) {
+
+
   const [showTextInput, setShowTextInput] = useState(false);
-  const [customTag, setCustomTag] = useState("");
+  // const [customTag, setCustomTag] = useState("");
 
   const handleTagClick = () => {
     if (tag === "기타") {
       setShowTextInput((prevShowTextInput) => !prevShowTextInput);
+      // onPress(tag);
     } else {
       onPress(tag);
     }
@@ -21,16 +24,19 @@ function ConsultLabel({ tag, selected, onPress }) {
   };
 
   const handleTextInputSubmit = () => {
-    onPress(customTag);
-    setShowTextInput(false);
-    setCustomTag("");
+    console.log('dpsxj')
+    if (customTag.trim() !== "") {
+      onPress(customTag.trim());
+      // setShowTextInput(false);
+      // setCustomTag("");
+    }
   };
 
   return (
     <>
     <TouchableOpacity onPress={handleTagClick}>
-      <Container selected={selected} isEtc={tag === "기타"}>
-        <TagTitle selected={selected} isEtc={tag === "기타"}>
+    <Container selected={selected || (tag === "기타" && showTextInput)}>
+        <TagTitle selected={selected || (tag === "기타" && showTextInput)}>
           {tag}
         </TagTitle>
       </Container>
@@ -52,8 +58,9 @@ export default ConsultLabel;
 const Container = styled.View`
   margin-bottom: 10px;
   padding: 8px 13px;
-  background-color: ${({ selected, isEtc }) =>
-    selected ? COLORS.main : isEtc ? COLORS.box : COLORS.box_two};
+
+  background-color: ${({ selected }) =>
+    selected ? COLORS.box : COLORS.box_two};
   border-radius: 80px;
   margin-right: 8px;
 `;
@@ -62,8 +69,6 @@ const TagTitle = styled.Text`
   font-size: 14px;
   font-weight: 500;
   line-height: 22.40px;
-  color: ${({ selected, isEtc }) => {
-    if (selected) return COLORS.box;
-    return isEtc ? COLORS.main : COLORS.gray_400;
-  }};
+  color: ${({ selected }) => 
+    selected ? COLORS.main : COLORS.gray_400};
 `;

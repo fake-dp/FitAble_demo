@@ -1,15 +1,15 @@
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 
-function ConsultBigBtn({children}) {
+function ConsultBigBtn({children, onPress , isActived}) {
     const handlePress = () => {
         console.log('MainBtn pressed');
-
+        onPress();
     }
     
     return (
     <Container>
-        <StyledPressable onPress={handlePress}>
+        <StyledPressable onPress={handlePress} isActived={isActived} disabled={!isActived}>
            <StyledText>{children}</StyledText>
         </StyledPressable>
     </Container>
@@ -30,11 +30,11 @@ const StyledPressable = styled.Pressable`
     border-radius: 50px;
     justify-content: center;
     align-items: center;
-    background-color:${COLORS.main};
+    background-color: ${ props => props.isActived ? COLORS.main : COLORS.gray_500 };
     margin-top: 49px;
     margin-bottom: 23px;
 `
 
 const StyledText = styled.Text`
-     color: ${ COLORS.sub }
+    color:${props => props.isActived ? COLORS.white : COLORS.sub};
 `
