@@ -1,16 +1,18 @@
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 
-function ActiveMainBtn({children, onPress}) {
+function ActiveMainBtn({children, onPress ,btnName}) {
 
     const handlePress = () => {
         console.log('MainBtn pressed');
         onPress();
     }
+
+    console.log('btnName',btnName)
     
     return (
         <Container>
-            <StyledPressable onPress={handlePress}>
+            <StyledPressable onPress={handlePress} btnName={btnName}>
               <StyledText>{children}</StyledText>
             </StyledPressable>
         </Container>
@@ -33,7 +35,8 @@ const StyledPressable = styled.Pressable`
     justify-content: center;
     align-items: center;
     background-color:${COLORS.main};
-    margin-top: 49px;
+    /* margin-top: 49px; */
+    margin-top: ${props => props.btnName ? '0px' : '49px'};
     margin-bottom: 23px;
 `
 

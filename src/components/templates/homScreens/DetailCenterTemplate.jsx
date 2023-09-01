@@ -227,32 +227,38 @@ function DetailCenterTemplate({ route }) {
              />)
            }
             </>
-        )}            
-
+        )}
+        </ScrollView>
+        <StickyBtnContainer>
         {btnName === 'SUBSCRIBE' && (
           <ActiveMainBtn
             onPress={goSubcribePriceScreens}
+            btnName={btnName}
           >구독하기</ActiveMainBtn>
         )}
 
         {btnName === 'PT' && (
           <ActiveMainBtn
             onPress={()=>getTrainersNameData(id)}
+            btnName={btnName}
           >P.T 상담하기</ActiveMainBtn>
         )}
 
         {btnName === 'TICKET' && (
           <ActiveMainBtn
             onPress={goUseTicketPriceScreens}
+            btnName={btnName}
           >구매하기</ActiveMainBtn>
         )}
 
         {btnName !== 'SUBSCRIBE' && btnName !== 'PT' && btnName !== 'TICKET' && (
           <ActiveMainBtn
           onPress={goSetSubscribeState}
+          btnName={id}
           >이용하기</ActiveMainBtn>
         )}
-        {
+         </StickyBtnContainer>
+         {
           showPicker && (
             <CustomPicker
             trainerName={trainerName}
@@ -260,7 +266,6 @@ function DetailCenterTemplate({ route }) {
             setShowPicker={setShowPicker}
             />)
         }
-        </ScrollView>
         </Container>
     );
 }
@@ -285,3 +290,11 @@ position: absolute;
 top: 56px;
 left: 20px;
 `;
+
+const StickyBtnContainer = styled.View`
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
+`

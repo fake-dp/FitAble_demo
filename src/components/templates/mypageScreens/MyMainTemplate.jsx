@@ -2,50 +2,50 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import MySettingHeaderGrid from '../../grid/MySettingHeaderGrid';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import {getMyInfo} from '../../../api/mypageApi';
+import { useRecoilState } from 'recoil';
+import { myinfoState } from '../../../store/atom';
 
 function MyMainTemplate(props) {
 
     const navigation = useNavigation();
 
-    const goSettingScreen = () => {
-        navigation.navigate('AppSetting');
+    const [myInfo, setMyInfo] = useRecoilState(myinfoState);
+
+    const getMyInfoData = async () => {
+        const response = await getMyInfo();
+        setMyInfo(response);
     }
 
-    const goSearchCenterScreen = () => {
-        navigation.navigate('SearchCenter');
-      }
+    useEffect(() => {
+        getMyInfoData();
+    },[])
 
-    const goEditMyProfileScreen = () => {
-        navigation.navigate('MyProfile');
-    }
+    const {mainCenter, marketing, pushAlarm} = myInfo
 
-    const goCenterRegistScreen = () => {
-        navigation.navigate('CenterRegist');
-    }
+    console.log('myInfo',mainCenter, marketing, pushAlarm)
 
-    const goMyBookListScreen = () => {
-        navigation.navigate('MyBookList');
-    }
+    // 네비게이션 설정
+    const goSettingScreen = () => {navigation.navigate('AppSetting');}
 
-    const goMyTicketListScreen = () => {
-        navigation.navigate('CenterTicket');
-    }
+    const goSearchCenterScreen = () => {navigation.navigate('SearchCenter');}
 
-    const goCenterMarkScreen = () => {
-        navigation.navigate('MyCenter');
-    }
+    const goEditMyProfileScreen = () => {navigation.navigate('MyProfile');}
 
-    const goMileageScreen = () => {
-        navigation.navigate('Mileage');
-    }
+    const goCenterRegistScreen = () => {navigation.navigate('CenterRegist');}
 
-    const goProductScreen = () => {
-        navigation.navigate('Product');
-    }
+    const goMyBookListScreen = () => {navigation.navigate('MyBookList');}
 
-    const goFitableQnAScreen = () => {
-        navigation.navigate('FitableQnA');
-    }
+    const goMyTicketListScreen = () => {navigation.navigate('CenterTicket');}
+
+    const goCenterMarkScreen = () => {navigation.navigate('MyCenter');}
+
+    const goMileageScreen = () => {navigation.navigate('Mileage');}
+
+    const goProductScreen = () => {navigation.navigate('Product');}
+
+    const goFitableQnAScreen = () => {navigation.navigate('FitableQnA');}
 
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
@@ -56,6 +56,7 @@ function MyMainTemplate(props) {
             <MySettingHeaderGrid 
             onPress={goSettingScreen}
             goEditMyProfileScreen={goEditMyProfileScreen}
+            myInfo={myInfo}
             />
 
             <AddTicketBtn
@@ -69,7 +70,7 @@ function MyMainTemplate(props) {
                 <SettingListBtnFirst onPress={goCenterRegistScreen}>
                     <SettingListText>대표 센터</SettingListText>
                     <FirstSettingContainer>
-                      <SettingSubText>에이블짐 노원점</SettingSubText>
+                      <SettingSubText>{mainCenter}</SettingSubText>
                     <SettingListRightIcon source={rightIcon}/>
                     </FirstSettingContainer>
                 </SettingListBtnFirst>

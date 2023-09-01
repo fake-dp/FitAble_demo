@@ -5,9 +5,15 @@ import { useNavigation } from '@react-navigation/native';
 import { Image } from 'react-native';
 import MileageList from '../../ui/list/MileageList';
 import { FlatList } from 'react-native';
+import { useState,useEffect } from 'react';
+import { getMileages } from '../../../api/mypageApi';
+
 function MileageTemplate(props) {
     
     const navigation = useNavigation();
+
+    const [mileageList, setMileageList] = useState([]); // 마일리지 내역
+    const [totalMileage, setTotalMileage] = useState(0); // 총 마일리지
 
     const goBackScreens = () => {
         navigation.goBack();
@@ -17,108 +23,18 @@ function MileageTemplate(props) {
     const close = require('../../../assets/img/close.png');
 
 
-    // 지워
-    const MileageListData = [
-        {
-        id: 0,
-        title: '스토어 뉴프로틴 구매',
-        date: '2023.06.15 10:10',
-        price: 100,
-        isPlus: true,
-        },
-        {
-            id: 1,
-            title: '스토어 마일리지 차감',
-            date: '2023.06.15 10:10',
-            price: 1000,
-            isPlus: false,
-        },
-        {
-            id: 2,
-            title: '스토어 상품명 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 3,
-            title: '스토어 폼롤러 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 4,
-            title: '스토어 폼롤러 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 5,
-            title: '스토어 폼롤러 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 6,
-            title: '스토어 마일리지 차감',
-            date: '2023.06.15 10:10',
-            price: 1000,
-            isPlus: false,
-        },
-        {
-            id: 7,
-            title: '스토어 뉴프로틴 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 8,
-            title: '스토어 뉴프로틴 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 9,
-            title: '스토어 뉴프로틴 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 10,
-            title: '스토어 뉴프로틴 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 11,
-            title: '스토어 마일리지 차감',
-            date: '2023.06.15 10:10',
-            price: 1000,
-            isPlus: false,
-        },
-        {
-            id: 12,
-            title: '스토어 뉴프로틴 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
-        {
-            id: 13,
-            title: '스토어 뉴프로틴 구매',
-            date: '2023.06.15 10:10',
-            price: 100,
-            isPlus: true,
-        },
 
-    ]
+    const getMilagesData = async () => {
+        const response = await getMileages();
+        setMileageList(response.mileageHistories.content);
+        setTotalMileage(response.totalMileage);
+    }
+
+
+    useEffect(() => {
+        getMilagesData();
+    },[])
+
 
 
     return (
@@ -127,7 +43,7 @@ function MileageTemplate(props) {
             <CloseImg source={close}/>
             </CloseBtn>
 
-            <PriceText>20,000원</PriceText>
+            <PriceText>{totalMileage}원</PriceText>
             <TitleText>핏에이블 마일리지</TitleText>
 
             <GridLine />
@@ -140,9 +56,9 @@ function MileageTemplate(props) {
          
              showsVerticalScrollIndicator={false}
              overScrollMode="never"
-            data={MileageListData}
+            data={mileageList}
             renderItem={({ item }) => <MileageList data={item} />}
-            keyExtractor={(item) => item.id.toString()}
+            // keyExtractor={(item) => item.id.toString()}
         />
         </Container>
     );

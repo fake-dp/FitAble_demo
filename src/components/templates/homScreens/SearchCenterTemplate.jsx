@@ -139,7 +139,7 @@ function SearchCenterTemplate({searchCenterText}) {
                 <ImageIcon source={search}/>
                 <TextInput
                 style={{marginLeft: 10, fontSize: 16, color: COLORS.white}}
-                placeholder="센터를 입력해 주세요"
+                placeholder="센터를 입력해주세요"
                 placeholderTextColor={COLORS.gray_200}
                 onFocus={handleTextInputFocus}
                 onBlur={handleTextInputBlur}

@@ -15,7 +15,7 @@ function PtUserListGrid({handleUserClick,ptData,trainersData}) {
             <SubText>{ptData.description}</SubText>
  
             </SubTextContainer>
-            <MainTitleText>트레이너</MainTitleText>
+            <MainTitleText>강사</MainTitleText>
             <ScrollView>
             {
              trainersData && trainersData.content && trainersData.content.length > 0 ? (
@@ -24,7 +24,7 @@ function PtUserListGrid({handleUserClick,ptData,trainersData}) {
                     <TouchableOpacity key={ptUser.id} onPress={() => detailPtTrainer(ptUser.id)}>
                     <PtUserContainer>
                         <PtUserImageContainer>
-                        <PtUserImage source={ptUser.image ? {uri: ptUser.image} : require('../../assets/img/user1.png')} resizeMode="cover"/>
+                        <PtUserImage source={ptUser.image ? {uri: ptUser.image} : require('../../assets/img/noImg.png')} resizeMode="cover"/>
                         </PtUserImageContainer>
                         <PtUserTimeContainer>
                             <PtUserName>{ptUser.name}</PtUserName>

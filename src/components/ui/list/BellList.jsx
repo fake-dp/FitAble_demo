@@ -11,7 +11,7 @@ function BellList(props) {
             data.map((item,index) => {
                 return (
                     <ContentsContainer key={index} isLastItem={index === data.length - 1}>
-                        <ContentsText>{item.contents}</ContentsText>
+                        <ContentsText>{item.context}</ContentsText>
                         <ContentsDate>{item.date}</ContentsDate>
                     </ContentsContainer>
                 )

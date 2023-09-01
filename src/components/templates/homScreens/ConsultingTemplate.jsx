@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import {Image , ScrollView, TouchableOpacity} from 'react-native';
+import {TextInput , ScrollView, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
 import ConsultingLabelGrid from '../../grid/ConsultingLabelGrid';
@@ -24,6 +24,8 @@ function ConsultingTemplate(props) {
   const [selectPurposeTags, setSelectPurposeTags] = useState([]);
   const [selectTimeTags, setSelectTimeTags] = useState([]);
   const [selectPromotionTags, setSelectPromotionTags] = useState([]);
+  const [writeCoution, setWriteCoution] = useState('');
+const [isTextValid, setIsTextValid] = useState(false); 
 
     const [postTagData, setPostTagData] = useState({
         centerId: centerId,
@@ -31,6 +33,7 @@ function ConsultingTemplate(props) {
         purpose: selectPurposeTags,
         time: selectTimeTags,
         promotion: selectPromotionTags,
+        caution: writeCoution,
     });
 
     useEffect(() => {
@@ -44,6 +47,7 @@ function ConsultingTemplate(props) {
                 purpose: selectPurposeTags,
                 time: selectTimeTags,
                 promotion: selectPromotionTags,
+                caution: writeCoution,
             });
         }
         }else{
@@ -54,10 +58,11 @@ function ConsultingTemplate(props) {
                 purpose: selectPurposeTags,
                 time: selectTimeTags,
                 promotion: selectPromotionTags,
+                caution: writeCoution,
             });
         }
         }
-       }, [selectPurposeTags, selectTimeTags, selectPromotionTags, centerId, trainerId]);
+       }, [selectPurposeTags, selectTimeTags, selectPromotionTags, centerId, trainerId,writeCoution]);
 
     console.log('postTagData',postTagData)
 
@@ -99,11 +104,26 @@ function ConsultingTemplate(props) {
         }else{
             try{
                 const response = await postConsulting(postTagData);
-                console.log('상담요청',response)
+                console.log('상담요청',response,postTagData)
                 Alert.alert('상담요청이 완료되었습니다.', '', [{ text: '확인', onPress: () => navigation.goBack()  }]);
             }catch(error){
                 console.error("Error fetching search", error);
             }
+        }
+    };
+
+      const handleTextInputChange = (text) => {
+        console.log('text',text)
+        setWriteCoution(text);
+      };
+
+      const handleTextInputSubmit = (text) => {
+        // 만약 writeCoution 값이 10자 이상이면 isTextValid 상태를 true로 변경
+        if (text.length <= 50) {
+            setIsTextValid(true);
+        } else {
+            setIsTextValid(false);
+            Alert.alert('50글자 내외로 작성해주세요. ', '', [{ text: '확인', onPress:()=>setWriteCoution('')}]);
         }
     };
 
@@ -128,7 +148,16 @@ function ConsultingTemplate(props) {
             />
             <InfoContainer>
                 <Title>질병 및 유의사항</Title>
+                <CoutionContainer>
+                    <ConsultInputText
+                    placeholder="질병 및 유의사항이 있다면 적어주세요" 
+                    onChangeText={handleTextInputChange}
+                    onSubmitEditing={(e) => handleTextInputSubmit(e.nativeEvent.text)}
+                    style={{marginLeft: 16, fontSize: 14}}
+                    />
+                </CoutionContainer>
             </InfoContainer>
+            <Line></Line>
             {
                 trainerId && <InfoContainer>
                     <Title>트레이너</Title>
@@ -239,3 +268,30 @@ color: ${COLORS.gray_100};
 font-weight: 400;
 line-height: 22.40px;
 `
+
+const CoutionContainer = styled.View`
+    margin-top: 20px;
+    background-color: ${COLORS.box};
+    flex-direction: row;
+    border-radius: 13px;
+    height: 50px;
+    align-items: center;
+    margin-bottom: 20px;
+`
+
+const Line = styled.View`
+    background-color: ${COLORS.gray_300};
+    border-bottom-width : 1px;
+    border-color: ${COLORS.gray_500};
+    margin-top: 20px;
+`
+
+const ConsultInputText = styled(TextInput).attrs(() => ({
+  placeholderTextColor: COLORS.gray_300,
+}))`
+  flex: 1;
+  color: ${COLORS.white};
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22.40px;
+`;

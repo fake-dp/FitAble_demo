@@ -76,3 +76,19 @@ export const centerIdState = atom({
   key: 'centerIdState',
   default: '',
 });
+
+
+
+
+// mypage info
+
+export const myinfoState = atom({
+  key: 'myinfoState',
+  default: {
+    name: '',
+    phone: '',
+    mainCenter: '',
+    marketing: '',
+    pushAlarm: '',
+  },
+});

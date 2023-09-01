@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 import {ptState, centerIdState } from '../../../store/atom';
 import { useRoute } from '@react-navigation/native';
 import { getDetailTrainers} from '../../../api/homeApi';
+import PtSwiperBanner from '../../ui/banner/PtSwiperBanner';
 function DetailPtTemplate() {
     const route = useRoute();
     const id = route.params.id;
@@ -22,7 +23,7 @@ function DetailPtTemplate() {
     const [ptData, setPtData] = useRecoilState(ptState);
     const [centerId, setCenterId] = useRecoilState(centerIdState);
     const [detailTrainersData, setDetailTrainersData] = useState([]);
-    console.log('reciveve',id, '센터아이디',centerId)
+    console.log('reciveve',id, '센터아이디',centerId,detailTrainersData.images)
  
     const navigation = useNavigation();
 
@@ -30,8 +31,9 @@ function DetailPtTemplate() {
         navigation.goBack();
     };
 
-    const goConsultingScreens = () => {
-        navigation.navigate('Consulting');
+
+    const goConsultingScreens = (centerId,  trainerId, selectedName) => {
+        navigation.navigate('Consulting',{ centerId, trainerId, selectedName});
     };
 
     const goPtPriceScreens = () => {
@@ -57,21 +59,27 @@ function DetailPtTemplate() {
     const backArrow = require('../../../assets/img/back_arrow.png');
 
 //    console.log('detailTrainersData',detailTrainersData.career)
-    const {career, qualifications,description} = detailTrainersData;
-
+    const {career, qualifications,description,images} = detailTrainersData;
+    // console.log('test22',images)
     return (
         <Container>
+            <GobackTouchable onPress={goBackScreens}>
+            <BackArrow source={backArrow}/>
+            </GobackTouchable>
             <ScrollView
               ref={scrollViewRef}
               bounces={false}
-         
               showsVerticalScrollIndicator={false}
               overScrollMode="never"
             >
-            <TestImg source={testImg}/>
-            <GobackTouchable onPress={goBackScreens}>
-            <Image source={backArrow}/>
-            </GobackTouchable>
+            {
+                images&&images.length>0 ? (
+                    <PtSwiperBanner images={images}/>
+                ):(
+                    <Image source={testImg}/>
+                )
+            }
+           
 
 
             <GymPtBasicInfoGrid 
@@ -88,21 +96,20 @@ function DetailPtTemplate() {
                 selectedCard={selectedCard}
                 setSelectedCard={setSelectedCard}
             />
-
-
-        <BtnContainer>
-        <ConsultingBtn onPress={goConsultingScreens} >
-            <ConsultingBtnText>상담하기</ConsultingBtnText>
-        </ConsultingBtn>
-
-        <ParchaseBtn onPress={goPtPriceScreens}>
-            <ParchaseBtnText>구매하기</ParchaseBtnText>
-        </ParchaseBtn>
-        </BtnContainer>
-
-
         </ScrollView>
-        </Container>
+        <StickyBtnContainer>
+
+<BtnContainer>
+<ConsultingBtn onPress={()=>goConsultingScreens(centerId,id,detailTrainersData.name )} >
+    <ConsultingBtnText>상담하기</ConsultingBtnText>
+</ConsultingBtn>
+
+<ParchaseBtn onPress={goPtPriceScreens}>
+    <ParchaseBtnText>구매하기</ParchaseBtnText>
+</ParchaseBtn>
+</BtnContainer>
+    </StickyBtnContainer>
+    </Container>
     );
 }
 
@@ -115,22 +122,32 @@ const Container = styled.View`
     /* padding: 0 20px; */
 `
 
+const BackArrow = styled.Image`
+    margin: 56px 0 11px 20px;
+`
 
 const TestImg = styled.Image`
     width: 100%;
 `
 
 const GobackTouchable = styled.TouchableOpacity`
-position: absolute;
-top: 56px;
-left: 20px;
 `;
 
 
 const BtnContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    padding: 28px 20px;
+    margin-top: 20px;
+    /* padding: 28px 20px; */
+`
+
+const StickyBtnContainer = styled.View`
+    position: sticky;
+    bottom: 10px;
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 `
 
 const ConsultingBtn = styled.TouchableOpacity`

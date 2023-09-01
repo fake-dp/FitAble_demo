@@ -9,13 +9,15 @@ function MyProfileTemplate(props) {
         navigation.goBack();
     }
 
+    const rightIcon = require('../../../assets/img/rightIcon.png');
+
     return (
         <Container>
             <GobackBlackGrid
             onPress={goBack}
             >프로필 수정</GobackBlackGrid>
             
-            <ProfileContainer>
+            {/* <ProfileContainer>
                 <Titletext>새로운 비밀번호 입력</Titletext>
                 <InputContainer 
                 placeholder="새로운 비밀번호를 입력해주세요."
@@ -39,7 +41,19 @@ function MyProfileTemplate(props) {
                 <TextContainerBtn>
                 <PassText>pass로 이동</PassText>
                 </TextContainerBtn>
-            </TextContainer>
+            </TextContainer> */}
+
+        <ProfileContainer>
+         <ProfileListContainer>
+                    <ProfileListText>비밀번호 변경</ProfileListText>
+                    <ProfileListRightIcon source={rightIcon}/>
+            </ProfileListContainer>
+
+                <ProfileListContainer>
+                    <ProfileListText>휴대폰번호 변경</ProfileListText>
+                    <ProfileListRightIcon source={rightIcon}/>
+        </ProfileListContainer>
+        </ProfileContainer>
 
         </Container>
     );
@@ -53,7 +67,8 @@ const Container = styled.View`
     background-color: ${COLORS.white};
 `
 const ProfileContainer = styled.View`
-    margin-top: 68px;
+    /* margin-top: 68px; */
+    margin-top: 38px;
 `
 
 const Titletext = styled.Text`
@@ -96,3 +111,25 @@ font-weight: 700;
 line-height: 22.40px;
 margin-left: 7px;
 `
+
+const ProfileListContainer = styled.TouchableOpacity`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 30px 0; */
+    margin-bottom: 30px;
+`
+    
+const ProfileListText = styled.Text`
+font-size: 16px;
+color: ${COLORS.sub};
+font-weight: 500;
+line-height: 22.40px;
+`
+const ProfileListRightIcon = styled.Image`
+    width: 20px;
+    height: 20px;
+`
+
+
+

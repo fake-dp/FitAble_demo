@@ -1,15 +1,16 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
+import {formatPhoneNumber} from '../../utils/CustomUtils';
+function MySettingHeaderGrid({onPress,goEditMyProfileScreen,myInfo}) {
 
-function MySettingHeaderGrid({onPress,goEditMyProfileScreen}) {
-
+    const {name, phone} = myInfo;
     const rightIcon = require('../../assets/img/rightIcon.png');
 
     return (
       <>
             <UserHeaderContainer>
                 <UserHeaderLeftContainer onPress={goEditMyProfileScreen}>
-                <MyNameText>남주혁님</MyNameText>
+                <MyNameText>{name}님</MyNameText>
                 <RigthIcon source={rightIcon}/>
                 </UserHeaderLeftContainer>
 
@@ -18,7 +19,7 @@ function MySettingHeaderGrid({onPress,goEditMyProfileScreen}) {
                 </SettingContainerBtn>
             </UserHeaderContainer>
             
-            <UserPhoneNumberText>010-1234-5678</UserPhoneNumberText>
+            <UserPhoneNumberText>{formatPhoneNumber(phone)}</UserPhoneNumberText>
       </>
     );
 }

@@ -99,3 +99,13 @@ export const postConsulting = async (data) => {
     throw error;
   }
 }
+
+// pushAlarm history api
+export const getPushAlarmHistory = async () => {
+  try {
+    const response = await customAxios.get(`/api/members/v1/pushAlarm/history`); 
+     return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

@@ -1,4 +1,4 @@
-import { View ,Text} from "react-native";
+import { View } from "react-native";
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 
@@ -10,11 +10,9 @@ function MileageList({data}) {
                         <SubTextContainer>
                                 <DateText>{data.date}</DateText>
                             </SubTextContainer>
-                            <TitleText>{data.title}</TitleText>
+                            <TitleText>{data.context}</TitleText>
                         </ContentsBox>
-                        <PriceText isPlus={data.isPlus}>{
-                        data.isPlus ? `+${data.price}` :  `-${data.price}`
-                        }</PriceText>
+                        <PriceText isPlus={data.amount > 0}>{data.amount.toLocaleString()}</PriceText>
                     </Container>
         </View>
     );

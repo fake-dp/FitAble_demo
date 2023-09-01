@@ -113,11 +113,10 @@ function UseTemplate(props) {
         />
 
         <SelectCouponGrid />
-
-    </ScrollView>
         <ActiveMainBtn
         onPress={goTestModal}
         >결제하기</ActiveMainBtn>
+    </ScrollView>
         {
             showModal ?
             <PriceModal 

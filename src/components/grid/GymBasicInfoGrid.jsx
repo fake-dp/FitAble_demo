@@ -2,7 +2,7 @@ import {Image ,Linking,TouchableOpacity,Text, Platform} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import ConsultBtn from '../ui/buttonUi/ConsultBtn';
-
+import {formatPhoneNumber} from '../../utils/CustomUtils'
 function GymBasicInfoGrid({onPress,address,phone,name}) {
     
     const phoneIcon = require('../../assets/img/phone.png');
@@ -28,7 +28,7 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
                 phone && (
                 <SubTextContainerBtn onPress={() => dialCall(phone)}>
                     <Image source={phoneIcon}/>
-                    <SubText>{phone}</SubText>
+                    <SubText>{formatPhoneNumber(phone)}</SubText>
                 </SubTextContainerBtn>
                 )
             }

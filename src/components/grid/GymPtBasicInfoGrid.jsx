@@ -23,7 +23,7 @@ function GymPtBasicInfoGrid({detailTrainersData,centerId,id}) {
 
     return (
         <Container>
-            <MainTitleText>{name} 트레이너</MainTitleText>
+            <MainTitleText>{name} 강사</MainTitleText>
             <SubTextContainerBtn onPress={goBackFirstDetailScreen}>
                 <Image source={spaceIcon}/>
                 <SubText>{centerName}</SubText>
