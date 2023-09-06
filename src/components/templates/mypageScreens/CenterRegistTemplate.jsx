@@ -1,83 +1,80 @@
+import React from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
 import { ScrollView, View } from 'react-native';
 import PriceModal from '../../ui/modal/PriceModal';
+import {getValidCenter,postMainCenter} from '../../../api/mypageApi';
+import { useRecoilState } from 'recoil';
+import { myinfoState } from '../../../store/atom';
+
 function CenterRegistTemplate(props) {
     const [showModal, setShowModal] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedItemId, setSelectedItemId] = useState(null); 
-    const [searchList, setSearchList] = useState([
-        {
-            id: 0,
-            title: '에이블짐 노원본점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_1.png'),
-            tag:[
-                '헬스','P.T','필라테스','요가'
-            ]
-        },
-        {
-            id: 1,
-            title: '에이블짐 수유점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_2.png'),
-            tag:[
-                '헬스','P.T',
-            ]
-        },
-        {
-            id: 2,
-            title: '에이블짐 천호역점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_3.png'),
-            tag:[
-                '헬스','P.T','골프',
-            ]
-        },
-        {
-            id: 3,
-            title: '에이블짐 마곡역점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_4.png'),
-            tag:[
-                '헬스',
-            ]
-        },
-        {
-            id: 4,
-            title: '에이블짐 삼성역점',
-            map: '서울 노원구 상계로 77',
-            srcimg: require('../../../assets/img/searchlist_1.png'),
-            tag:[
-                '골프',
-            ]
-        },
-    ]);
+    const [initialSelectedItemId, setInitialSelectedItemId] = useState('');
+    const [selectedItemId, setSelectedItemId] = useState(''); 
+    const [selectedItemName, setSelectedItemName] = useState('');
+    const [searchList, setSearchList] = useState([]);
+    const [myInfo, setMyInfo] = useRecoilState(myinfoState);
 
     const navigation = useNavigation();
+
+    
+    const getValidCenterData = async () => {
+        try {
+            const response = await getValidCenter();
+            // console.log('response@@@',myInfo)
+            setSearchList(response.content);
+
+            const mainCenter = response.content.find(item => item.isMainCenter);
+        if(mainCenter) {
+            setSelectedItemId(mainCenter.id);
+            setInitialSelectedItemId(mainCenter.id);
+        }
+        } catch (error) {
+            console.error('Error getting:', error); // 에러 로깅
+        }
+    };
+
+    useEffect(() => {
+        getValidCenterData();
+    }, []);
+
+
 
     const goBackScreens = () => {
         navigation.goBack();
     };
 
-    const handleRegistCenterBtn = (itemId) => {
-        console.log('등록하기 버튼 클릭')
+    const handleRegistCenterBtn = (itemId, name) => {
+        // console.log('등록하기 버튼 클릭11',itemId, name)
         setShowModal(true)
         setSelectedItemId(itemId);
+        setSelectedItemName(name);
     }
 
     const closeModal = () => {
         setShowModal(false)
-        setSelectedItemId(null);
+        setSelectedItemId(initialSelectedItemId);
     }
 
-    const goHomeScreens = () => {
-        setShowModal(false)
+    const goMyScreens = async(id, name) => {
+        // console.log('등록하기 버튼 클릭22',id,name)
+        try{
+            const response = await postMainCenter(id);
+            // console.log('response123',response)
+            setMyInfo(prevState => ({
+                ...prevState,
+                mainCenter: name
+            }));
+            setShowModal(false)
+            // navigation.navigate('Mypage');
+        }
+        catch(error){
+            console.error('Error getting:', error); // 에러 로깅
+        }
     };
    
     const text = {
@@ -98,27 +95,29 @@ function CenterRegistTemplate(props) {
             >
             <RegistContainer>
             {searchList.map((item) => (
+                //  <React.Fragment key={item.id}>
                 <SearchListBoxGrid 
                 key={item.id}
-                onPress={handleRegistCenterBtn}
+                onPress={()=>handleRegistCenterBtn(item.id, item.name)}
                 searchListData={item}
                 isSelected={selectedItemId === item.id}
                 />
-            ))}
+                // </React.Fragment>
+                ))}
             </RegistContainer>
-            </ScrollView>
             {
-            showModal ?
-            <PriceModal
-            closeModal={closeModal}
-            goHomeScreens={goHomeScreens}
-            modalVisible={modalVisible}
-            text={text}
-            />
-            :   
-            null
-            
-        }
+                    showModal ?
+                    <PriceModal
+                    closeModal={closeModal}
+                    goHomeScreens={()=>goMyScreens(selectedItemId,selectedItemName)}
+                    text={text}
+                    />
+                    :   
+                    null
+                    
+                }
+            </ScrollView>
+          
         </Container>
         
     );

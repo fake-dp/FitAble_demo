@@ -20,6 +20,17 @@ export const getHomeQrBanners = async () => {
     }
   }
 
+// home baners count api
+export const addHomeBannersCount = async (id) => {
+    try {
+      const response = await customAxios.post("/api/members/v1/banners/view", {id});
+        return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
 // center search
 export const getSearchCenter = async (search) => {
     try {

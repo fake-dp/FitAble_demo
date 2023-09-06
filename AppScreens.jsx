@@ -27,6 +27,8 @@ import TermsofUseScreen from './src/screens/mypage/TermsofUseScreen';
 import ProductQnAScreen from './src/screens/mypage/ProductQnAScreen';
 import TicketListDetailScreen from './src/screens/mypage/TicketListDetailScreen';
 import WebViewScreen from './src/screens/mainpage/WebViewScreen';
+import ChangePasswordScreen from './src/screens/mypage/ChangePasswordScreen';
+import ChangePhoneNumberScreen from './src/screens/mypage/ChangePhoneNumberScreen';
 
 
 
@@ -98,6 +100,9 @@ function AppScreens({navigation}) {
             headerBackTitleVisible: false,
         }}>
             <Stack.Screen name="MyProfile" component={MyProfileScreen} />
+            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+            <Stack.Screen name="ChangePhoneNumber" component={ChangePhoneNumberScreen} />
+
             <Stack.Screen name="AppSetting" component={MyAppSettingScreen} />
             <Stack.Screen name="CenterRegist" component={CenterRegistration} options={{headerStyle: {backgroundColor: COLORS.sub,},}}/>
             <Stack.Screen name="MyBookList" component={MyBookListScreen}  />

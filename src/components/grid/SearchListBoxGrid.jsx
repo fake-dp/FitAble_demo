@@ -4,7 +4,7 @@ import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
 function SearchListBoxGrid({searchListData,onPress, isSelected}) {
 
-    const {id, name, address, programs, mainImage} = searchListData;
+    const {id, name, address, programs, mainImage,isMainCenter} = searchListData;
 
     const mapIcon = require('../../assets/img/map.png');
     const noSearchimg = require('../../assets/img/noImg.png');
@@ -12,7 +12,7 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
         <TouchableOpacity   
         onPress={() => onPress(id)}>
             
-        <Container key={id} isSelected={isSelected}>
+        <Container key={id} isSelected={ isSelected}>
             <ContentsBox>
             <TitleText isSelected={isSelected}>{name}</TitleText>
             <SubTextContainer>

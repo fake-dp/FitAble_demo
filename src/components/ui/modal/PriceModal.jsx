@@ -3,7 +3,7 @@ import { COLORS } from '../../../constants/color';
 import { Modal } from 'react-native';
 
 function PriceModal({closeModal,goHomeScreens ,text}) {
-    console.log('text',text)
+    // console.log('text',text)
     return (
         <Modal
         // visible={modalVisible}

@@ -6,25 +6,28 @@ import { useEffect } from 'react';
 import {getMyInfo} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { myinfoState } from '../../../store/atom';
-
+import { useState } from 'react';
 function MyMainTemplate(props) {
 
     const navigation = useNavigation();
 
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
-
+    const [shouldFetch, setShouldFetch] = useState(true);
     const getMyInfoData = async () => {
-        const response = await getMyInfo();
-        setMyInfo(response);
+        if (shouldFetch) {
+            const response = await getMyInfo();
+            setMyInfo(response);
+            setShouldFetch(false);
+        }
     }
 
     useEffect(() => {
         getMyInfoData();
-    },[])
+    },[myInfo])
 
     const {mainCenter, marketing, pushAlarm} = myInfo
 
-    console.log('myInfo',mainCenter, marketing, pushAlarm)
+    // console.log('myInfo',myInfo)
 
     // 네비게이션 설정
     const goSettingScreen = () => {navigation.navigate('AppSetting');}

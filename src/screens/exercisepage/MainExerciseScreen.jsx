@@ -8,7 +8,7 @@ import MainCalenderScreen from './MainCalenderScreen';
 
 function MainExerciseSreen(props) {
 
-  const testDate = [];
+  const testDate = [1];
   const searchCenterText = '센터 찾기'
 
   return (

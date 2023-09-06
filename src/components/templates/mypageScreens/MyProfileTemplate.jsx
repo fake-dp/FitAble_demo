@@ -11,6 +11,16 @@ function MyProfileTemplate(props) {
 
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
+    
+    const goChangePassword = () => {
+        navigation.navigate('ChangePassword');
+    }
+
+    const goChangePhoneNumber = () => {
+        navigation.navigate('ChangePhoneNumber');
+    }
+
+
     return (
         <Container>
             <GobackBlackGrid
@@ -44,12 +54,12 @@ function MyProfileTemplate(props) {
             </TextContainer> */}
 
         <ProfileContainer>
-         <ProfileListContainer>
+         <ProfileListContainer onPress={goChangePassword}>
                     <ProfileListText>비밀번호 변경</ProfileListText>
                     <ProfileListRightIcon source={rightIcon}/>
             </ProfileListContainer>
 
-                <ProfileListContainer>
+                <ProfileListContainer onPress={goChangePhoneNumber}>
                     <ProfileListText>휴대폰번호 변경</ProfileListText>
                     <ProfileListRightIcon source={rightIcon}/>
         </ProfileListContainer>
