@@ -61,12 +61,13 @@ function CenterRegistTemplate(props) {
     }
 
     const goMyScreens = async(id, name) => {
-        // console.log('등록하기 버튼 클릭22',id,name)
+        console.log('등록하기 버튼 클릭22',id,name)
         try{
             const response = await postMainCenter(id);
             // console.log('response123',response)
             setMyInfo(prevState => ({
                 ...prevState,
+                mainCenterId: id,
                 mainCenter: name
             }));
             setShowModal(false)

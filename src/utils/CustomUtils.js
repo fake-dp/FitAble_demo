@@ -22,3 +22,9 @@ export const formatTime = (seconds) => {
   const sec = seconds % 60;
   return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 };
+
+
+// 날짜 포맷
+export function formatDate(dateString) {
+    return dateString.split('T')[0];
+}

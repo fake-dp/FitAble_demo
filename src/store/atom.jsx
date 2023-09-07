@@ -81,14 +81,20 @@ export const centerIdState = atom({
 
 
 // mypage info
-
 export const myinfoState = atom({
   key: 'myinfoState',
   default: {
     name: '',
     phone: '',
+    mainCenterId: '',
     mainCenter: '',
     marketing: '',
     pushAlarm: '',
   },
+});
+
+// 센터 문의사항 관리
+export const inquiryListState = atom({
+  key: 'inquiryListState',
+  default: [],
 });

@@ -73,3 +73,43 @@ export const postMainCenter = async (id) => {
         throw error;
     }
 }
+
+// notice list api
+export const getNoticeList = async () => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/notices`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// notice detail api
+export const getNoticeDetail = async (id) => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/notices/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// get inquiry list
+export const getInquiryList = async (id) => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/inquiry/center/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// post inquiry
+export const postInquiry = async (data) => {
+    try {
+        const response = await customAxios.post(`/api/members/v1/inquiry/center`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

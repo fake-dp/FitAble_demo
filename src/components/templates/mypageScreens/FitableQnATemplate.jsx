@@ -4,16 +4,94 @@ import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
-
+import { useRoute } from '@react-navigation/native';
+import { useState } from 'react';
+import { Alert } from 'react-native';
+import {postInquiry} from '../../../api/mypageApi';
+import { useRecoilState } from 'recoil';
+import { inquiryListState ,myinfoState} from '../../../store/atom';
+import { formatDate } from '../../../utils/CustomUtils';
 function FitableQnATemplate(props) {
     const navigation = useNavigation();
+    const route = useRoute();
+    console.log('route.params', route.params?.centerId)
 
-    const goBackScreens = () => {
-        navigation.goBack();
+    const centerInquiryText = route.params?.text;
+    const centerInquiryId = route.params?.centerId;
+
+    const [inquiryText, setInquiryText] = useState('');
+    const [inquiryList, setInquiryList] = useRecoilState(inquiryListState);
+    const [myInfo, setMyInfo] = useRecoilState(myinfoState);
+
+    console.log('inquiryList',inquiryList)
+
+    const inquiryTextChange = (text) => {
+        setInquiryText(text);
+        console.log('inquiryText',inquiryText)
     };
 
-    const handleRegistBtn = () => {
-        console.log('등록하였습니다.');
+
+    const goBackScreens = () => {
+        if(inquiryText.length > 0){
+            Alert.alert(
+                "주의",
+                "작성 중인 내용을 등록하지 않고 나가시겠습니까?",
+                [
+                    {text:'확인', onPress: () => navigation.goBack()},
+                    {text:'취소', }
+                ]
+                );
+            }else{
+                navigation.goBack();
+            }
+        };
+        
+    const postCenterInquiryData = async (data) => {
+        try {
+            const response = await postInquiry(data);
+
+            const newInquiry = {
+                id: response.id,
+                context: data.context,
+                createAt: formatDate(response.createAt),
+                isComment: false,
+                comment: null,
+                name: myInfo.name
+            }
+
+            setInquiryList([newInquiry, ...inquiryList]);
+
+            Alert.alert(
+                "문의 완료",
+                "문의가 등록되었습니다",
+                [{text:'확인', onPress: () => navigation.goBack()}]
+                );
+
+        } catch (error) {
+            console.error('Error getting:', error);
+            Alert.alert(
+                "문의 실패",
+                "문의 등록에 실패하였습니다.",
+                [{text:'확인'}]
+                );
+        }
+    };
+
+    const handleRegistBtn = (centerInquiryId, inquiryText) => {
+
+        console.log('centerInquiryId, inquiryText',centerInquiryId, inquiryText)
+
+        if(centerInquiryText){
+            const data = {
+                centerId: centerInquiryId,
+                context: inquiryText
+            }
+
+            postCenterInquiryData(data);
+        }else{
+            console.log('핏에이블 문의 등록')
+        }
+        // console.log('등록하였습니다.',inquiryText);
     };
 
     const handleAnswerListBtn = () => {
@@ -25,13 +103,21 @@ function FitableQnATemplate(props) {
 
     return (
         <Container>
-            <GobackBlackGrid onPress={goBackScreens}>핏에이블 문의</GobackBlackGrid>
+            <GobackBlackGrid onPress={goBackScreens}>
+            {
+                centerInquiryText && centerInquiryId ? '센터 문의':'핏에이블 문의'
+            }
+            </GobackBlackGrid>
 
-            <PlusBtnContainer>
-                <PlusBtnBox>
-                <PlusBtn source={plusbtn} />
-                </PlusBtnBox>
-            </PlusBtnContainer>
+            {
+                centerInquiryText && centerInquiryId ? null : (
+                    <PlusBtnContainer>
+                        <PlusBtnBox>
+                            <PlusBtn source={plusbtn} />
+                        </PlusBtnBox>
+                    </PlusBtnContainer>
+                )
+            }
 
             <TitleText>내용</TitleText>
             <TextInputWrapper>
@@ -40,17 +126,18 @@ function FitableQnATemplate(props) {
                     multiline={true}
                     // numberOfLines={15}
                     placeholderTextColor={COLORS.gray_300}
+                    onChangeText={inquiryTextChange}
                 />
             </TextInputWrapper>
 
-            <TextContainerBtn
-                onPress={handleAnswerListBtn}
-            >
-                <ChangeText>문의 내역 확인</ChangeText>
-            </TextContainerBtn>
-
-         
-                <MyBtn onPress={handleRegistBtn}>등록하기</MyBtn>
+            {
+                centerInquiryText && centerInquiryId ? null : (
+                    <TextContainerBtn onPress={handleAnswerListBtn}>
+                        <ChangeText>문의 내역 확인</ChangeText>
+                    </TextContainerBtn>
+                )
+            }
+                <MyBtn onPress={()=>handleRegistBtn(centerInquiryId, inquiryText)}>등록하기</MyBtn>
            
         </Container>
     );

@@ -107,7 +107,7 @@ function AppScreens({navigation}) {
             <Stack.Screen name="CenterRegist" component={CenterRegistration} options={{headerStyle: {backgroundColor: COLORS.sub,},}}/>
             <Stack.Screen name="MyBookList" component={MyBookListScreen}  />
             <Stack.Screen name="CenterTicket" component={CenterTicketListScreen}  />
-            <Stack.Screen name="MyCenter" component={MyCenterMarkScreen}  />
+            <Stack.Screen name="MyCenter" component={MyCenterMarkScreen}  options={{headerShown:false}}/>
             <Stack.Screen name="Mileage" component={MileageScreen}  />
             <Stack.Screen name="Product" component={MyProductScreen}  />
             <Stack.Screen name="FitableQnA" component={FitableQnAScreen}  />
