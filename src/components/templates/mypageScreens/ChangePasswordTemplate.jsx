@@ -147,7 +147,7 @@ function ChangePasswordTemplate(props) {
                 // secureTextEntry={true}
                 />
                  <CertificationTimer>
-                {formatTime(secondsLeft)}
+                0{formatTime(secondsLeft)}
                 </CertificationTimer>
             </CertificationIputBox>
                 <ResendBtn onPress={()=>getCertification(phone)}>

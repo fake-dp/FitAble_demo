@@ -2,7 +2,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Modal } from 'react-native';
 
-export function BookCancelModal({closeModal ,text}) {
+export function BookCancelModal({closeModal ,text, postCancelReservation}) {
    
     return (
         <Modal
@@ -17,7 +17,7 @@ export function BookCancelModal({closeModal ,text}) {
                 <ModalSubTitle>{text.content}</ModalSubTitle>
                 <ModalSubTitle>{text.contentsub}</ModalSubTitle>
         <ButtonContainer>
-            <BtnSubBoxContainer onPress={closeModal}>
+            <BtnSubBoxContainer onPress={postCancelReservation}>
                     <BtnText>{text.checkText}</BtnText>
             </BtnSubBoxContainer>
 
