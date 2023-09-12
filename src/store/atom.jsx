@@ -78,8 +78,6 @@ export const centerIdState = atom({
 });
 
 
-
-
 // mypage info
 export const myinfoState = atom({
   key: 'myinfoState',
@@ -96,5 +94,19 @@ export const myinfoState = atom({
 // 센터 문의사항 관리
 export const inquiryListState = atom({
   key: 'inquiryListState',
+  default: [],
+});
+
+
+// 구독권 내역 목록 상태 관리
+export const subscribeListState = atom({
+  key: 'subscribeListState',
+  default: [],
+});
+
+
+// 이용권 내역 목록 상태 관리
+export const ticketListState = atom({
+  key: 'ticketListState',
   default: [],
 });

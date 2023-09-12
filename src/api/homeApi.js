@@ -91,16 +91,6 @@ export const getTrainersName = async (centerId) => {
   }
 }
 
-// center detail tickets id
-export const getDetailTickets = async (id) => {
-  try {
-    const response = await customAxios.get(`/api/members/v1/tickets/${id}`); 
-     return response.data;
-  } catch (error) {
-    throw error;
-  }
-}
-
 // consulting api
 export const postConsulting = async (data) => {
   try {

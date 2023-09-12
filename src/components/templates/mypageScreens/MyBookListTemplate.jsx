@@ -39,7 +39,10 @@ function MyBookListTemplate(props) {
             const response = await cancelReservation(id);
             console.log('response',response)
             if(response){
-                Alert.alert("알림","예약이 취소되었습니다.",[{text:'확인', onPress: () => navigation.goBack()}]);
+                console.log('예약 취소 확인용 콘솔',response)
+                // setShowModal(false)
+                navigation.goBack();
+                // Alert.alert("알림","예약이 취소되었습니다.",['확인']);
             }else{
                 Alert.alert("알림","예약이 실패하였습니다.",['확인']);
             }

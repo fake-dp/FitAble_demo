@@ -28,3 +28,8 @@ export const formatTime = (seconds) => {
 export function formatDate(dateString) {
     return dateString.split('T')[0];
 }
+
+// 숫자 콤마
+export function formatCommaNumber(num) {
+    return new Intl.NumberFormat().format(num);
+  }

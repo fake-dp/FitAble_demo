@@ -2,6 +2,7 @@ import { View ,Text} from "react-native";
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Fragment } from "react";
+import {formatCommaNumber} from '../../../utils/CustomUtils'
 function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
     return (
       <View>
@@ -10,24 +11,45 @@ function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicke
           <Container>
             <ContentsBox onPress={goDetailTicketScreens}>
               <TextContainer>
-                <DateText>{data.date}</DateText>
-                {data.isUsed && <UsingText>이용중</UsingText>}
+                <DateText>{data.createAt}</DateText>
+                {data.status === 'IN_USE' && <UsingText>이용중</UsingText>}
+                {data.status === 'USING_SOON' && <UsingText>이용예정</UsingText>}
                 </TextContainer>
-              <TitleText>{data.title}</TitleText>
+              <TitleText>{data.name}</TitleText>
+              <DateText>{data.status}</DateText>
+              <DateText>{data.paymentStatus}</DateText>
             </ContentsBox>
             <SubTextContainer>
-              <IsCardText>{data.isCard ? 'PAYCO' : '현금'}</IsCardText>
-              <TitleText>{data.price}</TitleText>
-              {data.isUsed ? (
+              <IsCardText>{data.paymentType}</IsCardText>
+              <TitleText>{formatCommaNumber(data.price)}원</TitleText>
+              {/* {data.status === 'IN_USE' ? ( */}
                   <>
-                  <CancelBtnContainer onPress={openCancelModal}>
-                     <CancelBtnText>구독취소</CancelBtnText>
-                  </CancelBtnContainer>
-                  <TextContainerBtn onPress={onPress}>
-                  <UnderLineText>결제 수단 변경</UnderLineText>
-                  </TextContainerBtn>
+                  <BtnContainer>
+                  {
+                    data.paymentStatus === 'PAYMENT_SUCCESS' && (
+                      <CancelBtnContainer onPress={()=>openCancelModal(data.id)}>
+                        <CancelBtnText>구독취소</CancelBtnText>
+                       </CancelBtnContainer>
+                    )
+                  }
+                  
+                  {
+                    data.paymentStatus === 'PAYMENT_FAILURE' && (
+                      <CancelNextBtnContainer onPress={()=>openCancelModal(data.id)}>
+                          <CancelBtnText>다음달 결제</CancelBtnText>
+                       </CancelNextBtnContainer>
+                    )
+                  }
+                  </BtnContainer>
+                  {
+                    data.paymentStatus === 'PAYMENT_SUCCESS' || data.paymentStatus === 'PAYMENT_FAILURE' ? (
+                      <TextContainerBtn onPress={onPress}>
+                      <UnderLineText>결제 수단 변경</UnderLineText>
+                      </TextContainerBtn>) : null
+                  }
+    
                 </>
-              ) : null}
+              {/* ) : null} */}
             </SubTextContainer>
           </Container>
           <LineStyle key={`line-${data.id}`} />
@@ -93,6 +115,15 @@ const CancelBtnContainer = styled.TouchableOpacity`
     margin-bottom: 18px;
 `;
 
+const CancelNextBtnContainer = styled.TouchableOpacity`
+    border: 1px solid ${COLORS.sub};
+    border-radius: 100px;
+    padding: 4px 11px;
+    margin-top: 16px;
+    margin-bottom: 18px;
+    margin-left: 8px;
+`;
+
 
 const CancelBtnText = styled.Text`
     font-size: 14px;
@@ -118,3 +149,8 @@ const UsingText = styled.Text`
   line-height: 22.40px;
   margin-left: 8px;
 `;
+
+const BtnContainer = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+`

@@ -2,36 +2,48 @@ import { View ,Text} from "react-native";
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Fragment } from "react";
+import {formatCommaNumber} from '../../../utils/CustomUtils'
 function UseTicketList({ useTicketListData,openCancelModal,openStopModal,goDetailTicketScreens }) {
     return (
       <View>
-        {useTicketListData.map((data) => (
+        {useTicketListData.map((data,index) => (
             <Fragment key={data.id}>
           <Container>
             <ContentsBox onPress={goDetailTicketScreens}>
               <TextContainer>
-                <DateText>{data.date}</DateText>
-                {data.isUsed && <UsingText>이용중</UsingText>}
+                <DateText>{data.createAt}</DateText>
+                {data.status === 'IN_USE'&& <UsingText>이용중</UsingText>}
+                {data.status === 'USING_SOON'&& <UsingText>이용예정</UsingText>}
+                {data.status === 'STOP'&& <UsingText>중지중</UsingText>}
                 </TextContainer>
-                {data.isUsed && <TitleText>3개월 이용권+1:1 P.T 3회</TitleText>}
-              <TitleText>{data.title}</TitleText>
+              <TitleText>{data.name}</TitleText>
+              <DateText>{data.status}</DateText>
+              <DateText>{data.paymentStatus}</DateText>
+              <DateText>{`${data.stopTicket}`}</DateText>
             </ContentsBox>
             <SubTextContainer>
-              <IsCardText>{data.isCard ? 'PAYCO' : '현금'}</IsCardText>
-              <TitleText>{data.price}</TitleText>
-              {data.isUsed ? (
+              <IsCardText>{data.paymentType}</IsCardText>
+              <TitleText>{formatCommaNumber(data.price)}원</TitleText>
+              
                   <BtnWraper>
-                  <CancelBtnContainer onPress={openStopModal}>
-                     <CancelBtnText>중지</CancelBtnText>
-                  </CancelBtnContainer>
-                  <CancelBtnContainer onPress={openCancelModal}>
-                     <CancelBtnText>환불</CancelBtnText>
-                  </CancelBtnContainer>
+                    {
+                      data.stopTicket && (
+                      <CancelBtnContainer onPress={()=>openStopModal(data.id)}>
+                        <CancelBtnText>중지</CancelBtnText>
+                     </CancelBtnContainer>)
+                    }
+                    {
+                    data.paymentStatus === 'PAYMENT_SUCCESS' && (
+                         <CancelBtnContainer onPress={()=>openCancelModal(data.id)}>
+                         <CancelBtnText>환불</CancelBtnText>
+                      </CancelBtnContainer>)
+                    }
                 </BtnWraper>
-              ) : null}
+          
             </SubTextContainer>
           </Container>
-          <LineStyle key={`line-${data.id}`} />
+          <LineStyle key={`line-${data.id}`} isLast={index === useTicketListData.length - 1}/>
+          
               </Fragment>
         ))}
       </View>
@@ -49,8 +61,9 @@ const Container = styled.View`
 const LineStyle = styled.View`
     border-bottom-width: 1px;
     border-bottom-color: ${COLORS.gray_100};
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     margin-top: 28px;
+    margin-bottom: ${({ isLast }) => (isLast ? '60px' : '30px')};
 `;
 
 const ContentsBox = styled.TouchableOpacity``

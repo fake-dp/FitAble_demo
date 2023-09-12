@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
+import {PERIOD_STATUS, TIMES_STATUS, TICKET_STATUS} from'../../../constants/status';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import SubscribeList from '../../ui/list/SubscribeList';
@@ -8,25 +9,74 @@ import UseTicketList from '../../ui/list/UseTicketList';
 import { ScrollView } from 'react-native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
 import { StopCancelModal, SubNTicketCancelModal } from '../../ui/modal/MyPageCancelModal';
+
+import {getTypeTickets, getDetailTicket,useStopTicketList ,getStopTickets} from '../../../api/useTicketsApi';
+import { useRecoilState } from 'recoil';
+import { subscribeListState, ticketListState } from '../../../store/atom';
+
+
 function CenterTicketListTemplate(props) {
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState('subscribe');
+  const [selectedTab, setSelectedTab] = useState('SUBSCRIBE');
 
   const [showModal, setShowModal] = useState(false);
   const [stopShowModal, setStopShowModal] = useState(false);
 
-  const openCancelModal = () => {
-      setShowModal(true)
+  const [subscribeList, setSubscribeList] = useRecoilState(subscribeListState);
+  const [ticketList, setTicketList] = useRecoilState(ticketListState);
+
+  // 이용권 목록 (구독, 이용)
+  const getTypeTicketsListData = async (type) => {
+    try {
+        const response = await getTypeTickets(type);
+        if(type === 'SUBSCRIBE'){
+          setSubscribeList(response.content);
+        }else if(type === 'OTHER'){
+          setTicketList(response.content);
+        }
+    } catch (error) {
+        console.error('Error getting:', error);
+    }
+};
+
+// 중지권 목록
+const getStopTicketsListData = async (id) => {
+  try {
+      const response = await getStopTickets(id);
+      console.log('response',response)
+  } catch (error) {
+      console.error('Error getting:', error);
+  }
+};
+
+
+  // 이용권 목록 (구독권, 이용권)
+  useEffect(() => {
+    getTypeTicketsListData('SUBSCRIBE');
+    getTypeTicketsListData('OTHER');
+  }, []);
+
+ 
+  // 환불
+  const openCancelModal = (id) => {
+    console.log('난 환불 및 구독 버튼이얌 헤헤 id',id)
+    setShowModal(true)
   }
 
-  const openStopModal = () => {
-    setStopShowModal(true)
+  // 중지
+  const openStopModal = (id) => {
+    console.log('난 중지 버튼이얌 헤헤 id',id)
+    // setStopShowModal(true)
+    getStopTicketsListData(id);
   }
 
+
+  // 중지권 모달 닫기
   const stopCloseModal = () => {
     setStopShowModal(false)
 }
 
+  // 구독권 및 환불 모달 닫기
   const closeModal = () => {
       setShowModal(false)
   }
@@ -51,94 +101,10 @@ function CenterTicketListTemplate(props) {
         navigation.navigate('TicketDetail',{data});
     };
 
-  const subscribeListData = [
-    {
-        id: 0,
-        date: '2023.06.15 10:10',
-        title: '에이블짐 Basic 멤버십',
-        price: '99,000',
-        isCard: true,
-        isUsed: true,
-    },
-    {
-        id: 1,
-        date: '2023.06.14 10:20',
-        title: '에이블짐 Basic 멤버십',
-        price: '99,000',
-        isCard: false,
-        isUsed: false,
-    },
-    {
-        id: 2,
-        date: '2023.06.13 08:15',
-        title: '에이블짐 Basic 멤버십',
-        price: '99,000',
-        isCard: false,
-        isUsed: false,
-    },
-    {
-        id: 3,
-        date: '2023.06.13 10:10',
-        title: '에이블짐 Basic 멤버십',
-        price: '99,000',
-        isCard: false,
-        isUsed: false,
-    },
-    {
-        id: 4,
-        date: '2023.06.13 08:15',
-        title: '에이블짐 Basic 멤버십',
-        price: '99,000',
-        isCard: false,
-        isUsed: false,
-    },
-    {
-        id: 5,
-        date: '2023.06.13 10:10',
-        title: '에이블짐 Basic 멤버십',
-        price: '99,000',
-        isCard: false,
-        isUsed: false,
-    },
-]
 
-  const useTicketListData = [
-    {
-        id: 0,
-        date: '2023.06.15 10:10',
-        title: '3개월 이용권',
-        price: '99,000',
-        isCard: true,
-        isUsed: true,
-    },
-    {
-        id: 1,
-        date: '2023.06.15 10:10',
-        title: '3개월 이용권',
-        price: '199,000',
-        isCard: false,
-        isUsed: false,
-    },
-    {
-        id: 2,
-        date: '2023.06.15 10:10',
-        title: '3개월 이용권',
-        price: '199,000',
-        isCard: false,
-        isUsed: false,
-    },
-    {
-        id: 3,
-        date: '2023.06.15 10:10',
-        title: '3개월 이용권',
-        price: '99,000',
-        isCard: false,
-        isUsed: false,
-    },
-]
 
 const subscribeCancelText = {
-    title: '구독 취소',
+    title: '해지 예약',
     content: '정말로 구독을 취소하시겠어요?',
     contentsub: '구독을 취소하면 다음 달 구독권을 사용할 수 없습니다',
     checkText: '확인',
@@ -165,29 +131,31 @@ const stopText = {
     <Container>
       <GobackBlackGrid onPress={goBackScreens}>이용권 목록</GobackBlackGrid>
       <BtnListContainer>
-        <BtnListBox onPress={() => handleTabClick('subscribe')} selected={selectedTab === 'subscribe'}>
-          <BtnListText selected={selectedTab === 'subscribe'}>구독권 내역</BtnListText>
+        <BtnListBox onPress={() => handleTabClick('SUBSCRIBE')} selected={selectedTab === 'SUBSCRIBE'}>
+          <BtnListText selected={selectedTab === 'SUBSCRIBE'}>구독권 내역</BtnListText>
         </BtnListBox>
 
-        <BtnListBox onPress={() => handleTabClick('useTicket')} selected={selectedTab === 'useTicket'}>
-          <BtnListText selected={selectedTab === 'useTicket'}>이용권 내역</BtnListText>
+        <BtnListBox onPress={() => handleTabClick('OTHER')} selected={selectedTab === 'OTHER'}>
+          <BtnListText selected={selectedTab === 'OTHER'}>이용권 내역</BtnListText>
         </BtnListBox>
+
       </BtnListContainer>
-      {selectedTab === 'subscribe' ? 
+      {selectedTab === 'SUBSCRIBE' ? 
       <ScrollView bounces={false} showsVerticalScrollIndicator={false} overScrollMode="never">
          <SubscribeList 
-          goDetailTicketScreens={()=>goDetailTicketScreens('subscribe')}
+          goDetailTicketScreens={()=>goDetailTicketScreens('SUBSCRIBE')}
           onPress={changeCardInfoScreens}
           openCancelModal={openCancelModal}
-          subscribeListData={subscribeListData}/>
+          subscribeListData={subscribeList}/>
+          {/* subscribeListData={subscribeListData}/> */}
       </ScrollView> : <ScrollView bounces={false} showsVerticalScrollIndicator={false} overScrollMode="never">
           <UseTicketList 
-            goDetailTicketScreens={()=>goDetailTicketScreens('useTicket')}
+            goDetailTicketScreens={()=>goDetailTicketScreens('OTHER')}
             openCancelModal={openCancelModal}
             openStopModal={openStopModal}
-            useTicketListData={useTicketListData}/>
+            useTicketListData={ticketList}/>
       </ScrollView>}
-      {selectedTab === 'useTicket' && (
+      {selectedTab === 'OTHER' && (
             <AddBtnContainer>
                 <MyBtn
                 onPress={addPayTicket}
@@ -198,7 +166,7 @@ const stopText = {
         showModal && (
             <SubNTicketCancelModal 
             closeModal={closeModal}
-            text={selectedTab === 'subscribe' ? subscribeCancelText: refoundText}
+            text={selectedTab === 'SUBSCRIBE' ? subscribeCancelText: refoundText}
          />
         )
       }
