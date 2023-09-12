@@ -3,13 +3,23 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Fragment } from "react";
 import {formatCommaNumber} from '../../../utils/CustomUtils'
+import { useNavigation } from '@react-navigation/native';
 function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
-    return (
+  // SUBSCRIBE
+
+  const navigation = useNavigation();
+
+  const detailScreen = (id) => {
+    console.log('id@@@확인용',id)
+    navigation.navigate('TicketDetail', {data:"SUBSCRIBE",id:id})
+  };
+  
+  return (
       <View>
         {subscribeListData.map((data) => (
         <Fragment key={data.id}>
           <Container>
-            <ContentsBox onPress={goDetailTicketScreens}>
+            <ContentsBox onPress={()=>detailScreen(data.id)}>
               <TextContainer>
                 <DateText>{data.createAt}</DateText>
                 {data.status === 'IN_USE' && <UsingText>이용중</UsingText>}

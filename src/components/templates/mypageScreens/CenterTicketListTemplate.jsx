@@ -6,14 +6,14 @@ import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import SubscribeList from '../../ui/list/SubscribeList';
 import UseTicketList from '../../ui/list/UseTicketList';
-import { ScrollView } from 'react-native';
+import { ScrollView , Alert} from 'react-native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
 import { StopCancelModal, SubNTicketCancelModal } from '../../ui/modal/MyPageCancelModal';
 
-import {getTypeTickets, getDetailTicket,useStopTicketList ,getStopTickets} from '../../../api/useTicketsApi';
+import {getTypeTickets, useStopTicket, requestRefundTicket,cancelSubscribeTicket,getDetailTicket ,getStopTickets} from '../../../api/useTicketsApi';
 import { useRecoilState } from 'recoil';
 import { subscribeListState, ticketListState } from '../../../store/atom';
-
+import CancelPicker from '../../ui/custom/CancelPicker';
 
 function CenterTicketListTemplate(props) {
   const navigation = useNavigation();
@@ -24,7 +24,11 @@ function CenterTicketListTemplate(props) {
 
   const [subscribeList, setSubscribeList] = useRecoilState(subscribeListState);
   const [ticketList, setTicketList] = useRecoilState(ticketListState);
+  const [showStopTicketPicker, setShowStopTicketPicker] = useState(false);
+  const [stopTicketList, setStopTicketList] = useState([])
 
+  const [ticketStopId, setTicketStopId] = useState(null)
+  const [ticketSubNRefundId, setTicketSubNRefundId] = useState(null)
   // 이용권 목록 (구독, 이용)
   const getTypeTicketsListData = async (type) => {
     try {
@@ -39,11 +43,74 @@ function CenterTicketListTemplate(props) {
     }
 };
 
-// 중지권 목록
-const getStopTicketsListData = async (id) => {
+  // 중지권 목록
+  const getStopTicketsListData = async (id) => {
   try {
       const response = await getStopTickets(id);
-      console.log('response',response)
+      console.log('response',response.stopTickets)
+      if(response){
+        setShowStopTicketPicker(true)
+        setStopTicketList(response.stopTickets)
+        navigation.setOptions({
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+          },
+        });
+      }else{
+        Alert.alert("알림","중지권 목록을 불러올 수 없습니다.",['확인']);
+      }
+  } catch (error) {
+      console.error('Error getting:', error);
+  }
+};
+
+  // 중지권 요청
+  const postUseStopTicket = async (id) => {
+  // console.log('udd,',id)
+  try {
+      const response = await useStopTicket(id);
+      if(response){
+          console.log('중지권 사용 확인용 콘솔',response)
+          Alert.alert("알림","중지권 사용에 성공하였습니다.",[ 
+          { text: '확인', onPress: () =>  setStopShowModal(false)}]);
+          // setStopShowModal(false)
+      }else{
+          Alert.alert("알림","중지권 사용에 실패하였습니다.",['확인']);
+      }
+  } catch (error) {
+      console.error('Error getting:', error);
+  }
+};
+
+  // 환불 요청
+  const postRefundTicket = async (id) => {
+  try {
+      const response = await requestRefundTicket(id);
+      if(response){
+          console.log('환불 요청 확인용 콘솔',response)
+          Alert.alert("알림","환불 요청에 성공하였습니다.",[
+          { text: '확인', onPress: () =>  setShowModal(false)}]);
+          // setShowModal(false)
+      }else{
+          Alert.alert("알림","환불 요청에 실패하였습니다.",['확인']);
+      }
+  } catch (error) {
+      console.error('Error getting:', error);
+  }
+};
+
+  // 구독 취소 
+  const postCancelSubscribeTicket = async (id) => {
+  try {
+      const response = await cancelSubscribeTicket(id);
+      if(response){
+          console.log('구독 취소 확인용 콘솔',response)
+          Alert.alert("알림","구독 취소에 성공하였습니다.",[
+          { text: '확인', onPress: () =>  setShowModal(false)}]);
+          // setShowModal(false)
+      }else{
+          Alert.alert("알림","구독 취소에 실패하였습니다.",['확인']);
+      }
   } catch (error) {
       console.error('Error getting:', error);
   }
@@ -57,17 +124,34 @@ const getStopTicketsListData = async (id) => {
   }, []);
 
  
-  // 환불
+  // 환불 및 구독 요청 확인 버튼
+  const postSubNRefundBtn = (id,type) => {
+    console.log('난 환불 및 구독 버튼이얌 헤헤gpgpgp id',id, type)
+    // postRefundTicket(id);
+    if(type === 'SUBSCRIBE'){
+      postCancelSubscribeTicket(id);
+    }else if(type === 'OTHER'){
+      postRefundTicket(id);
+    }
+  }
+
+  // 환불 및 구독 모달 오픈
   const openCancelModal = (id) => {
     console.log('난 환불 및 구독 버튼이얌 헤헤 id',id)
     setShowModal(true)
+    setTicketSubNRefundId(id)
   }
+  console.log('ticketSubNRefundId',ticketSubNRefundId)
 
   // 중지
   const openStopModal = (id) => {
-    console.log('난 중지 버튼이얌 헤헤 id',id)
-    // setStopShowModal(true)
+    setTicketStopId(id)
     getStopTicketsListData(id);
+  }
+
+  const postStopticketBtn = (ticketStopId) => {
+    console.log('난 @@중지 버튼이얌 헤헤 id',ticketStopId)
+    postUseStopTicket(ticketStopId);
   }
 
 
@@ -97,11 +181,6 @@ const getStopTicketsListData = async (id) => {
         navigation.navigate('InfoCard');
     };
 
-    const goDetailTicketScreens = (data) => {
-        navigation.navigate('TicketDetail',{data});
-    };
-
-
 
 const subscribeCancelText = {
     title: '해지 예약',
@@ -128,6 +207,7 @@ const stopText = {
 }
 
   return (
+    <>
     <Container>
       <GobackBlackGrid onPress={goBackScreens}>이용권 목록</GobackBlackGrid>
       <BtnListContainer>
@@ -143,14 +223,14 @@ const stopText = {
       {selectedTab === 'SUBSCRIBE' ? 
       <ScrollView bounces={false} showsVerticalScrollIndicator={false} overScrollMode="never">
          <SubscribeList 
-          goDetailTicketScreens={()=>goDetailTicketScreens('SUBSCRIBE')}
+        
           onPress={changeCardInfoScreens}
           openCancelModal={openCancelModal}
           subscribeListData={subscribeList}/>
-          {/* subscribeListData={subscribeListData}/> */}
+    
       </ScrollView> : <ScrollView bounces={false} showsVerticalScrollIndicator={false} overScrollMode="never">
           <UseTicketList 
-            goDetailTicketScreens={()=>goDetailTicketScreens('OTHER')}
+
             openCancelModal={openCancelModal}
             openStopModal={openStopModal}
             useTicketListData={ticketList}/>
@@ -165,6 +245,7 @@ const stopText = {
       {
         showModal && (
             <SubNTicketCancelModal 
+            postSubNRefundBtn={()=>postSubNRefundBtn(ticketSubNRefundId, selectedTab)}
             closeModal={closeModal}
             text={selectedTab === 'SUBSCRIBE' ? subscribeCancelText: refoundText}
          />
@@ -175,10 +256,19 @@ const stopText = {
             <StopCancelModal 
             closeModal={stopCloseModal}
             text={stopText}
+            postStopticketBtn={()=>postStopticketBtn(ticketStopId)}
          />
         )
       }
-    </Container>
+      </Container>
+      {
+        showStopTicketPicker && (<CancelPicker 
+          stopTicketList={stopTicketList}
+          setStopShowModal={setStopShowModal}
+          ticketStopId={ticketStopId}
+          setShowStopTicketPicker={setShowStopTicketPicker}/>)
+      }
+      </>
   );
 }
 

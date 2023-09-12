@@ -3,13 +3,22 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Fragment } from "react";
 import {formatCommaNumber} from '../../../utils/CustomUtils'
-function UseTicketList({ useTicketListData,openCancelModal,openStopModal,goDetailTicketScreens }) {
-    return (
+import { useNavigation } from '@react-navigation/native';
+function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
+    
+  const navigation = useNavigation();
+
+  const detailScreen = (id) => {
+    console.log('id@@@확인용',id)
+    navigation.navigate('TicketDetail', {data:"OTHER",id:id})
+  };
+  
+  return (
       <View>
         {useTicketListData.map((data,index) => (
             <Fragment key={data.id}>
           <Container>
-            <ContentsBox onPress={goDetailTicketScreens}>
+            <ContentsBox onPress={()=>detailScreen(data.id)}>
               <TextContainer>
                 <DateText>{data.createAt}</DateText>
                 {data.status === 'IN_USE'&& <UsingText>이용중</UsingText>}

@@ -14,7 +14,7 @@ export const cancelSubscribeTicket = async (id) => {
 // [앱] 회원 중지권 사용
 export const useStopTicket = async (id) => {
     try {
-        const response = await customAxios.post(`/api/members/v1/tickets/stop`,{id});
+        const response = await customAxios.post("/api/members/v1/tickets/stop",{id});
         return response.data;
     } catch (error) {
         throw error;

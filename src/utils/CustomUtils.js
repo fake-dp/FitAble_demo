@@ -33,3 +33,13 @@ export function formatDate(dateString) {
 export function formatCommaNumber(num) {
     return new Intl.NumberFormat().format(num);
   }
+
+// 하이폰 제거 - 대신 .
+export function formatReplaceString(dateString) {
+    if (!dateString) {
+      console.error('Invalid date string');
+      return '';  // 빈 문자열 반환
+    }
+    
+    return dateString.replace(/-/g, '.');
+  }

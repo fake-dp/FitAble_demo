@@ -2,21 +2,39 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
+import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import React, { useEffect, useState } from 'react';
 import { View,Text, ScrollView, SafeAreaView ,TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
+import {getDetailTicket} from '../../../api/useTicketsApi';
+import {formatReplaceString} from'../../../utils/CustomUtils';
 function TicketListDetailTemplate(props) {
     const navigation = useNavigation();
     const route = useRoute();
-    const { data } = route.params;
+    const { data, id } = route.params;
   
     const [showContent, setShowContent] = useState(false);
+    const [detailTicketData, setDetailTicketData] = useState([]);
 
     useEffect(() => {
-      console.log('Received Data:', data);
-    }, [data]);
+        // console.log('Received Data:', data, id);
+        if(id) {
+            getDetailTicketData(id);
+        }
+    }, [id]);
    
+
+    const getDetailTicketData = async (id) => {
+        try {
+            const response = await getDetailTicket(id);
+            // console.log('response',response)
+            setDetailTicketData(response);
+        } catch (error) {
+            console.error('Error getting:', error);
+        }
+    };
+
     const goBackScreens = () => {
         navigation.goBack();
     };
@@ -28,100 +46,104 @@ function TicketListDetailTemplate(props) {
     const toggleContent = () => {
         setShowContent(!showContent);
     };
-
-    const ticketListData = [
-        {
-            id: 0,
-            title: '잔여횟수',
-            content: '2회/총 3회',
-        },
-        {
-            id: 1,
-            title: '수업시간',
-            content: '30분',
-        },
-        {
-            id: 2,
-            title: '주간이용',
-            content: '무제한',
-        },
-        {
-            id: 3,
-            title: '1일 이용',
-            content: '0회 남음 | 일 2회',
-        },
-        {
-            id: 4,
-            title: '최대 예약권(예약 최대 가능 횟수)',
-            content: '무제한',
-        },
-        {
-            id: 5,
-            title: '예약 취소권(예약 취소 가능 횟수)',
-            content: '무제한',
-        },
-        {
-            id: 6,
-            title: '중지권',
-            content: '2개(7일권, 2주권)',
-        },
-        {
-            id: 7,
-            title: '옵션',
-            content: '개인 락커 30번(55일 남음)',
-        },
-        {
-            id: 8,
-            title: '운동복',
-            content: '55일 남음',
-        },
-    ]
+    console.log('detailTicketData',detailTicketData)
 
     const downIcon = require('../../../assets/img/downcoupon.png');
     const upIcon = require('../../../assets/img/upcoupon.png');
 
+    // console.log('detailTicketData',detailTicketData?.status)
+
+    const {name,type,status,center,startDate,endDate,leftDay,leftTime,week,daily,leftReservation,leftCancelReservation,periodOfStopTicket,numberOfStopTicket,options,availableCenter ={}} = detailTicketData || {};
+    const {number, centers}=availableCenter
+//TICKET_TIME(일반이용권 횟수제), PT_TIME(P.T 횟수제), RENTAL_SPORTSWEAR_TIME
+    console.log('data',type,number, centers)
+    console.log('options',options&&options)
     return (
         <Container>
             <SafeAreaView/>
-            <HeaderContainer>
+            <HeaderContainer isUsed={detailTicketData?.status}>
                 <GobackContainer>
-                 <GobackGrid onPress={goBackScreens}/>
+                    {
+                        status&&status !=='IN_USE' ? <GobackBlackGrid onPress={goBackScreens}/> : <GobackGrid onPress={goBackScreens}/>
+                    }
                 </GobackContainer>
 
-                <SpotTitleText>에이블짐 노원점</SpotTitleText>
-                <UseTicketTitleText>
-                    {data==='subscribe'? '시설 3개월 이용권':'1:1 P.T 30회 이용권'}
+                <SpotTitleText isUsed={detailTicketData?.status}>{center?.name}</SpotTitleText>
+                <UseTicketTitleText isUsed={detailTicketData?.status} isLength={detailTicketData?.name?.length}>
+                    {name && name}
                     </UseTicketTitleText>
             <SubTextContainer>
-                <SubText>2023.06.05~2023.09.05</SubText>
-                <SubText>48일 남음</SubText>
+            <SubText isUsed={detailTicketData?.status}>{startDate && formatReplaceString(startDate)}~{endDate&&formatReplaceString(endDate)}</SubText>
+             <SubText isUsed={detailTicketData?.status}>{leftDay&&leftDay}
+             {type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? '회' : '일'} 남음</SubText>
             </SubTextContainer>
+            <SubText>type:{type&&type}, status:{status&&status}</SubText>
             </HeaderContainer>
 
             <TicketListContentsContainer>
                 <ScrollView
                 showsVerticalScrollIndicator={false}
                 >
-                {
-                    ticketListData.map((item, index) => (
-                        <TicketTextContainer key={index}>
-                            <TicketTitleText>{item.title}</TicketTitleText>
-                            <TicketContentsText>{item.content}</TicketContentsText>
-                        </TicketTextContainer>
-                    ))
-                }
+                    <TicketTextContainer>
+                            <TicketTitleText>잔여횟수</TicketTitleText>
+                            <TicketContentsText>{leftTime}{type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? '회' : '일'}</TicketContentsText>
+                    </TicketTextContainer>
+                    <TicketTextContainer>
+                            <TicketTitleText>주간이용</TicketTitleText>
+                            {
+                                week ? <TicketContentsText>{week?.numberOfLeft}회 남음 | 일 {week?.numberOfTotal}회</TicketContentsText> : <TicketContentsText>무제한</TicketContentsText>
+                            }
+                            {/* <TicketContentsText>{week?.numberOfLeft}회 남음 | 일 {week?.numberOfTotal}회</TicketContentsText> */}
+                    </TicketTextContainer>
+                    <TicketTextContainer>
+                            <TicketTitleText>1일 이용</TicketTitleText>
+                            {
+                                daily ? <TicketContentsText>{daily?.numberOfLeft}회 남음 | 일 {daily?.numberOfTotal}회</TicketContentsText> : <TicketContentsText>무제한</TicketContentsText>
+                            }
+                            {/* <TicketContentsText>{daily?.numberOfLeft}회 남음 | 일 {daily?.numberOfTotal}회</TicketContentsText> */}
+                    </TicketTextContainer>
+                    <TicketTextContainer>
+                            <TicketTitleText>최대 예약 가능 횟수</TicketTitleText>
+                            {
+                                leftReservation === null ? <TicketContentsText>무제한</TicketContentsText> : <TicketContentsText>{leftReservation}회</TicketContentsText>
+                            }
+                            {/* <TicketContentsText>{leftReservation}회</TicketContentsText> */}
+                    </TicketTextContainer>
+                    <TicketTextContainer>
+                            <TicketTitleText>예약 취소 가능 횟수</TicketTitleText>
+                            {
+                                leftCancelReservation === null ? <TicketContentsText>무제한</TicketContentsText> : <TicketContentsText>{leftCancelReservation}회</TicketContentsText>
+                            }
+                            {/* <TicketContentsText>{leftCancelReservation}회</TicketContentsText> */}
+                    </TicketTextContainer>
+                    <TicketTextContainer>
+                            <TicketTitleText>중지권</TicketTitleText>
+                            <TicketContentsText>{numberOfStopTicket}개({periodOfStopTicket}일)</TicketContentsText>
+                    </TicketTextContainer>
+                    <TicketOptionTextContainer>
+                            <TicketTitleText>옵션</TicketTitleText>
+                            <OptionContainer>
+
+                            <TicketContentsText>
+                                    없엉
+                            </TicketContentsText>
+                            <TicketContentsText>
+                                    없엉
+                            </TicketContentsText>
+                            </OptionContainer>
+                    </TicketOptionTextContainer>
                  {
-                    data==='subscribe' &&
+                   centers && number!== 0 &&
                     <CenterListContainerBox onPress={toggleContent} activeOpacity={0.8}>
                         <CenterContainer>
-                         <CenterListText>이용 가능 센터 30</CenterListText>
+                         <CenterListText>이용 가능 센터 {number&&number}</CenterListText>
                          <UpdownImg source={showContent ? upIcon : downIcon} />
                         </CenterContainer>
 
                         {
                             showContent && (
                                 <CenterListContainer>
-                                    <CenterListLongText>노원본점, 노원역점, 수유점, 압구정로데오점, 삼성중앙역점, 신논현역점, 강남역점, 교대역점, 종합운동장역점, 이태원점, 어린이대공원점, 한양대점, 잠실역점, 장안점, 용두역점, 암사역점, 창신역점, 천호역점, 신촌점, 길동역점, 사가정점, 상봉역점, 홍대입구역점, 돈암점, 위례점, 응암점, 먹골역점, 영등포역점, 구로디지털단지역점, 대림역점, 발산역점, 상암점, 불광점, 신정네거리역점, 마곡 수명산파크점, 중계점, 마곡나루센터, 신방화역점</CenterListLongText>
+                                    <CenterListLongText>{centers&&centers}</CenterListLongText>
                                 </CenterListContainer>
                             )
                         }
@@ -130,7 +152,7 @@ function TicketListDetailTemplate(props) {
                 }
                 </ScrollView>
                 {
-                    data !=='subscribe' && <MyBtn onPress={goExerciseScreens}>운동하기</MyBtn>
+                    status&&status ==='IN_USE' && <MyBtn onPress={goExerciseScreens}>운동하기</MyBtn>
                 }
             </TicketListContentsContainer>
         </Container>
@@ -149,7 +171,9 @@ const Container = styled.View`
 const HeaderContainer = styled.View`
     width: 100%;
     height: 260px;
-    background-color: ${COLORS.sub};
+    /* background-color: ${COLORS.sub}; */
+    /* background-color: red; */
+    background-color: ${props => props.isUsed === 'IN_USE' ? COLORS.sub : COLORS.gray_200};
     padding: 0 20px;
 `
 
@@ -158,7 +182,7 @@ const GobackContainer = styled.View`
 `
 
 const SpotTitleText = styled.Text`
-color: ${COLORS.gray_200};
+color: ${props => props.isUsed === 'IN_USE' ? COLORS.gray_200 : COLORS.gray_400};
 font-size: 14px;
 font-weight: 500;
 line-height: 22.40px;
@@ -167,10 +191,11 @@ margin-bottom: 20px;
 `
 
 const UseTicketTitleText = styled.Text`
-font-size: 32px;
+/* font-size: 32px; */
+font-size: ${props => props.isLength > 12 ? '30px' : '32px'};
 font-weight: 600;
 line-height: 43.20px;
-color: ${COLORS.main};
+color: ${props => props.isUsed === 'IN_USE' ? COLORS.main : COLORS.gray_400};
 margin-bottom: 6px;
 `
 
@@ -184,7 +209,8 @@ const SubText = styled.Text`
 font-size: 16px;
 font-weight: 400;
 line-height: 22.40px;
-color: ${COLORS.white};
+/* color: ${COLORS.white}; */
+color: ${props => props.isUsed === 'IN_USE' ? COLORS.white : COLORS.gray_400};
 `
 
 const TicketListContentsContainer = styled.View`
@@ -198,6 +224,12 @@ const TicketTextContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 17px;
+`
+
+const TicketOptionTextContainer = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 17px;
 `
 
@@ -220,6 +252,7 @@ const CenterListContainerBox = styled.TouchableOpacity`
   background-color: ${COLORS.white};
   border-radius: 10px;
   border: 1px solid ${COLORS.gray_200};
+  margin-bottom: 100px;
 `;
 const CenterContainer = styled.View`
   flex-direction: row;
@@ -248,4 +281,8 @@ const CenterListLongText = styled.Text`
 font-size: 14px;
 font-weight: 400;
 line-height: 22.40px;
+`
+
+const OptionContainer = styled.View`
+    flex-direction: column;
 `

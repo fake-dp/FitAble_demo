@@ -33,7 +33,7 @@ export function BookCancelModal({closeModal ,text, postCancelReservation}) {
     );
 }   
 
-export function SubNTicketCancelModal({closeModal,goHomeScreens ,text}) {
+export function SubNTicketCancelModal({closeModal,postSubNRefundBtn ,text}) {
     
     return (
         <Modal
@@ -48,7 +48,7 @@ export function SubNTicketCancelModal({closeModal,goHomeScreens ,text}) {
                 <ModalSubTitle>{text.content}</ModalSubTitle>
                 <ModalSubTitle>{text.contentsub}</ModalSubTitle>
                 <ButtonContainer>
-            <BtnSubBoxContainer onPress={closeModal}>
+            <BtnSubBoxContainer onPress={postSubNRefundBtn}>
                     <BtnText>{text.checkText}</BtnText>
             </BtnSubBoxContainer>
 
@@ -64,7 +64,7 @@ export function SubNTicketCancelModal({closeModal,goHomeScreens ,text}) {
     );
 }
 
-export function StopCancelModal({ text ,closeModal}) {
+export function StopCancelModal({ text ,closeModal,postStopticketBtn}) {
  
     return (
         <Modal
@@ -79,7 +79,7 @@ export function StopCancelModal({ text ,closeModal}) {
                 <ModalSubTitle>{text.content}</ModalSubTitle>
                 <ModalSubTitle>{text.contentsub}</ModalSubTitle>
                 <ButtonContainer>
-            <BtnSubBoxContainer onPress={closeModal}>
+            <BtnSubBoxContainer onPress={postStopticketBtn}>
                     <BtnText>{text.checkText}</BtnText>
             </BtnSubBoxContainer>
 
