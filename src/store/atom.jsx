@@ -110,3 +110,16 @@ export const ticketListState = atom({
   key: 'ticketListState',
   default: [],
 });
+
+
+// 홈 이용권 목록 상태 관리
+export const homeTicketListState = atom({
+  key: 'homeTicketListState',
+  default: [],
+});
+
+// 홈 회원 수업 목록 조회
+export const homeClassListState = atom({
+  key: 'homeClassListState',
+  default: [],
+});

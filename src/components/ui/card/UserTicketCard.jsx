@@ -1,44 +1,55 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { Platform, Image ,View} from 'react-native';
+import { Platform, Image ,View, TouchableOpacity} from 'react-native';
 import SmallLabel from '../label/SmallLabel';
-function UserTicketCard({ userCardData }) {
-  const { location, sportswear, locker, label, des, period, number, startdate, enddate,expiration } = userCardData;
-//   console.log('userCardData', userCardData);
+function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
+  const { id, center,locker,name,sportWear,trainerName,detail, usePercentage,type, status, startDate,endDate,left } = homeTicketList;
+  // console.log('userCardData',type, status,id );
 
   const shirts = require('../../../assets/img/t_shirt.png');
   const lockers = require('../../../assets/img/lockers.png');
- 
-  const progressPercentage = (1 - expiration/number) * 100;
-//   console.log('progressPercentage', progressPercentage)
+
   return (
     <Container>
-    <CardContainer>
-      <CardContent>
-        <CardMainText>{location}</CardMainText>
-        <LabelContainer>
-            {
-                sportswear && (<LabelImg source={shirts}/>)
-            }
-            {
-                locker && (<LabelImg source={lockers}/>)
-            }
-            <SmallLabel>{label}</SmallLabel>
-        </LabelContainer>
-
-      </CardContent>
-        <CardDesText>{des}</CardDesText>
-        <CardPeriodText>{period} {number}회</CardPeriodText>
-
-        <ProgressBarContainer>
-            <ProgressBar percentage={progressPercentage} />
-          </ProgressBarContainer>
-        <CardDateContainer>
-
-        <CardExpirationText>{startdate}~{enddate}</CardExpirationText>
-        <CardExpirationText>{expiration}회 남음</CardExpirationText>
-        </CardDateContainer>
-    </CardContainer>
+      {
+        status === "EXPIRED" || status ==="STOP_PENDING"? null : (
+          <CardContainer>
+          <TouchableOpacity onPress={()=>detailTicketsScreen(id)}>
+          <CardContent>
+            <CardMainText>{center.name}</CardMainText>
+            <LabelContainer>
+                {
+                    sportWear && (<LabelImg source={shirts}/>)
+                }
+                {
+                    locker && (<LabelImg source={lockers}/>)
+                }
+                {/* status : EXPIRING_SOON(만료 예정), EXPIRED(만료), IN_USE(사용중), STOP(중지) */}
+                <SmallLabel>{
+                    status === "IN_USE" ? "이용중" 
+                  : status === "STOP" ? "중지" 
+                  : status === "EXPIRING_SOON" ? "이용중" 
+                  : status === "USING_SOON" ? "예정"
+                  : null
+                  }</SmallLabel>
+            </LabelContainer>
+    
+          </CardContent>
+            <CardDesText>{name} {trainerName}</CardDesText>
+            <CardPeriodText>{detail}</CardPeriodText>
+    
+            <ProgressBarContainer>
+                <ProgressBar percentage={usePercentage} status={status} />
+              </ProgressBarContainer>
+            <CardDateContainer>
+    
+            <CardExpirationText>{startDate}~{endDate}</CardExpirationText>
+            <CardExpirationText>{left} 남음</CardExpirationText>
+            </CardDateContainer>
+          </TouchableOpacity>
+        </CardContainer>
+        )
+      }
   </Container>
   );
 }
@@ -51,7 +62,8 @@ const Container = styled.View`
 
 const CardContainer = styled.View`
    width: ${Platform.OS === 'ios' ? '340px' : '350px'};
-  padding: 27px 30px 30px 24px;
+  /* padding: 27px 30px 30px 24px; */
+  padding: 20px 25px 30px 25px;
   height: 210px;
   border-radius: 13px;
   background-color: ${COLORS.sub};
@@ -116,7 +128,7 @@ color: ${COLORS.gray_200};
 const ProgressBarContainer = styled.View`
   /* flex: 1; */
   height: 8px;
-  background-color: ${COLORS.gray_400};
+  background-color: ${COLORS.white};
   border-radius: 4px;
   margin-right: 8px;
 `;
@@ -125,6 +137,8 @@ const ProgressBar = styled.View`
   /* flex: ${({ percentage }) => percentage / 100}; */
   width: ${({ percentage }) => percentage}%;
   height: 100%;
-  background-color: ${COLORS.main};
+  /* background-color: ${COLORS.main}; */
+  background-color: ${({ status }) => status === "IN_USE" ? 
+  COLORS.main : status === "STOP"? COLORS.gray_400 : status === "EXPIRING_SOON" ? '#FF7A00' :status ==="USING_SOON" ? COLORS.white : null};
   border-radius: 4px;
 `;

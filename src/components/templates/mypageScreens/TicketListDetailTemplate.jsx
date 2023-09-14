@@ -57,7 +57,7 @@ function TicketListDetailTemplate(props) {
     const {number, centers}=availableCenter
 //TICKET_TIME(일반이용권 횟수제), PT_TIME(P.T 횟수제), RENTAL_SPORTSWEAR_TIME
     console.log('data',type,number, centers)
-    console.log('options',options&&options)
+    console.log('options',options&&options.length )
     return (
         <Container>
             <SafeAreaView/>
@@ -74,8 +74,8 @@ function TicketListDetailTemplate(props) {
                     </UseTicketTitleText>
             <SubTextContainer>
             <SubText isUsed={detailTicketData?.status}>{startDate && formatReplaceString(startDate)}~{endDate&&formatReplaceString(endDate)}</SubText>
-             <SubText isUsed={detailTicketData?.status}>{leftDay&&leftDay}
-             {type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? '회' : '일'} 남음</SubText>
+             <SubText isUsed={detailTicketData?.status}>
+             {type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? `${leftTime&&leftTime}회` : `${leftDay&&leftDay}일`} 남음{status&&status ==='STOP' && '(중지)'}</SubText>
             </SubTextContainer>
             <SubText>type:{type&&type}, status:{status&&status}</SubText>
             </HeaderContainer>
@@ -85,8 +85,8 @@ function TicketListDetailTemplate(props) {
                 showsVerticalScrollIndicator={false}
                 >
                     <TicketTextContainer>
-                            <TicketTitleText>잔여횟수</TicketTitleText>
-                            <TicketContentsText>{leftTime}{type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? '회' : '일'}</TicketContentsText>
+                            <TicketTitleText>잔여</TicketTitleText>
+                            <TicketContentsText>{type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? `${leftTime&&leftTime}회` : `${leftDay&&leftDay}일`}</TicketContentsText>
                     </TicketTextContainer>
                     <TicketTextContainer>
                             <TicketTitleText>주간이용</TicketTitleText>
@@ -116,23 +116,31 @@ function TicketListDetailTemplate(props) {
                             }
                             {/* <TicketContentsText>{leftCancelReservation}회</TicketContentsText> */}
                     </TicketTextContainer>
-                    <TicketTextContainer>
-                            <TicketTitleText>중지권</TicketTitleText>
-                            <TicketContentsText>{numberOfStopTicket}개({periodOfStopTicket}일)</TicketContentsText>
-                    </TicketTextContainer>
-                    <TicketOptionTextContainer>
-                            <TicketTitleText>옵션</TicketTitleText>
-                            <OptionContainer>
-
-                            <TicketContentsText>
-                                    없엉
-                            </TicketContentsText>
-                            <TicketContentsText>
-                                    없엉
-                            </TicketContentsText>
-                            </OptionContainer>
-                    </TicketOptionTextContainer>
-                 {
+                    {
+                        numberOfStopTicket === null && periodOfStopTicket === null ? null : (
+                            <TicketTextContainer>
+                                    <TicketTitleText>중지권</TicketTitleText>
+                                    <TicketContentsText>{numberOfStopTicket}개({periodOfStopTicket}일)</TicketContentsText>
+                             </TicketTextContainer>
+                        )
+                    }
+                    {
+                                options&&options.length!==0 && (
+                                    <TicketOptionTextContainer>
+                                    <TicketTitleText>옵션</TicketTitleText>
+                                    <OptionContainer>
+                                    {
+                                     options && options.map((option, index) => (
+                                         <TicketContentsText key={index}>
+                                             {option.type}
+                                             {option.name}
+                                             ({option.type === 'TICKET_TIME' ||option.type === 'PT_TIME' ||option.type === 'RENTAL_SPORTSWEAR_TIME' ? `${option?.left&&option?.left}회` : `${option?.left&&option?.left}일`})
+                                         </TicketContentsText>)) }
+                                    </OptionContainer>
+                            </TicketOptionTextContainer>
+                                )
+                            }
+                    {
                    centers && number!== 0 &&
                     <CenterListContainerBox onPress={toggleContent} activeOpacity={0.8}>
                         <CenterContainer>
@@ -143,7 +151,7 @@ function TicketListDetailTemplate(props) {
                         {
                             showContent && (
                                 <CenterListContainer>
-                                    <CenterListLongText>{centers&&centers}</CenterListLongText>
+                                    <CenterListLongText>{centers&&centers.join(', ')}</CenterListLongText>
                                 </CenterListContainer>
                             )
                         }
@@ -171,8 +179,6 @@ const Container = styled.View`
 const HeaderContainer = styled.View`
     width: 100%;
     height: 260px;
-    /* background-color: ${COLORS.sub}; */
-    /* background-color: red; */
     background-color: ${props => props.isUsed === 'IN_USE' ? COLORS.sub : COLORS.gray_200};
     padding: 0 20px;
 `
@@ -192,7 +198,7 @@ margin-bottom: 20px;
 
 const UseTicketTitleText = styled.Text`
 /* font-size: 32px; */
-font-size: ${props => props.isLength > 12 ? '30px' : '32px'};
+font-size: ${props => props.isLength > 12 ? '28px' : '30px'};
 font-weight: 600;
 line-height: 43.20px;
 color: ${props => props.isUsed === 'IN_USE' ? COLORS.main : COLORS.gray_400};
@@ -240,12 +246,6 @@ line-height: 22.40px;
 color: ${COLORS.sub};
 `
 
-const TicketContentsText = styled.Text`
-font-size: 14px;
-font-weight: 400;
-line-height: 22.40px;
-color: ${COLORS.gray_400};
-`
 
 const CenterListContainerBox = styled.TouchableOpacity`
   margin-top: 20px;
@@ -285,4 +285,13 @@ line-height: 22.40px;
 
 const OptionContainer = styled.View`
     flex-direction: column;
+    justify-content: flex-end;
+`
+
+const TicketContentsText = styled.Text`
+font-size: 14px;
+font-weight: 400;
+line-height: 22.40px;
+color: ${COLORS.gray_400};
+text-align: right; 
 `

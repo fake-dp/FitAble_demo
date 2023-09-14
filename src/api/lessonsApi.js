@@ -30,6 +30,16 @@ export const cancelReservation = async (id) => {
     }
 }
 
+// 홈 회원 이용권 목록 조회
+export const getHomeTickets = async () => {
+    try {
+        const response = await customAxios.get("/api/members/v1/tickets/home");
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 // 홈 예약 목록 조회
 export const getHomeReservations = async () => {
     try {
