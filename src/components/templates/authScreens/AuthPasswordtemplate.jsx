@@ -29,7 +29,7 @@ function AuthPasswordtemplate({navigation}) {
             screenName === 'Pass' ? (
                 <AuthText>새로운 비밀번호를 위해</AuthText>
             ) : (
-                <AuthText>회원가입을 위해</AuthText>
+                <AuthText>회원가입을 위해11`2</AuthText>
             )
         }
         <AuthText>본인인증을 해주세요</AuthText>

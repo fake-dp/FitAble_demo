@@ -5,6 +5,25 @@ export const isLoginState = atom({
     default: false,
 });
 
+
+export const signUpInfoState = atom({
+  key: 'signUpInfoState',
+  default: {
+    name: '',
+    birthDay: '',
+    gender: '',
+    phone: '',
+    password: '',
+    fcmToken: '',
+    agreements: {
+      marketing: false,
+      pushAlarm: false,
+      storeMarketing: false,
+    },
+  },
+});
+
+
 export const phoneState = atom({
     key: 'phoneState',
     default: '',

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Config from 'react-native-config';
-
+import customAxios from "./customAxios";
 const baseURL = Config.API_URL;
 // 인증번호 받기
 export const getCertificationNumber = async (phone) => {
@@ -22,3 +22,22 @@ export const checkCertificationNumber = async ({phone, number}) => {
     }
 }
 
+// 핸드폰 번호 중복 확인
+export const checkPhone = async (phone) => {
+    try {
+        const response = await axios.post(`${baseURL}/api/members/v1/phone/valid`, { phone });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// find password
+export const findPassword = async ({phone,password}) => {
+    try {
+        const response = await customAxios.put("/api/members/v1/password/find", { phone, password });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

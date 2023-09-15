@@ -8,9 +8,11 @@ import { Text, StyleSheet, View, Platform,TouchableOpacity, Modal} from 'react-n
 import CheckBtn from '../../ui/buttonUi/CheckBtn';
 import AgreementModal from '../../ui/modal/AgreementModal';
 import { agreementList} from '../../../data/AgreementData'
-
-
+import GobackGrid from '../../grid/GobackGrid';
+import { useNavigation } from '@react-navigation/native';
 function Agreementtemplate(props) {
+
+    const navigation = useNavigation();
 
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
@@ -38,6 +40,12 @@ function Agreementtemplate(props) {
           return updatedSelection;
         });
       };
+
+      const goBackNavigation = () => {
+        // 로그인 화면으로 이동
+        navigation.navigate('SignIn');
+        // setSignUpInfo({...signUpInfo, name: '', phone: ''});
+    }
 
 // 선택된 체크박스 개수 업데이트
   useEffect(() => {
@@ -76,8 +84,11 @@ function Agreementtemplate(props) {
 
     return (
         <AuthContainer>
+            <GobackGrid onPress={goBackNavigation}/>
+            <AgreementContainer>
                 <AuthText>이용약관 내용에</AuthText>
                 <AuthText>동의해주세요</AuthText>
+            </AgreementContainer>
         <CheckBtn 
           onPress={toggleAllCheck} allCheck={allCheck} 
         />
@@ -130,6 +141,10 @@ const AuthContainer = styled.View`
 flex: 1;
 background-color: ${COLORS.sub};
 padding: 44px 20px 0 20px;
+`
+
+const AgreementContainer = styled.View`
+margin-top: 44px;
 `
 
 const AuthText = styled.Text`

@@ -3,13 +3,13 @@ import { COLORS } from "../../../constants/color";
 import { styled } from "styled-components/native";
 import { TextInput,Platform } from "react-native";
 
-function EctInput({placeholder, text,onChangeText,value,onBlur}) {
+function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp}) {
     return (
         <AuthTextInputContainer>
             <AuthText>{text}</AuthText>
             <AuthTextInput 
             placeholder={placeholder}
-            secureTextEntry
+            secureTextEntry={isSignUp}
             onChangeText={onChangeText}
             value={value}
             onBlur={onBlur}
@@ -23,7 +23,7 @@ export default EctInput;
 
 
 const AuthTextInputContainer = styled.View`
-   width: 350px;
+   width: 100%;
     height: 70px;
     background-color: ${COLORS.box};
     border-radius: 15px;

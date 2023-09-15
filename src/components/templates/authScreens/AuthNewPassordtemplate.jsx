@@ -4,13 +4,20 @@ import EctInput from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
 import React, {useCallback, useEffect, useState} from 'react';
 import {validatePassword} from '../../../utils/CustomUtils'
-
+import GobackGrid from '../../grid/GobackGrid';
+import {signUpInfoState} from '../../../store/atom';
+import { useRecoilState } from 'recoil';
+import { findPassword } from '../../../api/certificationApi';
 function AuthNewPassordtemplate({navigation}) {
 
   // 비밀번호 상태관리
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
+ 
+  console.log('signUpInfo:', signUpInfo.phone, password)
 
   // 비밀번호 입력
   const handlePassword = (text) => {
@@ -29,12 +36,25 @@ const validatePasswordInput = () => {
   setPasswordError(isValid && password.length > 1 ? '' : '형식에 맞게 설정해주세요');
 };
 
+// 비번 찾기
+const findPass = async (phone, password) => {
+  try{
+    const response = await findPassword({phone,password});
+    console.log('findPass response:', response)
+    if(response){
+      navigation.navigate('SignIn');
+    }
+  }catch(error){
+    console.error('findPass error:', error);
+  }
+}
+
 
 
 const isSamePassword = password === passwordCheck;
 
-    const toAuthAgree = useCallback(() => {
-        console.log('home으로 고고씽')
+    const toAuthAgree = useCallback((phone, password) => {
+        findPass(phone, password)
         }, [navigation]);
 
         useEffect(() => {
@@ -51,8 +71,11 @@ const isSamePassword = password === passwordCheck;
 
     return (
         <AuthContainer>
+          <GobackGrid onPress={()=>navigation.goBack()}/>
+          <AuthTextContainer>
              <AuthText>사용하실 새 비밀번호를</AuthText>
              <AuthText>입력해주세요</AuthText>
+          </AuthTextContainer>
              <BtnContainer>
                 <EctInput 
                 text='비밀번호'
@@ -84,7 +107,7 @@ const isSamePassword = password === passwordCheck;
             <BottomBtnContainer>
                 <MainBtn
                 colorProp={password.length > 7 &&isSamePassword && passwordError.length === 0}
-                onPress={toAuthAgree}
+                onPress={()=>toAuthAgree(signUpInfo.phone, password)}
                 >다음</MainBtn>
             </BottomBtnContainer>
         </AuthContainer>
@@ -98,7 +121,11 @@ export default AuthNewPassordtemplate;
 const AuthContainer = styled.View`
 flex: 1;
 background-color: ${COLORS.sub};
-padding: 44px 20px 0 20px;
+padding: 0 20px;
+`
+
+const AuthTextContainer = styled.View`
+margin-top: 44px;
 `
 
 const AuthText = styled.Text`

@@ -32,7 +32,6 @@ export const changePassword = async (password) => {
     }
 }
 
-
 // get mileages
 export const getMileages = async () => {
     try {

@@ -19,8 +19,13 @@ function Logintempate({navigation}) {
     const [password, setPassword] = useState('');
 
     // 회원가입 페이지 이동
-    const toSignUp = useCallback(() => {
-        navigation.navigate('SignUp');
+    const toInfoScreens = useCallback(() => {
+        navigation.navigate('SignUpInfo');
+      }, [navigation]);
+
+      // 비밀번호 찾기
+      const toInfoFindPassScreens = useCallback(() => {
+        navigation.navigate('SignUpInfo',{text:'비밀번호 찾기'});
       }, [navigation]);
     
     // pass 페이지 이동
@@ -77,11 +82,11 @@ function Logintempate({navigation}) {
 
             <AboutContainer>
                 <AboutTextLeft
-                onPress={toPass}
+                onPress={toInfoFindPassScreens}
                 >비밀번호 찾기</AboutTextLeft>
                 <AboutTextLine>|</AboutTextLine>
                 <AboutTextRigth
-                onPress={toSignUp}
+                onPress={toInfoScreens}
                 >회원가입</AboutTextRigth>
             </AboutContainer>
         </LoginScreenView>

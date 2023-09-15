@@ -4,8 +4,14 @@ import EctInput from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
 import React, {useCallback, useState, useEffect} from 'react';
 import {validatePassword} from '../../../utils/CustomUtils'
+import GobackGrid from '../../grid/GobackGrid';
+import {signUpInfoState} from '../../../store/atom';
+import { useRecoilState } from 'recoil';
 
 function AuthUsePasswordtemplate({navigation}) {
+
+    const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
+    // console.log('signUpInfo:', signUpInfo.phone, pass
 
     // 비밀번호 상태관리
     const [password, setPassword] = useState('');
@@ -15,9 +21,8 @@ function AuthUsePasswordtemplate({navigation}) {
     // 비밀번호 입력
     const handlePassword = (text) => {
         setPassword(text);
-        
     }
-
+    // console.log('signUpInfo:', signUpInfo.phone, password)
     // 비밀번호 확인 입력
     const handlePasswordCheck = (text) => {
         setPasswordCheck(text);
@@ -34,12 +39,14 @@ function AuthUsePasswordtemplate({navigation}) {
   const isSamePassword = password === passwordCheck;
 
     // 약관동의 페이지 이동
-    const toAuthAgree = useCallback(() => {
+    const toAuthAgree = useCallback((password) => {
         // 비밀번호와 확인창 초기화
-        setPassword('');
-        setPasswordCheck('');
-        setPasswordError('');
-  
+        // setPassword('');
+        // setPasswordCheck('');
+        // setPasswordError('');
+
+        // 비밀번호 저장
+        setSignUpInfo({...signUpInfo, password: password});
         navigation.navigate('Agreement');
         }, [navigation]);
 
@@ -57,8 +64,11 @@ function AuthUsePasswordtemplate({navigation}) {
      
     return (
         <AuthContainer>
+          <GobackGrid onPress={()=>navigation.goBack()}/>
+          <PasswordContainer>
              <AuthText>사용하실 비밀번호를</AuthText>
              <AuthText>입력해주세요</AuthText>
+          </PasswordContainer>
              <BtnContainer>
                 <EctInput 
                 text='비밀번호'
@@ -90,7 +100,7 @@ function AuthUsePasswordtemplate({navigation}) {
             <BottomBtnContainer>
                 <MainBtn
                 colorProp={password.length > 7 &&isSamePassword && passwordError.length === 0}
-                onPress={toAuthAgree}
+                onPress={()=>toAuthAgree(password)}
                 >다음</MainBtn>
             </BottomBtnContainer>
         </AuthContainer>
@@ -140,3 +150,7 @@ font-weight: 400;
 line-height: 16.80px;
 padding-left: 12px;
 `;
+
+const PasswordContainer = styled.View`
+margin-top: 44px;
+`
