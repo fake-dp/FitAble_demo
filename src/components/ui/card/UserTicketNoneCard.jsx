@@ -29,6 +29,7 @@ const Container = styled.View`
 
 const CardContainer = styled.View`
    width: ${Platform.OS === 'ios' ? '340px' : '350px'};
+   /* width: 100%; */
   height: 210px;
   border-radius: 13px;
   background-color: ${COLORS.sub};

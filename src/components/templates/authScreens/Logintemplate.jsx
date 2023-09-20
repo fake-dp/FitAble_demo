@@ -17,7 +17,7 @@ function Logintempate({navigation}) {
 
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-
+    // const [isUseAppState, setIsUseAppState] = useState(false);
     // 회원가입 페이지 이동
     const toInfoScreens = useCallback(() => {
         navigation.navigate('SignUpInfo');
@@ -34,28 +34,71 @@ function Logintempate({navigation}) {
         }, [navigation]);
 
 
-    const handleLogin = async() => {
-        try {
-            const response = await login(phone, password); // 로그인 함수 호출
-            if (response && response.isUseApp && phone.length > 5  && password.length > 3) {
+    // const handleLogin = async() => {
+    //     try {
+    //         const response = await login(phone, password); // 로그인 함수 호출
+    //         if (response && response.isUseApp&& phone.length > 5  && password.length > 3) {
+    //           const { accessToken, refreshToken } = response;
+    //           await AsyncStorage.setItem("accessToken", accessToken);
+    //           await AsyncStorage.setItem("refreshToken", refreshToken);
+    //           // 로그인 성공 처리
+    //           setMyPhone(phone);
+    //           setPhone('');
+    //           setPassword('');
+
+    //           // setIsLoggedIn(true)
+    //           Alert.alert('로그인 성공하였습니다. ', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
+    //         } else if(!response){
+
+    //           Alert.alert('로그인 실패하였습니다. ', '', [{ text: '확인', onPress: () => console.log('성공',response.isUseApp) }]);
+    //         } else if(response && !response.isUseApp&& phone.length > 5  && password.length > 3){
+    //           // 로그인 실패 처리
+    //           console.log('response',response)
+    //           Alert.alert('추가정보를 입력해주세요. ', '', [{ text: '확인', onPress: () => navigation.navigate('SignUpInfoGender',{data:'newInfo'}) }]);
+    //         }
+    //       } catch (error) {
+    //         console.error('Error during login:', error);
+    //         if(error || accessToken === undefined && refreshToken === undefined){
+
+    //           Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패')  }]);
+    //         }
+    //     }
+    // }
+    const handleLogin = async () => {
+      try {
+          const response = await login(phone, password); // 로그인 함수 호출
+  
+          // if (!response) {
+          //     return Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('서버 응답 없음') }]);
+          // }
+  
+          const isValidInput = phone.length > 5 && password.length > 3;
+  
+          if (response.isUseApp && isValidInput) {
               const { accessToken, refreshToken } = response;
               await AsyncStorage.setItem("accessToken", accessToken);
               await AsyncStorage.setItem("refreshToken", refreshToken);
-              // 로그인 성공 처리
+  
               setMyPhone(phone);
               setPhone('');
               setPassword('');
-
-              Alert.alert('로그인 성공하였습니다. ', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
-            } else {
-              // 로그인 실패 처리
-              Alert.alert('로그인 실패하였습니다. ', '', [{ text: '확인', onPress: () => console.log('실패') }]);
-            }
-          } catch (error) {
-            console.error('Error during login:', error);
-        Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패')  }]);
+              setIsLoggedIn(true);
+              // return Alert.alert('로그인 성공하였습니다.', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
+          } 
+  
+          if (response.isUseApp === false && isValidInput) {
+            console.log('@useapp값 확인',response.isUseApp)
+              return Alert.alert('추가정보를 입력해주세요.', '', [{ text: '확인', onPress: () => navigation.navigate('SignUpInfoGender', { data: 'newInfo' }) }]);
           }
-    }
+  
+      } catch (error) {
+          console.log('Error during login@@:', error);
+          if(error.code === 10202){
+            Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
+          }
+      }
+  };
+  
 
     const isInputValid = phone.length > 5  && password.length > 3;
 
@@ -65,7 +108,7 @@ function Logintempate({navigation}) {
             <AuthInput
              value={phone}
              onChangeText={setPhone}
-             placeholder="핸드폰 번호"
+             placeholder="휴대폰번호"
             />
 
             <AuthInput

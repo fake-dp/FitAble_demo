@@ -4,19 +4,31 @@ import EctInput from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
 import React, {useCallback, useRef, useState, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import { Text, StyleSheet, View, Platform,TouchableOpacity, Modal} from 'react-native';
+import { Text, StyleSheet, View, Platform,TouchableOpacity, Image} from 'react-native';
 import CheckBtn from '../../ui/buttonUi/CheckBtn';
 import AgreementModal from '../../ui/modal/AgreementModal';
 import { agreementList} from '../../../data/AgreementData'
 import GobackGrid from '../../grid/GobackGrid';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import {upDateMyInfo,joinInfo} from '../../../api/authApi'
+import {signUpInfoState,isLoginState} from '../../../store/atom';
+import { useRecoilState } from 'recoil';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 function Agreementtemplate(props) {
 
     const navigation = useNavigation();
 
+    const route = useRoute();
+
+    const updateInfoText = route.params?.data;
+    const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
     const [checkedCount, setCheckedCount] = useState(0); 
+    console.log('dd@@@3213123@',signUpInfo)
 
     // 모든 목록 리스트 체크 여부 확인
     const toggleAllCheck = () => {
@@ -77,11 +89,71 @@ function Agreementtemplate(props) {
       setSelectedItem(null);
     };
 
-    const handlePass = () => {
-        console.log('home으로 고고씽')
+    const handlePass = (signUpInfo) => {
+      updateInfoText ? updateInfoUser(signUpInfo) : signUpinfoApi(signUpInfo)
+        // console.log('home으로 고고씽')
+        // console.log('testst',signUpInfo)
     }
 
+    const updateInfoUser = async (signUpInfo) => {
+      console.log('signUpInfo회원업데이트',signUpInfo)
+      const bodyData ={
+        birthDay: signUpInfo.birthDay,
+        gender: signUpInfo.gender,
+        password: signUpInfo.password,
+        fcmToken: "dCilaS_PlFE:APA91bHi45B4d1V5XEPaTW9hhtmoR",
+        agreements: {
+        marketing: false,
+        pushAlarm: false,
+        storeMarketing: false
+  }
+}
+      try{
+        const response = await upDateMyInfo(bodyData);
+        console.log('updateInfoUser response:', response)
+        if(response){
+          // navigation.navigate('Home');
+          console.log('resaaa',response)
+          setIsLoggedIn(true);
+        }
+      }catch(error){
+        console.error('updateInfoUser error:', error.response.data);
+      }
+    }
 
+    const signUpinfoApi = async (signUpInfo) => {
+      console.log('signUpInfo@@@',signUpInfo)
+      const bodyData = {
+          name: signUpInfo.name,
+          birthDay: signUpInfo.birthDay,
+          gender: signUpInfo.gender,
+          phone: signUpInfo.phone,
+          password: signUpInfo.password,
+          fcmToken: "dCilaS_PlFE:APA91bHi45B4d1V5XEPaTW9hhtmoR",
+          agreements: {
+            marketing: false,
+            pushAlarm: false,
+            storeMarketing: false
+          }
+      }
+        console.log('bodydata',bodyData)
+      try{
+        const response = await joinInfo(bodyData);
+        console.log('signUpinfoApi response:', response)
+        if(response){
+          // navigation.navigate('Home');
+          console.log('회원가입 응답',response)
+          const { accessToken, refreshToken } = response;
+          await AsyncStorage.setItem("accessToken", accessToken);
+          await AsyncStorage.setItem("refreshToken", refreshToken);
+          setIsLoggedIn(true);
+        }
+      }catch(error){
+        console.error('signUpinfoApi error:', error.response.data);
+      }
+    }
+    const rigthIcon = require('../../../assets/img/rightIcon.png');
+    
     return (
         <AuthContainer>
             <GobackGrid onPress={goBackNavigation}/>
@@ -94,10 +166,8 @@ function Agreementtemplate(props) {
         />
         {
             agreementList.map((item) => (
-                <ListContainer key={item.id}>
-                    <TouchableOpacity key={item.id} onPress={() => handleItemPress(item)}>
-                        <ListText>{item.title}</ListText>
-                    </TouchableOpacity>
+              
+                <ListContainer key={item.id} styledProps={agreementList.length ===2}>
 
                     <CheckBoxStyle
                         value={isSelected[item.id]}
@@ -110,6 +180,18 @@ function Agreementtemplate(props) {
                         boxType={'square'}
                         tintColor={COLORS.main}
                     />
+
+                  <IndexListContainer onPress={() => handleItemPress(item)}>
+                    <TouchableOpacity key={item.id} onPress={() => handleItemPress(item)}>
+                        <ListText>{item.title}</ListText>
+                        <SubTitleText>{item.subText}</SubTitleText>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => handleItemPress(item)}>
+                        <IconsImg source={rigthIcon}/>
+                    </TouchableOpacity>
+                  </IndexListContainer>
+
                 </ListContainer>
             ))
         }
@@ -125,7 +207,7 @@ function Agreementtemplate(props) {
         {
             checkedCount >= 3 ? <MainBtn
             colorProp={checkedCount >=3 ? true : false}
-            onPress={handlePass}
+            onPress={()=>handlePass(signUpInfo)}
             >다음</MainBtn> : ''
         }
            
@@ -140,11 +222,11 @@ export default Agreementtemplate;
 const AuthContainer = styled.View`
 flex: 1;
 background-color: ${COLORS.sub};
-padding: 44px 20px 0 20px;
+padding:0 20px;
 `
 
 const AgreementContainer = styled.View`
-margin-top: 44px;
+margin-top: 34px;
 `
 
 const AuthText = styled.Text`
@@ -155,16 +237,20 @@ line-height: 37.80px;
 `;
 
 const CheckBoxStyle = styled(CheckBox)`
-width: 25px;
-height: 25px;
+width: 24px;
+height: 24px;
 `;
 
 const ListContainer = styled.View`
 flex-direction: row;
-justify-content: space-between;
-align-items: center;
+/* justify-content: space-between; */
+/* align-items: center;*/
+/* background-color: red; */
+/* border-bottom-width: 1px; */
+border-bottom-color: ${COLORS.white};
 
-margin-top: 30px;
+border-bottom-width: ${(props) => (props.styledProps ? 1 : 0)};
+margin-top: 24px;
 padding: ${Platform.OS === 'ios' ? '0 20px 0 10px' : '0 19px 0 10px'};
 `;
 
@@ -181,8 +267,28 @@ const BottomBtnContainer = styled.View`
    align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 34px;
+  bottom: 10px;
   left: 0;
   right: 0;    
 `;
 
+const IconsImg = styled.Image`
+width: 20px;
+height: 20px;
+margin-right: 23px;
+`
+
+const SubTitleText = styled.Text`
+color: ${COLORS.gray_300};
+font-size: 14px;
+font-weight: 400;
+line-height: 22.40px;
+`
+
+const IndexListContainer = styled.TouchableOpacity`
+flex-direction: row;
+justify-content: space-between;
+/* background-color: blue; */
+width: 100%;
+padding-left: 16px;
+`

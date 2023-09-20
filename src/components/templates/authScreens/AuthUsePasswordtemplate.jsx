@@ -7,11 +7,17 @@ import {validatePassword} from '../../../utils/CustomUtils'
 import GobackGrid from '../../grid/GobackGrid';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
+import { useRoute } from '@react-navigation/native';
 
 function AuthUsePasswordtemplate({navigation}) {
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     // console.log('signUpInfo:', signUpInfo.phone, pass
+
+    const route = useRoute();
+
+    const updateInfo = route.params?.data;
+    console.log('dd@@@',updateInfo)
 
     // 비밀번호 상태관리
     const [password, setPassword] = useState('');
@@ -47,7 +53,7 @@ function AuthUsePasswordtemplate({navigation}) {
 
         // 비밀번호 저장
         setSignUpInfo({...signUpInfo, password: password});
-        navigation.navigate('Agreement');
+        navigation.navigate('Agreement',{data:updateInfo});
         }, [navigation]);
 
         useEffect(() => {
@@ -113,7 +119,7 @@ export default AuthUsePasswordtemplate;
 const AuthContainer = styled.View`
 flex: 1;
 background-color: ${COLORS.sub};
-padding: 44px 20px 0 20px;
+padding: 0 20px;
 `
 
 const AuthText = styled.Text`

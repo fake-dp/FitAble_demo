@@ -14,7 +14,7 @@ export const signUpInfoState = atom({
     gender: '',
     phone: '',
     password: '',
-    fcmToken: '',
+    fcmToken: 'testtoken',
     agreements: {
       marketing: false,
       pushAlarm: false,

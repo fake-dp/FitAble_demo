@@ -12,10 +12,16 @@ import { useRecoilState } from 'recoil';
 import { formatTime } from '../../../utils/CustomUtils';
 import {getCertificationNumber,checkCertificationNumber,checkPhone} from '../../../api/certificationApi';
 import SelectDatePicker from '../../ui/custom/SelectDatePicker';
+import { useRoute } from '@react-navigation/native';
 
 function SignUpInfoGenderTemplate(props) {
 
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const updateInfo = route.params?.data;
+    console.log('dd',updateInfo)
+
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     const [selectedGender, setSelectedGender] = useState(null);
@@ -48,7 +54,6 @@ function SignUpInfoGenderTemplate(props) {
     }
 
 
-
     const handleOutsideClick = () => {
         // setShowSelectDatePicker(false);
         setSignUpInfo({...signUpInfo, birthDay: `${selectedYear}-${selectedMonth}-${selectedDay}`})
@@ -77,7 +82,7 @@ function SignUpInfoGenderTemplate(props) {
         }else{
         //     //lll 성공로직
           console.log('ddddd',signUpInfo)
-            navigation.navigate('Password');
+            navigation.navigate('Password',{data:updateInfo});
           setSignUpInfo({
             ...signUpInfo, 
             gender : selectedGender === "남자" ? "MALE" : "FEMALE",
@@ -92,7 +97,7 @@ function SignUpInfoGenderTemplate(props) {
 
     const isActiveBtn = selectedGender !== null && showDateText === true ? true : false;
 
-    console.log('daaa', signUpInfo)
+    // console.log('daaa', signUpInfo)
     // console.log('회원가입 정보',signUpInfo,selectedGender)
 
     return (
@@ -144,11 +149,9 @@ function SignUpInfoGenderTemplate(props) {
                     showModal && (
                         <SelectDatePicker 
                             setShowModal={setShowModal}
-                           
                             setSelectedYear={setSelectedYear}
                             setSelectedMonth={setSelectedMonth}
                             setSelectedDay={setSelectedDay}
-                           
                             handleOutsideClick={handleOutsideClick}
                         />
                     )
