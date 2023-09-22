@@ -108,6 +108,7 @@ function Agreementtemplate(props) {
         storeMarketing: false
   }
 }
+console.log('업데이트bodyData',bodyData)
       try{
         const response = await upDateMyInfo(bodyData);
         console.log('updateInfoUser response:', response)
@@ -136,7 +137,7 @@ function Agreementtemplate(props) {
             storeMarketing: false
           }
       }
-        console.log('bodydata',bodyData)
+      console.log('회원가입bodyData',bodyData)
       try{
         const response = await joinInfo(bodyData);
         console.log('signUpinfoApi response:', response)

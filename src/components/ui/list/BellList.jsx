@@ -60,3 +60,18 @@ line-height: 22.40px;
 margin-top: 6px;
 color: ${COLORS.gray_300};
 `
+
+const NoListContainer = styled.View`
+    /* margin-top: 120px; */
+    justify-content: center;
+    align-items: center;
+    flex:1;
+    /* height: 100%; */
+`
+
+const NoListText = styled.Text`
+color: ${COLORS.gray_200};
+font-size: 16px;
+font-weight: 500;
+line-height: 22.40px;
+`

@@ -49,8 +49,13 @@ function MileageTemplate(props) {
             <GridLine />
 
                 <ListTitleText>내역</ListTitleText>
-
-
+                {
+                mileageList.length === 0 ?(
+                    <NoListContainer>
+                        <NoListText>마일리지 내역이 없습니다</NoListText>
+                    </NoListContainer>
+                 ):null
+                 }
             <FlatList
              bounces={false}
          
@@ -113,4 +118,17 @@ line-height: 30px;
 margin-bottom: 30px;
 `
 
+const NoListContainer = styled.View`
+    /* margin-top: 120px; */
+    justify-content: center;
+    align-items: center;
+    flex:1;
+    /* height: 100%; */
+`
 
+const NoListText = styled.Text`
+color: ${COLORS.gray_400};
+font-size: 16px;
+font-weight: 500;
+line-height: 22.40px;
+`

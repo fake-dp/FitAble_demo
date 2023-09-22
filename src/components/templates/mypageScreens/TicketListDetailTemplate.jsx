@@ -77,7 +77,7 @@ function TicketListDetailTemplate(props) {
              <SubText isUsed={detailTicketData?.status}>
              {type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? `${leftTime&&leftTime}회` : `${leftDay&&leftDay}일`} 남음{status&&status ==='STOP' && '(중지)'}</SubText>
             </SubTextContainer>
-            <SubText>type:{type&&type}, status:{status&&status}</SubText>
+            {/* <SubText>type:{type&&type}, status:{status&&status}</SubText> */}
             </HeaderContainer>
 
             <TicketListContentsContainer>

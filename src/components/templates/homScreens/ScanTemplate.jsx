@@ -4,6 +4,7 @@ import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { getHomeQrBanners } from '../../../api/homeApi';
+import GobackGrid from '../../grid/GobackGrid';
 
 function ScanTemplate(props) {
 
@@ -43,8 +44,17 @@ function ScanTemplate(props) {
         // }
       };
 
+      const closeIcon = require('../../../assets/img/whiteClose.png');
+
     return (
         <Container>
+            <GobackContainer onPress={() => navigation.goBack()}>
+          
+            <Image source={closeIcon}/>
+          
+            </GobackContainer>
+            <QrContainer>
+
             <MainContainer>
             <TitleText>입장하기</TitleText>
             <SubText>입장을 위해 QR코드를 인식해주세요</SubText>
@@ -53,11 +63,12 @@ function ScanTemplate(props) {
             </MainContainer>
             {
                 qrBanners.map((banner) => (
-                        <ImgContainer key={banner.id} onPress={() => handleBannerPress(banner)}>
+                    <ImgContainer key={banner.id} onPress={() => handleBannerPress(banner)}>
                         <BannerImage source={{ uri: banner.imageUrl }} resizeMode="cover" />
                         </ImgContainer>
                 ))
             }
+            </QrContainer>
         </Container>
     );
 }
@@ -68,9 +79,21 @@ export default ScanTemplate;
 const Container = styled.View`
     flex: 1;
     background-color: ${COLORS.sub};
+`;
+
+const GobackContainer = styled.TouchableOpacity`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 20px;
+`
+
+const QrContainer = styled.View`
+    flex: 1;
+    background-color: ${COLORS.sub};
     align-items: center;
     justify-content: center;
-`;
+`
 
 const MainContainer = styled.View`
    margin-bottom: 120px;

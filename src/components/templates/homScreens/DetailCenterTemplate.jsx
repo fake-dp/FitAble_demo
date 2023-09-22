@@ -1,5 +1,5 @@
 import {Image , ScrollView} from 'react-native';
-import { styled } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import GymBasicInfoGrid from '../../grid/GymBasicInfoGrid';
@@ -134,7 +134,7 @@ function DetailCenterTemplate({ route }) {
         getTrainerData(id)
       }, []);
 
-    const testImg = require('../../../assets/img/detailTest.png');
+    const notImg = require('../../../assets/img/notDetailImg.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
 
   
@@ -149,9 +149,9 @@ function DetailCenterTemplate({ route }) {
             >
               {
                 detailData.images?.length === 0 ? (
-                  <MainImg source={testImg}
-                  resizeMode="cover"
-                  />
+               
+                    <NoImg source={notImg} resizeMode="cover"/>
+            
                 ):(
                   <MainImg source={{uri:detailData.mainImage}}
                    resizeMode="cover"
@@ -283,6 +283,11 @@ const Container = styled.View`
 const MainImg = styled.Image`
     width: 100%;
     height: 310px;
+`
+
+const NoImg = styled.Image`
+    width: 100%;
+    height: 312px;
 `
 
 const GobackTouchable = styled.TouchableOpacity`

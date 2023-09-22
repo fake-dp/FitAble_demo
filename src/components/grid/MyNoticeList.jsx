@@ -36,9 +36,9 @@ function MyNoticeList({ noticeList }) {
       <View>
         {
             noticeList.length === 0 && (
-                <NoListContainer>
+                <ListTextContainer>
                 <NoListText>등록된 공지사항이 없습니다.</NoListText>
-                </NoListContainer>
+                </ListTextContainer>
             ) 
 
         }
@@ -165,9 +165,10 @@ const NoListContainer = styled.View`
 `
 
 const NoListText = styled.Text`
-    font-size: 14px;
+  font-size: 14px;
     font-weight: 400;
-    color: ${COLORS.gray_300};
+    color: ${COLORS.gray_400};
+line-height: 22.40px;
 `
 
 const StyledScrollView = styled.ScrollView`

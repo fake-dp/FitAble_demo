@@ -35,7 +35,7 @@ export const checkPhone = async (phone) => {
 // find password
 export const findPassword = async ({phone,password}) => {
     try {
-        const response = await customAxios.put("/api/members/v1/password/find", { phone, password });
+        const response = await axios.put(`${baseURL}/api/members/v1/password/find`, { phone, password });
         return response.data;
     } catch (error) {
         throw error;

@@ -1,7 +1,6 @@
 import React, { useState , useEffect} from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import {PERIOD_STATUS, TIMES_STATUS, TICKET_STATUS} from'../../../constants/status';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import SubscribeList from '../../ui/list/SubscribeList';
@@ -141,7 +140,7 @@ function CenterTicketListTemplate(props) {
     setShowModal(true)
     setTicketSubNRefundId(id)
   }
-  console.log('ticketSubNRefundId',ticketSubNRefundId)
+  // console.log('ticketSubNRefundId',ticketSubNRefundId)
 
   // 중지
   const openStopModal = (id) => {
@@ -206,6 +205,7 @@ const stopText = {
     closeText: '닫기',
 }
 
+
   return (
     <>
     <Container>
@@ -222,6 +222,14 @@ const stopText = {
       </BtnListContainer>
       {selectedTab === 'SUBSCRIBE' ? 
       <ScrollView bounces={false} showsVerticalScrollIndicator={false} overScrollMode="never">
+         {
+            subscribeList.length ===0 && (
+              <NoListContainer>
+                <NoListText>구입한 내역이 없습니다</NoListText>
+              </NoListContainer>
+            )
+          }
+         
          <SubscribeList 
         
           onPress={changeCardInfoScreens}
@@ -229,13 +237,21 @@ const stopText = {
           subscribeListData={subscribeList}/>
     
       </ScrollView> : <ScrollView bounces={false} showsVerticalScrollIndicator={false} overScrollMode="never">
+          
+          {
+            ticketList.length ===0 && (
+              <NoListContainer>
+                <NoListText>구입한 내역이 없습니다</NoListText>
+              </NoListContainer>
+            )
+          }
           <UseTicketList 
 
             openCancelModal={openCancelModal}
             openStopModal={openStopModal}
             useTicketListData={ticketList}/>
       </ScrollView>}
-      {selectedTab === 'OTHER' && (
+      {ticketList.length !==0 && selectedTab === 'OTHER' && (
             <AddBtnContainer>
                 <MyBtn
                 onPress={addPayTicket}
@@ -300,4 +316,19 @@ const BtnListText = styled.Text`
 
 const AddBtnContainer = styled.View`
 
+`
+
+const NoListContainer = styled.View`
+    margin-top: 120px;
+    justify-content: center;
+    align-items: center;
+    /* flex:1; */
+    height: 100%;
+`
+
+const NoListText = styled.Text`
+color: ${COLORS.gray_400};
+font-size: 16px;
+font-weight: 500;
+line-height: 22.40px;
 `

@@ -41,9 +41,9 @@ const commentdown = require('../../assets/img/listdown.png');
                 </InquiryListTextBtnContainer>
         </MainTitleContainer>
         {inquiryList.length === 0 && (
-        <NoListContainer>
+        <MainTitleContainer>
             <NoListText>등록된 문의사항이 없습니다.</NoListText>
-        </NoListContainer>
+        </MainTitleContainer>
         )}
       {inquiryList.map((inquiry) => (
         <InquiryItem key={inquiry.id}>
@@ -197,5 +197,6 @@ const NoListContainer = styled.View`
 const NoListText = styled.Text`
     font-size: 14px;
     font-weight: 400;
-    color: ${COLORS.gray_300};
+    color: ${COLORS.gray_400};
+line-height: 22.40px;
 `

@@ -28,18 +28,23 @@ function CenterMarkTemplate(props) {
             setNoticeList(response.content);
             // console.log('response@@',response.content)
         } catch (error) {
-            console.error('Error getting:', error);
+            console.error('Error getting!@:', error.response.data);
         }
     };
 
     const getInquiryListData = async (id) => {
         console.log('id값',id)
         try {
-            const response = await getInquiryList(id);
-            setInquiryList(response.content);
+            if(id){
+
+                const response = await getInquiryList(id);
+                setInquiryList(response.content);
+            }else{
+                return;
+            }
             // console.log('response@@@',response)
         } catch (error) {
-            console.error('Error getting:', error);
+            console.error('Error getting!!:', error);
         }
     };
 
@@ -73,6 +78,7 @@ function CenterMarkTemplate(props) {
     console.log('myInfo',myInfo)
 
     useEffect(() => {
+        myInfo.mainCenterId &&
         getNoticeListData();
         getInquiryListData(myInfo.mainCenterId);
         getValidCenterNameData()

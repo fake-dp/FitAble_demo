@@ -89,7 +89,7 @@ function ProductQnATemplate(props) {
 
     return (
         <Container>
-            <GobackBlackGrid onPress={goBackScreens}>상품 문의</GobackBlackGrid>
+            <GobackBlackGrid onPress={goBackScreens}>핏에이블 문의</GobackBlackGrid>
             <QnAWraper>
             <ScrollView>
                 {

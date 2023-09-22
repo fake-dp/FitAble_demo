@@ -96,12 +96,20 @@ function MyBookListTemplate(props) {
         checkText: '네',
         closeText: '아니오',
     }
-
+                   
+console.log('booklist',bookListData.length)
     return (
      <Container>
         <GobackBlackGrid onPress={goBackScreens}>전체 예약 목록</GobackBlackGrid>
             <ScrollView>
             <BookListContainer>
+                {
+                    bookListData.length === 0 && (
+                        <NoListContainer>
+                            <NoListText>예약 내역이 없습니다.</NoListText>
+                        </NoListContainer>
+                    )
+                }
                 {
                     bookListData.map((item, index) => (
                         <BookListWrapper key={index}>
@@ -283,4 +291,17 @@ color: ${props => props.isAvailable ? COLORS.sub : COLORS.gray_400};
 `;
 
 
+const NoListContainer = styled.View`
+    margin-top: 120px;
+    justify-content: center;
+    align-items: center;
+    /* flex:1; */
+    height: 100%;
+`
 
+const NoListText = styled.Text`
+color: ${COLORS.gray_400};
+font-size: 16px;
+font-weight: 500;
+line-height: 22.40px;
+`

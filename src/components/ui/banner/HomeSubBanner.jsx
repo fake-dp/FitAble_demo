@@ -29,12 +29,13 @@ function HomeSubBanner({ centersBanners }) {
     // 여기서 웹뷰 관련 비즈니스 로직 작성하기
   };
 
+  // console.log('centersBanners',centersBanners)
 
 
   return (
     <>
         {
-         centersBanners ? (
+         centersBanners.length !==0 ? (
             <BannerContainer>
                 <ScrollView
                 horizontal

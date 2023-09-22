@@ -6,6 +6,7 @@ import { COLORS } from '../../constants/color';
 function OperatingProgram({programs}) {
     return (
         <Container>
+            <ContainerLine/>
             <MainTitleText>운영 프로그램</MainTitleText>
             <MainSubText>{programs}</MainSubText>
             <ContainerLine/>

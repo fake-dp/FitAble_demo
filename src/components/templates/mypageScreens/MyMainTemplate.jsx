@@ -25,24 +25,36 @@ function MyMainTemplate(props) {
         getMyInfoData();
     },[myInfo])
 
-    const {mainCenter, marketing, pushAlarm} = myInfo
+    const {mainCenter, marketing, pushAlarm,mainCenterId} = myInfo
 
-    // console.log('myInfo',myInfo)
+    // console.log('myInfo',myInfo,mainCenterId)
 
     // 네비게이션 설정
     const goSettingScreen = () => {navigation.navigate('AppSetting');}
 
-    const goSearchCenterScreen = () => {navigation.navigate('SearchCenter');}
+    const addTicketBuyBtn = (id) =>{
+        id ? 
+        navigation.navigate('DetailCenter', {id:id})
+        :navigation.navigate('SearchCenter');
+    }
 
     const goEditMyProfileScreen = () => {navigation.navigate('MyProfile');}
 
-    const goCenterRegistScreen = () => {navigation.navigate('CenterRegist');}
+    const goCenterRegistScreen = (id) => {
+        id?
+        navigation.navigate('CenterRegist')
+        :navigation.navigate('SearchCenter');
+    }
 
     const goMyBookListScreen = () => {navigation.navigate('MyBookList');}
 
     const goMyTicketListScreen = () => {navigation.navigate('CenterTicket');}
 
-    const goCenterMarkScreen = () => {navigation.navigate('MyCenter');}
+    const goCenterMarkScreen = (id) => {
+        id ? 
+        navigation.navigate('MyCenter')
+        :navigation.navigate('SearchCenter');
+    }
 
     const goMileageScreen = () => {navigation.navigate('Mileage');}
 
@@ -62,15 +74,13 @@ function MyMainTemplate(props) {
             myInfo={myInfo}
             />
 
-            <AddTicketBtn
-            onPress={goSearchCenterScreen}
-            >
+            <AddTicketBtn onPress={()=>addTicketBuyBtn(mainCenterId)}>
                 <AddTicketBtnText>이용권 추가 구매</AddTicketBtnText>
             </AddTicketBtn>
 
              <GridLine/>
 
-                <SettingListBtnFirst onPress={goCenterRegistScreen}>
+                <SettingListBtnFirst onPress={()=>goCenterRegistScreen(mainCenterId)}>
                     <SettingListText>대표 센터</SettingListText>
                     <FirstSettingContainer>
                       <SettingSubText>{mainCenter}</SettingSubText>
@@ -92,7 +102,7 @@ function MyMainTemplate(props) {
                 </SettingListBtn>
 
 
-                <SettingListBtn onPress={goCenterMarkScreen}>
+                <SettingListBtn onPress={()=>goCenterMarkScreen(mainCenterId)}>
                     <SettingListText>내 센터</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>

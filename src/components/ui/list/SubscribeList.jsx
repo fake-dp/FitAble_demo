@@ -26,8 +26,8 @@ function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicke
                 {data.status === 'USING_SOON' && <UsingText>이용예정</UsingText>}
                 </TextContainer>
               <TitleText>{data.name}</TitleText>
-              <DateText>{data.status}</DateText>
-              <DateText>{data.paymentStatus}</DateText>
+              {/* <DateText>{data.status}</DateText> */}
+              {/* <DateText>{data.paymentStatus}</DateText> */}
             </ContentsBox>
             <SubTextContainer>
               <IsCardText>{data.paymentType}</IsCardText>

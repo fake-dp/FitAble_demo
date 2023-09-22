@@ -88,6 +88,9 @@ function Logintempate({navigation}) {
   
           if (response.isUseApp === false && isValidInput) {
             console.log('@useapp값 확인',response.isUseApp)
+            const { accessToken, refreshToken } = response;
+            await AsyncStorage.setItem("accessToken", accessToken);
+            await AsyncStorage.setItem("refreshToken", refreshToken);
               return Alert.alert('추가정보를 입력해주세요.', '', [{ text: '확인', onPress: () => navigation.navigate('SignUpInfoGender', { data: 'newInfo' }) }]);
           }
   
@@ -96,7 +99,10 @@ function Logintempate({navigation}) {
           if(error.code === 10202){
             Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
           }
+      else if(error.code === 10200){
+        Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
       }
+    }
   };
   
 

@@ -1,5 +1,8 @@
+import axios from "axios";
 import customAxios from "./customAxios";
+import Config from 'react-native-config';
 
+const baseURL = Config.API_URL;
 // login api
 export const login = async (phone, password) => {
     try {
@@ -14,7 +17,7 @@ export const login = async (phone, password) => {
 // Join api
 export const joinInfo = async (data) => {
   try {
-      const response = await customAxios.post("/api/members/v1/join", data);
+      const response = await axios.post(`${baseURL}/api/members/v1/join`, data);
       return response.data;
   } catch (error) {
       throw error;
@@ -25,7 +28,7 @@ export const joinInfo = async (data) => {
 // put update myinfo
 export const upDateMyInfo = async (data) => {
   try {
-      const response = await customAxios.put("/api/members/v1/info", data);
+      const response = await customAxios.put('/api/members/v1/info', data);
       return response.data;
   } catch (error) {
       throw error;

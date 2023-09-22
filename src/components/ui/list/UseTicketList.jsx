@@ -26,9 +26,9 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
                 {data.status === 'STOP'&& <UsingText>중지중</UsingText>}
                 </TextContainer>
               <TitleText>{data.name}</TitleText>
-              <DateText>{data.status}</DateText>
-              <DateText>{data.paymentStatus}</DateText>
-              <DateText>{`${data.stopTicket}`}</DateText>
+              {/* <DateText>{data.status}</DateText> */}
+              {/* <DateText>{data.paymentStatus}</DateText> */}
+              {/* <DateText>{`${data.stopTicket}`}</DateText> */}
             </ContentsBox>
             <SubTextContainer>
               <IsCardText>{data.paymentType}</IsCardText>
