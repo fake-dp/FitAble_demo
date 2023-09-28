@@ -1,5 +1,5 @@
 import customAxios from "./customAxios";
-
+import multipartAxios from "./multipartAxios";
 
 
 // get myinfo
@@ -107,6 +107,35 @@ export const getInquiryList = async (id) => {
 export const postInquiry = async (data) => {
     try {
         const response = await customAxios.post(`/api/members/v1/inquiry/center`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+// 핏에이블 문의하기 등록
+export const postFitAbleInquiry = async (data) => {
+    try {
+        const response = await multipartAxios.post(`/api/members/v1/inquiry/fitable`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 핏에이블 문의하기 리스트 조회
+export const getFitAbleInquiryList = async () => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/inquiry/fitable`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 핏에이블 문의하기 삭제
+export const deleteFitAbleInquiry = async (id) => {
+    try {
+        const response = await customAxios.delete(`/api/members/v1/inquiry/fitable/${id}`);
         return response.data;
     } catch (error) {
         throw error;

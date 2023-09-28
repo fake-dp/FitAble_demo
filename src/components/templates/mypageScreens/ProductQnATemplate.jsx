@@ -2,90 +2,51 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView ,Alert} from 'react-native';
+import {getFitAbleInquiryList,deleteFitAbleInquiry} from '../../../api/mypageApi';
+import { useEffect, useState } from 'react';
+import {formatReplaceString} from '../../../utils/CustomUtils';
 function ProductQnATemplate(props) {
 
     const navigation = useNavigation();
 
-   
+    const [fitableInquiryList, setFitableInquiryList] = useState([]);
+
+
     const goBackScreens = () => {
         navigation.goBack();
     };
 
-    const productQnAData = [
-        {
-            id: 0,
-            question:'배송 언제 되나요?',
-            questionDate: '2023.06.27',
-            user:'남주혁',
-            isAnswer: true,
-            answer: (
-            <>
-                <Text>
-                    고객님, 안녕하세요~
-                    {"\n"}
-                    핏에이블입니다.
-                    {"\n\n"}
-                    금일 택배 발송되었습니다.
-                    {"\n"}
-                    기다려주셔서 진심으로 감사드리며, 다른 문의사항이 있으신 경우 언제든지 문의주세요
-                </Text>
-            </>
-            ),
-            answerUser:'핏에이블',
-            answerDate: '2023.06.28',
-        },
-        {
-            id: 1,
-            question:'배송 언제 되나요?',
-            questionDate: '2023.06.27',
-            user:'남주혁',
-            isAnswer: false,
-            answer:null,
-            answerUser:null,
-            answerDate: null,
-        },
-        {
-            id: 2,
-            question:'배송 언제 되나요?',
-            questionDate: '2023.06.27',
-            user:'남주혁',
-            isAnswer: false,
-            answer:null,
-            answerUser:null,
-            answerDate: null,
-        },
-        {
-            id: 3,
-            question:'배송 언제 되나요?',
-            questionDate: '2023.06.27',
-            user:'남주혁',
-            isAnswer: false,
-            answer:null,
-            answerUser:null,
-            answerDate: null,
-        },
-        {
-            id: 4,
-            question:'배송 언제 되나요?',
-            questionDate: '2023.06.27',
-            user:'남주혁',
-            isAnswer: false,
-            answer:null,
-            answerUser:null,
-            answerDate: null,
-        },
-        {
-            id: 5,
-            question:'배송 언제 되나요?',
-            questionDate: '2023.06.27',
-            user:'남주혁',
-            isAnswer: false,
-            answer:null,
-            answerUser:null,
-            answerDate: null,
-        },
-    ]
+    const getFitAbleInquiryListData = async () => {
+        try{
+            const response = await getFitAbleInquiryList();
+            setFitableInquiryList(response.content);
+            // console.log('getFitAbleInquiryListData response:', response.content)
+        }catch(error){
+            console.error('getFitAbleInquiryListData error:', error.response.data)
+        }
+    }
+
+    const deleteInquiryBtn = async (id) => {
+        console.log('deleteInquiryBtn id:', id)
+        try{
+            const response = await deleteFitAbleInquiry(id);
+            // console.log('deleteInquiryBtn response:', response)
+            if(response){
+                setFitableInquiryList(fitableInquiryList.filter(item => item.id !== id));
+                Alert.alert('문의가 삭제되었습니다.')
+
+            }
+
+        }catch(error){
+            console.error('deleteInquiryBtn error:', error.response.data)
+        }
+    }
+
+    useEffect(() => {
+        getFitAbleInquiryListData();
+    },[])
+        
 
     return (
         <Container>
@@ -93,26 +54,30 @@ function ProductQnATemplate(props) {
             <QnAWraper>
             <ScrollView>
                 {
-                    productQnAData.map((item, index) => (
+                    fitableInquiryList.map((item, index) => (
                         <ProductQnAListContainer key={index}>
                             
                             <ProductQnAListUserContainer>
                                 <ProductQnAListText>Q.</ProductQnAListText>
-                                <ProductQnAListAnswerLabelText>{item.isAnswer ? '답변완료' : '답변대기'}</ProductQnAListAnswerLabelText>
+                                <ProductQnAListAnswerLabelText>{item.isComment ? '답변완료' : '답변대기'}</ProductQnAListAnswerLabelText>
                             </ProductQnAListUserContainer>
                             <ProductQnAListTitleContainer>
-                                <ProductQnAListQuestionText>{item.question}</ProductQnAListQuestionText>
+                                <ProductQnAListQuestionText>{item.context}</ProductQnAListQuestionText>
                             </ProductQnAListTitleContainer>
-                            <ProductQnAListUserDateText>{item.user} | {item.questionDate}</ProductQnAListUserDateText>
+                            <BtnWraper>
+                            <ProductQnAListUserDateText>{item.name} | {formatReplaceString(item.createAt)}</ProductQnAListUserDateText>
+                                <DeleteBtn onPress={() => {deleteInquiryBtn(item.id)}}>
+                                    <DeleteText>삭제</DeleteText>
+                                </DeleteBtn>
+                            </BtnWraper>
                             {
-                                item.isAnswer ?
+                                item.isComment && item.comment ? (
                                 <ProductQnAListAnswerContainer>
-                                     <ProductQnAListAText>A.</ProductQnAListAText>
-                                    <ProductQnAListAnswerText>{item.answer}</ProductQnAListAnswerText>
-                                    <ProductQnAListUserDateText>{item.user} | {item.questionDate}</ProductQnAListUserDateText>
+                                    <ProductQnAListAText>A.</ProductQnAListAText>
+                                    <ProductQnAListAnswerText>{item.comment.context}</ProductQnAListAnswerText>
+                                    <ProductQnAListUserDateText>{item.comment.name} | {formatReplaceString(item.comment.createAt)}</ProductQnAListUserDateText>
                                 </ProductQnAListAnswerContainer>
-                                :
-                                null
+                                ) : null
                             }
                         </ProductQnAListContainer>
 
@@ -134,6 +99,7 @@ const Container = styled.View`
 
 const QnAWraper = styled.View`
 margin-top: 38px;
+margin-bottom: 38px;
 `
 
 const ProductQnAListContainer = styled.View`
@@ -198,15 +164,32 @@ const ProductQnAListAnswerContainer = styled.View`
     margin-top: 10px;
 `
 
-const ProductQnAListAnswerUserText = styled.Text`
-    font-size: 12px;
-    color: ${COLORS.gray_200};
-    margin-top: 5px;
+// const ProductQnAListAnswerUserText = styled.Text`
+//     font-size: 12px;
+//     color: ${COLORS.gray_200};
+//     margin-top: 5px;
+// `
+
+// const ProductQnAListAnswerDateText = styled.Text`
+//     font-size: 12px;
+//     color: ${COLORS.gray_200};
+//     margin-top: 5px;
+// `
+
+const BtnWraper = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `
 
-const ProductQnAListAnswerDateText = styled.Text`
-    font-size: 12px;
-    color: ${COLORS.gray_200};
-    margin-top: 5px;
+const DeleteBtn = styled.TouchableOpacity`
+
 `
 
+const DeleteText = styled.Text`
+    color: ${COLORS.gray_400};
+font-size: 12px;
+font-weight: 400;
+text-decoration: underline;
+line-height: 19.20px;
+`

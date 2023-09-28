@@ -7,7 +7,7 @@ import MyBtn from '../../ui/buttonUi/MyBtn';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { Alert } from 'react-native';
-import {postInquiry} from '../../../api/mypageApi';
+import {postInquiry,postFitAbleInquiry} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { inquiryListState ,myinfoState} from '../../../store/atom';
 import { formatDate } from '../../../utils/CustomUtils';
@@ -77,6 +77,33 @@ function FitableQnATemplate(props) {
         }
     };
 
+    const fitableInquiryData = async (data) => {
+        try {
+            const response = await postFitAbleInquiry(data);
+            console.log('응답성공',response)
+         
+            if(response){
+                setInquiryText('')
+            Alert.alert(
+                "문의 완료",
+                "문의가 등록되었습니다",
+
+                [{text:'확인', onPress: () => handleAnswerListBtn()}]
+                );
+            }
+            
+        } catch (error) {
+            console.error('Error getting:', error.response.data);
+            Alert.alert(
+                "문의 실패",
+                "문의 등록에 실패하였습니다.",
+                [{text:'확인'}]
+                );
+        }
+    };
+
+
+
     const handleRegistBtn = (centerInquiryId, inquiryText) => {
 
         console.log('centerInquiryId, inquiryText',centerInquiryId, inquiryText)
@@ -89,7 +116,16 @@ function FitableQnATemplate(props) {
 
             postCenterInquiryData(data);
         }else{
-            console.log('핏에이블 문의 등록')
+            const formData = new FormData();
+            const requestDto = {
+                context: inquiryText
+            };
+            formData.append("requestDto", JSON.stringify(requestDto));
+            // const imageFile = { uri: '', type: 'image/jpeg', name: 'image.jpg' };
+            // formData.append("images", imageFile);
+            console.log('formData',formData)
+            fitableInquiryData(formData);
+      
         }
         // console.log('등록하였습니다.',inquiryText);
     };
@@ -127,6 +163,7 @@ function FitableQnATemplate(props) {
                     // numberOfLines={15}
                     placeholderTextColor={COLORS.gray_300}
                     onChangeText={inquiryTextChange}
+                    value={inquiryText}
                 />
             </TextInputWrapper>
 

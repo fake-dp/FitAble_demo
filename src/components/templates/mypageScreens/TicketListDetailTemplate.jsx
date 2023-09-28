@@ -132,7 +132,7 @@ function TicketListDetailTemplate(props) {
                                     {
                                      options && options.map((option, index) => (
                                          <TicketContentsText key={index}>
-                                             {option.type}
+                                             {/* {option.type} */}
                                              {option.name}
                                              ({option.type === 'TICKET_TIME' ||option.type === 'PT_TIME' ||option.type === 'RENTAL_SPORTSWEAR_TIME' ? `${option?.left&&option?.left}회` : `${option?.left&&option?.left}일`})
                                          </TicketContentsText>)) }
