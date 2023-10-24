@@ -97,16 +97,16 @@ function Logintempate({navigation}) {
       } catch (error) {
           console.log('Error during login@@:', error);
           if(error.code === 10202){
-            Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
+            Alert.alert('비밀번호를 잘못 입력했습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
           }
       else if(error.code === 10200){
-        Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
+        Alert.alert('등록되지 않은 아이디입니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
       }
     }
   };
   
 
-    const isInputValid = phone.length > 5  && password.length > 3;
+    const isInputValid = phone.length > 5  && password.length > 7;
 
     return (
         <LoginScreenView> 
