@@ -12,7 +12,7 @@ import GobackGrid from '../../grid/GobackGrid';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import {upDateMyInfo,joinInfo} from '../../../api/authApi'
-import {signUpInfoState,isLoginState} from '../../../store/atom';
+import {signUpInfoState,isLoginState,fcmTokenState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -28,7 +28,7 @@ function Agreementtemplate(props) {
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
     const [checkedCount, setCheckedCount] = useState(0); 
-    console.log('dd@@@3213123@',signUpInfo)
+   console.log('isSelected',isSelected)
 
     // 모든 목록 리스트 체크 여부 확인
     const toggleAllCheck = () => {
@@ -45,13 +45,13 @@ function Agreementtemplate(props) {
       };
     
         // 개별 목록 리스트 체크 여부 확인
-    const handleCheckboxChange = (id) => {
-        setSelection((prevState) => {
-          const updatedSelection = { ...prevState };
-          updatedSelection[id] = !prevState[id];
-          return updatedSelection;
-        });
-      };
+        const handleCheckboxChange = (id) => {
+          setSelection((prevState) => {
+            const updatedSelection = { ...prevState };
+            updatedSelection[id] = !prevState[id];
+            return updatedSelection;
+          });
+        };
 
       const goBackNavigation = () => {
         // 로그인 화면으로 이동
@@ -101,11 +101,11 @@ function Agreementtemplate(props) {
         birthDay: signUpInfo.birthDay,
         gender: signUpInfo.gender,
         password: signUpInfo.password,
-        fcmToken: "dCilaS_PlFE:APA91bHi45B4d1V5XEPaTW9hhtmoR",
+        fcmToken: fcmToken,
         agreements: {
-        marketing: false,
-        pushAlarm: false,
-        storeMarketing: false
+          marketing: false,
+          pushAlarm: false,
+          storeMarketing: false
   }
 }
 console.log('업데이트bodyData',bodyData)
@@ -130,7 +130,7 @@ console.log('업데이트bodyData',bodyData)
           gender: signUpInfo.gender,
           phone: signUpInfo.phone,
           password: signUpInfo.password,
-          fcmToken: "dCilaS_PlFE:APA91bHi45B4d1V5XEPaTW9hhtmoR",
+          fcmToken: fcmToken,
           agreements: {
             marketing: false,
             pushAlarm: false,
