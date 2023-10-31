@@ -1,8 +1,18 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
+import {postReadPushAlarm} from '../../../api/pushApi';
+import { useNavigation } from '@react-navigation/native';
 function BellList(props) {
-
+    const navigation = useNavigation();
     const { data, maindate } = props; 
+    console.log('data',data)
+
+    const goDetailScreen = async(id) => {
+         console.log('oid',id)
+            const response = await postReadPushAlarm(id);
+            console.log('읽음',response)
+
+    }
 
     return (
         <>
@@ -11,8 +21,10 @@ function BellList(props) {
             data.map((item,index) => {
                 return (
                     <ContentsContainer key={index} isLastItem={index === data.length - 1}>
+                       <TouchContainer onPress={()=>goDetailScreen(item.id)}>
                         <ContentsText>{item.context}</ContentsText>
                         <ContentsDate>{item.date}</ContentsDate>
+                       </TouchContainer>
                     </ContentsContainer>
                 )
             }
@@ -44,6 +56,9 @@ const ContentsContainer = styled.View`
     `
     border-bottom-width: 0;
   `}
+`
+
+const TouchContainer = styled.TouchableOpacity`
 `
 
 const ContentsText = styled.Text`

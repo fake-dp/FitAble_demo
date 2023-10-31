@@ -2,12 +2,13 @@ import { COLORS } from '../../../constants/color';
 import styled from 'styled-components/native';
 import { Image ,TouchableOpacity} from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useCallback } from 'react';
+import {getUnreadPush} from '../../../api/pushApi';
 
 function HomeHeader({navigation}) {
     
-  const [isBell, setIsBell] = useState(true);
+  const [isAlarmRead, setIsAlarmRead] = useState(true);
 
     // const navigation = useNavigation();
     const goToScanScreen = () => {
@@ -17,6 +18,22 @@ function HomeHeader({navigation}) {
     const goToBellScreen = () => {
         navigation.navigate('Bell');
     };
+
+    const getUnreadPushData = async () => {
+      const response = await getUnreadPush();
+      console.log('response',response.isExistUnread)
+      if(response){
+        setIsAlarmRead(response.isExistUnread)
+      }
+    }
+
+
+    useFocusEffect(
+      useCallback(() => {
+          getUnreadPushData();
+
+      }, [])
+  );
 
     return (
         <StyledPressable>
@@ -37,7 +54,7 @@ function HomeHeader({navigation}) {
                 onPress={goToBellScreen}
                 >
                   {
-                    isBell ?   <CustomImage
+                    isAlarmRead ?   <CustomImage
                     source={require('../../../assets/img/bell_active.png')}
                     /> : <CustomImage
                     source={require('../../../assets/img/bell_inactive.png')}

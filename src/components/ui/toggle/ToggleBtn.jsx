@@ -1,19 +1,20 @@
-import { styled } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { useState } from 'react';
 
-function ToggleBtn(props) {
+function ToggleBtn({ isActive, toggleActive }) {
 
-    const [isActive, setIsActive] = useState(false);
+  console.log('isActive',isActive)
 
     const handleToggle = () => {
-      setIsActive(!isActive);
+        if (toggleActive) {
+            toggleActive();
+        }
     };
 
     return (
         <ToggleContainer isActive={isActive} onPress={handleToggle}>
-        <ToggleBall isActive={isActive} />
-      </ToggleContainer>
+            <ToggleBall isActive={isActive} />
+        </ToggleContainer>
     );
 }
 

@@ -27,10 +27,12 @@ function MyMainTemplate(props) {
 
     const {mainCenter, marketing, pushAlarm,mainCenterId} = myInfo
 
-    console.log('myInfo',myInfo,mainCenterId)
+    console.log('myInfo',myInfo)
 
     // 네비게이션 설정
-    const goSettingScreen = () => {navigation.navigate('AppSetting');}
+    const goSettingScreen = () => {
+        navigation.navigate('AppSetting');
+    }
 
     const addTicketBuyBtn = (id) =>{
         id ? 

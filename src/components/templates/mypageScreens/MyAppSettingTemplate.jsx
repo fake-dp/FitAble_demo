@@ -5,12 +5,15 @@ import ToggleBtn from '../../ui/toggle/ToggleBtn';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import WithdrawalModal from '../../ui/modal/WithdrawalModal';
+import {putStoreMarketing,putPushAlarm,putPushMarketing} from '../../../api/pushApi';
+import { useRecoilState } from 'recoil';
+import { myinfoState } from '../../../store/atom';
 
 function MyAppSettingTemplate(props) {
  
     const navigation = useNavigation();
-
     const [showModal, setShowModal] = useState(false);
+    const [myInfo, setMyInfo] = useRecoilState(myinfoState);
 
     const openModal = () => {
         setShowModal(true)
@@ -28,9 +31,48 @@ function MyAppSettingTemplate(props) {
         navigation.navigate('Terms');
     };
 
+    const handleTogglePushAlarm = async () => {
+        try {
+            const updatedValue = !myInfo.pushAlarm;
+            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: 'YOUR_FCM_TOKEN' });  // FCM 토큰 값 설정 필요
+            // 성공적으로 업데이트 된 경우 Recoil 상태 업데이트
+            console.log('응답v푸시',response)
+            setMyInfo(prev => ({ ...prev, pushAlarm: updatedValue }));
+        } catch (error) {
+            console.error("Error updating push alarm status:", error);
+        }
+    };
+
+    const handleTogglePushMarketing = async () => {
+        try {
+            const updatedValue = !myInfo.marketing;
+            const response = await putPushMarketing(updatedValue);
+            // 성공적으로 업데이트 된 경우 Recoil 상태 업데이트
+            console.log('마케팅알림',response)
+            setMyInfo(prev => ({ ...prev, marketing: updatedValue }));
+        } catch (error) {
+            console.error("Error updating push marketing status:", error);
+        }
+    };
+
+    const handleToggleStoreMarketing = async () => {
+        try {
+            const updatedValue = !myInfo.storeMarketing;
+            const response = await putStoreMarketing(updatedValue);
+            console.log('스토어ㅋ마케팅',response)
+            // 성공적으로 업데이트 된 경우 Recoil 상태 업데이트
+            setMyInfo(prev => ({ ...prev, storeMarketing: updatedValue }));
+        } catch (error) {
+            console.error("Error updating store marketing status:", error);
+        }
+    };
+    
+
+
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
-    
+    const {pushAlarm, storeMarketing,marketing} = myInfo
+    console.log('myInfomyInfo',pushAlarm,marketing,storeMarketing)
 
   return (
     <Container>
@@ -38,12 +80,25 @@ function MyAppSettingTemplate(props) {
         <AppSettingContainer>
 
                 <SettingList>
+                    <SettingTextContainer>
                     <SettingListText>PUSH 알림</SettingListText>
-                    <ToggleBtn />
+                    <SettingSubListText>공지사항, 출석, 결제 알림</SettingSubListText>
+                    </SettingTextContainer>
+                    <ToggleBtn isActive={myInfo.pushAlarm} toggleActive={handleTogglePushAlarm} />
                 </SettingList>
                 <SettingList>
-                    <SettingListText>마케팅 알림</SettingListText>
-                    <ToggleBtn />
+                    <SettingTextContainer>
+                    <SettingListText>센터 마케팅 알림</SettingListText>
+                    <SettingSubListText>센터 이벤트,쿠폰 지급, 할인 소식</SettingSubListText>
+                    </SettingTextContainer>
+                    <ToggleBtn isActive={myInfo.marketing} toggleActive={handleTogglePushMarketing} />
+                </SettingList>
+                <SettingList>
+                    <SettingTextContainer>
+                    <SettingListText>스토어 마케팅 알람</SettingListText>
+                    <SettingSubListText>핏에이블 스토어 이벤트, 할인 소식</SettingSubListText>
+                    </SettingTextContainer>
+                    <ToggleBtn isActive={myInfo.storeMarketing} toggleActive={handleToggleStoreMarketing} />
                 </SettingList>
                 <SettingList>
                     <SettingListText>QR 출입증</SettingListText>
@@ -85,8 +140,13 @@ const Container = styled.View`
 const SettingList = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     padding: 15px 0;
+    margin-bottom: 14px;
+`
+
+const SettingTextContainer = styled.View`
+
 `
 
 const SettingListBtn = styled.TouchableOpacity`
@@ -107,6 +167,12 @@ color: ${COLORS.sub};
 font-weight: 500;
 line-height: 22.40px;
 `
+const SettingSubListText = styled.Text`
+color: ${COLORS.gray_400};
+font-size: 12px;
+font-weight: 400;
+`
+
 const SettingListRightIcon = styled.Image`
     width: 20px;
     height: 20px;
