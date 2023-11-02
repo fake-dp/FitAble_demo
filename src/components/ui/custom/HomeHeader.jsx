@@ -31,7 +31,6 @@ function HomeHeader({navigation}) {
     useFocusEffect(
       useCallback(() => {
           getUnreadPushData();
-
       }, [])
   );
 

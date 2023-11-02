@@ -1,4 +1,3 @@
-import React, { useRef } from 'react';
 import {  Button, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
@@ -10,10 +9,10 @@ import UserTicketNoneCard from '../../ui/card/UserTicketNoneCard';
 import { useNavigation } from '@react-navigation/native';
 import { getHomeBanners } from '../../../api/homeApi';
 import {getHomeTickets,getHomeReservations}from '../../../api/lessonsApi'
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect,useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
-import { homeTicketListState, homeClassListState } from '../../../store/atom';
+import { homeTicketListState, homeClassListState,mainCenterIdState } from '../../../store/atom';
 import LessonCard from '../../ui/card/LessonCard';
 
 function HomeMainTemplate(props) {
@@ -47,7 +46,8 @@ function HomeMainTemplate(props) {
 
     const [fitablesBanners, setFitablesBanners] = useState([]);
     const [centersBanners, setCentersBanners] = useState([]);
-    const [mainCenterId, setMainCenterId] = useState(null);
+    // const [mainCenterId, setMainCenterId] = useState(null);
+     const [mainCenterId, setMainCenterId] = useRecoilState(mainCenterIdState);
     // 홈 회원 이용권 목록 및 예약 목록
     const [homeTicketList, setHomeTicketList] = useRecoilState(homeTicketListState);
     const [homeReservationList, setHomeReservationList] = useRecoilState(homeClassListState);
@@ -80,17 +80,18 @@ function HomeMainTemplate(props) {
           console.error('Error getting home reservations:', error.response); // 에러 로깅
         }
       };
-
+console.log('mainCenterId',mainCenterId)
 
     // console.log('homeReservationList',homeTicketList)
 //1. 전체보기 유아이
 //2. 이용권 상세페이지 이동
 
-   useEffect(() => {
+useFocusEffect(
+  useCallback(() => {
         getUseHomeBanners();
         getUseHomeTickets();
         getUseHomeReservations();
-    }, []);
+  },[]));
  
 
     return (

@@ -14,7 +14,7 @@ export const themeStyled = {
       //   disabledArrowColor: COLORS.sub,
         monthTextColor: COLORS.white,
         indicatorColor: COLORS.main,
-
+        textDayColor: COLORS.white, 
         textDayFontFamily: 'NotoSansKR-Regular',
         textMonthFontFamily: 'NotoSansKR-Regular',
         textDayHeaderFontFamily: 'NotoSansKR-Regular',
@@ -23,5 +23,8 @@ export const themeStyled = {
         textDayHeaderFontWeight: '500',
         textDayFontSize: 16,
         textMonthFontSize: 16,
-        textDayHeaderFontSize: 14
+        textDayHeaderFontSize: 14,
+        dotStyle:{
+          marginTop: 10,
+        }
   };

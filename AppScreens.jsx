@@ -29,6 +29,7 @@ import TicketListDetailScreen from './src/screens/mypage/TicketListDetailScreen'
 import WebViewScreen from './src/screens/mainpage/WebViewScreen';
 import ChangePasswordScreen from './src/screens/mypage/ChangePasswordScreen';
 import ChangePhoneNumberScreen from './src/screens/mypage/ChangePhoneNumberScreen';
+import ExerciseSearchCenterScreen from './src/screens/exercisepage/ExerciseSearchCenterScreen';
 
 
 
@@ -89,7 +90,16 @@ function AppScreens({navigation}) {
         }}
           />
         {/* 운동하기 스크린 등록 */}
-
+        <Stack.Screen name="ExSearchCenter" component={ExerciseSearchCenterScreen} 
+          options={{
+            title: '',
+            headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.sub,
+            },
+            headerBackTitleVisible: false,
+          }}
+        />
 
         {/* 스토어 스크린 등록 */}
 

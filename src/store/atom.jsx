@@ -28,6 +28,10 @@ export const signUpInfoState = atom({
   },
 });
 
+export const selectTodayState = atom({
+  key: 'selectTodayState',
+  default: '',
+});
 
 export const phoneState = atom({
     key: 'phoneState',
@@ -101,6 +105,10 @@ export const centerIdState = atom({
   default: '',
 });
 
+export const mainCenterIdState = atom({
+  key: 'mainCenterIdState',
+  default: '',
+});
 
 // mypage info
 export const myinfoState = atom({

@@ -11,7 +11,7 @@ export const getReservations = async () => {
 }
 
 // 예약/대기 
-export const getReservationsByStatus = async (id) => {
+export const postReservations = async (id) => {
     try {
         const response = await customAxios.post('/api/members/v1/lessons/reservation',{id});
         return response.data;

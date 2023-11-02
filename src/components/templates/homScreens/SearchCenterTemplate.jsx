@@ -9,7 +9,7 @@ import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
 import { getSearchCenter } from '../../../api/homeApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function SearchCenterTemplate({searchCenterText}) {
+function SearchCenterTemplate({searchCenterText,labelText}) {
     const navigation = useNavigation();
     const [isTyping, setIsTyping] = useState(false);
     const [recentList, setRecentList] = useState([]);
@@ -17,7 +17,7 @@ function SearchCenterTemplate({searchCenterText}) {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-
+  console.log('labelText',labelText)
     useEffect(() => {
         const loadRecentSearches = async () => {
           try {
@@ -151,17 +151,14 @@ function SearchCenterTemplate({searchCenterText}) {
     
               
                 {
-                    !isTyping &&(
+                !labelText && !isTyping ? (
                 <RecentSearchContainer>
                 <RecentSearchTitle>최근 검색어</RecentSearchTitle>
-    
                 <ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
                 overScrollMode="never"
                 >
-    
-                <View>
                 {recentList.map((item, index) => (
                     <RecentSearchBox key={index}>
                     <RecentSearchText>{item.title}</RecentSearchText>
@@ -170,11 +167,13 @@ function SearchCenterTemplate({searchCenterText}) {
                     </TouchableOpacity>
                     </RecentSearchBox>
                 ))}
-                </View>
                 </ScrollView>
                 </RecentSearchContainer>
+                    ) : (
+                      !isTyping && <RecentSearchTitle>{labelText}</RecentSearchTitle>
                     )
                 }
+
                 {/* 검색 데이터 */}
                 {isTyping && searchData.length > 0 && (
                 <ScrollView
