@@ -115,6 +115,7 @@ function Logintempate({navigation}) {
              value={phone}
              onChangeText={setPhone}
              placeholder="휴대폰번호"
+             maxLength={11}
             />
 
             <AuthInput
