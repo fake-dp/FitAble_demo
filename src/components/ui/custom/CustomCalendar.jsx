@@ -133,7 +133,7 @@ function CustomCalendar({mainCenterId,classList,setClassList}) {
 
     <Calendar
     current={selected}
-   style={isActive ? { height: 320 } : { height: 150 }}
+  //  style={isActive ? { height: 320 } : { height: 150 }}
 
     onMonthChange={(month) => {
         // month에 현재 월 정보가 들어있음

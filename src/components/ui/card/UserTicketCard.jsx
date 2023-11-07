@@ -1,10 +1,15 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { Platform, Image ,View, TouchableOpacity} from 'react-native';
+import { Platform, Image ,View, TouchableOpacity,Dimensions} from 'react-native';
 import SmallLabel from '../label/SmallLabel';
 function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
   const { id, center,locker,name,sportWear,trainerName,detail, usePercentage,type, status, startDate,endDate,left } = homeTicketList;
   // console.log('userCardData',type, status,id );
+
+const deviceWidth = Dimensions.get('window').width;
+const padding = 30;  // 원하는 패딩 값으로 변경 가능
+const cardWidth = deviceWidth - 2 * padding;
+ console.log('deviceWidth',deviceWidth)
 
   const shirts = require('../../../assets/img/t_shirt.png');
   const lockers = require('../../../assets/img/lockers.png');
@@ -13,8 +18,8 @@ function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
     <Container>
       {
         status === "EXPIRED" || status ==="STOP_PENDING"? null : (
-          <CardContainer>
-          <TouchableOpacity onPress={()=>detailTicketsScreen(id)}>
+          <CardContainer cardWidth={cardWidth}>
+          <InnerContainer onPress={()=>detailTicketsScreen(id)}>
           <CardContent>
             <CardMainText>{center.name}</CardMainText>
             <LabelContainer>
@@ -46,7 +51,7 @@ function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
             <CardExpirationText>{startDate}~{endDate}</CardExpirationText>
             <CardExpirationText>{left} 남음</CardExpirationText>
             </CardDateContainer>
-          </TouchableOpacity>
+          </InnerContainer>
         </CardContainer>
         )
       }
@@ -57,11 +62,13 @@ function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
 export default UserTicketCard;
 
 const Container = styled.View`
-  padding: 0 20px;
+  padding: 0 0 0 20px;
 `;
 
 const CardContainer = styled.View`
-   width: ${Platform.OS === 'ios' ? '340px' : '350px'};
+   /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
+   width: ${({ cardWidth }) => cardWidth}px;
+
   /* padding: 27px 30px 30px 24px; */
   padding: 20px 25px 30px 25px;
   height: 210px;
@@ -71,6 +78,9 @@ const CardContainer = styled.View`
   margin-top: 12px;
 `;
 
+const InnerContainer = styled.TouchableOpacity`
+width: 100%;
+`
 
 const CardContent = styled.View`
     flex-direction: row;

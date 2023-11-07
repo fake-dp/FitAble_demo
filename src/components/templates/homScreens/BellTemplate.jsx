@@ -1,6 +1,6 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { FlatList } from 'react-native';
+import { FlatList, ActivityIndicator, View } from 'react-native';
 import BellList from '../../ui/list/BellList';
 import { useState,useEffect } from 'react';
 import { getPushAlarmHistory } from '../../../api/homeApi';
@@ -11,11 +11,18 @@ function BellTemplate(props) {
     const navigation = useNavigation();
 
     const [bellList, setBellList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getBellData = async () => {
-        const response = await getPushAlarmHistory();
-        console.log('response@@!',response.content)
-        setBellList(response.content);
+        try{
+            const response = await getPushAlarmHistory();
+            console.log('response@@!',response.content)
+            setBellList(response.content);
+        } catch (error){
+            console.error('Error getting:', error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -23,6 +30,14 @@ function BellTemplate(props) {
     },[])
 
     // console.log('bellList',!bellList)
+
+    if (loading) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.sub }}>
+            <ActivityIndicator size="large" color={COLORS.main} />
+          </View>
+        );
+      }
 
     return (
         

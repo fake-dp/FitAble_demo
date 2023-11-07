@@ -30,6 +30,7 @@ import WebViewScreen from './src/screens/mainpage/WebViewScreen';
 import ChangePasswordScreen from './src/screens/mypage/ChangePasswordScreen';
 import ChangePhoneNumberScreen from './src/screens/mypage/ChangePhoneNumberScreen';
 import ExerciseSearchCenterScreen from './src/screens/exercisepage/ExerciseSearchCenterScreen';
+import NoticeDetailScreen from './src/screens/mypage/NoticeDetailScreen';
 
 
 
@@ -123,6 +124,8 @@ function AppScreens({navigation}) {
             <Stack.Screen name="MyBookList" component={MyBookListScreen}  />
             <Stack.Screen name="CenterTicket" component={CenterTicketListScreen}  />
             <Stack.Screen name="MyCenter" component={MyCenterMarkScreen}  options={{headerShown:false}}/>
+            <Stack.Screen name="DetailNotice" component={NoticeDetailScreen} />
+
             <Stack.Screen name="Mileage" component={MileageScreen}  />
             <Stack.Screen name="Product" component={MyProductScreen}  />
             <Stack.Screen name="FitableQnA" component={FitableQnAScreen}  />

@@ -2,7 +2,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { Image } from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import MileageList from '../../ui/list/MileageList';
 import { FlatList } from 'react-native';
 import { useState,useEffect } from 'react';
@@ -14,7 +14,7 @@ function MileageTemplate(props) {
 
     const [mileageList, setMileageList] = useState([]); // 마일리지 내역
     const [totalMileage, setTotalMileage] = useState(0); // 총 마일리지
-
+    const [loading, setLoading] = useState(true);
     const goBackScreens = () => {
         navigation.goBack();
     };
@@ -25,16 +25,35 @@ function MileageTemplate(props) {
 
 
     const getMilagesData = async () => {
-        const response = await getMileages();
-        setMileageList(response.mileageHistories.content);
-        setTotalMileage(response.totalMileage);
+        try{
+
+            const response = await getMileages();
+            setMileageList(response.mileageHistories.content);
+            setTotalMileage(response.totalMileage);
+        } catch (error) {
+            console.error('Error getting:', error);
+        } finally {
+            setLoading(false);
     }
+}
+
+
+
 
 
     useEffect(() => {
         getMilagesData();
     },[])
 
+
+
+    if (loading) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
+            <ActivityIndicator size="large" color={COLORS.sub} />
+          </View>
+        );
+      }
 
 
     return (
@@ -58,11 +77,10 @@ function MileageTemplate(props) {
                  }
             <FlatList
              bounces={false}
-         
              showsVerticalScrollIndicator={false}
              overScrollMode="never"
-            data={mileageList}
-            renderItem={({ item }) => <MileageList data={item} />}
+             data={mileageList}
+             renderItem={({ item }) => <MileageList data={item} />}
             // keyExtractor={(item) => item.id.toString()}
         />
         </Container>

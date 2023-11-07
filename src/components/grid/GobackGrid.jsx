@@ -18,6 +18,7 @@ export default GobackGrid;
 const GobackTouchable = styled.TouchableOpacity`
 flex-direction: row;
 align-items: center;
+margin-bottom: 10px;
 `;
 
 const TitleText = styled.Text`

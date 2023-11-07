@@ -6,11 +6,9 @@ import {ActivityIndicator, View} from 'react-native';
 import { COLORS } from '../../constants/color';
 function MainExerciseSreen(props) {
 
-  // const testDate = [1];
-  const searchCenterText = '센터 찾기'
 
   const [centerName, setCenterName] = useState('');
-  const [loading, setLoading] = useState(true);  // 로딩 상태를 추가
+  const [loading, setLoading] = useState(true);
 
   const getValidCenterNameData = async () => {
       try {

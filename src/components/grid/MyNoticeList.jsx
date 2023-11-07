@@ -1,32 +1,39 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef ,useEffect} from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { Dimensions } from 'react-native';
-const DEVICE_WIDTH = Dimensions.get('window').width;
+import { useNavigation } from '@react-navigation/native';
+const DEVICE_WIDTH = Dimensions.get('window').width - 40;
+
 function MyNoticeList({ noticeList }) {
 
   const [page, setPage] = useState(0);
+  const navigation = useNavigation();
 
   const ITEMS_PER_PAGE = 5;
   const scrollViewRef = useRef();
+
+  const onScroll = (event) => {
+    const { contentOffset } = event.nativeEvent;
+    const viewSize = event.nativeEvent.layoutMeasurement.width;
+    const newPageIndex = Math.floor(contentOffset.x / viewSize);
+    setPage(newPageIndex);
+  };
+
   const onPageChange = (newPage) => {
     if (newPage >= 0 && newPage < Math.ceil(noticeList.length / ITEMS_PER_PAGE)) {
       setPage(newPage);
+      scrollViewRef.current.scrollTo({ x: newPage * DEVICE_WIDTH, animated: true });
     }
   };
 
-// const onPageChange = (newPage) => {
-//     if (typeof newPage === 'number') {
-//       setPage(newPage);
-//       scrollViewRef.current.scrollTo({ x: newPage * DEVICE_WIDTH, animated: true });
-//     } else {
-//       const { contentOffset } = newPage.nativeEvent;
-//       const viewSize = newPage.nativeEvent.layoutMeasurement.width;
-//       const newPageIndex = Math.floor(contentOffset.x / viewSize);
-//       setPage(newPageIndex);
-//     }
-//   };
+const goNoticeListDetail = (item) => {
+    console.log('item',item)
+    navigation.navigate('DetailNotice',{item})
+}
+
+// console.log('DEVICE_WIDTH',DEVICE_WIDTH)
 
   return (
     <ListContainer>
@@ -42,32 +49,35 @@ function MyNoticeList({ noticeList }) {
             ) 
 
         }
-        {noticeList.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE).map((item) => (
-            <ListTextContainer key={item.id}>
-            <ListTitle>{item.title}</ListTitle>
+        {/* {noticeList.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE).map((item) => (
+            <ListTextContainer key={item.id} onPress={()=>goNoticeListDetail(item.id)}>
+            <ListTitle numberOfLines={1}>{item.title}</ListTitle>
             <ListDate>{item.createAt}</ListDate>
             </ListTextContainer>
-        ))}
+        ))} */}
       </View>
-               {/* <StyledScrollView 
-        ref={scrollViewRef}
-        horizontal 
-        pagingEnabled 
-        onScroll={onPageChange} 
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={16}
-      >
-        {Array.from({ length: Math.ceil(noticeList.length / ITEMS_PER_PAGE) }).map((_, index) => (
-          <PageContainer key={index}>
-            {noticeList.slice(index * ITEMS_PER_PAGE, (index + 1) * ITEMS_PER_PAGE).map(item => (
-              <ListTextContainer key={item.id}>
-                <ListTitle>{item.title}</ListTitle>
-                <ListDate>{item.createAt}</ListDate>
-              </ListTextContainer>
-            ))}
-          </PageContainer>
-        ))}
-      </StyledScrollView> */}
+      <StyledScrollView 
+  ref={scrollViewRef}
+  horizontal 
+  pagingEnabled 
+  onScroll={onScroll} // 수정된 onScroll 함수를 사용하세요.
+  showsHorizontalScrollIndicator={false}
+  scrollEventThrottle={16}
+>
+  {Array.from({ length: Math.ceil(noticeList.length / ITEMS_PER_PAGE) }).map((_, index) => (
+    <PageContainer key={index}>
+      {noticeList.slice(index * ITEMS_PER_PAGE, (index + 1) * ITEMS_PER_PAGE).map(item => (
+        <ListTextContainer key={item.id} onPress={()=>goNoticeListDetail(item.id)}>
+         <ListTitleWrapper>
+          <ListTitle  numberOfLines={1}>{item.title}</ListTitle>
+         </ListTitleWrapper>
+          <ListDate>{item.createAt}</ListDate>
+        </ListTextContainer>
+      ))}
+    </PageContainer>
+  ))}
+</StyledScrollView>
+
 
       <PaginationContainer>
        {noticeList.length > 5 &&
@@ -140,12 +150,16 @@ const ListTextContainer = styled.TouchableOpacity`
     border-color: ${COLORS.gray_100};
 `;
 
+const ListTitleWrapper = styled.View`
+width: 60%;
+`
+
 const ListTitle = styled.Text`
 color: ${COLORS.sub};
 font-size: 16px;
 font-weight: 400;
 line-height: 22.40px;
-
+flex: 1;
 `;
 
 const ListDate = styled.Text`

@@ -7,14 +7,17 @@ import { useNavigation } from '@react-navigation/native';
 import WithdrawalModal from '../../ui/modal/WithdrawalModal';
 import {putStoreMarketing,putPushAlarm,putPushMarketing} from '../../../api/pushApi';
 import { useRecoilState } from 'recoil';
-import { myinfoState } from '../../../store/atom';
+import { myinfoState, fcmTokenState } from '../../../store/atom';
 
 function MyAppSettingTemplate(props) {
  
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
+    const [fcmToken, setFcmToken] = useRecoilState(fcmTokenState);
 
+
+      
     const openModal = () => {
         setShowModal(true)
     }
@@ -34,7 +37,7 @@ function MyAppSettingTemplate(props) {
     const handleTogglePushAlarm = async () => {
         try {
             const updatedValue = !myInfo.pushAlarm;
-            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: 'YOUR_FCM_TOKEN' });  // FCM 토큰 값 설정 필요
+            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: fcmToken });  // FCM 토큰 값 설정 필요
             // 성공적으로 업데이트 된 경우 Recoil 상태 업데이트
             console.log('응답v푸시',response)
             setMyInfo(prev => ({ ...prev, pushAlarm: updatedValue }));

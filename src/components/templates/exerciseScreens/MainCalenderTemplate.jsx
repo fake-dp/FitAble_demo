@@ -136,8 +136,8 @@ function MainCalenderTemplate(props) {
     const searchCenterScreen = () => {
         navigation.navigate('ExSearchCenter');
     };
-
     const {mainCenter, mainCenterId} = myInfo
+    console.log('classList',classList,mainCenterId)
     const downIcon = require('../../../assets/img/whitedownex.png');
     const reroad = require('../../../assets/img/reroad.png');
     const userIcon = require('../../../assets/img/userIcon.png');
@@ -213,15 +213,21 @@ function MainCalenderTemplate(props) {
                         </CenterRecruitContainer>
                     </CenterList>
 
-                    <CenterListRight>
-                        <CenterListBtn onPress={item.status !== "END" ? () => handleBtn(item.status,item.id, item) : null}>
-                            <CenterListRightTopText
-                            status={item.status}>
-                                {/* {item.status} */}
-                            {item.status === "AVAILABLE"? '예약' : item.status ==="WAITING_AVAILABLE"? '대기' : item.status ==="END"? '종료' : item.status === "RESERVED" || item.status === "WAITING" ? '취소':''}
-                            </CenterListRightTopText>
-                        </CenterListBtn>
-                    </CenterListRight>
+                        {
+                            item.status === "NOT_AVAILABLE" ? 
+                            (null):(
+                                <CenterListRight>
+                                <CenterListBtn onPress={item.status !== "END" ? () => handleBtn(item.status,item.id, item) : null}>
+                                    <CenterListRightTopText
+                                    status={item.status}>
+                                        {/* {item.status} */}
+                                    {item.status === "AVAILABLE"? '예약' : item.status ==="WAITING_AVAILABLE"? '대기' : item.status ==="END"? '종료' : item.status === "RESERVED" || item.status === "WAITING" ? '취소':''}
+                                    </CenterListRightTopText>
+                                </CenterListBtn>
+                            </CenterListRight>
+                            )
+                        }
+                  
                     {
                 showModal && (
                     <BookNWaitingCancelModal 

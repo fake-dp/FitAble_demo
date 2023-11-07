@@ -1,4 +1,4 @@
-import {  Button, ScrollView, TouchableOpacity } from 'react-native';
+import {  Button, ScrollView, TouchableOpacity,ActivityIndicator, View } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import HomeMainBanner from '../../ui/banner/HomeMainBanner';
@@ -51,6 +51,7 @@ function HomeMainTemplate(props) {
     // 홈 회원 이용권 목록 및 예약 목록
     const [homeTicketList, setHomeTicketList] = useRecoilState(homeTicketListState);
     const [homeReservationList, setHomeReservationList] = useRecoilState(homeClassListState);
+    const [loading, setLoading] = useState(true);
 
     const getUseHomeBanners = async () => {
         try {
@@ -60,7 +61,9 @@ function HomeMainTemplate(props) {
             setMainCenterId(response.mainCenterId);
         } catch (error) {
           console.error('Error getting home banners:', error.response); // 에러 로깅
-        }
+        } finally {
+          setLoading(false);  // 데이터를 가져온 후에 로딩 상태를 false로 설정
+      }
       };
 
     const getUseHomeTickets = async () => {
@@ -93,6 +96,14 @@ useFocusEffect(
         getUseHomeReservations();
   },[]));
  
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.sub }}>
+        <ActivityIndicator size="large" color={COLORS.main} />
+      </View>
+    );
+  }
+
 
     return (
         <Container>
@@ -109,7 +120,7 @@ useFocusEffect(
         </TouchableOpacity>
         </TitleTextContainer>
         </SubContainer>
- {
+  {
     // 센터 등록하기 이용권 없을때
     homeTicketList.length === 0 && homeReservationList.length === 0 ?
     <UserTicketNoneCard 
@@ -117,6 +128,7 @@ useFocusEffect(
     />
     :
     <>
+
     <ScrollView
     horizontal={true}
     bounces={false}
@@ -201,7 +213,7 @@ font-size: 20px;
 font-weight: 700;
 line-height: 30px;
 color: ${COLORS.white};
-margin-top: 40px;
+margin-top: 22px;
 `
 
 const AllReservationText = styled.Text`

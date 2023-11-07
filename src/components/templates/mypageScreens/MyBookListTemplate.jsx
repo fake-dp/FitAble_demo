@@ -2,10 +2,11 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView , Alert} from 'react-native';
+import { ScrollView , Alert, FlatList} from 'react-native';
 import { useState, useEffect } from 'react';
 import { BookCancelModal } from '../../ui/modal/MyPageCancelModal';
 import {getReservations, cancelReservation} from '../../../api/lessonsApi';
+import {ActivityIndicator, View} from 'react-native';
 
 function MyBookListTemplate(props) {
 
@@ -14,13 +15,13 @@ function MyBookListTemplate(props) {
     const [modalVisible, setModalVisible] = useState(false);
     const [bookListData, setBookListData] = useState([]);
     const [selectedDetail, setSelectedDetail] = useState(null);
-
+    const [loading, setLoading] = useState(true);
     const [cancelId, setCancelId] = useState(null);
 
     const goBackScreens = () => {
         navigation.goBack();
     };
-
+  
 
     const getReservationsData = async () => {
         try {
@@ -28,6 +29,8 @@ function MyBookListTemplate(props) {
             setBookListData(response.content);
         } catch (error) {
             console.error('Error getting:', error);
+        } finally {
+            setLoading(false);  // 데이터를 가져온 후에 로딩 상태를 false로 설정
         }
     };
 
@@ -97,22 +100,9 @@ function MyBookListTemplate(props) {
         closeText: '아니오',
     }
                    
-console.log('booklist',bookListData.length)
-    return (
-     <Container>
-        <GobackBlackGrid onPress={goBackScreens}>전체 예약 목록</GobackBlackGrid>
-            <ScrollView>
-            <BookListContainer>
-                {
-                    bookListData.length === 0 && (
-                        <NoListContainer>
-                            <NoListText>예약 내역이 없습니다.</NoListText>
-                        </NoListContainer>
-                    )
-                }
-                {
-                    bookListData.map((item, index) => (
-                        <BookListWrapper key={index}>
+
+    const renderItem = ({ item, index }) => (
+        <BookListWrapper>
                             
                             <BookListTitle>
                                 <BookListTitleDate>{item.createAt}</BookListTitleDate>
@@ -158,10 +148,34 @@ console.log('booklist',bookListData.length)
                                         ))                   
                             }
                         </BookListWrapper>
-                    ))
-                }
-            </BookListContainer>
-            </ScrollView>
+      );
+
+
+
+    if (loading) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
+            <ActivityIndicator size="large" color={COLORS.sub} />
+          </View>
+        );
+      }
+
+    return (
+     <Container>
+        <GobackBlackGrid onPress={goBackScreens}>전체 예약 목록</GobackBlackGrid>
+        <BookListContainer>
+            <FlatList
+             showsVerticalScrollIndicator={false}
+                data={bookListData}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => String(index)} // 고유한 키를 제공합니다.
+        ListEmptyComponent={(
+          <NoListContainer>
+            <NoListText>예약 내역이 없습니다.</NoListText>
+          </NoListContainer>
+        )}
+      />
+    </BookListContainer>
             {
     showModal && (
         <BookCancelModal 

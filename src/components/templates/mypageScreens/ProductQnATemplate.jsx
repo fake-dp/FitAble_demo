@@ -35,9 +35,7 @@ function ProductQnATemplate(props) {
             if(response){
                 setFitableInquiryList(fitableInquiryList.filter(item => item.id !== id));
                 Alert.alert('문의가 삭제되었습니다.')
-
             }
-
         }catch(error){
             console.error('deleteInquiryBtn error:', error.response.data)
         }
