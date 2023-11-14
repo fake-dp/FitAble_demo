@@ -8,19 +8,37 @@ import PriceProductGrid from '../../grid/PriceProductGrid';
 import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
 import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
-
+import { useRoute } from '@react-navigation/native';
+import {getIsExistCard} from '../../../api/cardApi';
+import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 function UseTemplate(props) {
 
     const navigation = useNavigation();
+    const route = useRoute();
+
+    const cardId = route.params?.data;
+   
+    console.log('detailDat111a',cardId)
     const [showModal, setShowModal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState([]);
-
+    const [isExist , setIsExist] = useState(false);
+    const [detailData, setDetailData] = useState([]);
     // ... other code ...
   
+    const getDataDetailTicketCenter = async () => {
+        try {
+            const response = await getDetailTicketCenter(cardId.id);
+            console.log('response',response);
+            setDetailData(response);
+        } catch (error) {
+            console.error('Error getting:', error.response.data);
+        }
+    }
+
     const handleOptionSelect = (id) => {
       setSelectedOption(id);
     // if (id === 2) {
@@ -53,6 +71,30 @@ function UseTemplate(props) {
         navigation.navigate('Home');
     };
 
+    const isCardInfoData = async () => {
+        try {
+            const response = await getIsExistCard();
+            console.log('response',response);
+            setIsExist(response.isExist);
+        } catch (error) {
+            console.error('Error getting:', error);
+        }
+    }
+
+    useEffect(() => {
+        isCardInfoData();
+        getDataDetailTicketCenter()
+    },[]);
+
+    const goCardInfoScreens = () => {
+        if(isExist){
+            console.log('결제결제결제결제 바로결제결제')
+        }else{  
+            navigation.navigate('InfoCard', {text: 'isCard'});
+        }
+    }
+    console.log(';detailData',detailData)
+
     const optionData = [
         {
             id: 0,
@@ -74,13 +116,6 @@ function UseTemplate(props) {
         }
     ]
 
-    const priceProduct = [
-        {
-            title: '프리미엄',
-            src: require('../../../assets/img/pricetestproduct.png'),
-            products: '정기구독 Premium',
-        },
-    ]
 
     const text = {
         title: '결제 완료',
@@ -101,20 +136,24 @@ function UseTemplate(props) {
             </GobackContainer>
 
         <PriceProductGrid 
-            priceProduct={priceProduct}
+             priceProduct={detailData.centerInfo}
+             productNames={detailData.name}
         />
 
-        <CollsAbleGrid />
+        <CollsAbleGrid availableCenters={detailData.availableCenters}/>
       
         <SelectOptionGrid 
-            optionData={optionData}
+            optionData={detailData.options}
             selectedOption={selectedOption}
             onSelectOption={handleOptionSelect}
         />
 
-        <SelectCouponGrid />
+        <SelectCouponGrid
+         couponInfo={detailData?.couponInfo?.coupons}
+            price={detailData.price} 
+            />
         <ActiveMainBtn
-        onPress={goTestModal}
+        onPress={goCardInfoScreens}
         >결제하기</ActiveMainBtn>
     </ScrollView>
         {

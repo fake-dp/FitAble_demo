@@ -9,7 +9,7 @@ import UserTicketNoneCard from '../../ui/card/UserTicketNoneCard';
 import { useNavigation } from '@react-navigation/native';
 import { getHomeBanners } from '../../../api/homeApi';
 import {getHomeTickets,getHomeReservations}from '../../../api/lessonsApi'
-import { useState, useEffect,useCallback } from 'react';
+import { useState, useRef,useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
 import { homeTicketListState, homeClassListState,mainCenterIdState } from '../../../store/atom';
@@ -18,7 +18,8 @@ import LessonCard from '../../ui/card/LessonCard';
 function HomeMainTemplate(props) {
 
     const navigation = useNavigation();
-
+    const ticketScrollViewRef = useRef(null);
+    const reservationScrollViewRef = useRef(null);
     const goDetailCenterScreen = (id) => {
       console.log('디테일로 갑니다@@!@#',mainCenterId)
         navigation.navigate('DetailCenter', {id:id});
@@ -85,9 +86,18 @@ function HomeMainTemplate(props) {
       };
 console.log('mainCenterId',mainCenterId)
 
-    // console.log('homeReservationList',homeTicketList)
-//1. 전체보기 유아이
-//2. 이용권 상세페이지 이동
+
+
+useFocusEffect(
+  useCallback(() => {
+    if (ticketScrollViewRef.current) {
+      ticketScrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
+    }
+    if (reservationScrollViewRef.current) {
+      reservationScrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
+    }
+  }, [])
+);
 
 useFocusEffect(
   useCallback(() => {
@@ -130,6 +140,7 @@ useFocusEffect(
     <>
 
     <ScrollView
+    ref={reservationScrollViewRef}
     horizontal={true}
     bounces={false}
     showsVerticalScrollIndicator={false}
@@ -153,6 +164,7 @@ useFocusEffect(
         </TitleTextContainer>
       </SubContainer>
     <ScrollView
+    ref={ticketScrollViewRef}
     horizontal={true}
     bounces={false}
     showsVerticalScrollIndicator={false}

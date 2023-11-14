@@ -21,14 +21,15 @@ import PtUserListGrid from '../../grid/PtUserListGrid';
 import { getDetailSearchCenter,getTicketType ,getTrainers ,getTrainersName} from '../../../api/homeApi';
 
 import { useRecoilState } from 'recoil';
-import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState,threeBtnState,btnActiveState } from '../../../store/atom';
+import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState,
+  threeBtnState,btnActiveState,selectedSubCardId,selectedUseCardId } from '../../../store/atom';
 import CustomPicker from '../../../components/ui/custom/Picker';
 
 function DetailCenterTemplate({ route }) {
     const { id } = route.params;
     const scrollViewRef = useRef(null);
     const [btnName, setBtnName] = useRecoilState(threeBtnState);
-    const [selectedCard, setSelectedCard] = useState(0);
+    // const [selectedCard, setSelectedCard] = useState(0);
     const [selectedMonthCard, setSelectedMonthCard] = useState(0);
     const [activeButton, setActiveButton] = useState('');
 
@@ -39,6 +40,8 @@ function DetailCenterTemplate({ route }) {
     const [centerId, setCenterId] = useRecoilState(centerIdState);
     const [trainersData, setTrainersData] = useState([]);
 
+    const [selectedCardInfo, setSelectedCardInfo] = useRecoilState(selectedSubCardId);
+    const [selectedUseCardInfo, setSelectedUseCardInfo] = useRecoilState(selectedUseCardId);
     // 피커 & 트레이너 이름 조회 상태
     const [trainerName, setTrainerName] = useState('');
     const [showPicker, setShowPicker] = useState(false);
@@ -52,10 +55,12 @@ function DetailCenterTemplate({ route }) {
         
           if (name === 'SUBSCRIBE') {
             setSubscribeData(response);
+            setSelectedCardInfo({id:response.tickets[0].id})
           } else if (name === 'PT') {
             setPtData(response);
           } else if (name === 'TICKET') {
             setTicketData(response);
+            setSelectedUseCardInfo({id:response.tickets[0].id})
           }
         } catch (error) {
           // 에러 처리
@@ -89,15 +94,16 @@ function DetailCenterTemplate({ route }) {
     const goSetSubscribeState = () => {
         setBtnName('SUBSCRIBE');
         setActiveButton('SUBSCRIBE');
+ 
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
     }
-
+    // selectedCardState
     const goSubcribePriceScreens = () => {
-        navigation.navigate('Subscribe');
+        navigation.navigate('Subscribe',{data:selectedCardInfo});
     };
 
     const goUseTicketPriceScreens = () => {
-        navigation.navigate('Use');
+        navigation.navigate('Use',{data:selectedUseCardInfo});
     };
 
     const handleUserClick = (id) => {
@@ -128,6 +134,16 @@ function DetailCenterTemplate({ route }) {
         }
       };
 
+
+      // 구독 카드 데이터 넘기는 버튼
+      const getSubscribeDataBtn = (id) =>{
+        setSelectedCardInfo({id})
+      }
+
+      // 이용 카드 데이터 넘기는 버튼
+      const getUseCardDataBtn = (id) =>{
+        setSelectedUseCardInfo({id})
+      }
       
       useEffect(() => {
         getDetailCenterData(id)
@@ -137,7 +153,7 @@ function DetailCenterTemplate({ route }) {
     const notImg = require('../../../assets/img/notDetailImg.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
 
-  
+  console.log('selectedCard@@',selectedCardInfo,selectedUseCardInfo)
 
     return (
         <Container>
@@ -183,12 +199,12 @@ function DetailCenterTemplate({ route }) {
       
      
 
-
+        
         {btnName === 'SUBSCRIBE' && (
           <BasicNpremiumCardGrid 
           subscribeData={subscribeData} 
-          selectedCard={selectedCard}
-          setSelectedCard={setSelectedCard}
+          selectedCardInfo={selectedCardInfo}
+          getSubscribeDataBtn={getSubscribeDataBtn}
           />
         )}
 
@@ -203,8 +219,8 @@ function DetailCenterTemplate({ route }) {
         {btnName === 'TICKET' && (
           <MonthTicketGrid 
           ticketData={ticketData} 
-          selectedMonthCard={selectedMonthCard}
-          setSelectedMonthCard={setSelectedMonthCard}
+          selectedUseCardInfo={selectedUseCardInfo}
+          getUseCardDataBtn={getUseCardDataBtn}
           />
         )}
 

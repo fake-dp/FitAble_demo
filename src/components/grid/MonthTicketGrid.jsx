@@ -3,18 +3,17 @@ import MonthTicketCard from '../ui/card/MonthTicketCard';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
 
-function MonthTicketGrid({ticketData, selectedMonthCard, setSelectedMonthCard}) {
+function MonthTicketGrid({ticketData, selectedUseCardInfo, getUseCardDataBtn}) {
     return (
         <Container>
             {
-                ticketData.tickets.map((item, index) => {
-                    const isSelected = selectedMonthCard === index;
+                ticketData.tickets.map((item) => {
+                    const isSelected = selectedUseCardInfo.id === item.id.toString();
                     return (
                         <TouchableOpacity
-                        key={index}
-                         onPress={() => setSelectedMonthCard(index)}>
+                        key={item.id}
+                         onPress={() => getUseCardDataBtn(item.id)}>
                         <MonthTicketCard
-                            key={index}
                             name={item.name}
                             price={item.price}
                             type={item.type}

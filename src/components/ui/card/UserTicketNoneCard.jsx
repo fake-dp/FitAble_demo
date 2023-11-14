@@ -1,11 +1,16 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { Platform, Image ,View, Text} from 'react-native';
+import { Platform, Dimensions} from 'react-native';
 
 function UserTicketNoneCard({onPress}) {
-    return (
+   
+  const deviceWidth = Dimensions.get('window').width;
+const padding = 20;  // 원하는 패딩 값으로 변경 가능
+const cardWidth = deviceWidth - 2 * padding;
+  
+  return (
     <Container>
-         <CardContainer>
+         <CardContainer cardWidth={cardWidth}>
             <CardText>사용 중인 이용권이 없습니다</CardText>
             <RegisteredBtn
             onPress={onPress}
@@ -28,8 +33,8 @@ const Container = styled.View`
 `;
 
 const CardContainer = styled.View`
-   width: ${Platform.OS === 'ios' ? '340px' : '350px'};
-   /* width: 100%; */
+   /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
+   width: ${({ cardWidth }) => cardWidth}px;
   height: 210px;
   border-radius: 13px;
   background-color: ${COLORS.sub};
@@ -58,7 +63,7 @@ const RegisteredBtn = styled.TouchableOpacity`
 `
 
 const BtnCardText = styled.Text`
-    color: ${COLORS.sub};
+  color: ${COLORS.sub};
 font-size: 16px;
 font-weight: 700;
 `

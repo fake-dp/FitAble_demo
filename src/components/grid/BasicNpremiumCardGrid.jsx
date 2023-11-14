@@ -3,19 +3,19 @@ import BasicNpreTicketCard from '../ui/card/BasicNpreTicketCard';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
 
-function BasicNpremiumCardGrid({subscribeData,selectedCard, setSelectedCard}) {
+function BasicNpremiumCardGrid({subscribeData,selectedCardInfo, getSubscribeDataBtn}) {
 
     return (
         <Container>
             {
-                subscribeData.tickets.map((item, index) => {
-                    const isSelected = selectedCard === index;
+                subscribeData.tickets.map((item) => {
+                    const isSelected = selectedCardInfo.id === item.id.toString();
+                    // console.log('isSelected',isSelected,selectedCardInfo.id,item.id)
                     return (
                         <TouchableOpacity
-                             key={index}
-                              onPress={() => setSelectedCard(index)}>
+                             key={item.id}
+                              onPress={() => getSubscribeDataBtn(item.id)}>
                         <BasicNpreTicketCard
-                            key={index}
                             type={item.type}
                             name={item.name}
                             price={item.price}

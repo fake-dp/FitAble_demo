@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState,useCallback } from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import ExerciseSearchCenterScreen from './ExerciseSearchCenterScreen';
 import MainCalenderScreen from './MainCalenderScreen';
 import {getValidCenterName} from '../../api/mypageApi';
@@ -22,9 +23,11 @@ function MainExerciseSreen(props) {
       }
   }
 
-  useEffect(() => {
-    getValidCenterNameData();
-  },[])
+
+  useFocusEffect(
+    useCallback(() => {
+      getValidCenterNameData();
+    },[]));
 
   if (loading) {
     return (

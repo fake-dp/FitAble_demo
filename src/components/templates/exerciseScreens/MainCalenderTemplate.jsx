@@ -3,7 +3,8 @@ import CustomCalendar from '../../ui/custom/CustomCalendar';
 import { styled, css } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { ScrollView ,Image} from 'react-native';
-import { useState, useEffect,useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import { getMyInfo } from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { myinfoState,selectTodayState } from '../../../store/atom';
@@ -32,9 +33,11 @@ function MainCalenderTemplate(props) {
         }
     }
 
-    useEffect(() => {
-        getMyInfoData();
-    },[])
+    useFocusEffect(
+        useCallback(() => {
+            getMyInfoData();
+        },[]));
+
 
     const handleCanceBtn = async(id,status) => {
         // console.log('취소클릭',id)

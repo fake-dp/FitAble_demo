@@ -155,3 +155,15 @@ export const homeClassListState = atom({
   key: 'homeClassListState',
   default: [],
 });
+
+// 구독권 카드 선택 상태
+export const selectedSubCardId = atom({
+  key: 'selectedSubCardId',
+  default: '',
+});
+
+// 이용 카드 선택 상태
+export const selectedUseCardId = atom({
+  key: 'selectedUseCardId',
+  default: '',
+});

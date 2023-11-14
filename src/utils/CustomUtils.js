@@ -43,3 +43,27 @@ export function formatReplaceString(dateString) {
     
     return dateString.replace(/-/g, '.');
   }
+
+// 카드 유효기간 포맷
+export function formatCardExpirationDate(input) {
+  // 입력값에서 숫자만 추출
+  const numericInput = input.replace(/\D/g, '');
+
+  if (numericInput.length > 2) {
+      return `${numericInput.substring(0, 2)}/${numericInput.substring(2, 4)}`;
+  }
+
+  return numericInput;
+}
+
+// 카드 번호 포맷
+export function formatCardNumber(input) {
+  const numericInput = input.replace(/\D/g, '');
+
+  const parts = [];
+  for (let i = 0; i < numericInput.length; i += 4) {
+      parts.push(numericInput.substring(i, Math.min(i + 4, numericInput.length)));
+  }
+
+  return parts.join(' - ');
+}

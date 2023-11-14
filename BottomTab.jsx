@@ -15,9 +15,12 @@ const Stack = createNativeStackNavigator();
 
 const baseOptions = {
   title: '',
+  headerBackVisible: false,
   headerStyle: {
     backgroundColor: COLORS.sub,
   },
+  headerBackTitleVisible: false,
+  headerShadowVisible: false,
 }
 
 const bottonIconSize = {

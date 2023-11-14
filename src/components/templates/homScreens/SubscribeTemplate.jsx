@@ -1,4 +1,4 @@
-import {Image ,View, Text, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
@@ -8,17 +8,32 @@ import PriceProductGrid from '../../grid/PriceProductGrid';
 import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
 import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
-
+import {getIsExistCard} from '../../../api/cardApi';
+import { useRoute } from '@react-navigation/native';
+import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 function SubscribeTemplate(props) {
 
     const navigation = useNavigation();
+    const route = useRoute();
 
+    const cardId = route.params?.data;
     const [selectedOption, setSelectedOption] = useState([]);
+    const [isExist , setIsExist] = useState(false);
+    const [detailData, setDetailData] = useState([]);
 
-    // ... other code ...
-  
+    const getDataDetailTicketCenter = async () => {
+        try {
+            const response = await getDetailTicketCenter(cardId.id);
+            // console.log('response@@',response);
+            setDetailData(response);
+        } catch (error) {
+            console.error('Error getting:', error.response.data);
+        }
+    }
+
+    console.log('inpo', detailData?.couponInfo?.coupons)
     const handleOptionSelect = (id) => {
       setSelectedOption(id);
     // if (id === 2) {
@@ -38,38 +53,30 @@ function SubscribeTemplate(props) {
         navigation.goBack();
     };
 
-    const goCardInfoScreens = () => {
-        navigation.navigate('InfoCard');
+    const isCardInfoData = async () => {
+        try {
+            const response = await getIsExistCard();
+            console.log('response',response);
+            setIsExist(response.isExist);
+        } catch (error) {
+            console.error('Error getting:', error);
+        }
     }
 
-    const optionData = [
-        {
-            id: 0,
-            title: '개인 락커',
-            price: '3,000',
-            img: require('../../../assets/img/option_lockers.png'),
-        },
-        {
-            id: 1,
-            title: '운동복',
-            price: '10,000',
-            img: require('../../../assets/img/option_t.png'),
-        },
-        {
-            id: 2,
-            title: '사용 안 함',
-            price: '',
-            img: require('../../../assets/img/option_none.png'),
-        }
-    ]
+    useEffect(() => {
+        isCardInfoData();
+        getDataDetailTicketCenter()
+    },[]);
+    
 
-    const priceProduct = [
-        {
-            title: '프리미엄',
-            src: require('../../../assets/img/pricetestproduct.png'),
-            products: '정기구독 Premium',
-        },
-    ]
+    const goCardInfoScreens = () => {
+        // if(isExist){
+        //     console.log('결제결제결제결제 바로결제결제')
+        // }else{  
+        //     navigation.navigate('InfoCard', {text: 'isCard'});
+        // }
+        navigation.navigate('InfoCard', {text: 'isCard'});
+    }
 
 
     return (
@@ -77,25 +84,28 @@ function SubscribeTemplate(props) {
         <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
-          overScrollMode="never"
-        >
+          overScrollMode="never">
             <GobackContainer>
               <GobackGrid onPress={goBackScreens}>결제하기</GobackGrid>
             </GobackContainer>
 
         <PriceProductGrid 
-            priceProduct={priceProduct}
+            priceProduct={detailData?.centerInfo}
+            productNames={detailData?.name}
         />
 
-        <CollsAbleGrid />
+        <CollsAbleGrid availableCenters={detailData?.availableCenters}/>
       
         <SelectOptionGrid 
-            optionData={optionData}
+            optionData={detailData?.options}
             selectedOption={selectedOption}
             onSelectOption={handleOptionSelect}
         />
 
-        <SelectCouponGrid />
+        <SelectCouponGrid 
+            couponInfo={detailData?.couponInfo?.coupons}
+            price={detailData?.price}
+        />
 
     </ScrollView>
         <ActiveMainBtn

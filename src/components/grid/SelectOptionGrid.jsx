@@ -1,15 +1,26 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
+import { ScrollView } from 'react-native';
 
 
 function SelectOptionGrid({ optionData, selectedOption, onSelectOption }) {
-  console.log('optionData', optionData);
+  // console.log('optionData', optionData);
+
+  const lockers = require('../../assets/img/option_lockers.png');
+  const optiont = require('../../assets/img/option_t.png');
+  const optionnone = require('../../assets/img/option_none.png');
+
 
   return (
     <Container>
+  
       <MainTitleText>옵션 선택</MainTitleText>
-      <OptionContainer>
-        {optionData.map((item) => (
+                  <OptionContainer>
+                    <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+        {optionData?.map((item) => (
+               
           <OptionBox
             key={item.id}
             selected={item.id === selectedOption}
@@ -17,15 +28,20 @@ function SelectOptionGrid({ optionData, selectedOption, onSelectOption }) {
           >
             <OptionImg 
              tintColor={item.id === selectedOption ? COLORS.main : COLORS.gray_400}
-             source={item.img} />
-            <OptionText selected={item.id === selectedOption}>{item.title}</OptionText>
+             source={
+              item.type === 'RENTAL_LOCKER' ? lockers :
+              item.type === 'RENTAL_SPORTSWEAR_PERIOD' ? optiont :
+              item.type === 'RENTAL_SPORTSWEAR_TIME' ? optiont:optionnone
+              } />
+            <OptionText selected={item.id === selectedOption}>{item.lockerName}</OptionText>
             {item.price && (
               <OptionPriceText selected={item.id === selectedOption}>
-                {item.price}원
+                {item.cycle} {item.price}원
               </OptionPriceText>
             )}
           </OptionBox>
         ))}
+        </ScrollView>
       </OptionContainer>
     </Container>
   );
@@ -52,7 +68,7 @@ const OptionContainer = styled.View`
 `;
 
 const OptionBox = styled.TouchableOpacity`
-  width: 33%;
+  width: 112px;
   height: 126px;
   border-radius: 15px;
   background-color: ${({ selected }) =>
@@ -60,6 +76,7 @@ const OptionBox = styled.TouchableOpacity`
   margin-bottom: 20px;
   align-items: center;
   padding: 20px 0;
+  margin-right: 7px;
 `;
 
 const OptionImg = styled.Image`

@@ -60,3 +60,14 @@ export const getStopTickets = async (id) => {
         throw error;
     }
 }
+
+
+// [앱] 이용권 센터 상세 조회
+export const getDetailTicketCenter = async (id) => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/centers/tickets/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

@@ -32,7 +32,8 @@ export default MainBtn;
 
 
 const StyledPressable = styled.Pressable`
-    width: 350px;
+    width: 100%;
+    /* padding: 0 20px; */
     height: 60px;
     border-radius: 50px;
     justify-content: center;

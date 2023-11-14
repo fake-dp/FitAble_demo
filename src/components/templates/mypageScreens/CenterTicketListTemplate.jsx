@@ -177,7 +177,7 @@ function CenterTicketListTemplate(props) {
     };
 
     const changeCardInfoScreens = () => {
-        navigation.navigate('InfoCard');
+        navigation.navigate('InfoCard', {text:'isChange'});
     };
 
 

@@ -61,7 +61,7 @@ const TogglePasswordVisibility = styled.TouchableOpacity`
 `;
 
 const AuthTextInputContainer = styled.View`
-    width: 350px;
+    width: 100%;
     height: 60px;
     background-color: ${COLORS.box};
     border-radius: 15px;

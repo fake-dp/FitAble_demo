@@ -45,13 +45,14 @@ function AppScreens({navigation}) {
             headerStyle: {
                 backgroundColor: COLORS.sub,
                 borderBottomWidth: 0,
+                shadowColor: 'transparent',
+                elevation: 0, 
               },
               // title 없에기
                 // headerShown: false,
                 headerShadowVisible: false,
                 headerBackTitleVisible: false,
-                shadowColor: 'transparent',
-                elevation: 0, 
+               
           }}>
         <Stack.Screen name="MainTab" component={MainTabScreen} options={{ headerShown: false }} />
 

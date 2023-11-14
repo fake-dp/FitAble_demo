@@ -9,7 +9,7 @@ function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
 const deviceWidth = Dimensions.get('window').width;
 const padding = 30;  // 원하는 패딩 값으로 변경 가능
 const cardWidth = deviceWidth - 2 * padding;
- console.log('deviceWidth',deviceWidth)
+//  console.log('deviceWidth',deviceWidth)
 
   const shirts = require('../../../assets/img/t_shirt.png');
   const lockers = require('../../../assets/img/lockers.png');

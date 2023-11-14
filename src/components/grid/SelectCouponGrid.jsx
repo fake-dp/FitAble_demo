@@ -3,7 +3,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { Image, TouchableOpacity } from 'react-native';
 
-function SelectCouponGrid(props) {
+function SelectCouponGrid({price,couponInfo}) {
   const downcoupon = require('../../assets/img/downcoupon.png');
   const upcoupon = require('../../assets/img/upcoupon.png');
 
@@ -43,7 +43,7 @@ function SelectCouponGrid(props) {
           <SelectCouponText>쿠폰 선택</SelectCouponText>
         </TouchableOpacity>
         {
-            couponList.length===0 ? '' :  (
+          couponInfo && couponInfo.length===0 ? '' :  (
                 <TouchableOpacity onPress={toggleCoupon} activeOpacity={0.8}>
                 <SelectCouponImg source={isCouponOpen ? upcoupon : downcoupon} />
               </TouchableOpacity>
@@ -54,11 +54,11 @@ function SelectCouponGrid(props) {
           <>
           {
             
-            couponList && couponList.map((item) => (
+            couponInfo && couponInfo.map((item) => (
                 <TouchableOpacity key={item.id}>
                 <CouponListContainer>
-                    <CouponListText>{item.title}</CouponListText>
-                    <CouponListText>{item.date}</CouponListText>
+                    <CouponListText>{item.centerName}</CouponListText>
+                    <CouponListText>{item.endDate}</CouponListText>
              
                 </CouponListContainer>
                 </TouchableOpacity>
@@ -72,7 +72,7 @@ function SelectCouponGrid(props) {
 
           <PriceListContainer>
           <PriceListText>구독권</PriceListText>
-          <PriceListText>119,000원</PriceListText>
+          <PriceListText>{price}원</PriceListText>
           </PriceListContainer>
 
             <ContainerSubLine />

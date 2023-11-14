@@ -2,11 +2,13 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import MySettingHeaderGrid from '../../grid/MySettingHeaderGrid';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {getMyInfo} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { myinfoState } from '../../../store/atom';
 import { useState } from 'react';
+
 function MyMainTemplate(props) {
 
     const navigation = useNavigation();
@@ -21,9 +23,11 @@ function MyMainTemplate(props) {
         }
     }
 
-    useEffect(() => {
-        getMyInfoData();
-    },[myInfo])
+    useFocusEffect(
+        useCallback(() => {
+            getMyInfoData();
+        },[]));
+
 
     const {mainCenter, marketing, pushAlarm,mainCenterId} = myInfo
 

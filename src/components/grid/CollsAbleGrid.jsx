@@ -3,7 +3,7 @@ import { COLORS } from '../../constants/color';
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
-function CollsAbleGrid(props) {
+function CollsAbleGrid({availableCenters}) {
   const caretdown = require('../../assets/img/caretdown.png');
   const initialTextLimit = 1; // 초기에 보이는 텍스트 줄 수
   const [showAllText, setShowAllText] = useState(false);
@@ -32,7 +32,7 @@ function CollsAbleGrid(props) {
         )} */}
 
         <MainSubText numberOfLines={showAllText ? undefined : initialTextLimit}>
-          노원본점
+          {availableCenters}
         </MainSubText>
       </SubTextContainer>
       <ContainerLine />

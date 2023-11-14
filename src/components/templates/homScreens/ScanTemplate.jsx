@@ -1,15 +1,80 @@
-import {Image, TouchableOpacity } from 'react-native';
-import { styled } from 'styled-components/native';
+import {Image, Vibration, Alert } from 'react-native';
+import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import { getHomeQrBanners } from '../../../api/homeApi';
-import GobackGrid from '../../grid/GobackGrid';
+import {getQrTicketCheckInList} from '../../../api/qrApi';
+// import { Camera, CameraType } from "react-native-camera-kit";
+import { Platform } from 'react-native';
+import QrCheckModal from '../../ui/modal/QrCheckModal';
+import QrCancelModal from '../../ui/modal/QrCancelModal';
+import QrDoneModal from '../../ui/modal/QrDoneModal';
+if (Platform.OS === 'android') {
+  // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
+} else {
+    Camera = require('react-native-camera-kit').Camera;
+    CameraType = require('react-native-camera-kit').CameraType;
+    // console.log('@@',Camera, CameraType);
+}
 
 function ScanTemplate(props) {
 
     const navigation = useNavigation();
     const [qrBanners, setQrBanners] = useState([]);
+    const [showQrModal, setShowQrModal] = useState(false);
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const [showQrDoneModal, setShowQrDoneModal] = useState(false);
+    const [qrCenterId, setQrCenterId] = useState(null);
+    const [qrTicketList, setQrTicketList] = useState([]);
+
+        const [scaned, setScaned] = useState(true);
+        const ref = useRef(null);
+      
+        useEffect(() => {
+          // 종료후 재시작을 했을때 초기화
+          setScaned(true);
+        }, []);
+
+        const onBarCodeRead = async(event) => {
+            if (!scaned) return;
+            setScaned(false);
+            Vibration.vibrate();
+            const qrToken = event.nativeEvent.codeStringValue;
+            // console.log('qrToken',qrToken)
+
+            try{
+                const response = await getQrTicketCheckInList(qrToken);
+                console.log('qrponse',response)
+                
+                if(response){
+                    setQrCenterId(response.id);
+                    setQrTicketList(response.tickets);
+                    setShowQrModal(true);
+                    // navigation.navigate('HomeMain')
+                }else{
+                    Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요.', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
+                }
+            }catch(error){
+                // console.error('Error getting:', error.response.data);
+                if(error){
+                    setShowCancelModal(true);
+                    setTimeout(() => {
+                        setShowCancelModal(false);
+                    }, 3000);
+                }
+            } finally {
+                setTimeout(() => {
+                    setScaned(true); 
+                }, 3000);
+            }
+       
+            
+            // Alert.alert("QR Code", event.nativeEvent.codeStringValue, [
+            //   { text: "OK", onPress: () => setScaned(true) },
+            // ]);
+          };
+      
 
     const getUseHomeQrBanners = async () => {
         try {
@@ -47,6 +112,7 @@ function ScanTemplate(props) {
       const closeIcon = require('../../../assets/img/whiteClose.png');
 
     return (
+        <>
         <Container>
             <GobackContainer onPress={() => navigation.goBack()}>
           
@@ -58,7 +124,28 @@ function ScanTemplate(props) {
             <MainContainer>
             <TitleText>입장하기</TitleText>
             <SubText>입장을 위해 QR코드를 인식해주세요</SubText>
-            <Rectangular />
+            {/* <Rectangular /> */}
+        {
+            Platform.OS === 'ios' ? (
+            <Rectangular>
+            <Camera
+                 ref={ref}
+                 cameraType={CameraType.Back} // Front/Back(default)
+                 zoomMode
+                 //  focusMode
+                 style={{ width: '100%', height: '100%' }} 
+                 // Barcode Scanner Props
+                 scanBarcode
+                 showFrame={false}
+                 laserColor="rgba(0, 0, 0, 0)"
+                 frameColor="rgba(0, 0, 0, 0)"
+                 surfaceColor="rgba(0, 0, 0, 0)"
+                 onReadCode={onBarCodeRead}/>
+                 </Rectangular>
+                ):(
+                    <Rectangular />
+                )
+            }
             <SubText>휴대폰을 흔들면 QR코드를 촬영할 수 있어요!</SubText>
             </MainContainer>
             {
@@ -70,6 +157,23 @@ function ScanTemplate(props) {
             }
             </QrContainer>
         </Container>
+        {
+            showQrModal && (<QrCheckModal 
+                qrTicketList={qrTicketList}
+                qrCenterId={qrCenterId}
+                setShowQrModal={setShowQrModal}
+                setShowQrDoneModal={setShowQrDoneModal}
+            />)
+        }
+        {
+            showCancelModal && (<QrCancelModal />)
+        }
+          {
+            !showQrDoneModal && (
+                <QrDoneModal />
+            )
+        }
+        </>
     );
 }
 

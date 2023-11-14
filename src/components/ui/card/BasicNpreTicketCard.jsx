@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-
+import {formatCommaNumber} from '../../../utils/CustomUtils';
 function BasicNpreTicketCard({name, price,type,isSelected}) {
 
     return (
@@ -19,7 +19,7 @@ function BasicNpreTicketCard({name, price,type,isSelected}) {
             <DownTextContainer>
             <MainTitleText
              isSelected={isSelected}
-            >￦{price}</MainTitleText>
+            >￦{formatCommaNumber(price)}</MainTitleText>
             <MonthText
              isSelected={isSelected}
             >/월</MonthText>

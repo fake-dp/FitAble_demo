@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-
+import {formatCommaNumber} from '../../../utils/CustomUtils';
 function MonthTicketCard({ type, name, price, isSelected }) {
     return (
         <CardContainer
@@ -12,7 +12,7 @@ function MonthTicketCard({ type, name, price, isSelected }) {
                 >{name}</MonthTicketText>
                 <MonthTicketText
                 isSelected={isSelected}
-                >{price}원</MonthTicketText>
+                >{formatCommaNumber(price)}원</MonthTicketText>
             </TextContainer>
         </CardContainer>
     );

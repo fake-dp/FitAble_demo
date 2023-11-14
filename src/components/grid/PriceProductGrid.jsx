@@ -2,25 +2,20 @@ import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function PriceProductGrid({priceProduct}) {
+function PriceProductGrid({priceProduct,productNames}) {
 
-    // const priceProduct = [
-    //     {
-    //         title: '프리미엄',
-    //         src: require('../../assets/img/pricetestproduct.png'),
-    //         products: '정기구독 Premium',
-    //     },
-    // ]
-
+    const noImg = require('../../assets/img/noImg.png')
 
     return (
         <Container>
         <MainTitleText>구매 상품</MainTitleText>
-        <ProductContainer>
-        <ProductImage source={priceProduct[0].src}/>
+        <ProductContainer >
+            {
+                priceProduct?.image ? (<ProductImage source={priceProduct?.image}/>):(<ProductImage source={noImg}/>)
+            }
         <ProductPriceContainer>
-            <ProductText>{priceProduct[0].title}</ProductText>
-            <ProductPriceText>평일 : {priceProduct[0].products}</ProductPriceText>
+            <ProductText>{priceProduct?.name}</ProductText>
+            <ProductPriceText>{productNames}</ProductPriceText>
         </ProductPriceContainer>
         </ProductContainer>
         <ContainerLine/>

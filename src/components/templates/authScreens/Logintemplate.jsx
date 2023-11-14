@@ -120,15 +120,17 @@ function Logintempate({navigation}) {
 
             <AuthInput
               value={password}
-              onChangeText={setPassword}
+              onChangeText={setPassword}ß
               placeholder="비밀번호"
             />
-            
+ 
+
             <MainBtn
             onPress={handleLogin}
             // disabled={!isInputValid}
             colorProp={isInputValid}
             >로그인</MainBtn>
+  
 
             <AboutContainer>
                 <AboutTextLeft
@@ -151,6 +153,7 @@ const LoginScreenView = styled.View`
     background-color: ${COLORS.sub};
     align-items: center;
     justify-content: center;
+    padding: 0 20px;
 `
 
 const TitleLogo = styled.Image`
