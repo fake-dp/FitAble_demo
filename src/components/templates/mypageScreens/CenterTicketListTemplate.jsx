@@ -5,7 +5,7 @@ import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import SubscribeList from '../../ui/list/SubscribeList';
 import UseTicketList from '../../ui/list/UseTicketList';
-import { ScrollView , Alert} from 'react-native';
+import { ScrollView , Alert,ActivityIndicator, View} from 'react-native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
 import { StopCancelModal, SubNTicketCancelModal } from '../../ui/modal/MyPageCancelModal';
 
@@ -28,17 +28,23 @@ function CenterTicketListTemplate(props) {
 
   const [ticketStopId, setTicketStopId] = useState(null)
   const [ticketSubNRefundId, setTicketSubNRefundId] = useState(null)
+
+  const [loading, setLoading] = useState(true);
   // 이용권 목록 (구독, 이용)
   const getTypeTicketsListData = async (type) => {
     try {
         const response = await getTypeTickets(type);
         if(type === 'SUBSCRIBE'){
           setSubscribeList(response.content);
+    
         }else if(type === 'OTHER'){
           setTicketList(response.content);
+
         }
     } catch (error) {
         console.error('Error getting:', error);
+    }finally{
+      setLoading(false)
     }
 };
 
@@ -118,8 +124,16 @@ function CenterTicketListTemplate(props) {
 
   // 이용권 목록 (구독권, 이용권)
   useEffect(() => {
-    getTypeTicketsListData('SUBSCRIBE');
-    getTypeTicketsListData('OTHER');
+    if(selectedTab === 'SUBSCRIBE'){
+      getTypeTicketsListData('SUBSCRIBE');
+
+    }else if(selectedTab === 'OTHER'){
+      getTypeTicketsListData('OTHER');
+    }
+
+
+    // getTypeTicketsListData('SUBSCRIBE');
+    // getTypeTicketsListData('OTHER');
   }, []);
 
  
@@ -229,7 +243,11 @@ const stopText = {
               </NoListContainer>
             )
           }
-         
+          {loading && (
+                <View style={{ flex: 1, justifyContent: 'center',marginTop:120, alignItems: 'center', backgroundColor: COLORS.white }}>
+                    <ActivityIndicator size="large" color={COLORS.sub} />
+                </View>
+            )}
          <SubscribeList 
         
           onPress={changeCardInfoScreens}
@@ -245,6 +263,11 @@ const stopText = {
               </NoListContainer>
             )
           }
+           {loading && (
+                <View style={{ flex: 1, justifyContent: 'center',marginTop:120, alignItems: 'center', backgroundColor: COLORS.white }}>
+                    <ActivityIndicator size="large" color={COLORS.sub} />
+                </View>
+            )}
           <UseTicketList 
 
             openCancelModal={openCancelModal}

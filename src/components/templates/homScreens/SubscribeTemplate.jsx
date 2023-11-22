@@ -10,9 +10,13 @@ import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
 import React, { useState, useEffect } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
-import {getIsExistCard} from '../../../api/cardApi';
+import {getIsExistCard,postPaymentSubscription} from '../../../api/cardApi';
 import { useRoute } from '@react-navigation/native';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
+import { useRecoilState } from 'recoil';
+import { showSubModalState } from '../../../store/atom';
+import SubPaymentModal from '../../ui/modal/SubPaymentModal';
+
 function SubscribeTemplate(props) {
 
     const navigation = useNavigation();
@@ -23,17 +27,20 @@ function SubscribeTemplate(props) {
     const [isExist , setIsExist] = useState(false);
     const [detailData, setDetailData] = useState([]);
 
+    const [paymentModal, setPaymentModal] = useRecoilState(showSubModalState);
+    const [paymentModalData, setPaymentModalData] = useState('');
+
     const getDataDetailTicketCenter = async () => {
         try {
             const response = await getDetailTicketCenter(cardId.id);
-            // console.log('response@@',response);
+            console.log('response@@',response);
             setDetailData(response);
         } catch (error) {
             console.error('Error getting:', error.response.data);
         }
     }
 
-    console.log('inpo', detailData?.couponInfo?.coupons)
+    console.log('inpo', detailData?.id)
     const handleOptionSelect = (id) => {
       setSelectedOption(id);
     // if (id === 2) {
@@ -67,18 +74,59 @@ function SubscribeTemplate(props) {
         isCardInfoData();
         getDataDetailTicketCenter()
     },[]);
+
+
+    // 구독권 결제 데이터
+    const subPaymentInfoData = {
+        ticket: {
+            id: detailData?.id,
+            salePrice: null,
+        },
+        totalPrice: detailData?.price,
+    }
     
 
-    const goCardInfoScreens = () => {
-        // if(isExist){
-        //     console.log('결제결제결제결제 바로결제결제')
-        // }else{  
-        //     navigation.navigate('InfoCard', {text: 'isCard'});
-        // }
-        navigation.navigate('InfoCard', {text: 'isCard'});
-    }
+    const goCardInfoScreens = async() => {
+        if(isExist){
+            console.log('결제결제결제결제 바로결제결제')
+            const data = {
+                ticket: {
+                    id: detailData?.id,
+                    salePrice: 0,
+                },
+                totalPrice: detailData?.price,
+            }
+      
+            try{
+                const response = await postPaymentSubscription(data);
+                console.log('response',response)
+                if(response){
+                    setPaymentModalData(response);
+                    setPaymentModal(true);
+                }
+            }catch(error){
+                console.error('Error getting:', error.response.data.code);
+            }finally{
+                setTimeout(() => {
+                    setPaymentModal(false);
+                }, 3000);
+            }
 
+        }else{  
 
+            const subPaymentInfoData = {
+                ticket: {
+                    id: detailData?.id,
+                    salePrice: 0,
+                },
+                totalPrice: detailData?.price,
+            }
+            console.log('@@subPaymentInfoData',subPaymentInfoData)
+            navigation.navigate('InfoCard', {text: 'isCard', subPaymentInfoData});
+        }
+}
+
+// console.log('detailDatadetailData',detailData,subPaymentInfoData)
     return (
         <Container>
         <ScrollView
@@ -111,6 +159,13 @@ function SubscribeTemplate(props) {
         <ActiveMainBtn
         onPress={goCardInfoScreens}
         >구독하기</ActiveMainBtn>
+        {
+            paymentModal && (
+                <SubPaymentModal 
+                paymentModalData={paymentModalData}
+                />
+            )
+        }
     </Container>
     );
 }

@@ -2,9 +2,8 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Modal } from 'react-native';
 
-function QrDoneModal({myTicketInfo}) {
+function SubPaymentModal({paymentModalData}) {
 
-    console.log('myTicketInfo',myTicketInfo)
   
     return (
         <Modal
@@ -13,16 +12,19 @@ function QrDoneModal({myTicketInfo}) {
       >
         <ModalContainer>
             <ModalView>
-                <ModalTitle>입장 완료</ModalTitle>
-                <ModalSubTitle>정상적으로 입장 완료되었습니다</ModalSubTitle>
+                <ModalTitle>결제 완료</ModalTitle>
+                <ModalSubTitle>구독권 정기 결제되었습니다</ModalSubTitle>
         
         <QrGridBorderLine/>
 
         <ListContainer>
-        <ListText>{myTicketInfo?.name}</ListText>
         <ContentContainer>
-        <ListText>{myTicketInfo?.ticketName}</ListText>
-        <ListText>잔여일수 {myTicketInfo?.leftDay}일 / 잔여횟수 {myTicketInfo?.leftTime}회</ListText>
+        <ListText>시작일</ListText>
+        <ListText>다음 결제 예정일</ListText>
+        </ContentContainer>
+        <ContentContainer>
+        <ListText>{paymentModalData?.startDate}</ListText>
+        <ListText>{paymentModalData?.nextDate}</ListText>
         </ContentContainer>
         </ListContainer>
 
@@ -32,7 +34,7 @@ function QrDoneModal({myTicketInfo}) {
     );
 }
 
-export default QrDoneModal;
+export default SubPaymentModal;
 
 const ModalContainer = styled.View`
     position: absolute;

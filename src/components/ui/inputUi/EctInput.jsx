@@ -3,16 +3,22 @@ import { COLORS } from "../../../constants/color";
 import { styled } from "styled-components/native";
 import { TextInput,Platform } from "react-native";
 
-function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp}) {
+function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp,maxLength,secureTextEntry,hasError,onSubmitEditing}) {
+
+    console.log('hasError@@@',hasError,'@@!@#',text)
     return (
-        <AuthTextInputContainer>
+        <AuthTextInputContainer hasError={hasError}>
             <AuthText>{text}</AuthText>
             <AuthTextInput 
             placeholder={placeholder}
-            secureTextEntry={isSignUp}
+            secureTextEntry={secureTextEntry}
             onChangeText={onChangeText}
             value={value}
             onBlur={onBlur}
+            maxLength={text==='연락처'? maxLength: text ==="인증번호" ? 6:null}
+            keyboardType={text==='연락처'? 'numeric':'default'}
+            returnKeyType={text==='연락처'? 'done':'next'}
+            onSubmitEditing={onSubmitEditing}
             />
         </AuthTextInputContainer>
     );
@@ -30,6 +36,8 @@ const AuthTextInputContainer = styled.View`
     margin-bottom: 13px;
     padding:${Platform.OS === 'ios' ? '20px 20px 0px 20px;' : '25px 20px 0 20px'};
     color: ${COLORS.white};
+    border-width: ${props => props.hasError ? '1px' : '0px'};
+   border-color: ${props => props.hasError ? 'red' : 'transparent'};
     ${props => props.isPasswordInput && `
    
     `}

@@ -164,6 +164,8 @@ function FitableQnATemplate(props) {
                     placeholderTextColor={COLORS.gray_300}
                     onChangeText={inquiryTextChange}
                     value={inquiryText}
+                    // 리턴
+                    returnKeyType="done"
                 />
             </TextInputWrapper>
 

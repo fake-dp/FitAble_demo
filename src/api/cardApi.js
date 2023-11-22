@@ -29,3 +29,13 @@ export const postCardInfo = async (data) => {
         throw error;
     }
 }
+
+// 구독권 결제
+export const postPaymentSubscription = async (data) => {
+    try {
+        const response = await customAxios.post(`/api/members/v1/tickets/payment`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

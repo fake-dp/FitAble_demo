@@ -10,6 +10,9 @@ import { Platform } from 'react-native';
 import QrCheckModal from '../../ui/modal/QrCheckModal';
 import QrCancelModal from '../../ui/modal/QrCancelModal';
 import QrDoneModal from '../../ui/modal/QrDoneModal';
+import {qrTicketListState,qrFailTextState} from '../../../store/atom';
+import { useRecoilState } from 'recoil';
+
 if (Platform.OS === 'android') {
   // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
 } else {
@@ -28,6 +31,9 @@ function ScanTemplate(props) {
     const [qrCenterId, setQrCenterId] = useState(null);
     const [qrTicketList, setQrTicketList] = useState([]);
 
+    const [myTicketInfo, setMyTicketInfo] = useRecoilState(qrTicketListState);
+    const [failText , setFailText] = useRecoilState(qrFailTextState);
+
         const [scaned, setScaned] = useState(true);
         const ref = useRef(null);
       
@@ -45,8 +51,7 @@ function ScanTemplate(props) {
 
             try{
                 const response = await getQrTicketCheckInList(qrToken);
-                console.log('qrponse',response)
-                
+                // console.log('qrponse',response)
                 if(response){
                     setQrCenterId(response.id);
                     setQrTicketList(response.tickets);
@@ -58,10 +63,7 @@ function ScanTemplate(props) {
             }catch(error){
                 // console.error('Error getting:', error.response.data);
                 if(error){
-                    setShowCancelModal(true);
-                    setTimeout(() => {
-                        setShowCancelModal(false);
-                    }, 3000);
+                    Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요.', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
                 }
             } finally {
                 setTimeout(() => {
@@ -110,7 +112,7 @@ function ScanTemplate(props) {
       };
 
       const closeIcon = require('../../../assets/img/whiteClose.png');
-
+      console.log('showQrDoneModal!',showQrDoneModal,showCancelModal)
     return (
         <>
         <Container>
@@ -163,14 +165,15 @@ function ScanTemplate(props) {
                 qrCenterId={qrCenterId}
                 setShowQrModal={setShowQrModal}
                 setShowQrDoneModal={setShowQrDoneModal}
+                setShowCancelModal={setShowCancelModal}
             />)
         }
         {
-            showCancelModal && (<QrCancelModal />)
+            showCancelModal && (<QrCancelModal failText={failText}/>)
         }
           {
-            !showQrDoneModal && (
-                <QrDoneModal />
+            showQrDoneModal && (
+                <QrDoneModal myTicketInfo={myTicketInfo}/>
             )
         }
         </>

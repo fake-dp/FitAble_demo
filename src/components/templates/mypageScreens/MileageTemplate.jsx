@@ -47,17 +47,22 @@ function MileageTemplate(props) {
 
 
 
-    if (loading) {
-        return (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
-            <ActivityIndicator size="large" color={COLORS.sub} />
-          </View>
-        );
-      }
+    // if (loading) {
+    //     return (
+    //       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
+    //         <ActivityIndicator size="large" color={COLORS.sub} />
+    //       </View>
+    //     );
+    //   }
 
 
     return (
         <Container>
+               {loading && (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.white }}>
+                    <ActivityIndicator size="large" color={COLORS.sub} />
+                </View>
+            )}
             <CloseBtn onPress={goBackScreens}>
             <CloseImg source={close}/>
             </CloseBtn>

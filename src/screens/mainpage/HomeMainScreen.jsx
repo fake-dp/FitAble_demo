@@ -2,7 +2,9 @@ import HomeMainTemplate from '../../components/templates/homScreens/HomeMainTemp
 import useQrNavigation from '../../hooks/useQrNavigation';
 import { Platform } from 'react-native';
 function HomeMainScreen({ navigation }) {
-  // if(Platform.OS === 'ios') {
+  // const currentRouteName = useNavigationState((state) => state.routes[state.index].name);
+  // console.log('currentRouteName',currentRouteName)
+  // if(Platform.OS === 'ios' && currentRouteName === 'HomeMain'){
   //   useQrNavigation(navigation);
   // }
 

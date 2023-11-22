@@ -6,7 +6,7 @@ import EctInput from '../../ui/inputUi/EctInput';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {TextInput, Alert} from 'react-native';
+import {TextInput, Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import { formatTime } from '../../../utils/CustomUtils';
@@ -164,6 +164,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
             return;
         }else{
             getCertification(phone)
+            // checkPhoneNum(phone);
         }
     }
 
@@ -171,6 +172,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
     // console.log('회원가입 정보',name, phone)
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
             <GobackGrid onPress={goBackNavigation}/>
             {
@@ -201,6 +203,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                    text='연락처'
                    placeholder="-없이 번호를 입력해주세요"
                    isSignUp={false}
+                   maxLength={11}
                      onChangeText={handlePhoneTextChange}
                    />
 
@@ -213,6 +216,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                    placeholder="6자리를 입력해주세요"
                    isSignUp={false}
                    onChangeText={handleCertiNumberTextChange}
+                   maxLength={6}
                    />
                     <CertificationTimer>0{formatTime(secondsLeft)}</CertificationTimer>
                 </CertificationIputBox>
@@ -241,7 +245,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                     )
                 }
         </Container>
-        // ())=>checkCerityNumber(phone,number)
+        </TouchableWithoutFeedback>
     );
 }
 

@@ -101,8 +101,7 @@ function Agreementtemplate(props) {
         birthDay: signUpInfo.birthDay,
         gender: signUpInfo.gender,
         password: signUpInfo.password,
-        // fcmToken: fcmToken,
-        fcmToken: 'adslkfjlaksjdflkjasdklfjklas',
+        fcmToken: null,
         agreements: {
           marketing: false,
           pushAlarm: false,
@@ -131,8 +130,7 @@ console.log('업데이트bodyData',bodyData)
           gender: signUpInfo.gender,
           phone: signUpInfo.phone,
           password: signUpInfo.password,
-          // fcmToken: fcmToken,
-          fcmToken: 'adslkfjlaksjdflkjasdklfjklas',
+          fcmToken: null,
           agreements: {
             marketing: false,
             pushAlarm: false,

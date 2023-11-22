@@ -167,3 +167,21 @@ export const selectedUseCardId = atom({
   key: 'selectedUseCardId',
   default: '',
 });
+
+// 구독권 결제 모달 상태
+export const showSubModalState = atom({
+  key: 'showSubModalState',
+  default: false,
+});
+
+// QR 입장 성공 데이터
+export const qrTicketListState = atom({
+  key: 'qrTicketListState',
+  default: [],
+});
+
+// QR fail log Data
+export const qrFailTextState = atom({
+  key: 'qrFailTextState',
+  default: [],
+});

@@ -42,12 +42,14 @@ function PTpriceTemplate(props) {
     };
 
     const goTestModal = () => {
-        setShowModal(true)
+        // setShowModal(true)
+        console.log('test결제')
+        navigation.navigate('PaymentWebView')
     }
 
     const closeModal = () => {
         setShowModal(false)
-        navigation.navigate('DetailCenter');
+        // navigation.navigate('DetailCenter');
     }
 
     const goHomeScreens = () => {

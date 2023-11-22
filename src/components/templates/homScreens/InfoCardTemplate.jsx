@@ -4,19 +4,25 @@ import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput,Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import {getCardInfo,getIsExistCard, postCardInfo} from '../../../api/cardApi';
+import {getCardInfo,getIsExistCard, postCardInfo,postPaymentSubscription} from '../../../api/cardApi';
 import { useEffect, useState } from 'react';
 import {formatCardExpirationDate ,formatCardNumber} from '../../../utils/CustomUtils';
+import {showSubModalState} from '../../../store/atom';
+import { useRecoilState } from 'recoil';
+import SubPaymentModal from '../../ui/modal/SubPaymentModal';
 function InfoCardTemplate(props) {
     const route = useRoute();
     const isCardState = route?.params?.text
+    const subPaymentInfoData = route?.params?.subPaymentInfoData
     const navigation = useNavigation();
 
     const [cardNumber, setCardNumber] = useState('');
     const [cardDate, setCardDate] = useState('');
     const [cardPassword, setCardPassword] = useState('');
 
-    console.log('isChangeisCard',isCardState)
+    const [paymentModal, setPaymentModal] = useRecoilState(showSubModalState);
+    const [paymentModalData, setPaymentModalData] = useState('');
+    console.log('@@paymentModalData',subPaymentInfoData,isCardState)
 
     
 
@@ -49,7 +55,7 @@ function InfoCardTemplate(props) {
             if(response && isCardState === 'isChange'){
                 Alert.alert('변경 완료 ', '정기 결제 카드가 변경되었습니다. \n정기 결제일은 매월 25일입니다.', [{ text: '확인', onPress: () =>  navigation.goBack() }]);;
             }else if(response && isCardState === 'isCard'){
-                Alert.alert('등록 완료 ', '정기 결제 카드가 등록되었습니다. \n이달 구독권을 결제합니다. \n다음 달의 구독권은 오는 25일에 결제됩니다.', [{ text: '확인', onPress: () => navigation.goBack() }]);
+                Alert.alert('등록 완료 ', '정기 결제 카드가 등록되었습니다. \n이달 구독권을 결제합니다. \n다음 달의 구독권은 오는 25일에 결제됩니다.', [{ text: '다음', onPress: () => subPaymentBtn(subPaymentInfoData) }]);
             }else{
                 return;
             }
@@ -71,6 +77,24 @@ function InfoCardTemplate(props) {
         //         password: "20"
         // }
     }
+
+    const subPaymentBtn = async(subPaymentInfoData) => {
+        console.log('subPaymentInfoData@@!@#!@#',subPaymentInfoData)
+            try{
+                const response = await postPaymentSubscription(subPaymentInfoData);
+                console.log('response',response)
+                if(response){
+                    setPaymentModal(true);
+                    setPaymentModalData(response);
+                }
+            }catch(error){
+                console.error('Error getting:', error.response.data);
+            }finally{
+                setTimeout(() => {
+                    setPaymentModal(false);
+                }, 3000);
+            }
+        }
 
 
 
@@ -153,7 +177,13 @@ const isValid = cardNumber.length === 25 && cardDate.length === 5 && cardPasswor
                         colorProp={isValid}
                         >등록</CardBtnText>
                     </CardBtnContainer>
-
+        {
+            paymentModal && (
+                <SubPaymentModal 
+                paymentModalData={paymentModalData}
+                />
+            )
+        }
         </Container>
     );
 }

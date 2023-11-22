@@ -152,18 +152,25 @@ function MyBookListTemplate(props) {
 
 
 
-    if (loading) {
-        return (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
-            <ActivityIndicator size="large" color={COLORS.sub} />
-          </View>
-        );
-      }
+    // if (loading) {
+    //     return (
+    //       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
+    //         <ActivityIndicator size="large" color={COLORS.sub} />
+    //       </View>
+    //     );
+    //   }
 
     return (
      <Container>
         <GobackBlackGrid onPress={goBackScreens}>전체 예약 목록</GobackBlackGrid>
+        
+        {loading && (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.white }}>
+                    <ActivityIndicator size="large" color={COLORS.sub} />
+                </View>
+            )}
         <BookListContainer>
+       
             <FlatList
              showsVerticalScrollIndicator={false}
                 data={bookListData}
@@ -175,6 +182,7 @@ function MyBookListTemplate(props) {
           </NoListContainer>
         )}
       />
+      
     </BookListContainer>
             {
     showModal && (

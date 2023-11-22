@@ -18,13 +18,13 @@ function ThreeBtnGrid(props) {
         {
           subscription && (
             <ThreeBtn
-          active={activeButton === 'Subscribe'}
+          active={activeButton === 'SUBSCRIBE'}
           onPress={() => {
-            handleButtonPress('Subscribe');
+            handleButtonPress('SUBSCRIBE');
             onPressSubscribe();
           }}
         >
-          <ThreeBtnText active={activeButton === 'Subscribe'}>구독</ThreeBtnText>
+          <ThreeBtnText active={activeButton === 'SUBSCRIBE'}>구독</ThreeBtnText>
         </ThreeBtn>
           )
         }
@@ -46,13 +46,13 @@ function ThreeBtnGrid(props) {
         {
           ticket && (
             <ThreeBtn
-            active={activeButton === 'Use'}
+            active={activeButton === 'TICKET'}
             onPress={() => {
-              handleButtonPress('Use');
+              handleButtonPress('TICKET');
               onPressUse();
             }}
           >
-            <ThreeBtnText active={activeButton === 'Use'}>이용</ThreeBtnText>
+            <ThreeBtnText active={activeButton === 'TICKET'}>이용</ThreeBtnText>
           </ThreeBtn>
           )
         }

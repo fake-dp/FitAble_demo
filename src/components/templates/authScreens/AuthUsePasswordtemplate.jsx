@@ -8,6 +8,7 @@ import GobackGrid from '../../grid/GobackGrid';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import { useRoute } from '@react-navigation/native';
+import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 function AuthUsePasswordtemplate({navigation}) {
 
@@ -69,6 +70,7 @@ function AuthUsePasswordtemplate({navigation}) {
           }, [navigation]);
      
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <AuthContainer>
           <GobackGrid onPress={()=>navigation.goBack()}/>
           <PasswordContainer>
@@ -82,6 +84,8 @@ function AuthUsePasswordtemplate({navigation}) {
                 value={password}
                 onChangeText={handlePassword}
                 onBlur={validatePasswordInput} 
+                secureTextEntry={true}
+                hasError={!!passwordError} 
                 />
                 {
                    passwordError &&  
@@ -94,6 +98,9 @@ function AuthUsePasswordtemplate({navigation}) {
                 placeholder="다시 입력해주세요"
                 value={passwordCheck}
                 onChangeText={handlePasswordCheck}
+                secureTextEntry={true}
+                onSubmitEditing={()=>toAuthAgree(password)}
+                hasError={!isSamePassword && passwordCheck.length > 7}
                 />
                 {
                    !isSamePassword && passwordCheck.length > 7 &&
@@ -110,6 +117,7 @@ function AuthUsePasswordtemplate({navigation}) {
                 >다음</MainBtn>
             </BottomBtnContainer>
         </AuthContainer>
+        </TouchableWithoutFeedback>
     );
 }
 

@@ -10,10 +10,14 @@ function AgreementModal({modalVisible, selectedItem, closeModal}) {
         animationType="slide"
         transparent
         onRequestClose={closeModal}
+
       >
         <ModalContainer>
           <ModalContent>
-           <ScrollView>
+           <ScrollView
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+           >
           <ModalCloseButton onPress={closeModal}>
             <ModalCloseBox source={require('../../../assets/img/close.png')} />
            </ModalCloseButton>

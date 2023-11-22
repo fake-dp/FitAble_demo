@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 import { TextInput, Image } from "react-native";
 import { useState } from 'react';
-function AuthInput({value, onChangeText, placeholder,maxLength}) {
+function AuthInput({value, onChangeText, placeholder,maxLength,onSubmitEditing}) {
 
     const [showPassword, setShowPassword] = useState(false);
     const isPasswordInput = placeholder === '비밀번호';
@@ -30,6 +30,7 @@ function AuthInput({value, onChangeText, placeholder,maxLength}) {
                   onChangeText={onChangeText}
                   placeholder={placeholder}
                   secureTextEntry={!showPassword}
+                  onSubmitEditing={onSubmitEditing}
                 />
                 </AuthTextInputContainer>   
             ):(
@@ -39,6 +40,8 @@ function AuthInput({value, onChangeText, placeholder,maxLength}) {
                 onChangeText={onChangeText}
                 placeholder={placeholder}
                 maxLength={maxLength}
+                keyboardType="numeric"
+                // keyboardType="number-pad"
                 />
                 </AuthTextInputContainer>
             )

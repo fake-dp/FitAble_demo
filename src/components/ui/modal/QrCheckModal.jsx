@@ -2,34 +2,112 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Modal, ScrollView } from 'react-native';
 import {postQrCheckIn} from '../../../api/qrApi';
-import { useState } from 'react';
-import QrDoneModal from './QrDoneModal';
-function QrCheckModal({qrTicketList,qrCenterId,setShowQrModal, showQrDoneModal}) {
+import {qrTicketListState,qrFailTextState} from '../../../store/atom';
+import { useRecoilState } from 'recoil';
+import { useNavigation } from '@react-navigation/native';
 
+function QrCheckModal({qrTicketList,qrCenterId,setShowQrModal, setShowQrDoneModal,setShowCancelModal}) {
+
+    const [myTicketInfo, setMyTicketInfo] = useRecoilState(qrTicketListState);
+    const [failText , setFailText] = useRecoilState(qrFailTextState);
+    const navigator = useNavigation();
 
     const selectQrTicketBtn = async(id,qrCenterId) => {
-        console.log('ticketId',id,'centerId',qrCenterId);
+        // console.log('ticketId',id,'centerId',qrCenterId);
         const data = {
             centerId: qrCenterId,
             ticketId: id
         }
-        console.log('data',data)
+        // console.log('data',data)
 
         try{
             const response = await postQrCheckIn(data);
             console.log('response',response)
             if(response){
+                setMyTicketInfo(response);
                 setShowQrModal(false);
-                showQrDoneModal(true);
+                setShowQrDoneModal(true);
+                setTimeout(() => {
+                    setShowQrDoneModal(false); 
+                    navigator.navigate('HomeMain')
+                }, 3000);
             }
-        }catch(error){
+        }catch(error){   
             console.error('Error getting:', error.response.data.code);
+            if(error.response && error.response.data && error.response.data.code === 20906){
+                setShowCancelModal(true)
+                // 입장불가, 이용 가능한 수업이 없습니다.
+                setFailText({
+                    title: '입장불가',
+                    text: '이용 가능한 수업이 없습니다.'
+                })
+            }else if(error.response && error.response.data && error.response.data.code === 20907){
+                setShowCancelModal(true)
+                // 이상태 코드는 다시 확인해볼것!
+                setFailText({
+                    title: '입장불가',
+                    text: '이용 가능한 수업이 없습니다.'
+                })
+            }else if(error.response && error.response.data && error.response.data.code === 30000){
+                setShowCancelModal(true)
+                // 입장불가, 입장 횟수를 초과하였습니다. 센터에 문의해주세요
+                setFailText({
+                    title: '입장불가',
+                    text: '입장 횟수를 초과하였습니다. \n센터에 문의해주세요.'
+                })
+            }else if(error.response && error.response.data && error.response.data.code === 30001){
+                setShowCancelModal(true)
+                 // 입장불가, 입장 횟수를 초과하였습니다. 센터에 문의해주세요
+                    setFailText({
+                        title: '입장불가',
+                        text: '입장 횟수를 초과하였습니다. \n센터에 문의해주세요.'
+                    })
+            }else if(error.response && error.response.data && error.response.data.code === 20905){
+                setShowCancelModal(true)
+                // 입장 불가, 이용 가능한 수업이 없습니다.
+                setFailText({
+                    title: '입장불가',
+                    text: '이용 가능한 수업이 없습니다.'
+                })
+
+            }else if(error.response && error.response.data && error.response.data.code === 20604){
+                setShowCancelModal(true)
+                // 입장불가, 중지 중인 이용권입니다. 센터에 문의해주세요
+                setFailText({
+                    title: '입장불가',
+                    text: '중지 중인 이용권입니다. \n센터에 문의해주세요.'
+                })
+            }else if(error.response && error.response.data && error.response.data.code === 20607){
+                setShowCancelModal(true)
+                // 입장불가, 만료된 이용권입니다. 연장해주세요.
+                setFailText({
+                    title: '입장불가',
+                    text: '만료된 이용권입니다. \n연장해주세요.'
+                })
+            }else if(error.response && error.response.data && error.response.data.code === 10100){
+                setShowCancelModal(true)
+                //  인식 불가, 이용할 센터의 QR 코드를 찍어주세요
+                setFailText({
+                    title: '인식불가',
+                    text: '이용할 센터의 QR 코드를 찍어주세요.'
+                })
+            }
+            setTimeout(() => {
+                setShowCancelModal(false); 
+            }, 3000);
         }finally{
-            // setShowQrModal(false);
+            setShowQrModal(false);
         }
     }
-
-    console.log('qrTicketList,qrCenterId',qrTicketList,qrCenterId)
+    // 예약한 수업이 없을 경우[20906],
+    // 이용권이 만료됐을 경우[20607],
+    // 일일 이용 횟수를 초과한 경우[30000], 
+    // 주간 이용 횟수를 초과한 경우[30001], 
+    // 예약한 수업이 없을 경우[20905], 
+    // 이용권이 중지권일 경우[20604], 
+    // 이용권이 만료됐을 경우[20607], 
+    // 올바른 큐알이 아닐 경우[10100]
+    // console.log('qrTicketList,qrCenterId',qrTicketList,qrCenterId)
     return (
         <Modal
         // visible={modalVisible}

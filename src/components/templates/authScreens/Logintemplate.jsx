@@ -7,7 +7,7 @@ import React, {useCallback, useRef, useState} from 'react';
 import { useSetRecoilState } from 'recoil';
 import { isLoginState,phoneState } from '../../../store/atom';
 import { login } from '../../../api/authApi';
-import { Alert } from 'react-native';
+import { Alert,TouchableWithoutFeedback, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Logintempate({navigation}) {
@@ -34,36 +34,6 @@ function Logintempate({navigation}) {
         }, [navigation]);
 
 
-    // const handleLogin = async() => {
-    //     try {
-    //         const response = await login(phone, password); // 로그인 함수 호출
-    //         if (response && response.isUseApp&& phone.length > 5  && password.length > 3) {
-    //           const { accessToken, refreshToken } = response;
-    //           await AsyncStorage.setItem("accessToken", accessToken);
-    //           await AsyncStorage.setItem("refreshToken", refreshToken);
-    //           // 로그인 성공 처리
-    //           setMyPhone(phone);
-    //           setPhone('');
-    //           setPassword('');
-
-    //           // setIsLoggedIn(true)
-    //           Alert.alert('로그인 성공하였습니다. ', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
-    //         } else if(!response){
-
-    //           Alert.alert('로그인 실패하였습니다. ', '', [{ text: '확인', onPress: () => console.log('성공',response.isUseApp) }]);
-    //         } else if(response && !response.isUseApp&& phone.length > 5  && password.length > 3){
-    //           // 로그인 실패 처리
-    //           console.log('response',response)
-    //           Alert.alert('추가정보를 입력해주세요. ', '', [{ text: '확인', onPress: () => navigation.navigate('SignUpInfoGender',{data:'newInfo'}) }]);
-    //         }
-    //       } catch (error) {
-    //         console.error('Error during login:', error);
-    //         if(error || accessToken === undefined && refreshToken === undefined){
-
-    //           Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('실패')  }]);
-    //         }
-    //     }
-    // }
     const handleLogin = async () => {
       try {
           const response = await login(phone, password); // 로그인 함수 호출
@@ -97,18 +67,19 @@ function Logintempate({navigation}) {
       } catch (error) {
           console.log('Error during login@@:', error);
           if(error.code === 10202){
-            Alert.alert('비밀번호를 잘못 입력했습니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
+            Alert.alert('올바른 비밀번호로 입력해주세요.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
           }
       else if(error.code === 10200){
-        Alert.alert('등록되지 않은 아이디입니다.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
+        Alert.alert('가입되지 않은 정보입니다. \n먼저 회원가입을 해주세요.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
       }
     }
   };
   
 
-    const isInputValid = phone.length > 5  && password.length > 7;
+    const isInputValid = phone.length > 10  && password.length > 7;
 
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <LoginScreenView> 
             <TitleLogo source={require('../../../assets/img/mainLogo.png')}/>
             <AuthInput
@@ -120,8 +91,9 @@ function Logintempate({navigation}) {
 
             <AuthInput
               value={password}
-              onChangeText={setPassword}ß
+              onChangeText={setPassword}
               placeholder="비밀번호"
+              onSubmitEditing={handleLogin}
             />
  
 
@@ -142,6 +114,7 @@ function Logintempate({navigation}) {
                 >회원가입</AboutTextRigth>
             </AboutContainer>
         </LoginScreenView>
+        </TouchableWithoutFeedback>
     );
 }
 

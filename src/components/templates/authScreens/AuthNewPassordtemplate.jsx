@@ -7,6 +7,7 @@ import {validatePassword} from '../../../utils/CustomUtils'
 import GobackGrid from '../../grid/GobackGrid';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
+import {TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { findPassword } from '../../../api/certificationApi';
 function AuthNewPassordtemplate({navigation}) {
 
@@ -70,6 +71,7 @@ const isSamePassword = password === passwordCheck;
           }, [navigation]);
 
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <AuthContainer>
           <GobackGrid onPress={()=>navigation.goBack()}/>
           <AuthTextContainer>
@@ -82,7 +84,9 @@ const isSamePassword = password === passwordCheck;
                 placeholder="영어 소문자, 숫자, 특수문자 포함 8자리~16자리"
                 value={password}
                 onChangeText={handlePassword}
-                onBlur={validatePasswordInput} 
+                onBlur={validatePasswordInput}
+                secureTextEntry={true}
+                hasError={!!passwordError} 
                 />
                 {
                    passwordError &&  
@@ -95,6 +99,9 @@ const isSamePassword = password === passwordCheck;
                 placeholder="다시 입력해주세요"
                 value={passwordCheck}
                 onChangeText={handlePasswordCheck}
+                secureTextEntry={true}
+                onSubmitEditing={()=>toAuthAgree(signUpInfo.phone, password)}
+                hasError={!isSamePassword && passwordCheck.length > 7}
                 />
                        {
                    !isSamePassword && passwordCheck.length > 7 &&
@@ -111,6 +118,7 @@ const isSamePassword = password === passwordCheck;
                 >다음</MainBtn>
             </BottomBtnContainer>
         </AuthContainer>
+        </TouchableWithoutFeedback>
     );
 }
 

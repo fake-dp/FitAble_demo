@@ -45,7 +45,7 @@ function DetailCenterTemplate({ route }) {
     // 피커 & 트레이너 이름 조회 상태
     const [trainerName, setTrainerName] = useState('');
     const [showPicker, setShowPicker] = useState(false);
-
+  console.log('detailDatadetailData',detailData.subscription,detailData.pt,detailData.ticket)
     const handleBtnPress = async(id, name) => {
         setBtnName(name);
         setCenterId(id);
@@ -91,10 +91,22 @@ function DetailCenterTemplate({ route }) {
       }
     };
 
-    const goSetSubscribeState = () => {
-        setBtnName('SUBSCRIBE');
-        setActiveButton('SUBSCRIBE');
- 
+    const handleTypeDetail = () => {
+ console.log('btnName',btnName)
+        if (detailData.subscription) {
+          handleBtnPress(id, 'SUBSCRIBE');
+          setBtnName('SUBSCRIBE');
+          setActiveButton('SUBSCRIBE');
+      } else if (detailData.pt) {
+          handleBtnPress(id, 'PT');
+          setBtnName('PT');
+          setActiveButton('PT');
+      } else if (detailData.ticket) {
+          handleBtnPress(id, 'TICKET');
+          setBtnName('TICKET');
+          setActiveButton('TICKET');
+      }
+
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
     }
     // selectedCardState
@@ -269,8 +281,8 @@ function DetailCenterTemplate({ route }) {
 
         {btnName !== 'SUBSCRIBE' && btnName !== 'PT' && btnName !== 'TICKET' && (
           <ActiveMainBtn
-          onPress={goSetSubscribeState}
-          btnName={id}
+          onPress={handleTypeDetail}
+          // btnName={id}
           >이용하기</ActiveMainBtn>
         )}
          </StickyBtnContainer>

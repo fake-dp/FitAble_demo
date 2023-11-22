@@ -2,22 +2,19 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Modal } from 'react-native';
 
-function QrCancelModal(props) {
+function QrCancelModal({failText}) {
 
-    const closeModal = () => {
-        console.log('closeModal');
-    }
+   console.log('failText',failText.text)
     return (
         <Modal
         // visible={modalVisible}
         animationType=""
         transparent
-        onRequestClose={closeModal}
       >
         <ModalContainer>
             <ModalView>
-                <ModalTitle>입장 불가</ModalTitle>
-                <ModalSubTitle>만료된 이용권입니다. 연장해주세요.</ModalSubTitle>
+                <ModalTitle>{failText?.title}</ModalTitle>
+                <ModalSubTitle>{failText?.text}</ModalSubTitle>
             </ModalView>
         </ModalContainer>
             
