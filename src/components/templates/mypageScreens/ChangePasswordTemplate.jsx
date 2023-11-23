@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { TextInput ,Alert} from 'react-native';
+import { TextInput ,Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { useState } from 'react';
 import { formatTime } from '../../../utils/CustomUtils';
 import {changePassword} from '../../../api/mypageApi';
@@ -101,7 +101,7 @@ function ChangePasswordTemplate(props) {
     const changePasswrod = async (password) => {
         try{
             const response = await changePassword(password);
-            if(response){
+            if(response && isSamePassword){
                 Alert.alert('변경 완료', '비밀번호가 변경되었습니다', [
                     {text: '확인', onPress: () => navigation.goBack()},
                     ]);
@@ -115,6 +115,7 @@ function ChangePasswordTemplate(props) {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
         <Content>
         <GobackBlackGrid onPress={goBack}>비밀번호 변경</GobackBlackGrid>
@@ -144,6 +145,8 @@ function ChangePasswordTemplate(props) {
                 placeholder="인증번호 6자리를 입력해주세요"
                 placeholderTextColor={COLORS.gray_300}
                 onChangeText={certificationTextChange}
+                maxLength={6}
+                onSubmitEditing={() => checkCertificaitonFn(phone, number)}
                 // secureTextEntry={true}
                 />
                  <CertificationTimer>
@@ -161,14 +164,15 @@ function ChangePasswordTemplate(props) {
         <PasswordContainer>
         <CeritText>새 비밀번호 입력</CeritText>
         </PasswordContainer> 
-            <CertificationIputBox>
+            <CertificationIputBox hasError={!!passwordError}>
             <TextInput
-                style={{marginLeft: 10, fontSize: 14}}          
+                style={{marginLeft:10, fontSize:14, width:'100%'}}          
                 placeholder="영어 소문자, 숫자, 특수문자 포함 8자리~16자리"
                 placeholderTextColor={COLORS.gray_300}
                 onChangeText={passwrdTextChange}
                 onBlur={validatePasswordInput} 
-                // secureTextEntry={true}
+                secureTextEntry={true}
+                maxLength={16}
                 />
             </CertificationIputBox>
                 {
@@ -180,13 +184,14 @@ function ChangePasswordTemplate(props) {
             <SecondPasswordContainer>
         <CeritText>새 비밀번호 입력 확인</CeritText>
         </SecondPasswordContainer> 
-            <CertificationIputBox>
+            <CertificationIputBox hasError={!isSamePassword && checkPassword.length > 7}>
             <TextInput
-                style={{marginLeft: 10, fontSize: 14}}          
+                style={{marginLeft:10, fontSize:14, width:'100%'}}          
                 placeholder="한 번 더 입력해주세요"
                 placeholderTextColor={COLORS.gray_300}
                 onChangeText={checkPasswrdTextChange}
-                // secureTextEntry={true}
+                secureTextEntry={true}
+                onSubmitEditing={() => changePasswrod(password)}
                 />
             </CertificationIputBox>
             {
@@ -200,19 +205,22 @@ function ChangePasswordTemplate(props) {
         </Content>
                 {
                     stepBtn === 1 && (
-                    <GetCertificationNextBtn onPress={()=>checkCertificaitonFn(phone, number)}>
-                        <GetCertificationNextText>다음</GetCertificationNextText>
+                    <GetCertificationNextBtn 
+                    isActive={number.length > 5}
+                    onPress={()=>checkCertificaitonFn(phone, number)}>
+                        <GetCertificationNextText isActive={number.length > 5}>다음</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     )
                 }
                 {
                     stepBtn === 2 && (
-                    <GetCertificationNextBtn props={stepBtn} onPress={()=>changePasswrod(password)}>
-                        <GetCertificationNextText props={stepBtn}>수정</GetCertificationNextText>
+                    <GetCertificationNextBtn isActive={password.length >7 && isSamePassword} onPress={()=>changePasswrod(password)}>
+                        <GetCertificationNextText isActive={password.length >7 && isSamePassword}>수정</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     )
                 }
         </Container>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -265,7 +273,9 @@ line-height: 22.40px;
 
 const CertificationIputBox = styled.View`
 flex-direction: row;
-border: 1px solid ${COLORS.gray_200}; 
+border-width: ${props => props.hasError ? '1px' : '1px'};
+   border-color: ${props => props.hasError ? 'red' : COLORS.gray_200};
+/* border: 1px solid ${COLORS.gray_200};  */
 border-radius: 13px;
 height: 52px;
 align-items: center;
@@ -302,25 +312,44 @@ const Content = styled.View`
 `;
 
 const GetCertificationNextBtn = styled.TouchableOpacity`
-    position: absolute;
+   position: absolute;
     bottom: 20px;
     left: 10px;
     right: 10px;
     /* background-color: ${COLORS.gray_100}; */
-    background-color: ${props => props.props === 2 ? COLORS.sub : COLORS.gray_100};
+    background-color: ${props => props.isActive ? COLORS.sub : COLORS.gray_100};
     border-radius: 90px;
     align-items: center;
     justify-content: center;
     padding: 14px 0;
-`;
+`
+
+// const GetCertificationNextBtn = styled.TouchableOpacity`
+//     position: absolute;
+//     bottom: 20px;
+//     left: 10px;
+//     right: 10px;
+//     /* background-color: ${COLORS.gray_100}; */
+//     background-color: ${props => props.props === 2 ? COLORS.sub : COLORS.gray_100};
+//     border-radius: 90px;
+//     align-items: center;
+//     justify-content: center;
+//     padding: 14px 0;
+// `;
 
 const GetCertificationNextText = styled.Text`
 font-size: 16px;
 font-weight: 600;
 line-height: 22.40px;
-/* color: ${COLORS.gray_300}; */
-color: ${props => props.props === 2 ? COLORS.white : COLORS.gray_300};
+color: ${props => props.isActive ? COLORS.white : COLORS.gray_300};
 `
+
+// const GetCertificationNextText = styled.Text`
+// font-size: 16px;
+// font-weight: 600;
+// line-height: 22.40px;
+// color: ${props => props.props === 2 ? COLORS.white : COLORS.gray_300};
+// `
 
 const PasswordContainer = styled.View`
     margin-top: 38px;

@@ -34,6 +34,7 @@ function Auth(props) {
                 backgroundColor: COLORS.sub,
               },
               headerBackTitleVisible: false,
+              headerShadowVisible: false,
           }}>
           
             <Stack.Screen

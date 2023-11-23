@@ -124,16 +124,9 @@ function CenterTicketListTemplate(props) {
 
   // 이용권 목록 (구독권, 이용권)
   useEffect(() => {
-    if(selectedTab === 'SUBSCRIBE'){
+
       getTypeTicketsListData('SUBSCRIBE');
-
-    }else if(selectedTab === 'OTHER'){
       getTypeTicketsListData('OTHER');
-    }
-
-
-    // getTypeTicketsListData('SUBSCRIBE');
-    // getTypeTicketsListData('OTHER');
   }, []);
 
  

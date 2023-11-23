@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { TextInput ,Alert} from 'react-native';
+import { TextInput ,Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { useState } from 'react';
 import { formatTime } from '../../../utils/CustomUtils';
 import {changePhone} from '../../../api/mypageApi';
@@ -94,7 +94,10 @@ function ChangePhoneNumberTemplate(props) {
     }
 
     const nextBtn = (phone) => {
-        if(phone.length !== 11){
+
+        const phoneRegex = /^010\d{8}$/;
+
+        if(!phoneRegex.test(phone)){
             Alert.alert('휴대폰번호 오류', '입력하신 휴대폰번호가 올바른지\n 다시 한 번 확인해주세요', [
                 {text: '확인', onPress: () => console.log('OK Pressed')},
               ]);
@@ -105,6 +108,7 @@ function ChangePhoneNumberTemplate(props) {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
             <Content>
 
@@ -119,6 +123,8 @@ function ChangePhoneNumberTemplate(props) {
                 placeholder="변경할 휴대폰번호 11자리를 - 없이 입력해주세요"
                 placeholderTextColor={COLORS.gray_300}
                 onChangeText={phoneTextChange}
+                maxLength={11}
+                keyboardType="numeric"
                 />
         </PasswordIputBox>
         
@@ -134,6 +140,8 @@ function ChangePhoneNumberTemplate(props) {
             placeholder="인증번호 6자리를 입력해주세요"
             placeholderTextColor={COLORS.gray_300}
             onChangeText={certificationTextChange}
+            maxLength={6}
+            onSubmitEditing={() => changePhoneNum(phone, number)}
             // secureTextEntry={true}
             />
              <CertificationTimer>
@@ -151,17 +159,18 @@ function ChangePhoneNumberTemplate(props) {
                 </Content>
                 {
                     stepBtn === 0 ? (
-                        <GetCertificationNextBtn onPress={()=>nextBtn(phone)}>
-                        <GetCertificationNextText>다음</GetCertificationNextText>
+                        <GetCertificationNextBtn isActive={phone.length > 10} onPress={()=>nextBtn(phone)}>
+                        <GetCertificationNextText isActive={phone.length > 10}>다음</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     ) : (
-                        <GetCertificationNextBtn onPress={()=>changePhoneNum(phone, number)}>
-                        <GetCertificationNextText>다음</GetCertificationNextText>
+                        <GetCertificationNextBtn isActive={number.length > 5} onPress={()=>changePhoneNum(phone, number)}>
+                        <GetCertificationNextText isActive={number.length > 5}>다음</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     )
                 }
 
         </Container>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -224,7 +233,8 @@ const GetCertificationNextBtn = styled.TouchableOpacity`
     bottom: 20px;
     left: 10px;
     right: 10px;
-    background-color: ${COLORS.gray_100};
+    /* background-color: ${COLORS.gray_100}; */
+    background-color: ${props => props.isActive ? COLORS.sub : COLORS.gray_100};
     border-radius: 90px;
     align-items: center;
     justify-content: center;
@@ -235,7 +245,8 @@ const GetCertificationNextText = styled.Text`
 font-size: 16px;
 font-weight: 600;
 line-height: 22.40px;
-color: ${COLORS.gray_300};
+/* color: ${COLORS.gray_300}; */
+color: ${props => props.isActive ? COLORS.white : COLORS.gray_300};
 `
 
 const ResendBtn = styled.TouchableOpacity`

@@ -29,8 +29,6 @@ function FitableQnATemplate(props) {
         setInquiryText(text);
         console.log('inquiryText',inquiryText)
     };
-
-
     const goBackScreens = () => {
         if(inquiryText.length > 0){
             Alert.alert(
@@ -247,3 +245,27 @@ const ChangeText = styled.Text`
     line-height: 22.40px;
 `;
 
+
+
+const SelectImageButton = styled.TouchableOpacity`
+  background-color: ${COLORS.sub};
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-top: 16px;
+  align-self: center;
+`;
+
+// 이미지 선택 버튼 텍스트 스타일
+const ButtonText = styled.Text`
+  color: ${COLORS.white};
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+// 선택한 이미지 표시 스타일
+const SelectedImage = styled.Image`
+  width: 100px;
+  height: 100px;
+  margin-top: 16px;
+  align-self: center;
+`;
