@@ -5,7 +5,7 @@ import { TextInput,Platform } from "react-native";
 
 function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp,maxLength,secureTextEntry,hasError,onSubmitEditing}) {
 
-    console.log('hasError@@@',hasError,'@@!@#',text)
+    // console.log('hasError@@@',hasError,'@@!@#',text)
     return (
         <AuthTextInputContainer hasError={hasError}>
             <AuthText>{text}</AuthText>

@@ -2,12 +2,14 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { Text, ScrollView ,Alert} from 'react-native';
+import { Text, ScrollView ,Alert,Dimensions} from 'react-native';
 import {getFitAbleInquiryList,deleteFitAbleInquiry} from '../../../api/mypageApi';
 import { useEffect, useState } from 'react';
 import {formatReplaceString} from '../../../utils/CustomUtils';
-function ProductQnATemplate(props) {
 
+
+function ProductQnATemplate(props) {
+    const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
 
     const [fitableInquiryList, setFitableInquiryList] = useState([]);
@@ -21,7 +23,7 @@ function ProductQnATemplate(props) {
         try{
             const response = await getFitAbleInquiryList();
             setFitableInquiryList(response.content);
-            // console.log('getFitAbleInquiryListData response:', response.content)
+            console.log('getFitAbleInquiryListData response:', response.content)
         }catch(error){
             console.error('getFitAbleInquiryListData error:', error.response.data)
         }
@@ -34,7 +36,7 @@ function ProductQnATemplate(props) {
             // console.log('deleteInquiryBtn response:', response)
             if(response){
                 setFitableInquiryList(fitableInquiryList.filter(item => item.id !== id));
-                Alert.alert('문의가 삭제되었습니다.')
+                Alert.alert('문의가 삭제되었습니다')
             }
         }catch(error){
             console.error('deleteInquiryBtn error:', error.response.data)
@@ -50,7 +52,17 @@ function ProductQnATemplate(props) {
         <Container>
             <GobackBlackGrid onPress={goBackScreens}>핏에이블 문의</GobackBlackGrid>
             <QnAWraper>
-            <ScrollView>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+            >
+                {
+                    fitableInquiryList.length === 0 ? (
+                        <NoListContainer windowHeight={windowHeight}>
+                        <NoListText>문의 내역이 없습니다.</NoListText>
+                        </NoListContainer>
+                    ) : null
+                }
                 {
                     fitableInquiryList.map((item, index) => (
                         <ProductQnAListContainer key={index}>
@@ -94,6 +106,19 @@ const Container = styled.View`
   padding: 0 20px;
   background-color: ${COLORS.gray_100};
 `;
+
+const NoListContainer = styled.View`
+    justify-content: center;
+    align-items: center;
+    height: ${props => props.windowHeight / 2}px;
+`
+
+const NoListText = styled.Text`
+    font-size: 16px;
+font-weight: 500;
+letter-spacing: -0.4px;
+`
+
 
 const QnAWraper = styled.View`
 margin-top: 38px;

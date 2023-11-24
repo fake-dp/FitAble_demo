@@ -196,13 +196,14 @@ const Container = styled.View`
 
 const SubContainer = styled.View`
     padding: 0 20px;
-    margin-top: 20px;
+    margin-top: 24px;
 `
 
 const TitleTextContainer = styled.View`
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
+margin-top: 24px;
 `
 const AllText = styled.Text`
 color: ${COLORS.gray_200};

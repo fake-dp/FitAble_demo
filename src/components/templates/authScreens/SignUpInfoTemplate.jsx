@@ -22,7 +22,7 @@ function SignUpInfoTemplate(props) {
 
 
     
- console.log('route.params@', findPass)
+//  console.log('route.params@', findPass)
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     const [name, setName] = useState('');
@@ -53,6 +53,7 @@ function SignUpInfoTemplate(props) {
 
     // 핸드폰 중복 확인
     const checkPhoneNum = async (phone) => {
+        console.log('dd',phone)
         try{
             const response = await checkPhone(phone);
             console.log('읍답코드',response)
@@ -63,6 +64,7 @@ function SignUpInfoTemplate(props) {
                     
             }
         }catch(error){
+            console.log('error',error)
             if(error.response.data.code === 10201){
             Alert.alert('휴대폰번호 오류', '가입되지 않은 휴대폰번호로\n 인증해주시길 바랍니다.', [
                 {text: '확인', onPress: () => console.log('OK Pressed')}
@@ -106,6 +108,7 @@ function SignUpInfoTemplate(props) {
         }
         try{
             const response = await checkCertificationNumber({phone, number});
+            console.log('response',response)
             if(response){
             clearInterval(interval); 
             setSignUpInfo({...signUpInfo, name: name, phone: phone});

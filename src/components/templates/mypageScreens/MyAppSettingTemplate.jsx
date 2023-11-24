@@ -7,7 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 import WithdrawalModal from '../../ui/modal/WithdrawalModal';
 import {putStoreMarketing,putPushAlarm,putPushMarketing} from '../../../api/pushApi';
 import { useRecoilState } from 'recoil';
-import { myinfoState, fcmTokenState } from '../../../store/atom';
+import { myinfoState, fcmTokenState,isLoginState } from '../../../store/atom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function MyAppSettingTemplate(props) {
  
@@ -15,7 +17,7 @@ function MyAppSettingTemplate(props) {
     const [showModal, setShowModal] = useState(false);
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
     const [fcmToken, setFcmToken] = useRecoilState(fcmTokenState);
-
+    const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
 
       
     const openModal = () => {
@@ -71,6 +73,20 @@ function MyAppSettingTemplate(props) {
     };
     
 
+    const handleLogout = async () => {
+        try {
+          // AsyncStorage에서 토큰 삭제
+          await AsyncStorage.removeItem("accessToken");
+          await AsyncStorage.removeItem("refreshToken");
+          
+          // 다른 로그아웃 관련 로직 추가 가능
+      
+          // 사용자 로그인 상태를 false로 업데이트
+          setIsLoggedIn(false);
+        } catch (error) {
+          console.error('Error during logout:', error);
+        }
+      };
 
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
@@ -107,21 +123,25 @@ function MyAppSettingTemplate(props) {
                     <SettingListText>QR 출입증</SettingListText>
                     <ToggleBtn />
                 </SettingList>
+
+                <GridLine/>
                 <SettingListBtn onPress={goTermsScreens}>
                     <SettingListText>이용약관 및 정책</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
+                <GridLine/>
                 
                 <GoodByeBtn
                 onPress={openModal}
                 >
                     <GoodByeText>
-                        회원 탈퇴
+                        회원 탈퇴(임시로그아웃)
                     </GoodByeText>
                 </GoodByeBtn>
                 {
                     showModal && (
                         <WithdrawalModal 
+                        handleLogout={handleLogout}
                         closeModal={closeModal}
                         />
                     )
@@ -156,12 +176,6 @@ const SettingListBtn = styled.TouchableOpacity`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 0;
-    border-bottom-width: 1px;
-    border-color: ${COLORS.gray_200};
-    border-top-width: 1px;
-    margin-top: 30px;
-    margin-bottom: 21px;
 `
     
 const SettingListText = styled.Text`
@@ -195,4 +209,12 @@ font-weight: 400;
 text-decoration: underline;
 line-height: 22.40px;
 color: ${COLORS.gray_400};
+`
+
+const GridLine = styled.View`
+    width: 100%;
+    height: 1px;
+    background-color: ${COLORS.gray_200};
+    margin-bottom: 30px;
+    margin-top: 30px;
 `

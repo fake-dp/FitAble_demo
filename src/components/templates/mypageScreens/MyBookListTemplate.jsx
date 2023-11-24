@@ -2,14 +2,14 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView , Alert, FlatList} from 'react-native';
+import { Dimensions , Alert, FlatList} from 'react-native';
 import { useState, useEffect } from 'react';
 import { BookCancelModal } from '../../ui/modal/MyPageCancelModal';
 import {getReservations, cancelReservation} from '../../../api/lessonsApi';
 import {ActivityIndicator, View} from 'react-native';
 
 function MyBookListTemplate(props) {
-
+    const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -177,7 +177,7 @@ function MyBookListTemplate(props) {
                 renderItem={renderItem}
                 keyExtractor={(item, index) => String(index)} // 고유한 키를 제공합니다.
         ListEmptyComponent={(
-          <NoListContainer>
+          <NoListContainer windowHeight={windowHeight}>
             <NoListText>예약 내역이 없습니다.</NoListText>
           </NoListContainer>
         )}
@@ -314,11 +314,9 @@ color: ${props => props.isAvailable ? COLORS.sub : COLORS.gray_400};
 
 
 const NoListContainer = styled.View`
-    margin-top: 120px;
     justify-content: center;
     align-items: center;
-    /* flex:1; */
-    height: 100%;
+    height: ${props => props.windowHeight / 2}px;
 `
 
 const NoListText = styled.Text`

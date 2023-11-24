@@ -2,40 +2,29 @@ import styled from 'styled-components/native';
 import {COLORS} from '../../../constants/color'
 import GobackGrid from '../../grid/GobackGrid';
 import {useNavigation} from '@react-navigation/native';
-import EctInput from '../../ui/inputUi/EctInput';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import {TextInput, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
-import { formatTime } from '../../../utils/CustomUtils';
-import {getCertificationNumber,checkCertificationNumber,checkPhone} from '../../../api/certificationApi';
-import SelectDatePicker from '../../ui/custom/SelectDatePicker';
 import { useRoute } from '@react-navigation/native';
-
+import DatePicker from 'react-native-date-picker'
+import {formatDate} from '../../../utils/CustomUtils'
 function SignUpInfoGenderTemplate(props) {
 
     const navigation = useNavigation();
     const route = useRoute();
-
     const updateInfo = route.params?.data;
-    console.log('dd',updateInfo)
 
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     const [selectedGender, setSelectedGender] = useState(null);
     const [showDateText, setShowDateText] = useState(false);
-    // setShowStopTicketPicker,setStopShowModal
 
     const [showModal ,setShowModal] = useState(false);
-    const [showSelectDatePicker, setShowSelectDatePicker] = useState(false);
-
-    const [selectedYear, setSelectedYear] = useState('1970');
-    const [selectedMonth, setSelectedMonth] = useState('01');
-    const [selectedDay, setSelectedDay] = useState('01');
-
-
+    const [date, setDate] = useState(new Date())
+    // const [customDate, setCustomDate] = useState('')
+    
     const goBackNavigation = () => {
         // 로그인 화면으로 이동
         navigation.navigate('SignIn');
@@ -45,28 +34,17 @@ function SignUpInfoGenderTemplate(props) {
     // 날짜 선택
     const selectDateBtn = () => {
         setShowModal(true)
-        // navigation.setOptions({
-        //     headerStyle: {
-        //         backgroundColor: "#00000080", // 투명도 적용
-        //     },
-        //     // headerTransparent: true, // 헤더 투명도 설정
-        // });
+    }
+   
+    const handleDateChange = (date) =>{
+    setDate(date)
+    setShowDateText(true)
+    const birthDayNumber = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    setSignUpInfo({ ...signUpInfo, birthDay: birthDayNumber})
     }
 
+    const birthDayNumber = date.toLocaleDateString('ko-KR').replace(/(\d{4})\. (\d{2})\. (\d{2})\./, '$1-$2-$3')
 
-    const handleOutsideClick = () => {
-        // setShowSelectDatePicker(false);
-        setSignUpInfo({...signUpInfo, birthDay: `${selectedYear}-${selectedMonth}-${selectedDay}`})
-        setShowDateText(true)
-        setShowModal(false)
-        navigation.setOptions({
-            headerStyle: {
-              backgroundColor: COLORS.sub, // 원래의 헤더 색상으로 변경
-            },
-          });
-      };
-
-    //
     const nextStepBtn = () => {
         if(showDateText === false){
             console.log('ddfasdfasdf')
@@ -80,24 +58,22 @@ function SignUpInfoGenderTemplate(props) {
                 {text: '확인', onPress: () => console.log('OK Pressed')}
                 ]);
         }else{
-        //     //lll 성공로직
-          console.log('ddddd',signUpInfo)
+    
             navigation.navigate('Password',{data:updateInfo});
+            const birthDayNumber = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
           setSignUpInfo({
             ...signUpInfo, 
             gender : selectedGender === "남자" ? "MALE" : "FEMALE",
-            birthDay: `${selectedYear}-${selectedMonth}-${selectedDay}`
+            birthDay: birthDayNumber
           })
         }
-    
+        console.log('signUpInfo',signUpInfo)
     }
-
 
 
 
     const isActiveBtn = selectedGender !== null && showDateText === true ? true : false;
 
-    // console.log('daaa', signUpInfo)
     // console.log('회원가입 정보',signUpInfo,selectedGender)
 
     return (
@@ -114,7 +90,7 @@ function SignUpInfoGenderTemplate(props) {
                     <SelectDateContainer onPress={selectDateBtn}>
                         <SelectDateText isActive={showDateText}>
                             {
-                                showDateText ? `${selectedYear}.${selectedMonth}.${selectedDay}` :'생년월일을 선택해주세요'
+                                showDateText ? birthDayNumber.replace(/-/g, '.') :'생년월일을 선택해주세요'
                             }
                             </SelectDateText>
                     </SelectDateContainer>
@@ -147,13 +123,25 @@ function SignUpInfoGenderTemplate(props) {
         </Container>
                 {
                     showModal && (
-                        <SelectDatePicker 
-                            setShowModal={setShowModal}
-                            setSelectedYear={setSelectedYear}
-                            setSelectedMonth={setSelectedMonth}
-                            setSelectedDay={setSelectedDay}
-                            handleOutsideClick={handleOutsideClick}
-                        />
+                        <DatePicker
+                        modal
+                        locale="ko-KR"
+                        open={showModal}
+                        date={date}
+                        mode="date"
+                        title={null}
+                        confirmText="확인"
+                        cancelText="취소"
+                        onConfirm={(date) => {
+                            setShowModal(false)
+                            // setDate(date)
+                            handleDateChange(date)
+                        }}
+                        onCancel={() => {
+                            setShowModal(false)
+                        }}
+                      />
+
                     )
                 }
         </>

@@ -2,7 +2,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Modal} from 'react-native';
 
-function WithdrawalModal({closeModal}) {
+function WithdrawalModal({closeModal,handleLogout}) {
     return (
         <Modal
         // visible={modalVisible}
@@ -17,7 +17,7 @@ function WithdrawalModal({closeModal}) {
                 <ModalSubTitle>이용후기는 탈퇴 후에도 삭제되지 않습니다</ModalSubTitle>
                 <ModalSubTitle>등록 센터에 개인정보는 1년 간 보관됩니다</ModalSubTitle>
         <ButtonContainer>
-            <GoodbyeBtn onPress={closeModal}>
+            <GoodbyeBtn onPress={handleLogout}>
                     <CloseText>확인</CloseText>
             </GoodbyeBtn>
             <GoodbyeBtn onPress={closeModal}>

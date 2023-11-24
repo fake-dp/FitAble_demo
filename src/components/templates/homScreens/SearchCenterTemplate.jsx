@@ -106,6 +106,10 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
         setIsTyping(true);
       };
       
+      const handleRecentSearchClick = (searchText) => {
+        setSearchQuery(searchText);
+        handleSearch();
+      };
 
 
       const handleGoDetailCenter = (id) => {
@@ -151,7 +155,7 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
     
               
                 {
-                !labelText && !isTyping ? (
+                !labelText && !isTyping && recentList.length!==0? (
                 <RecentSearchContainer>
                 <RecentSearchTitle>최근 검색어</RecentSearchTitle>
                 <ScrollView
@@ -161,7 +165,9 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                 >
                 {recentList.map((item, index) => (
                     <RecentSearchBox key={index}>
+                      <TouchableOpacity onPress={() => handleRecentSearchClick(item.title)}>
                     <RecentSearchText>{item.title}</RecentSearchText>
+                      </TouchableOpacity>
                     <TouchableOpacity onPress={()=>removeRecentSearch(item.id)}>
                     <ImageIcon source={close}/>
                     </TouchableOpacity>
@@ -173,7 +179,6 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                       !isTyping && <RecentSearchTitle>{labelText}</RecentSearchTitle>
                     )
                 }
-
                 {/* 검색 데이터 */}
                 {isTyping && searchData.length > 0 && (
                 <ScrollView

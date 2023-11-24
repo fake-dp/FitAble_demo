@@ -2,15 +2,17 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
 import { useRoute } from '@react-navigation/native';
-import { useState } from 'react';
-import { Alert } from 'react-native';
+import { useState,useCallback } from 'react';
+import { Alert,TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import {postInquiry,postFitAbleInquiry} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { inquiryListState ,myinfoState} from '../../../store/atom';
 import { formatDate } from '../../../utils/CustomUtils';
+import ImagePicker from 'react-native-image-crop-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 function FitableQnATemplate(props) {
     const navigation = useNavigation();
     const route = useRoute();
@@ -22,8 +24,22 @@ function FitableQnATemplate(props) {
     const [inquiryText, setInquiryText] = useState('');
     const [inquiryList, setInquiryList] = useRecoilState(inquiryListState);
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
+    // const [selectedImage, setSelectedImage] = useState([]);
+    const [selectedImages, setSelectedImages] = useState([]); 
+    console.log('inquiryList',inquiryList,selectedImages)
 
-    console.log('inquiryList',inquiryList)
+    useFocusEffect(
+        React.useCallback(() => {
+            // Do something when the screen is focused
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+                setInquiryText('');
+                setSelectedImages([]);
+            };
+        }, [])
+    );
+
 
     const inquiryTextChange = (text) => {
         setInquiryText(text);
@@ -76,6 +92,7 @@ function FitableQnATemplate(props) {
     };
 
     const fitableInquiryData = async (data) => {
+        console.log('datadata',data)
         try {
             const response = await postFitAbleInquiry(data);
             console.log('응답성공',response)
@@ -121,7 +138,17 @@ function FitableQnATemplate(props) {
             formData.append("requestDto", JSON.stringify(requestDto));
             // const imageFile = { uri: '', type: 'image/jpeg', name: 'image.jpg' };
             // formData.append("images", imageFile);
-            console.log('formData',formData)
+                // 이미지 파일 추가
+            selectedImages.forEach((image, index) => {
+            // 이미지 파일 이름을 지정하여 FormData에 추가
+            formData.append('images', {
+                uri: image, // 이미지 파일 경로 또는 URL
+                type: 'image/jpeg', // 이미지 타입 (예: image/jpeg)
+                name: `image${index}.jpg` // 이미지 파일 이름
+            });
+        });
+             
+            console.log('formData1111',formData)
             fitableInquiryData(formData);
       
         }
@@ -131,28 +158,64 @@ function FitableQnATemplate(props) {
     const handleAnswerListBtn = () => {
         navigation.navigate('ProductQnA');
     }
-
+ 
+    const openImagePicker = () => {
+      ImagePicker.openPicker({
+        multiple: true, 
+        width: 300,
+        height: 400,
+        cropping: true,
+      })
+        .then(images => {
+          console.log(images);
+          setSelectedImages(images.map(image => image.path));
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
 
     const plusbtn = require('../../../assets/img/plusbtn.png');
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+
             <GobackBlackGrid onPress={goBackScreens}>
             {
                 centerInquiryText && centerInquiryId ? '센터 문의':'핏에이블 문의'
             }
             </GobackBlackGrid>
-
+            <KeyboardAwareScrollView>
+           
             {
                 centerInquiryText && centerInquiryId ? null : (
+                    <>
                     <PlusBtnContainer>
-                        <PlusBtnBox>
+                        <PlusBtnBox onPress={openImagePicker}>
                             <PlusBtn source={plusbtn} />
                         </PlusBtnBox>
                     </PlusBtnContainer>
+                 
+                    {
+                selectedImages.length > 0 ? (
+                    <ImgContainer>
+                   
+                            {
+                                selectedImages.map((image, index) => (
+                                    <SelectedImage 
+                                    
+                                    key={index} source={{ uri: image }} />
+                                    ))
+                                }
+                        </ImgContainer>
+                ):(null)
+            }
+          
+                    </>
                 )
             }
-
+   
             <TitleText>내용</TitleText>
             <TextInputWrapper>
                 <TextAreaInput
@@ -163,10 +226,9 @@ function FitableQnATemplate(props) {
                     onChangeText={inquiryTextChange}
                     value={inquiryText}
                     // 리턴
-                    returnKeyType="done"
+                    // returnKeyType="done"
                 />
             </TextInputWrapper>
-
             {
                 centerInquiryText && centerInquiryId ? null : (
                     <TextContainerBtn onPress={handleAnswerListBtn}>
@@ -174,9 +236,13 @@ function FitableQnATemplate(props) {
                     </TextContainerBtn>
                 )
             }
+       
+         
+                </KeyboardAwareScrollView>
                 <MyBtn onPress={()=>handleRegistBtn(centerInquiryId, inquiryText)}>등록하기</MyBtn>
-           
+
         </Container>
+            </TouchableWithoutFeedback>
     );
 }
 
@@ -189,17 +255,33 @@ const Container = styled.View`
     position: relative;
 `;
 
-const PlusBtnContainer = styled.TouchableOpacity`
+const PlusBtnContainer = styled.View`
 margin-top: 36px;
+flex-direction: row;
 `
-    
-const PlusBtnBox = styled.View`
+
+const ImgContainer = styled.View`
+margin-top: 16px;
+flex-direction: row;
+flex-wrap: wrap;
+/* flex:1; */
+`
+const SelectedImage = styled.Image`
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+    margin-bottom: 10px;
+  border-radius: 10px;
+`;
+const PlusBtnBox = styled.TouchableHighlight`
     background-color: ${COLORS.sub};
     align-items: center;
     justify-content: center;
     padding: 18px;
     border-radius: 10px;
-    width: 17%;
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
 `
 
 const PlusBtn = styled.Image`
@@ -245,27 +327,3 @@ const ChangeText = styled.Text`
     line-height: 22.40px;
 `;
 
-
-
-const SelectImageButton = styled.TouchableOpacity`
-  background-color: ${COLORS.sub};
-  padding: 12px 24px;
-  border-radius: 8px;
-  margin-top: 16px;
-  align-self: center;
-`;
-
-// 이미지 선택 버튼 텍스트 스타일
-const ButtonText = styled.Text`
-  color: ${COLORS.white};
-  font-size: 16px;
-  font-weight: 600;
-`;
-
-// 선택한 이미지 표시 스타일
-const SelectedImage = styled.Image`
-  width: 100px;
-  height: 100px;
-  margin-top: 16px;
-  align-self: center;
-`;
