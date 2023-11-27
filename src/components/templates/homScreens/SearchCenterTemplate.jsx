@@ -17,7 +17,7 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-  console.log('labelText',labelText)
+  // console.log('labelText',labelText)
     useEffect(() => {
         const loadRecentSearches = async () => {
           try {
@@ -105,10 +105,32 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
         setIsLoading(false);
         setIsTyping(true);
       };
+
+
+    const recentHandleSearch = async (searchText) => {
+      setIsLoading(true);
+      try {
+        const response = await getSearchCenter(searchText);
+        const filteredList = response.content.map((item) => ({
+            id: item.id,
+            name: item.name,
+            address: item.address,
+            mainImage: item.mainImage,
+            programs: item.programs,
+          }));
+           setSearchData(filteredList);
+           saveRecentSearch(searchQuery);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+      setIsLoading(false);
+      setIsTyping(true);
+    };
       
-      const handleRecentSearchClick = (searchText) => {
+      const handleRecentSearchClick = async(searchText) => {
+        console.log('searchText',searchText)
         setSearchQuery(searchText);
-        handleSearch();
+        recentHandleSearch(searchText);
       };
 
 
@@ -179,6 +201,11 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                       !isTyping && <RecentSearchTitle>{labelText}</RecentSearchTitle>
                     )
                 }
+
+{isTyping && searchData.length === 0 ? (
+  <NoSearchResultText>검색 결과가 없습니다.</NoSearchResultText>
+) : null}
+
                 {/* 검색 데이터 */}
                 {isTyping && searchData.length > 0 && (
                 <ScrollView
@@ -277,3 +304,12 @@ const IsLoadingText = styled.Text`
     line-height: 22.40px;
     color: ${COLORS.white};
 `
+
+const NoSearchResultText = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.40px;
+  color: ${COLORS.gray_300};
+  text-align: center;
+  margin-top: 140px;
+`;

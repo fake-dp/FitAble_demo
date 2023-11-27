@@ -5,13 +5,14 @@ import { COLORS } from '../../constants/color';
 function PriceProductGrid({priceProduct,productNames}) {
 
     const noImg = require('../../assets/img/noImg.png')
-
+    // <PhotoScrollImg source={{ uri: image }} />
+    console.log('priceProduct',priceProduct)
     return (
         <Container>
         <MainTitleText>구매 상품</MainTitleText>
         <ProductContainer >
             {
-                priceProduct?.image ? (<ProductImage source={priceProduct?.image}/>):(<ProductImage source={noImg}/>)
+                priceProduct?.image ? (<ProductImage source={{uri:priceProduct?.image}}/>):(<ProductImage source={noImg}/>)
             }
         <ProductPriceContainer>
             <ProductText>{priceProduct?.name}</ProductText>

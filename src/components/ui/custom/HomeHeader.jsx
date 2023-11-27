@@ -8,7 +8,7 @@ import {getUnreadPush} from '../../../api/pushApi';
 
 function HomeHeader({navigation}) {
     
-  const [isAlarmRead, setIsAlarmRead] = useState(true);
+  const [isAlarmRead, setIsAlarmRead] = useState(false);
 
     // const navigation = useNavigation();
     const goToScanScreen = () => {
@@ -21,7 +21,7 @@ function HomeHeader({navigation}) {
 
     const getUnreadPushData = async () => {
       const response = await getUnreadPush();
-      console.log('response',response.isExistUnread)
+      console.log('response@@@@@@',response.isExistUnread)
       if(response){
         setIsAlarmRead(response.isExistUnread)
       }

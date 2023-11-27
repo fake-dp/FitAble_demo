@@ -1,38 +1,51 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-import { ScrollView } from 'react-native';
-
+import { Modal, TouchableOpacity,ScrollView } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { useState } from 'react';
 function PhotoScrollGrid({images}) {
-    const photo_one = require('../../assets/img/listtest_one.png');
-    const photo_two = require('../../assets/img/listtest_two.png');
-    const photo_three = require('../../assets/img/listtest_three.png');
-    const photo_four = require('../../assets/img/listtest_four.png');
+    const [isViewerVisible, setIsViewerVisible] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    const imageUrls = images.map(image => ({ url: image }));
+  
+    const renderHeader = () => (
+        <CloseBtnContainer 
+            onPress={() => setIsViewerVisible(false)}
+        >
+            <CloseBtnText>닫기</CloseBtnText>
+        </CloseBtnContainer>
+    );
 
     return (
         <Container>
             <MainTitleText>시설 사진</MainTitleText>
             <ScrollView
-               horizontal={true} 
+               horizontal={true}
                bounces={false}
                showsVerticalScrollIndicator={false}
                overScrollMode="never"
             >
-            <PhotoScrollContainer>
-                {/* <PhotoScrollImg source={photo_one}/>
-                <PhotoScrollImg source={photo_two}/>
-                <PhotoScrollImg source={photo_three}/>
-                <PhotoScrollImg source={photo_four}/>
-                <PhotoScrollImg source={photo_one}/>
-                <PhotoScrollImg source={photo_two}/>
-                <PhotoScrollImg source={photo_three}/>
-                <PhotoScrollImg source={photo_four}/> */}
-                {
-                    images.map((image, index) => (
-                        <PhotoScrollImg key={index} source={{uri:image}}/>
-                    ))
-                }
-            </PhotoScrollContainer>
+                <PhotoScrollContainer>
+                    {images.map((image, index) => (
+                        <TouchableOpacity key={index} onPress={() => {
+                            setCurrentImageIndex(index);
+                            setIsViewerVisible(true);
+                        }}>
+                            <PhotoScrollImg source={{ uri: image }} />
+                        </TouchableOpacity>
+                    ))}
+                </PhotoScrollContainer>
             </ScrollView>
+            <Modal visible={isViewerVisible} transparent={true}>
+                <ImageViewer
+                    imageUrls={imageUrls}
+                    index={currentImageIndex}
+                    renderHeader={renderHeader}
+                    onSwipeDown={() => setIsViewerVisible(false)}
+                    enableSwipeDown={true}
+                />
+            </Modal>
             <ContainerLine/>
         </Container>
     );
@@ -69,4 +82,16 @@ width: 90px;
 height: 90px;
 border-radius: 13px;
 margin-right: 8px;
+`
+
+const CloseBtnContainer = styled.TouchableOpacity`
+    position: absolute;
+    top: 80px;
+    right: 30px;
+    z-index: 10;
+`
+
+const CloseBtnText = styled.Text`
+    color : ${COLORS.white};
+    font-size: 20px;
 `

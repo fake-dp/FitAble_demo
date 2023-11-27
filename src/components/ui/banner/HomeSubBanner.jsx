@@ -2,13 +2,14 @@ import React, { useRef, useEffect, useState } from "react";
 import { ScrollView, View, Dimensions, TouchableOpacity } from "react-native";
 import styled from "styled-components/native"; // styled-components 임포트 오타 수정
 import { COLORS } from "../../../constants/color";
+import { useNavigation } from '@react-navigation/native';
 const { width } = Dimensions.get("window");
 
 function HomeSubBanner({ centersBanners }) {
     const bannerLogo = require("../../../assets/img/bannerLogo.png");
   const scrollRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
-
+  const navigation = useNavigation();
   useEffect(() => {
     if (centersBanners && centersBanners.length > 0) {
       const interval = setInterval(() => {
@@ -25,8 +26,27 @@ function HomeSubBanner({ centersBanners }) {
 
 
   const handleBannerPress = (banner) => {
-    console.log('Banner Pressed',banner);
-    // 여기서 웹뷰 관련 비즈니스 로직 작성하기
+    console.log('Banner Pressed@!@#!@#!@#',banner);
+    switch (banner.pathType) {
+      case 'LINK':
+        navigation.navigate('BannerWebView', { uri: banner.path });
+        console.log('Banner Pressed',banner.path);
+        break;
+      case 'STORE':
+        navigation.navigate('Store');
+        break;
+      case 'NOTICE_DETAIL':
+        navigation.navigate('DetailNotice', { noticeId: banner.path });
+        console.log('Banner Pressed',banner.path);
+        break;
+      case 'STORE_DETAIL':
+        // navigation.navigate('Store', { storeId: banner.path });
+        navigation.navigate('Store', { storeId: banner.path });
+        break;
+
+      default:
+        break;
+    }
   };
 
   // console.log('centersBanners',centersBanners)
@@ -70,7 +90,7 @@ function HomeSubBanner({ centersBanners }) {
         }
           
       <DotContainer>
-        {centersBanners.map((_, index) => (
+        {centersBanners?.length > 1 &&centersBanners.map((_, index) => (
             <Dot key={index} active={index === currentPage} />
             ))}
       </DotContainer>

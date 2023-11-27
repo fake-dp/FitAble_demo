@@ -7,10 +7,60 @@ function BellList(props) {
     const { data, maindate } = props; 
     console.log('data',data)
 
-    const goDetailScreen = async(id) => {
-         console.log('oid',id)
+    const determineScreenFromType = (type, optionName) => {
+        switch (type) {
+          case 'LESSON':
+            return 'MyBookList';
+          case 'TICKET':
+            return 'CenterTicket ';
+          case 'SUBSCRIBE':
+            return 'SubscribeScreen';
+          case 'STORE':
+            return 'Store';
+          case 'CONSULTING':
+            return 'Bell';
+          case 'MILEAGE':
+            return 'Mileage';
+          case 'ETC':
+            return 'Mileage';
+          case 'NOTICE':
+            return 'Mileage';
+          case 'INQUIRY':
+            if (optionName === 'CENTER') {
+              return 'MyCenter';
+            } else if (optionName === 'FITABLE') {
+              return 'ProductQnA';
+            } else if (optionName === 'STORE') {
+              return 'Store';
+            } else {
+              // 기타 처리
+              return 'Bell'; // 예를 들어, 기타 화면 또는 오류 처리 화면
+            }
+          default:
+            return 'Bell'; // 기본 화면 또는 오류 처리 화면
+        }
+      };
+      
+
+
+
+    const goDetailScreen = async(id,type,optionName,path) => {
+         console.log('oid',id,type,optionName,path)
+        //  const screenName = determineScreenFromType(type,optionName);
+        //  navigation.navigate(screenName,{path:path});
+         try {
             const response = await postReadPushAlarm(id);
-            console.log('읽음',response)
+            console.log('읽음', response);
+            if(response){
+                const screenName = determineScreenFromType(type,optionName);
+                navigation.navigate(screenName,{path:path});
+            }else{
+                return;
+            }
+            // 화면으로 이동
+          } catch (error) {
+            console.error('읽음오류입니당', error);
+          }
 
     }
 
@@ -21,7 +71,7 @@ function BellList(props) {
             data.map((item,index) => {
                 return (
                     <ContentsContainer key={index} isLastItem={index === data.length - 1}>
-                       <TouchContainer onPress={()=>goDetailScreen(item.id)}>
+                       <TouchContainer onPress={()=>goDetailScreen(item.id, item.type, item.optionName, item.path)}>
                         <ContentsText>{item.context}</ContentsText>
                         <ContentsDate>{item.date}</ContentsDate>
                        </TouchContainer>

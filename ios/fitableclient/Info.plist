@@ -5,6 +5,8 @@
 <key>LSApplicationQueriesSchemes</key>
 <array>
     <string>tel</string>
+	<string>http</string>
+    <string>https</string>
 </array>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Access to your photo gallery</string>

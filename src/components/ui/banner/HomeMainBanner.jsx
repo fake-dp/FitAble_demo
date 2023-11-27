@@ -13,23 +13,23 @@ function HomeMainBanner({fitablesBanners}) {
 
 
 
-      // console.log('Home banners response11111:', fitablesBanners); // 응답 로깅
+      console.log('Home banners response111211:', fitablesBanners); // 응답 로깅
 
-      useEffect(() => {
-        if (fitablesBanners && fitablesBanners.length > 0) {
-        const interval = setInterval(() => {
-          const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
-          setActiveButtonIndex(nextIndex);
-          if (scrollViewRef.current) {
-            scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
-          }
-        }, 2000);
+      // useEffect(() => {
+      //   if (fitablesBanners && fitablesBanners.length > 0) {
+      //   const interval = setInterval(() => {
+      //     const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
+      //     setActiveButtonIndex(nextIndex);
+      //     if (scrollViewRef.current) {
+      //       scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
+      //     }
+      //   }, 2000);
     
-        return () => {
-          clearInterval(interval);
-        };
-      }
-      }, [activeButtonIndex,fitablesBanners]);
+      //   return () => {
+      //     clearInterval(interval);
+      //   };
+      // }
+      // }, [activeButtonIndex,fitablesBanners]);
 
 
       const handleScrollToIndex = (index) => {
@@ -42,24 +42,31 @@ function HomeMainBanner({fitablesBanners}) {
 
       // const gymIcon = require('../../../assets/img/gymIcon.png');
 
+
       const handleBannerPress = (banner) => {
-        console.log('Banner Pressed',banner.id);
+        // console.log('Banner Pressed',banner.id);
         switch (banner.pathType) {
           case 'LINK':
-          case 'NOTICE_DETAIL':
-            // 웹뷰를 사용하여 해당 URL 열기
+            console.log('Banner Pressed@@@',banner.path);
             navigation.navigate('BannerWebView', { uri: banner.path });
             break;
           case 'STORE':
-          case 'STORE_DETAIL':
-            // 일반 네비게이션을 통해 해당 페이지로 이동
-            // navigation.navigate('StoreScreen', { storeId: banner.path });
+            navigation.navigate('Store');
             break;
+          case 'NOTICE_DETAIL':
+            navigation.navigate('DetailNotice', { noticeId: banner.path });
+            console.log('Banner Pressed',banner.path);
+            break;
+          case 'STORE_DETAIL':
+            // navigation.navigate('Store', { storeId: banner.path });
+            navigation.navigate('Store', { storeId: banner.path });
+            break;
+
           default:
-            console.warn('Unknown pathType:', banner.pathType);
             break;
         }
       };
+  
 
 
     return (

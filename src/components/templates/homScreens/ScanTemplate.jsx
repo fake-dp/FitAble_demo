@@ -93,22 +93,27 @@ function ScanTemplate(props) {
 
 
     const handleBannerPress = (banner) => {
-        console.log('Banner Pressed',banner.id, banner.pathType, banner.path);
-        // switch (banner.pathType) {
-        //   case 'LINK':
-        //   case 'NOTICE_DETAIL':
-        //     // 웹뷰를 사용하여 해당 URL 열기
-        //     navigation.navigate('BannerWebView', { uri: banner.path });
-        //     break;
-        //   case 'STORE':
-        //   case 'STORE_DETAIL':
-        //     // 일반 네비게이션을 통해 해당 페이지로 이동
-        //     // navigation.navigate('StoreScreen', { storeId: banner.path });
-        //     break;
-        //   default:
-        //     console.warn('Unknown pathType:', banner.pathType);
-        //     break;
-        // }
+        console.log('Banner Pressed',banner.id);
+        switch (banner.pathType) {
+          case 'LINK':
+            navigation.navigate('BannerWebView', { uri: banner.path });
+            console.log('Banner Pressed',banner.path);
+            break;
+          case 'STORE':
+            navigation.navigate('Store');
+            break;
+          case 'NOTICE_DETAIL':
+            navigation.navigate('DetailNotice', { noticeId: banner.path });
+            console.log('Banner Pressed',banner.path);
+            break;
+          case 'STORE_DETAIL':
+            // navigation.navigate('Store', { storeId: banner.path });
+            navigation.navigate('Store', { storeId: banner.path });
+            break;
+
+          default:
+            break;
+        }
       };
 
       const closeIcon = require('../../../assets/img/whiteClose.png');

@@ -1,20 +1,16 @@
 import React from 'react';
 import { WebView } from 'react-native-webview';
-import { View, TouchableOpacity, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
 
 function WebViewScreen({ route }) {
-  const { uri } = route.params;
-  const navigation = useNavigation();
+  let uri = route.params.uri;
+
+  if (!uri.startsWith('http://') && !uri.startsWith('https://')) {
+    uri = 'http://' + uri;
+  }
 
   return (
     <View style={{ flex: 1 }}>
-      <TouchableOpacity
-        style={{ padding: 10, backgroundColor: 'lightgray' }}
-        onPress={() => navigation.goBack()}
-      >
-        <Text>Go Back</Text>
-      </TouchableOpacity>
       <WebView source={{ uri }} />
     </View>
   );

@@ -64,7 +64,12 @@ function AppScreens({navigation}) {
               headerBackVisible: false,
           }}>
             {/* 여기다 웹뷰 스크린 넣어요 ? */}
-          <Stack.Screen name="BannerWebView" component={WebViewScreen} />
+          <Stack.Screen name="BannerWebView" component={WebViewScreen} 
+          options={{
+            title: '',
+            headerBackVisible: true,
+          }}
+          />
           <Stack.Screen name="PaymentWebView" component={PaymentWebViewScreen} />
           <Stack.Screen name="Scan" component={HomeScan} 
           // options={{title: '알람',headerBackVisible:true,}}

@@ -293,5 +293,5 @@ const ConsultInputText = styled(TextInput).attrs(() => ({
   color: ${COLORS.white};
   font-size: 14px;
   font-weight: 500;
-  line-height: 22.40px;
+  /* line-height: 22.40px; */
 `;

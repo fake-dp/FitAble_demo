@@ -6,15 +6,18 @@ import { Text, ScrollView ,Alert,Dimensions} from 'react-native';
 import {getFitAbleInquiryList,deleteFitAbleInquiry} from '../../../api/mypageApi';
 import { useEffect, useState } from 'react';
 import {formatReplaceString} from '../../../utils/CustomUtils';
-
+import { useRoute } from '@react-navigation/native';
 
 function ProductQnATemplate(props) {
     const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
-
+    const route = useRoute();
     const [fitableInquiryList, setFitableInquiryList] = useState([]);
 
+    console.log('route.param23123123s', route.params?.path)
 
+    const routeId = route.params?.path;
+    console.log('ududud',routeId)
     const goBackScreens = () => {
         navigation.goBack();
     };
@@ -22,8 +25,18 @@ function ProductQnATemplate(props) {
     const getFitAbleInquiryListData = async () => {
         try{
             const response = await getFitAbleInquiryList();
-            setFitableInquiryList(response.content);
-            console.log('getFitAbleInquiryListData response:', response.content)
+            if(routeId && response){
+                const sortedList = response.content.sort((a, b) => {
+                    return a.id === routeId ? -1 : b.id === routeId ? 1 : 0;
+                  });
+                setFitableInquiryList(sortedList);
+                if (!sortedList.find(item => item.id === routeId)) {
+                    Alert.alert('알림', '문의내역을  찾을 수 없습니다');
+                  }
+            }else{
+                setFitableInquiryList(response.content);
+            }
+            // console.log('getFitAbleInquiryListData response:', response.content)
         }catch(error){
             console.error('getFitAbleInquiryListData error:', error.response.data)
         }
@@ -65,8 +78,9 @@ function ProductQnATemplate(props) {
                 }
                 {
                     fitableInquiryList.map((item, index) => (
-                        <ProductQnAListContainer key={index}>
-                            
+                        <ProductQnAListContainer 
+                        key={index} 
+                        isBorder={index===0 && routeId ===item.id}>
                             <ProductQnAListUserContainer>
                                 <ProductQnAListText>Q.</ProductQnAListText>
                                 <ProductQnAListAnswerLabelText>{item.isComment ? '답변완료' : '답변대기'}</ProductQnAListAnswerLabelText>
@@ -130,6 +144,7 @@ const ProductQnAListContainer = styled.View`
     background-color: ${COLORS.white};
     border-radius: 15px;
     margin-bottom: 8px;
+    border: ${props => props.isBorder ? `1px solid #000` : 'none'};
 `
 
 const ProductQnAListTitleContainer = styled.View`

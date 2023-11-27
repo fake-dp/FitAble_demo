@@ -34,10 +34,10 @@ function CustomCalendar({mainCenterId,classList,setClassList}) {
     console.log('Selected day:', day.dateString);
     console.log('Available dates:', availableDates);
     
-    // if (!availableDates[day.dateString]) {
-    //     console.log('This date is not available for selection.');
-    //     return;
-    // }
+    if (!availableDates[day.dateString]) {
+        console.log('This date is not available for selection.');
+        return;
+    }
     // 사용자가 선택한 날짜가 오늘 날짜이면 selected를 false로 설정하고, 그렇지 않으면 해당 날짜를 selected로 설정합니다.
     if (mainCenterId && day.dateString === todayString) {
       setSelected(todayString);
@@ -60,7 +60,7 @@ function CustomCalendar({mainCenterId,classList,setClassList}) {
     //   // 이 날짜는 선택할 수 없음
     //   return;
     // }
-  }, [todayString,mainCenterId]);
+  }, [todayString,mainCenterId,availableDates]);
  
  
 
@@ -133,7 +133,7 @@ function CustomCalendar({mainCenterId,classList,setClassList}) {
 
     <Calendar
     current={selected}
-  //  style={isActive ? { height: 320 } : { height: 150 }}
+  //  style={isActive ? { height: 320 } : { height: 150, backgroundColor: COLORS.sub }}
 
     onMonthChange={(month) => {
         // month에 현재 월 정보가 들어있음

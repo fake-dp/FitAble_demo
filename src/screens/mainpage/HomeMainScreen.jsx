@@ -7,6 +7,7 @@ function HomeMainScreen({ navigation }) {
   // if(Platform.OS === 'ios' && currentRouteName === 'HomeMain'){
   //   useQrNavigation(navigation);
   // }
+  // useQrNavigation(navigation)
 
   return (
     <HomeMainTemplate />

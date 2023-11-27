@@ -26,7 +26,7 @@ function FitableQnATemplate(props) {
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
     // const [selectedImage, setSelectedImage] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]); 
-    console.log('inquiryList',inquiryList,selectedImages)
+    // console.log('inquiryList',inquiryList,selectedImages)
 
     useFocusEffect(
         React.useCallback(() => {
