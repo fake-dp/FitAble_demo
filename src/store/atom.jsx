@@ -162,6 +162,12 @@ export const selectedSubCardId = atom({
   default: '',
 });
 
+// 피티 카드 선택 상태
+export const selectedPtCardId = atom({
+  key: 'selectedPtCardId',
+  default: '',
+});
+
 // 이용 카드 선택 상태
 export const selectedUseCardId = atom({
   key: 'selectedUseCardId',

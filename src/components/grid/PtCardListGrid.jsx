@@ -3,19 +3,19 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import PtPriceCard from '../ui/card/PtPriceCard';
 
-function PtCardListGrid({ptTicketData,selectedCard ,setSelectedCard}) {
-
+function PtCardListGrid({ptTicketData,selectedPtCardInfo ,getPtDataBtn}) {
+// console.log('selectedPtCardInfoselectedPtCardInfo',selectedPtCardInfo)
     return (
         <Container>
             <ContainerLine/>
             <MainTitleText>P.T</MainTitleText>
             {
                 ptTicketData.tickets.map((item, index) => {
-                    const isSelected = selectedCard === index;
+                    const isSelected = selectedPtCardInfo.id === item.id.toString();
                     return (
                         <TouchableOpacity
                         key={index}
-                         onPress={() => setSelectedCard(index)}>
+                         onPress={() => getPtDataBtn(item.id)}>
                         <PtPriceCard
                         key={index}
                         ptTicketData={item}

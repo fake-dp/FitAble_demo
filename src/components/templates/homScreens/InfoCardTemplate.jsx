@@ -56,7 +56,8 @@ function InfoCardTemplate(props) {
                 Alert.alert('변경 완료 ', '정기 결제 카드가 변경되었습니다. \n정기 결제일은 매월 25일입니다.', [{ text: '확인', onPress: () =>  navigation.goBack() }]);;
             }else if(response && isCardState === 'isCard'){
                 Alert.alert('등록 완료 ', '정기 결제 카드가 등록되었습니다. \n이달 구독권을 결제합니다. \n다음 달의 구독권은 오는 25일에 결제됩니다.', [{ text: '다음', onPress: () => subPaymentBtn(subPaymentInfoData) }]);
-            }else{
+            }else if(response && isCardState === 'isUseCard'){
+                Alert.alert('등록 완료 ', '결제 카드가 등록되었습니다. \n결제하기 버튼을 고고', [{ text: '다음', onPress: () => navigation.goBack() }]);
                 return;
             }
         } catch (error) {

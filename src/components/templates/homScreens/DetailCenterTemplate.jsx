@@ -1,4 +1,4 @@
-import {Image , ScrollView} from 'react-native';
+import {Alert, Image , ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ import { getDetailSearchCenter,getTicketType ,getTrainers ,getTrainersName} from
 
 import { useRecoilState } from 'recoil';
 import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState,
-  threeBtnState,btnActiveState,selectedSubCardId,selectedUseCardId } from '../../../store/atom';
+  threeBtnState,selectedPtCardId,selectedSubCardId,selectedUseCardId } from '../../../store/atom';
 import CustomPicker from '../../../components/ui/custom/Picker';
 
 function DetailCenterTemplate({ route }) {
@@ -30,7 +30,7 @@ function DetailCenterTemplate({ route }) {
     const scrollViewRef = useRef(null);
     const [btnName, setBtnName] = useRecoilState(threeBtnState);
     // const [selectedCard, setSelectedCard] = useState(0);
-    const [selectedMonthCard, setSelectedMonthCard] = useState(0);
+    // const [selectedMonthCard, setSelectedMonthCard] = useState(0);
     const [activeButton, setActiveButton] = useState('');
 
     const [detailData, setDetailData] = useRecoilState(detailCenterState);
@@ -42,6 +42,7 @@ function DetailCenterTemplate({ route }) {
 
     const [selectedCardInfo, setSelectedCardInfo] = useRecoilState(selectedSubCardId);
     const [selectedUseCardInfo, setSelectedUseCardInfo] = useRecoilState(selectedUseCardId);
+    const [selectedPtCardInfo, setSelectedPtCardInfo] = useRecoilState(selectedPtCardId);
     // 피커 & 트레이너 이름 조회 상태
     const [trainerName, setTrainerName] = useState('');
     const [showPicker, setShowPicker] = useState(false);
@@ -58,6 +59,7 @@ function DetailCenterTemplate({ route }) {
             setSelectedCardInfo({id:response.tickets[0].id})
           } else if (name === 'PT') {
             setPtData(response);
+            setSelectedPtCardInfo({id:response.tickets[0].id})
           } else if (name === 'TICKET') {
             setTicketData(response);
             setSelectedUseCardInfo({id:response.tickets[0].id})
@@ -66,7 +68,7 @@ function DetailCenterTemplate({ route }) {
           // 에러 처리
         }
     };
-
+  
     const navigation = useNavigation();
 
     const goBackScreens = () => {
@@ -105,6 +107,8 @@ function DetailCenterTemplate({ route }) {
           handleBtnPress(id, 'TICKET');
           setBtnName('TICKET');
           setActiveButton('TICKET');
+      } else {
+        Alert.alert('이용 가능한 상품이 없습니다.');
       }
 
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });

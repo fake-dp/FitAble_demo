@@ -8,12 +8,13 @@ import PriceProductGrid from '../../grid/PriceProductGrid';
 import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
 import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 import { useRoute } from '@react-navigation/native';
 import {getIsExistCard} from '../../../api/cardApi';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
+import { useFocusEffect } from '@react-navigation/native';
 function UseTemplate(props) {
 
     const navigation = useNavigation();
@@ -81,16 +82,19 @@ function UseTemplate(props) {
         }
     }
 
-    useEffect(() => {
-        isCardInfoData();
-        getDataDetailTicketCenter()
-    },[]);
+    useFocusEffect(
+        useCallback(() => {
+            isCardInfoData();
+            getDataDetailTicketCenter()
+        },[]));
+
 
     const goCardInfoScreens = () => {
         if(isExist){
             console.log('결제결제결제결제 바로결제결제')
+            navigation.navigate('PaymentWebView')
         }else{  
-            navigation.navigate('InfoCard', {text: 'isCard'});
+            navigation.navigate('InfoCard', {text: 'isUseCard'});
         }
     }
     console.log(';detailData',detailData)

@@ -84,7 +84,7 @@ function HomeMainTemplate(props) {
           console.error('Error getting home reservations:', error.response); // 에러 로깅
         }
       };
-console.log('mainCenterId',mainCenterId)
+console.log('mainCenterId',mainCenterId,homeReservationList)
 
 
 
@@ -154,31 +154,37 @@ useFocusEffect(
         />
         ))}
     </ScrollView>
-
-      <SubContainer>
-        <TitleTextContainer>
-    <TitleReservationsText>예약된 운동</TitleReservationsText>
-    <TouchableOpacity onPress={goMyPageReservationListScreen}>
-    <AllReservationText>전체보기</AllReservationText>
-    </TouchableOpacity>
-        </TitleTextContainer>
-      </SubContainer>
-    <ScrollView
-    ref={ticketScrollViewRef}
-    horizontal={true}
-    bounces={false}
-    showsVerticalScrollIndicator={false}
-    overScrollMode="never"
-    >
-      {
-        homeReservationList.map((item, index) => (
-        <LessonCard
-        key={index}
-        homeReservationList={item}
-        />
-        ))
-      }
-    </ScrollView>
+{
+  homeReservationList.length === 0 ? null :(
+    <>
+    <SubContainer>
+    <TitleTextContainer>
+<TitleReservationsText>예약된 운동</TitleReservationsText>
+<TouchableOpacity onPress={goMyPageReservationListScreen}>
+<AllReservationText>전체보기</AllReservationText>
+</TouchableOpacity>
+    </TitleTextContainer>
+  </SubContainer>
+<ScrollView
+ref={ticketScrollViewRef}
+horizontal={true}
+bounces={false}
+showsVerticalScrollIndicator={false}
+overScrollMode="never"
+>
+  {
+    homeReservationList.map((item, index) => (
+    <LessonCard
+    key={index}
+    homeReservationList={item}
+    />
+    ))
+  }
+</ScrollView>
+</>
+  )
+}
+     
     </>
  }
  </ScrollView>

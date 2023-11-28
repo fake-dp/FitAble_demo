@@ -8,7 +8,7 @@ import PriceProductGrid from '../../grid/PriceProductGrid';
 import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
 import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import {getIsExistCard,postPaymentSubscription} from '../../../api/cardApi';
 import { useRoute } from '@react-navigation/native';
@@ -16,7 +16,7 @@ import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import { useRecoilState } from 'recoil';
 import { showSubModalState } from '../../../store/atom';
 import SubPaymentModal from '../../ui/modal/SubPaymentModal';
-
+import { useFocusEffect } from '@react-navigation/native';
 function SubscribeTemplate(props) {
 
     const navigation = useNavigation();
@@ -70,10 +70,11 @@ function SubscribeTemplate(props) {
         }
     }
 
-    useEffect(() => {
-        isCardInfoData();
-        getDataDetailTicketCenter()
-    },[]);
+    useFocusEffect(
+        useCallback(() => {
+            isCardInfoData();
+            getDataDetailTicketCenter()
+        },[]));
 
 
     // 구독권 결제 데이터
@@ -105,7 +106,7 @@ function SubscribeTemplate(props) {
                     setPaymentModal(true);
                 }
             }catch(error){
-                console.error('Error getting:', error.response.data.code);
+                console.error('Error getting:', error.response.data);
             }finally{
                 setTimeout(() => {
                     setPaymentModal(false);

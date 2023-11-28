@@ -3,27 +3,27 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import LongTextGrid from '../../grid/LongTextGrid';
-import { useState ,useRef,useEffect} from 'react';
+import { useState ,useRef,useCallback} from 'react';
 import GymPtBasicInfoGrid from '../../grid/GymPtBasicInfoGrid';
 import PtCareerGrid from '../../grid/PtCareerGrid';
 import PtCardListGrid from '../../grid/PtCardListGrid';
 import { useRecoilState } from 'recoil';
-import {ptState, centerIdState } from '../../../store/atom';
+import {ptState, centerIdState,selectedPtCardId } from '../../../store/atom';
 import { useRoute } from '@react-navigation/native';
 import { getDetailTrainers} from '../../../api/homeApi';
 import PtSwiperBanner from '../../ui/banner/PtSwiperBanner';
+import { useFocusEffect } from '@react-navigation/native';
 function DetailPtTemplate() {
     const route = useRoute();
     const id = route.params.id;
-    console.log('Received id:', id);
+    // console.log('Received id:', id);
     const scrollViewRef = useRef(null);
+    const [selectedPtCardInfo, setSelectedPtCardInfo] = useRecoilState(selectedPtCardId);
 
-
-    const [selectedCard, setSelectedCard] = useState(0);
     const [ptData, setPtData] = useRecoilState(ptState);
     const [centerId, setCenterId] = useRecoilState(centerIdState);
     const [detailTrainersData, setDetailTrainersData] = useState([]);
-    console.log('reciveve',id, '센터아이디',centerId,detailTrainersData.images)
+    // console.log('reciveve',id, '센터아이디',centerId,detailTrainersData.images)
  
     const navigation = useNavigation();
 
@@ -37,7 +37,7 @@ function DetailPtTemplate() {
     };
 
     const goPtPriceScreens = () => {
-        navigation.navigate('PT');
+        navigation.navigate('PT', {data:selectedPtCardInfo});
     };
 
     const getDetailTrainersData = async ( centerId, id) => {
@@ -50,9 +50,17 @@ function DetailPtTemplate() {
         }
     };
 
-    useEffect(() => {
-        getDetailTrainersData(centerId,id);
-    }, []);
+      // pt 카드 데이터 넘기는 버튼
+      const getPtDataBtn = (id) =>{
+        setSelectedPtCardInfo({id})
+      }
+
+
+
+    useFocusEffect(
+        useCallback(() => {
+            getDetailTrainersData(centerId,id);
+        },[]));
 
 
     const testImg = require('../../../assets/img/testptuserimgbig.png');
@@ -93,8 +101,8 @@ function DetailPtTemplate() {
 
             <PtCardListGrid 
                 ptTicketData={ptData}
-                selectedCard={selectedCard}
-                setSelectedCard={setSelectedCard}
+                selectedPtCardInfo={selectedPtCardInfo}
+                getPtDataBtn={getPtDataBtn}
             />
         </ScrollView>
         <StickyBtnContainer>
