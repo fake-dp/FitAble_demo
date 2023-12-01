@@ -1,8 +1,8 @@
 import MainCalenderTemplate from '../../components/templates/exerciseScreens/MainCalenderTemplate';
 
-function MainCalenderScreen(props) {
+function MainCalenderScreen({centerName}) {
     return (
-        <MainCalenderTemplate />
+        <MainCalenderTemplate centerName={centerName}/>
     );
 }
 

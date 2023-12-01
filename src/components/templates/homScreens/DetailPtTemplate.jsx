@@ -37,7 +37,7 @@ function DetailPtTemplate() {
     };
 
     const goPtPriceScreens = () => {
-        navigation.navigate('PT', {data:selectedPtCardInfo});
+        navigation.navigate('PT', {data:selectedPtCardInfo,images});
     };
 
     const getDetailTrainersData = async ( centerId, id) => {
@@ -68,7 +68,7 @@ function DetailPtTemplate() {
 
 //    console.log('detailTrainersData',detailTrainersData.career)
     const {career, qualifications,description,images} = detailTrainersData;
-    // console.log('test22',images)
+    // console.log('test22',detailTrainersData)
     return (
         <Container>
             <GobackTouchable onPress={goBackScreens}>
@@ -88,8 +88,6 @@ function DetailPtTemplate() {
                 )
             }
            
-
-
             <GymPtBasicInfoGrid 
             detailTrainersData={detailTrainersData}
             centerId={centerId}
@@ -108,7 +106,7 @@ function DetailPtTemplate() {
         <StickyBtnContainer>
 
 <BtnContainer>
-<ConsultingBtn onPress={()=>goConsultingScreens(centerId,id,detailTrainersData.name )} >
+<ConsultingBtn onPress={()=>goConsultingScreens(centerId,id,detailTrainersData.name )}>
     <ConsultingBtnText>상담하기</ConsultingBtnText>
 </ConsultingBtn>
 

@@ -2,18 +2,23 @@ import {Image ,View, Text, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 
-function PriceProductGrid({priceProduct,productNames}) {
+function PriceProductGrid({priceProduct,productNames,images,pt}) {
 
     const noImg = require('../../assets/img/noImg.png')
-    // <PhotoScrollImg source={{ uri: image }} />
-    console.log('priceProduct',priceProduct)
+    console.log('images',pt !== 'pt' && priceProduct?.image)
     return (
         <Container>
         <MainTitleText>구매 상품</MainTitleText>
         <ProductContainer >
             {
-                priceProduct?.image ? (<ProductImage source={{uri:priceProduct?.image}}/>):(<ProductImage source={noImg}/>)
+                !pt && priceProduct?.image && (<ProductImage source={{uri:priceProduct?.image}}/>)
             }
+            {
+                !images && !priceProduct?.image && (<ProductImage source={noImg}/>)
+            }   
+            {
+                pt === 'pt' && images && <ProductImage source={{uri:images}}/>
+            }   
         <ProductPriceContainer>
             <ProductText>{priceProduct?.name}</ProductText>
             <ProductPriceText>{productNames}</ProductPriceText>
@@ -38,11 +43,11 @@ const ContainerLine = styled.View`
 `
 
 const MainTitleText = styled.Text`
-margin-top: 40px;
-font-size: 20px;
-font-weight: 700;
-line-height: 30px;
-color: ${COLORS.white};
+    margin-top: 40px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: ${COLORS.white};
 `
 
 const ProductContainer = styled.View`
@@ -56,13 +61,11 @@ const ProductImage = styled.Image`
     border-radius: 15px;
 `
 
-
-
 const ProductText = styled.Text`
-font-size: 16px;
-font-weight: 500;
-line-height: 22.40px;
-color: ${COLORS.gray_300};
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22.40px;
+    color: ${COLORS.gray_300};
 `
 
 const ProductPriceContainer = styled.View`

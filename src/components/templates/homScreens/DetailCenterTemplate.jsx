@@ -13,8 +13,8 @@ import ActiveMainBtn from '../../ui/buttonUi/ActiveMainBtn';
 import AboutChannel from '../../grid/AboutChannel';
 import LongTextGrid from '../../grid/LongTextGrid';
 import ShopTagGrid from '../../grid/ShopTagGrid';
-
-import { useState ,useRef, useEffect} from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useState ,useRef, useCallback} from 'react';
 import BasicNpremiumCardGrid from '../../grid/BasicNpremiumCardGrid';
 import MonthTicketGrid from '../../grid/MonthTicketGrid';
 import PtUserListGrid from '../../grid/PtUserListGrid';
@@ -161,16 +161,19 @@ function DetailCenterTemplate({ route }) {
         setSelectedUseCardInfo({id})
       }
       
-      useEffect(() => {
-        getDetailCenterData(id)
-        getTrainerData(id)
-      }, []);
+
+      useFocusEffect(
+        useCallback(() => {
+          getDetailCenterData(id)
+          getTrainerData(id)
+        },[]));
 
     const notImg = require('../../../assets/img/notDetailImg.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
+    const testArrow = require('../../../assets/img/back_black.png');
 
   console.log('selectedCard@@',selectedCardInfo,selectedUseCardInfo)
-
+        console.log('detailData',detailData)
     return (
         <Container>
             <ScrollView
@@ -180,7 +183,7 @@ function DetailCenterTemplate({ route }) {
               overScrollMode="never"
             >
               {
-                detailData.images?.length === 0 ? (
+                detailData?.mainImage === null ? (
                
                     <NoImg source={notImg} resizeMode="cover"/>
             

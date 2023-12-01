@@ -20,11 +20,16 @@ function PTpriceTemplate(props) {
     const route = useRoute();
 
     const cardId = route.params?.data;
+    const images = route.params?.images;
+    console.log('images',images)
     const [showModal, setShowModal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOption, setSelectedOption] = useState([]);
+    const [selectedOptionDetails, setSelectedOptionDetails] = useState({});
     const [isExist , setIsExist] = useState(false);
     const [detailData, setDetailData] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(detailData?.price);
+    const [selectedCoupon, setSelectedCoupon] = useState(null);
     // ... other code ...
   
     const getDataDetailTicketCenter = async () => {
@@ -37,20 +42,42 @@ function PTpriceTemplate(props) {
         }
     }
 
+    // const handleOptionSelect = (id) => {
+    //     console.log('id 확인:', id);
+      
+    //     // '사용 안 함' 옵션이 선택된 경우, 모든 선택 해제
+    //     if (id === 'none') {
+    //       setSelectedOption([]);
+    //     } else {
+    //       // 이미 선택된 옵션인 경우, 선택 해제
+    //       if (selectedOption.includes(id)) {
+    //         setSelectedOption(selectedOption.filter(optionId => optionId !== id));
+    //       } else {
+    //         // 새로운 옵션 선택, '사용 안 함' 옵션 해제
+    //         setSelectedOption([...selectedOption.filter(optionId => optionId !== 'none'), id]);
+    //       }
+    //     }
+    //   };
     const handleOptionSelect = (id) => {
-      setSelectedOption(id);
-    // if (id === 2) {
-    //     // "사용 안 함" 옵션을 선택한 경우, 다른 옵션들을 모두 선택 해제
-    //     setSelectedOption([]);
-    //   } else {
-    //     // 다른 옵션들을 선택한 경우, "사용 안 함" 옵션을 선택 해제
-    //     setSelectedOption((prevSelected) =>
-    //       prevSelected.includes(id)
-    //         ? prevSelected.filter((optionId) => optionId !== id)
-    //         : [...prevSelected, id]
-    //     );
-    //   }
-    };
+        if (id === 'none') {
+          setSelectedOption([]);
+          setSelectedOptionDetails({});
+        } else {
+          if (selectedOption.includes(id)) {
+              setSelectedOption(selectedOption.filter(optionId => optionId !== id));
+            const updatedDetails = { ...selectedOptionDetails };
+            delete updatedDetails[id];
+            setSelectedOptionDetails(updatedDetails);
+          } else {
+              setSelectedOption([...selectedOption, id]);
+            const optionData = detailData.options.find(option => option.id === id);
+            setSelectedOptionDetails({
+              ...selectedOptionDetails,
+              [id]: optionData
+            });
+          }
+        }
+      };
 
     const goBackScreens = () => {
         navigation.goBack();
@@ -59,7 +86,11 @@ function PTpriceTemplate(props) {
     const goPaymentScreens = () => {
         if(isExist){
             console.log('결제결제결제결제 바로결제결제')
-            navigation.navigate('PaymentWebView')
+            navigation.navigate('PaymentWebView', { 
+                orderId: cardId.id, 
+                amount: totalPrice, 
+                goodsName: detailData.name 
+              });
         }else{  
             navigation.navigate('InfoCard', {text: 'isCard'});
         }
@@ -90,35 +121,8 @@ function PTpriceTemplate(props) {
         getDataDetailTicketCenter()
     },[]);
 
-    const optionData = [
-        {
-            id: 0,
-            title: '개인 락커',
-            price: '3,000',
-            img: require('../../../assets/img/option_lockers.png'),
-        },
-        {
-            id: 1,
-            title: '운동복',
-            price: '10,000',
-            img: require('../../../assets/img/option_t.png'),
-        },
-        {
-            id: 2,
-            title: '사용 안 함',
-            price: '',
-            img: require('../../../assets/img/option_none.png'),
-        }
-    ]
+   
 
-
-    const priceProduct = [
-        {
-            title: '프리미엄',
-            src: require('../../../assets/img/testptuser.png'),
-            products: '정기구독 Premium',
-        },
-    ]
 
     const text = {
         title: '결제 완료',
@@ -142,19 +146,28 @@ function PTpriceTemplate(props) {
         <PriceProductGrid 
         priceProduct={detailData.centerInfo}
         productNames={detailData.name}
+        images={images[0]}
+        pt={'pt'}
         />
-
+{
+    detailData.availableCenters && 
         <CollsAbleGrid availableCenters={detailData.availableCenters}/>
+}
       
         <SelectOptionGrid 
-            optionData={optionData}
+             optionData={detailData.options}
             selectedOption={selectedOption}
             onSelectOption={handleOptionSelect}
         />
 
         <SelectCouponGrid 
         couponInfo={detailData?.couponInfo?.coupons}
-        price={detailData.price} 
+        price={detailData.price}       
+        selectedOptionDetails={selectedOptionDetails}
+        totalPrice={totalPrice} 
+        setTotalPrice={setTotalPrice}
+        selectedCoupon={selectedCoupon}
+        setSelectedCoupon={setSelectedCoupon}
         />
 
     </ScrollView>

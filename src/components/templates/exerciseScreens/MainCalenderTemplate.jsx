@@ -13,8 +13,9 @@ import { Alert } from 'react-native';
 import {getAvailableLessons} from '../../../api/lessonsApi';
 import BookNWaitingCancelModal from '../../ui/modal/BookNWaitingCancelModal';
 import { useNavigation } from '@react-navigation/native';
+import SelectPicker from '../../ui/custom/SelectPicker';
 
-function MainCalenderTemplate(props) {
+function MainCalenderTemplate({centerName}) {
     
     const navigation = useNavigation();
 
@@ -150,8 +151,13 @@ function MainCalenderTemplate(props) {
             {
                 mainCenter && mainCenterId ? (
                 <TitleContainer>
-                    <TitleText>{mainCenter}</TitleText>
-                    <DownIcon source={downIcon}/>
+                    {/* <TitleText>{mainCenter}</TitleText>
+                    <DownIcon source={downIcon}/> */}
+                <SelectPicker 
+                mainCenter={mainCenter}
+                centerName={centerName}
+                mainCenterId={mainCenterId}
+                />
               </TitleContainer>
                 ):(
                 <NoMainTitleContainer onPress={searchCenterScreen}>

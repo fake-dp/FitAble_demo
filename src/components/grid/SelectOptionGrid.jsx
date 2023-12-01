@@ -1,14 +1,23 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { ScrollView } from 'react-native';
-
+import {formatCommaNumber} from '../../utils/CustomUtils';
 
 function SelectOptionGrid({ optionData, selectedOption, onSelectOption }) {
-  // console.log('optionData', optionData);
+  console.log('optionData', optionData);
 
   const lockers = require('../../assets/img/option_lockers.png');
   const optiont = require('../../assets/img/option_t.png');
   const optionnone = require('../../assets/img/option_none.png');
+
+
+  const noneOptoion = {
+    id: 'none',
+    type: 'NONE',
+    lockerName: '사용 안 함',
+  };
+  
+  const updateOptionData = [noneOptoion,...optionData ??[]];
 
 
   return (
@@ -19,24 +28,32 @@ function SelectOptionGrid({ optionData, selectedOption, onSelectOption }) {
                     <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}>
-        {optionData?.map((item) => (
+        {updateOptionData?.map((item) => (
                
           <OptionBox
             key={item.id}
-            selected={item.id === selectedOption}
+            selected={selectedOption.includes(item.id)}
             onPress={() => onSelectOption(item.id)}
           >
             <OptionImg 
-             tintColor={item.id === selectedOption ? COLORS.main : COLORS.gray_400}
+             tintColor={
+              selectedOption.length === 0 && item.id === 'none' ? COLORS.main :
+              selectedOption.includes(item.id) ? COLORS.main : COLORS.gray_400
+            }
              source={
               item.type === 'RENTAL_LOCKER' ? lockers :
               item.type === 'RENTAL_SPORTSWEAR_PERIOD' ? optiont :
               item.type === 'RENTAL_SPORTSWEAR_TIME' ? optiont:optionnone
               } />
-            <OptionText selected={item.id === selectedOption}>{item.lockerName}</OptionText>
+            <OptionText selected={selectedOption.includes(item.id)}>
+            {item.type === 'NONE' ? '사용 안 함' : 
+             item.type === 'RENTAL_LOCKER' ? item.lockerName :
+             '운동복'
+            }
+              </OptionText>
             {item.price && (
-              <OptionPriceText selected={item.id === selectedOption}>
-                {item.cycle} {item.price}원
+              <OptionPriceText selected={selectedOption.includes(item.id)}>
+                {item.cycle} {formatCommaNumber(item.price)}원
               </OptionPriceText>
             )}
           </OptionBox>

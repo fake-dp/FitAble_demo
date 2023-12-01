@@ -30,9 +30,9 @@ function CollsAbleGrid({availableCenters}) {
               <DownImg source={caretdown} resizeMode="contain" />
             </TouchableOpacity>
         )} */}
-
-        <MainSubText numberOfLines={showAllText ? undefined : initialTextLimit}>
-          {availableCenters}
+    <MainSubText>
+        {/* <MainSubText numberOfLines={showAllText ? undefined : initialTextLimit}> */}
+          {availableCenters && availableCenters?.join(', ')}
         </MainSubText>
       </SubTextContainer>
       <ContainerLine />

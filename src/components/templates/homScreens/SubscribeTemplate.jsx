@@ -10,7 +10,7 @@ import CollsAbleGrid from '../../grid/CollsAbleGrid';
 import SelectOptionGrid from '../../grid/SelectOptionGrid';
 import React, { useState, useCallback } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
-import {getIsExistCard,postPaymentSubscription} from '../../../api/cardApi';
+import {getIsExistCard,postPaymentSubscription,getPaymentSubscriptionTotal} from '../../../api/cardApi';
 import { useRoute } from '@react-navigation/native';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import { useRecoilState } from 'recoil';
@@ -24,11 +24,15 @@ function SubscribeTemplate(props) {
 
     const cardId = route.params?.data;
     const [selectedOption, setSelectedOption] = useState([]);
+    const [selectedOptionDetails, setSelectedOptionDetails] = useState({});
     const [isExist , setIsExist] = useState(false);
     const [detailData, setDetailData] = useState([]);
 
     const [paymentModal, setPaymentModal] = useRecoilState(showSubModalState);
     const [paymentModalData, setPaymentModalData] = useState('');
+    const [totalPrice, setTotalPrice] = useState(detailData?.price);
+    const [selectedCoupon, setSelectedCoupon] = useState(null);
+    const [salePrice, setSalePrice] = useState(0);
 
     const getDataDetailTicketCenter = async () => {
         try {
@@ -36,25 +40,30 @@ function SubscribeTemplate(props) {
             console.log('response@@',response);
             setDetailData(response);
         } catch (error) {
-            console.error('Error getting:', error.response.data);
+            console.error('Error getting:1', error.response.data);
         }
     }
 
-    console.log('inpo', detailData?.id)
     const handleOptionSelect = (id) => {
-      setSelectedOption(id);
-    // if (id === 2) {
-    //     // "사용 안 함" 옵션을 선택한 경우, 다른 옵션들을 모두 선택 해제
-    //     setSelectedOption([]);
-    //   } else {
-    //     // 다른 옵션들을 선택한 경우, "사용 안 함" 옵션을 선택 해제
-    //     setSelectedOption((prevSelected) =>
-    //       prevSelected.includes(id)
-    //         ? prevSelected.filter((optionId) => optionId !== id)
-    //         : [...prevSelected, id]
-    //     );
-    //   }
-    };
+        if (id === 'none') {
+          setSelectedOption([]);
+          setSelectedOptionDetails({});
+        } else {
+          if (selectedOption.includes(id)) {
+              setSelectedOption(selectedOption.filter(optionId => optionId !== id));
+            const updatedDetails = { ...selectedOptionDetails };
+            delete updatedDetails[id];
+            setSelectedOptionDetails(updatedDetails);
+          } else {
+              setSelectedOption([...selectedOption, id]);
+            const optionData = detailData.options.find(option => option.id === id);
+            setSelectedOptionDetails({
+              ...selectedOptionDetails,
+              [id]: optionData
+            });
+          }
+        }
+      };
 
     const goBackScreens = () => {
         navigation.goBack();
@@ -66,7 +75,7 @@ function SubscribeTemplate(props) {
             console.log('response',response);
             setIsExist(response.isExist);
         } catch (error) {
-            console.error('Error getting:', error);
+            console.error('Error getting:3', error);
         }
     }
 
@@ -76,7 +85,8 @@ function SubscribeTemplate(props) {
             getDataDetailTicketCenter()
         },[]));
 
-
+        console.log('selecselectedCoupontedCoupo11n',selectedCoupon?.discountAmount)
+        console.log('selecselectedCoupontedCoupo11n',selectedCoupon?.discountRate)
     // 구독권 결제 데이터
     const subPaymentInfoData = {
         ticket: {
@@ -85,19 +95,37 @@ function SubscribeTemplate(props) {
         },
         totalPrice: detailData?.price,
     }
-    
 
+    // 구독권 결제 합계 데이터
+    const formattedOptions = Object.values(selectedOptionDetails).map(option => ({
+        id: option.id,
+        salePrice: option.price || 0 // 예시, 실제 데이터에 맞게 조정 필요
+    }));
+
+    console.log('formattedOptions',formattedOptions)
+
+    let couponDiscount = 0;
+    if (selectedCoupon?.discountRate != null) {
+        couponDiscount = detailData?.price * selectedCoupon?.discountRate / 100;
+      } else if (selectedCoupon?.discountAmount != null) {
+        couponDiscount = selectedCoupon?.discountAmount;
+      }
+    console.log('couponDiscount',couponDiscount)
     const goCardInfoScreens = async() => {
+        console.log('dd클릭')
+  
         if(isExist){
             console.log('결제결제결제결제 바로결제결제')
             const data = {
                 ticket: {
                     id: detailData?.id,
-                    salePrice: 0,
+                    salePrice: salePrice - couponDiscount,
                 },
-                totalPrice: detailData?.price,
+                options:formattedOptions,
+                totalPrice: totalPrice,
+                couponId: selectedCoupon?.id,
             }
-      
+    //   console.log('totalPrice',totalPrice)
             try{
                 const response = await postPaymentSubscription(data);
                 console.log('response',response)
@@ -106,7 +134,7 @@ function SubscribeTemplate(props) {
                     setPaymentModal(true);
                 }
             }catch(error){
-                console.error('Error getting:', error.response.data);
+                console.error('Error getting1111:', error.response.data);
             }finally{
                 setTimeout(() => {
                     setPaymentModal(false);
@@ -120,7 +148,9 @@ function SubscribeTemplate(props) {
                     id: detailData?.id,
                     salePrice: 0,
                 },
-                totalPrice: detailData?.price,
+                options:formattedOptions,
+                totalPrice: totalPrice,
+                couponId: selectedCoupon?.id,
             }
             console.log('@@subPaymentInfoData',subPaymentInfoData)
             navigation.navigate('InfoCard', {text: 'isCard', subPaymentInfoData});
@@ -154,6 +184,14 @@ function SubscribeTemplate(props) {
         <SelectCouponGrid 
             couponInfo={detailData?.couponInfo?.coupons}
             price={detailData?.price}
+            selectedOptionDetails={selectedOptionDetails}
+            totalPrice={totalPrice} 
+            setTotalPrice={setTotalPrice}
+            selectedCoupon={selectedCoupon}
+            setSelectedCoupon={setSelectedCoupon}
+            text={'sub'}
+            salePrice={salePrice}
+            setSalePrice={setSalePrice}
         />
 
     </ScrollView>

@@ -6,10 +6,13 @@ import { useRecoilState } from 'recoil';
 import { myinfoState,inquiryListState } from '../../../store/atom';
 import {getValidCenterName,getNoticeList,getInquiryList,postMainCenter} from '../../../api/mypageApi';
 import { Alert,ScrollView, Platform } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import MyInquiryList from '../../grid/MyInquiryList';
 import MyNoticeList from '../../grid/MyNoticeList';
 import CenterPicker from '../../ui/custom/CenterPicker';
+import SelectPicker from '../../ui/custom/SelectPicker';
+import MyCenterSelectPicker from '../../ui/custom/MyCenterSelectPicker';
 
 function CenterMarkTemplate(props) {
 
@@ -20,7 +23,7 @@ function CenterMarkTemplate(props) {
     const [inquiryList, setInquiryList] = useRecoilState(inquiryListState);
 
     const [showPicker, setShowPicker] = useState(false);
-    const [centerName, setCenterName] = useState('');
+    const [centerName, setCenterName] = useState([]);
 
     const getNoticeListData = async () => {
         try {
@@ -77,19 +80,27 @@ function CenterMarkTemplate(props) {
     }
     console.log('myInfo',myInfo)
 
-    useEffect(() => {
-        myInfo.mainCenterId &&
-        getNoticeListData();
-        getInquiryListData(myInfo.mainCenterId);
-        getValidCenterNameData()
-    }, [myInfo]);
+    // useEffect(() => {
+    //     myInfo.mainCenterId &&
+    //     getNoticeListData();
+    //     getInquiryListData(myInfo.mainCenterId);
+    //     getValidCenterNameData()
+    // }, [myInfo]);
+
+    useFocusEffect(
+        useCallback(() => {
+            myInfo.mainCenterId &&
+            getNoticeListData();
+            getInquiryListData(myInfo.mainCenterId);
+            getValidCenterNameData()
+        },[myInfo]));
 
 
     const goBackScreens = () => {
         navigation.goBack();
     };
 
-
+    console.log('centerNamecenterName',centerName)
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
 
@@ -106,12 +117,21 @@ function CenterMarkTemplate(props) {
               
                 <SettingListBtnFirst>
                     <SettingListText>대표 센터</SettingListText>
-                    <FirstSettingContainer
+
+
+                    {/* <FirstSettingContainer
                     onPress={() => setShowPicker(true)}
                     >
                       <SettingSubText>{myInfo?.mainCenter ? myInfo.mainCenter : "내 센터 등록하기"}</SettingSubText>
                     <SettingListRightIcon source={rightIcon}/>
-                    </FirstSettingContainer>
+                    </FirstSettingContainer> */}
+                    <MyCenterSelectPicker 
+                    mainCenter={myInfo?.mainCenter}
+                    mainCenterId={myInfo?.mainCenterId}
+                    centerName={centerName}
+                    postMainCenterData={postMainCenterData}
+                    />
+
                 </SettingListBtnFirst>
 
 
@@ -124,6 +144,15 @@ function CenterMarkTemplate(props) {
             </ScrollView>
             {
           showPicker && (
+
+        // <MyCenterSelectPicker 
+        // centerOptions={centerName?.map(center => ({ label: center.name, value: center.id }))}
+        // onCenterSelect={(selectedCenterId) => {
+        // postMainCenterData(selectedCenterId);
+        // setShowPicker(false);
+        // }}
+        // />
+
           <CenterPicker 
           centerName={centerName}
           setShowPicker={setShowPicker}

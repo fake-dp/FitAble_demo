@@ -70,7 +70,12 @@ function AppScreens({navigation}) {
             headerBackVisible: true,
           }}
           />
-          <Stack.Screen name="PaymentWebView" component={PaymentWebViewScreen} />
+          <Stack.Screen name="PaymentWebView" component={PaymentWebViewScreen} 
+           options={{
+            title: '',
+            headerBackVisible: true,
+          }}
+          />
           <Stack.Screen name="Scan" component={HomeScan} 
           // options={{title: '알람',headerBackVisible:true,}}
           />

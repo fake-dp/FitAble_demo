@@ -160,8 +160,15 @@ function FitableQnATemplate(props) {
     }
  
     const openImagePicker = () => {
+
+        // if (selectedImages.length >= 3) {
+        //     Alert.alert("알림", "이미지는 최대 3개까지만 선택 가능합니다.");
+        //     return;
+        // }
+
       ImagePicker.openPicker({
         multiple: true, 
+        maxFiles: 3 - selectedImages.length, 
         width: 300,
         height: 400,
         cropping: true,

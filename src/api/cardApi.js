@@ -39,3 +39,13 @@ export const postPaymentSubscription = async (data) => {
         throw error;
     }
 }
+
+// 구독권 결제 합계
+export const getPaymentSubscriptionTotal = async (amount) => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/tickets/price/${amount}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

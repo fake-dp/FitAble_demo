@@ -1,19 +1,17 @@
 import React from 'react';
 import { WebView } from 'react-native-webview';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-function PaymentWebViewScreen() {
-  const navigation = useNavigation();
-  const url = `https://reactpaytest-app.vercel.app/1`;
+function PaymentWebViewScreen(props) {
+
+
+  const { orderId, amount, goodsName } = props.route.params;
+  console.log('라우터전달', orderId, amount, goodsName);
+
+
+   const url = `https://reactpaytest-app.vercel.app/payment?orderId=${orderId}&amount=${amount}&goodsName=${goodsName}`;
   return (
     <View style={{ flex: 1 }}>
-      <TouchableOpacity
-        style={{ padding: 10, backgroundColor: 'lightgray' }}
-        onPress={() => navigation.goBack()}
-      >
-        <Text>Go Back</Text>
-      </TouchableOpacity>
       <WebView source={{ url }} />
     </View>
   );

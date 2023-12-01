@@ -12,7 +12,7 @@ function BellList(props) {
           case 'LESSON':
             return 'MyBookList';
           case 'TICKET':
-            return 'CenterTicket ';
+            return 'CenterTicket';
           case 'SUBSCRIBE':
             return 'SubscribeScreen';
           case 'STORE':

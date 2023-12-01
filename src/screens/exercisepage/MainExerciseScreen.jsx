@@ -39,7 +39,7 @@ function MainExerciseSreen(props) {
 
   return (
     <>
-      <MainCalenderScreen /> 
+      <MainCalenderScreen centerName={centerName}/> 
     </>
   )}
 
