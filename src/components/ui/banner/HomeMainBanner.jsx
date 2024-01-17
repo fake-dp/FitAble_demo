@@ -3,7 +3,7 @@ import { View, ScrollView, Image, Dimensions, TouchableOpacity,Text } from 'reac
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
-
+import FastImage from 'react-native-fast-image'
 function HomeMainBanner({fitablesBanners}) {
 
     const navigation = useNavigation();
@@ -54,7 +54,7 @@ function HomeMainBanner({fitablesBanners}) {
             navigation.navigate('Store');
             break;
           case 'NOTICE_DETAIL':
-            navigation.navigate('DetailNotice', { noticeId: banner.path });
+            navigation.navigate('DetailNotice', { item: banner.path });
             console.log('Banner Pressed',banner.path);
             break;
           case 'STORE_DETAIL':
@@ -85,7 +85,9 @@ function HomeMainBanner({fitablesBanners}) {
             <TouchableOpacity key={banner.id} onPress={() => handleBannerPress(banner)}>
 
             <BannerImageContainer>
-              <BannerImage source={{uri:banner.imageUrl}} resizeMode="cover" />
+              <BannerImage source={{uri:banner.imageUrl}}
+              resizeMode={FastImage.resizeMode.cover}
+              />
               
               
               <BannerMainContainer>
@@ -131,7 +133,7 @@ const BannerImageContainer = styled.View`
   aspect-ratio: 1;
 `;
 
-const BannerImage = styled.Image`
+const BannerImage = styled(FastImage)`
   width: 100%;
   height: 100%;
 `;

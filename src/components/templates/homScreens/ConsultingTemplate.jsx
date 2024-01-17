@@ -10,6 +10,8 @@ import ConsultBigBtn from '../../ui/buttonUi/ConsultBigBtn';
 import { useRoute } from '@react-navigation/native';
 import { getTrainersName,postConsulting } from '../../../api/homeApi';
 import { Alert } from 'react-native';
+import FastImage from 'react-native-fast-image'
+
 function ConsultingTemplate(props) {
     const route = useRoute();
     const centerId = route.params?.centerId;
@@ -169,7 +171,10 @@ const [isTextValid, setIsTextValid] = useState(false);
                         {
                              (
                                 <TouchableOpacity onPress={()=>getTrainersNameData(centerId)} activeOpacity={0.8}>
-                                <SelectCouponImg source={isBoxOpen ? upIcon : downIcon} />
+                                <SelectCouponImg 
+                                isProp={isBoxOpen}
+                                resizeMode={FastImage.resizeMode.contain}
+                                source={isBoxOpen ? upIcon : downIcon} />
                               </TouchableOpacity>
                             )
                         }
@@ -241,7 +246,10 @@ const SelectTrainerContainer = styled.View`
   justify-content: space-between;
 `;
 
-const SelectCouponImg = styled.Image``;
+const SelectCouponImg = styled(FastImage)`
+  width: ${props => props.isProp ? '20px' : '16px'};
+  height: ${props => props.isProp ? '20px' : '16px'};
+`;
 
 const SelectText = styled.Text`
   font-size: 14px;

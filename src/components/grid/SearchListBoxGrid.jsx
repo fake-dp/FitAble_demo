@@ -2,6 +2,7 @@ import {Image } from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image'
 function SearchListBoxGrid({searchListData,onPress, isSelected}) {
 
     const {id, name, address, programs, mainImage,isMainCenter} = searchListData;
@@ -18,6 +19,7 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
             <SubTextContainer>
             <MapIcon
                 source={mapIcon}
+                resizeMode={FastImage.resizeMode.contain}
                 />
             <MapText>{address}</MapText>
             </SubTextContainer>
@@ -39,12 +41,12 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
                 <MainSpotImage
                 // source={{uri:mainImage}} 
                 source={{ uri: mainImage }}
-                resizeMode="cover" 
+                // resizeMode={FastImage.resizeMode.contain}
                 />
                 ): (
                 <MainSpotImage
                 source={noSearchimg}
-                resizeMode="cover"
+                // resizeMode={FastImage.resizeMode.contain}
                 />
                 )
            }
@@ -85,7 +87,7 @@ flex-direction: row;
 margin-top: 8px;
 `
 
-const MapIcon = styled.Image`
+const MapIcon = styled(FastImage)`
 width: 15px;
 height: 15px;
 margin-right: 4px;
@@ -120,7 +122,7 @@ color: ${COLORS.gray_200};
 font-weight: 400;
 `
 
-const MainSpotImage = styled.Image`
+const MainSpotImage = styled(FastImage)`
 width: 130px;
 height: 106px;
 border-radius: 15px;

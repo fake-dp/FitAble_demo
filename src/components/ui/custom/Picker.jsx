@@ -1,4 +1,4 @@
-import { View, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, ScrollView, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { COLORS } from '../../../constants/color';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -15,10 +15,12 @@ const CustomPicker = ({trainerName, centerId,setShowPicker}) => {
 };
 
   return (
+      <TouchableWithoutFeedback onPress={() => setShowPicker(false)}>
     <PickerContainer>
     <Container>
       <ScrollView
         nestedScrollEnabled={true}
+        onStartShouldSetResponder={() => true} 
         pagingEnabled
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
@@ -38,6 +40,7 @@ const CustomPicker = ({trainerName, centerId,setShowPicker}) => {
       </ScrollView>
     </Container>
     </PickerContainer>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -7,9 +7,10 @@ function MonthTicketCard({ type, name, price, isSelected }) {
         isSelected={isSelected}
         >
             <TextContainer>
-                <MonthTicketText
-                isSelected={isSelected}
-                >{name}</MonthTicketText>
+            <MonthTicketText isSelected={isSelected}>
+                {name.length > 14? name.substring(0, 14) + '...' : name}
+            </MonthTicketText>
+
                 <MonthTicketText
                 isSelected={isSelected}
                 >{formatCommaNumber(price)}원</MonthTicketText>

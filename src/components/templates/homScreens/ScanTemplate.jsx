@@ -12,6 +12,7 @@ import QrCancelModal from '../../ui/modal/QrCancelModal';
 import QrDoneModal from '../../ui/modal/QrDoneModal';
 import {qrTicketListState,qrFailTextState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
+import FastImage from 'react-native-fast-image'
 
 if (Platform.OS === 'android') {
   // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
@@ -103,7 +104,7 @@ function ScanTemplate(props) {
             navigation.navigate('Store');
             break;
           case 'NOTICE_DETAIL':
-            navigation.navigate('DetailNotice', { noticeId: banner.path });
+            navigation.navigate('DetailNotice', { item: banner.path });
             console.log('Banner Pressed',banner.path);
             break;
           case 'STORE_DETAIL':
@@ -123,7 +124,9 @@ function ScanTemplate(props) {
         <Container>
             <GobackContainer onPress={() => navigation.goBack()}>
           
-            <Image source={closeIcon}/>
+            <FastImage 
+            style={{width: 28, height: 28}}
+            source={closeIcon}/>
           
             </GobackContainer>
             <QrContainer>
@@ -242,7 +245,7 @@ color: ${COLORS.gray_100};
 margin-bottom: 26px;
 `
 
-const BannerImage = styled.Image`
+const BannerImage = styled(FastImage)`
     width: 100%;
     height: 140px;
 `;

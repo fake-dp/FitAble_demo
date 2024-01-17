@@ -57,7 +57,7 @@ function InfoCardTemplate(props) {
             }else if(response && isCardState === 'isCard'){
                 Alert.alert('등록 완료 ', '정기 결제 카드가 등록되었습니다. \n이달 구독권을 결제합니다. \n다음 달의 구독권은 오는 25일에 결제됩니다.', [{ text: '다음', onPress: () => subPaymentBtn(subPaymentInfoData) }]);
             }else if(response && isCardState === 'isUseCard'){
-                Alert.alert('등록 완료 ', '결제 카드가 등록되었습니다. \n결제하기 버튼을 고고', [{ text: '다음', onPress: () => navigation.goBack() }]);
+                Alert.alert('등록 완료 ', '결제 카드가 등록되었습니다. \n결제하기 버튼을 클릭해주세요', [{ text: '다음', onPress: () => navigation.goBack() }]);
                 return;
             }
         } catch (error) {
@@ -93,6 +93,7 @@ function InfoCardTemplate(props) {
             }finally{
                 setTimeout(() => {
                     setPaymentModal(false);
+                    navigation.navigate('Home');
                 }, 3000);
             }
         }

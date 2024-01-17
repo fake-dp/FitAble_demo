@@ -36,6 +36,7 @@ function SelectOptionGrid({ optionData, selectedOption, onSelectOption }) {
             onPress={() => onSelectOption(item.id)}
           >
             <OptionImg 
+            
              tintColor={
               selectedOption.length === 0 && item.id === 'none' ? COLORS.main :
               selectedOption.includes(item.id) ? COLORS.main : COLORS.gray_400

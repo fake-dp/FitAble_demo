@@ -34,13 +34,15 @@ function SubscribeTemplate(props) {
     const [selectedCoupon, setSelectedCoupon] = useState(null);
     const [salePrice, setSalePrice] = useState(0);
 
+    const [isButtonClicked, setIsButtonClicked] = useState(false);
+    console.log('cardId',cardId,isExist)
     const getDataDetailTicketCenter = async () => {
         try {
             const response = await getDetailTicketCenter(cardId.id);
-            console.log('response@@',response);
+            // console.log('response@@',response);
             setDetailData(response);
         } catch (error) {
-            console.error('Error getting:1', error.response.data);
+            console.error('Error getting:11', error.response.data);
         }
     }
 
@@ -72,7 +74,7 @@ function SubscribeTemplate(props) {
     const isCardInfoData = async () => {
         try {
             const response = await getIsExistCard();
-            console.log('response',response);
+            console.log('response@#!@#!@#!@#',response);
             setIsExist(response.isExist);
         } catch (error) {
             console.error('Error getting:3', error);
@@ -113,6 +115,13 @@ function SubscribeTemplate(props) {
     console.log('couponDiscount',couponDiscount)
     const goCardInfoScreens = async() => {
         console.log('dd클릭')
+
+        if (isButtonClicked) {
+            return;
+          }
+      
+          setIsButtonClicked(true);
+
   
         if(isExist){
             console.log('결제결제결제결제 바로결제결제')
@@ -138,7 +147,9 @@ function SubscribeTemplate(props) {
             }finally{
                 setTimeout(() => {
                     setPaymentModal(false);
-                }, 3000);
+                    setIsButtonClicked(false);
+                    navigation.goBack();
+                }, 1500);
             }
 
         }else{  
@@ -146,7 +157,7 @@ function SubscribeTemplate(props) {
             const subPaymentInfoData = {
                 ticket: {
                     id: detailData?.id,
-                    salePrice: 0,
+                    salePrice: salePrice - couponDiscount,
                 },
                 options:formattedOptions,
                 totalPrice: totalPrice,
@@ -156,6 +167,16 @@ function SubscribeTemplate(props) {
             navigation.navigate('InfoCard', {text: 'isCard', subPaymentInfoData});
         }
 }
+const subPaymentInfoData1 = {
+    ticket: {
+        id: detailData?.id,
+        salePrice: salePrice - couponDiscount,
+    },
+    options:formattedOptions,
+    totalPrice: totalPrice,
+    couponId: selectedCoupon?.id,
+}
+console.log('@@subPaymentInfoData',subPaymentInfoData1)
 
 // console.log('detailDatadetailData',detailData,subPaymentInfoData)
     return (

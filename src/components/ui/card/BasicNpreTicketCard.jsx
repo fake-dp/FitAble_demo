@@ -8,9 +8,10 @@ function BasicNpreTicketCard({name, price,type,isSelected}) {
         isSelected={isSelected}
         >
             <UpTextContainer>
-            <MainTitleText
-             isSelected={isSelected}
-            >{name}</MainTitleText>
+            <MainTitleText isSelected={isSelected}>
+            {name.length > 12 ? name.substring(0, 14) + '...' : name}
+            </MainTitleText>
+
             <SubContentsText
              isSelected={isSelected}
             >{type === 'SUBSCRIBE_PREMIUM' ? '모든 센터 사용 가능' : '선택한 센터에서만 사용가능'}</SubContentsText>

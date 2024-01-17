@@ -24,6 +24,7 @@ import { useRecoilState } from 'recoil';
 import { detailCenterState,ticketState,ptState ,subscribeState ,centerIdState,
   threeBtnState,selectedPtCardId,selectedSubCardId,selectedUseCardId } from '../../../store/atom';
 import CustomPicker from '../../../components/ui/custom/Picker';
+import FastImage from 'react-native-fast-image'
 
 function DetailCenterTemplate({ route }) {
     const { id } = route.params;
@@ -115,6 +116,7 @@ function DetailCenterTemplate({ route }) {
     }
     // selectedCardState
     const goSubcribePriceScreens = () => {
+      console.log('selectedCardInfo',selectedCardInfo)
         navigation.navigate('Subscribe',{data:selectedCardInfo});
     };
 
@@ -166,6 +168,10 @@ function DetailCenterTemplate({ route }) {
         useCallback(() => {
           getDetailCenterData(id)
           getTrainerData(id)
+          return () => {
+            setBtnName('');
+            setActiveButton('');
+        };
         },[]));
 
     const notImg = require('../../../assets/img/notDetailImg.png');
@@ -183,18 +189,21 @@ function DetailCenterTemplate({ route }) {
               overScrollMode="never"
             >
               {
-                detailData?.mainImage === null ? (
-               
-                    <NoImg source={notImg} resizeMode="cover"/>
-            
-                ):(
-                  <MainImg source={{uri:detailData.mainImage}}
-                   resizeMode="cover"
-                   />
+                detailData?.mainImage ? (
+                  <MainImg 
+                  // resizeMode={FastImage.resizeMode.contain}
+                  source={{uri:detailData?.mainImage}}/>
+                  ):(
+                  <NoImg source={notImg}/>
                 )
               }
             <GobackTouchable onPress={goBackScreens}>
-            <Image source={backArrow}/>
+            <FastImage 
+            style={{width: 28, height: 28}}
+            source={backArrow} 
+            resizeMode={FastImage.resizeMode.contain}
+            />
+            {/* <Image source={testArrow}/> */}
             </GobackTouchable>
 
             <GymBasicInfoGrid 
@@ -315,12 +324,12 @@ const Container = styled.View`
 `
 
 
-const MainImg = styled.Image`
+const MainImg = styled(FastImage)`
     width: 100%;
-    height: 310px;
+    height: 312px;
 `
 
-const NoImg = styled.Image`
+const NoImg = styled(FastImage)`
     width: 100%;
     height: 312px;
 `

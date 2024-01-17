@@ -5,7 +5,7 @@ import { COLORS } from '../../constants/color';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilState } from 'recoil';
 import {threeBtnState,btnActiveState} from '../../store/atom'
-
+import FastImage from 'react-native-fast-image'
 function GymPtBasicInfoGrid({detailTrainersData,centerId,id}) {
 
     const {name, centerName, centerAddress} = detailTrainersData;
@@ -17,7 +17,7 @@ function GymPtBasicInfoGrid({detailTrainersData,centerId,id}) {
     const [activeButton, setActiveButton] = useRecoilState(btnActiveState);
     const goBackFirstDetailScreen = () => {
         // setThreeBtn('');
-        // navigation.navigate('DetailCenter', {centerId, id});
+        navigation.goBack();
         console.log('첫 페이지 이동하기 구현해야함')
     };
 
@@ -25,11 +25,19 @@ function GymPtBasicInfoGrid({detailTrainersData,centerId,id}) {
         <Container>
             <MainTitleText>{name} 강사</MainTitleText>
             <SubTextContainerBtn onPress={goBackFirstDetailScreen}>
-                <Image source={spaceIcon}/>
+                <FastImage 
+                resizeMode={FastImage.resizeMode.contain}
+                source={spaceIcon}
+                style={{ width: 20, height: 20 }} 
+                />
                 <SubText>{centerName}</SubText>
             </SubTextContainerBtn>
             <SubTextContainer>
-                <Image source={mapIcon}/>
+                <FastImage 
+                resizeMode={FastImage.resizeMode.contain}
+                source={mapIcon}
+                style={{ width: 20, height: 20 }} 
+                />
                 <SubText>{centerAddress}</SubText>
             </SubTextContainer>
             <ContainerLine/>
@@ -56,12 +64,12 @@ const MainTitleText = styled.Text`
 
 const SubTextContainer = styled.View`
     flex-direction: row;
-    /* align-items: center; */
+    align-items: center;
 `
 
 const SubTextContainerBtn = styled.TouchableOpacity`
     flex-direction: row;
-    /* align-items: center; */
+    align-items: center;
 `
 
 const SubText = styled.Text`

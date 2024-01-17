@@ -9,7 +9,7 @@ import { isLoginState,phoneState } from '../../../store/atom';
 import { login } from '../../../api/authApi';
 import { Alert,TouchableWithoutFeedback, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import FastImage from 'react-native-fast-image'
 function Logintempate({navigation}) {
 
     const setIsLoggedIn = useSetRecoilState(isLoginState);
@@ -42,7 +42,7 @@ function Logintempate({navigation}) {
           //     return Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('서버 응답 없음') }]);
           // }
   
-          const isValidInput = phone.length > 5 && password.length > 3;
+          const isValidInput = phone.length > 10  && password.length > 7;
   
           if (response.isUseApp && isValidInput) {
               const { accessToken, refreshToken } = response;
@@ -81,7 +81,10 @@ function Logintempate({navigation}) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <LoginScreenView> 
-            <TitleLogo source={require('../../../assets/img/mainLogo.png')}/>
+            <TitleLogo 
+             resizeMode={FastImage.resizeMode.contain}
+
+            source={require('../../../assets/img/mainLogo.png')}/>
             <AuthInput
              value={phone}
              onChangeText={setPhone}
@@ -129,8 +132,10 @@ const LoginScreenView = styled.View`
     padding: 0 20px;
 `
 
-const TitleLogo = styled.Image`
+const TitleLogo = styled(FastImage)`
     margin-bottom: 30px;
+    width: 258px;
+    height: 96px;
 `
 
 const AboutContainer = styled.View`

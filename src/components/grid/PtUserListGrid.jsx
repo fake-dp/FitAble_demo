@@ -1,7 +1,7 @@
 import {Text ,View, TouchableOpacity, ScrollView} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-
+import FastImage from 'react-native-fast-image'
 function PtUserListGrid({handleUserClick,ptData,trainersData}) {
 
     const detailPtTrainer = (id) => {
@@ -24,7 +24,9 @@ function PtUserListGrid({handleUserClick,ptData,trainersData}) {
                     <TouchableOpacity key={ptUser.id} onPress={() => detailPtTrainer(ptUser.id)}>
                     <PtUserContainer>
                         <PtUserImageContainer>
-                        <PtUserImage source={ptUser.image ? {uri: ptUser.image} : require('../../assets/img/noImg.png')} resizeMode="cover"/>
+                        <PtUserImage source={ptUser.image ? {uri: ptUser.image} : require('../../assets/img/noImg.png')}
+                        // resizeMode={FastImage.resizeMode.contain}
+                        />
                         </PtUserImageContainer>
                         <PtUserTimeContainer>
                             <PtUserName>{ptUser.name}</PtUserName>
@@ -81,7 +83,7 @@ const PtUserImageContainer = styled.View`
     background-color: ${COLORS.gray_500};
 `
 
-const PtUserImage = styled.Image`
+const PtUserImage = styled(FastImage)`
     width: 120px;
     height: 120px;
     border-radius: 15px;

@@ -1,7 +1,7 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { Linking } from 'react-native';
-
+import FastImage from 'react-native-fast-image'
 function AboutChannel(props) {
 
     const blog = require('../../assets/img/blog.png');
@@ -25,22 +25,22 @@ function AboutChannel(props) {
             <AboutChannelContainer>
                 
                 <AboutContainer onPress={()=> handleLinkPress(props.homepage)}>
-                <AboutChannelImg source={homepage}/>
+                <AboutChannelImg source={homepage}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>홈페이지</AboutText>
                 </AboutContainer>
 
                 <AboutContainer onPress={()=> handleLinkPress(props.instagram)}>
-                <AboutChannelImg source={instar}/>
+                <AboutChannelImg source={instar}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>인스타그램</AboutText>
                 </AboutContainer>
 
                 <AboutContainer onPress={()=> handleLinkPress(props.blog)}>
-                <AboutChannelImg source={blog}/>
+                <AboutChannelImg source={blog}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>블로그</AboutText>
                 </AboutContainer>
 
                 <AboutContainer onPress={()=> handleLinkPress(props.kakao)}>
-                <AboutChannelImg source={kakao}/>
+                <AboutChannelImg source={kakao}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>카카오채널</AboutText>
                 </AboutContainer>
             </AboutChannelContainer>
@@ -81,7 +81,7 @@ color: ${COLORS.gray_200};
 margin-top: 3px;
 `
 
-const AboutChannelImg = styled.Image`
+const AboutChannelImg = styled(FastImage)`
 width: 50px;
 height: 50px;
 `

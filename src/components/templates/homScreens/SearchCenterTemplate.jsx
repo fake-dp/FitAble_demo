@@ -8,6 +8,7 @@ import React, { useState,useEffect } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
 import { getSearchCenter } from '../../../api/homeApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FastImage from 'react-native-fast-image'
 
 function SearchCenterTemplate({searchCenterText,labelText}) {
     const navigation = useNavigation();
@@ -162,7 +163,10 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                     )
                 }
                 <SearchContainer>
-                <ImageIcon source={search}/>
+                <ImageIcon 
+                
+                source={search}
+                />
                 <TextInput
                 style={{marginLeft: 10, fontSize: 16, color: COLORS.white}}
                 placeholder="센터를 입력해주세요"
@@ -191,7 +195,8 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                     <RecentSearchText>{item.title}</RecentSearchText>
                       </TouchableOpacity>
                     <TouchableOpacity onPress={()=>removeRecentSearch(item.id)}>
-                    <ImageIcon source={close}/>
+                    <ImageIcon 
+                    source={close}/>
                     </TouchableOpacity>
                     </RecentSearchBox>
                 ))}
@@ -262,8 +267,10 @@ const SearchContainer = styled.View`
     margin-bottom: 28px;
 `
 
-const ImageIcon = styled.Image`
+const ImageIcon = styled(FastImage)`
     margin-left: 16px;
+    width: 22px;
+    height: 22px;
 `
 
 const RecentSearchContainer = styled.View`

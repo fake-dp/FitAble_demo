@@ -10,7 +10,7 @@ function MileageList({data}) {
                         <SubTextContainer>
                                 <DateText>{data.date}</DateText>
                             </SubTextContainer>
-                            <TitleText>{data.context}</TitleText>
+                            <TitleText>{`${data.context}`.length > 16 ? `${data.context}`.substring(0, 16) + '...' : `${data.context}`}</TitleText>
                         </ContentsBox>
                         <PriceText isPlus={data.amount > 0}>{data.amount.toLocaleString()}</PriceText>
                     </Container>

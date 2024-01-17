@@ -9,6 +9,8 @@ import { useRoute } from '@react-navigation/native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
 import {getDetailTicket} from '../../../api/useTicketsApi';
 import {formatReplaceString} from'../../../utils/CustomUtils';
+import FastImage from 'react-native-fast-image'
+
 function TicketListDetailTemplate(props) {
     const navigation = useNavigation();
     const route = useRoute();
@@ -69,9 +71,10 @@ function TicketListDetailTemplate(props) {
                 </GobackContainer>
 
                 <SpotTitleText isUsed={detailTicketData?.status}>{center?.name}</SpotTitleText>
-                <UseTicketTitleText isUsed={detailTicketData?.status} isLength={detailTicketData?.name?.length}>
-                    {name && name}
-                    </UseTicketTitleText>
+                <UseTicketTitleText isUsed={detailTicketData?.status}>
+                     {name && name.length > 12 ? name.substring(0, 12) + '...' : name}
+                </UseTicketTitleText>
+
             <SubTextContainer>
             <SubText isUsed={detailTicketData?.status}>{startDate && formatReplaceString(startDate)}~{endDate&&formatReplaceString(endDate)}</SubText>
              <SubText isUsed={detailTicketData?.status}>
@@ -145,7 +148,15 @@ function TicketListDetailTemplate(props) {
                     <CenterListContainerBox onPress={toggleContent} activeOpacity={0.8}>
                         <CenterContainer>
                          <CenterListText>이용 가능 센터 {number&&number}</CenterListText>
-                         <UpdownImg source={showContent ? upIcon : downIcon} />
+                        
+                        {/* {
+                            showContent ? <UpImg source={upIcon} /> : <downImg source={downIcon} />
+                        } */}
+                    
+                         <UpdownImg 
+                         isProp={showContent}
+                         resizeMode={FastImage.resizeMode.contain}
+                         source={showContent ? upIcon : downIcon} />
                         </CenterContainer>
 
                         {
@@ -198,7 +209,7 @@ margin-bottom: 20px;
 
 const UseTicketTitleText = styled.Text`
 /* font-size: 32px; */
-font-size: ${props => props.isLength > 12 ? '28px' : '30px'};
+font-size: 30px;
 font-weight: 600;
 line-height: 43.20px;
 color: ${props => props.isUsed === 'IN_USE' ? COLORS.main : COLORS.gray_400};
@@ -262,7 +273,14 @@ const CenterContainer = styled.View`
   justify-content: space-between;
 `;
 
-const UpdownImg = styled.Image``;
+const UpdownImg = styled(FastImage)`
+  width: ${props => props.isProp ? '24px' : '18px'};
+  height: ${props => props.isProp ? '24px' : '18px'};
+`;
+const downImg = styled(FastImage)`
+    width: 20px;
+    height: 20px;
+`;
 
 const CenterListText = styled.Text`
 color: ${COLORS.gray_400};

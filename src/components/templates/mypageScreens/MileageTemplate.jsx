@@ -7,6 +7,7 @@ import MileageList from '../../ui/list/MileageList';
 import { FlatList } from 'react-native';
 import { useState,useEffect } from 'react';
 import { getMileages } from '../../../api/mypageApi';
+import FastImage from 'react-native-fast-image'
 
 function MileageTemplate(props) {
     
@@ -67,7 +68,7 @@ function MileageTemplate(props) {
             <CloseImg source={close}/>
             </CloseBtn>
 
-            <PriceText>{totalMileage}원</PriceText>
+            <PriceText>{totalMileage.toLocaleString()}원</PriceText>
             <TitleText>핏에이블 마일리지</TitleText>
 
             <GridLine />
@@ -107,7 +108,7 @@ const CloseBtn = styled.TouchableOpacity`
   margin-bottom: 41px;
 `
 
-const CloseImg = styled.Image`
+const CloseImg = styled(FastImage)`
     width: 32px;
     height: 32px;
 `

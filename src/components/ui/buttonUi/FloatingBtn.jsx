@@ -1,13 +1,16 @@
 import { Image } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
+import FastImage from 'react-native-fast-image'
 function FloatingBtn({ onPress }) {
    const floatingIcon = require('../../../assets/img/floating_plus.png')
 
     return (
         <FloatingButtonContainer>
       <FloatingButtonTouchable onPress={onPress}>
-        <Image source={floatingIcon} />
+        <FastImage source={floatingIcon} 
+        style={{ width: 24, height: 24 }}
+        />
       </FloatingButtonTouchable>
     </FloatingButtonContainer>
     );

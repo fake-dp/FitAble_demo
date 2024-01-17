@@ -3,8 +3,8 @@ import { COLORS } from "./color";
 export const themeStyled = {
         calendarBackground: COLORS.sub,
         textSectionTitleColor: COLORS.white,
-        selectedDayBackgroundColor: COLORS.main,
-        selectedDayTextColor: COLORS.sub,
+        selectedDayBackgroundColor: COLORS.sub,
+        selectedDayTextColor: COLORS.gray_400,
         todayTextColor: COLORS.gray_300,
         dayTextColor: COLORS.gray_400,
         textDisabledColor: 'transparent',
@@ -25,6 +25,6 @@ export const themeStyled = {
         textMonthFontSize: 16,
         textDayHeaderFontSize: 14,
         dotStyle:{
-          marginTop: 10,
+          marginTop: 6,
         }
   };

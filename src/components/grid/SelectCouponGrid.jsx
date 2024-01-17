@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { threeBtnState } from '../../store/atom';
 import {formatCommaNumber} from '../../utils/CustomUtils';
 import { getPaymentSubscriptionTotal } from '../../api/cardApi';
-
+import FastImage from 'react-native-fast-image'
 function SelectCouponGrid({price,couponInfo,selectedOptionDetails,totalPrice, setTotalPrice,text,selectedCoupon, setSelectedCoupon,salePrice, setSalePrice}) {
   const downcoupon = require('../../assets/img/downcoupon.png');
   const upcoupon = require('../../assets/img/upcoupon.png');
@@ -117,7 +117,9 @@ console.log('subPrice',subPrice)
           couponInfo && updateCouponInfoData.length===0 ? '' :  (
                 <LeftContainer onPress={toggleCoupon} activeOpacity={0.8}>
                      <SelectCouponText>{selectedCoupon?.endDate}</SelectCouponText>
-                <SelectCouponImg source={isCouponOpen ? upcoupon : downcoupon} />
+                <SelectCouponImg 
+                resizeMode={FastImage.resizeMode.contain}
+                source={isCouponOpen ? upcoupon : downcoupon} />
               </LeftContainer>
             )
         }
@@ -249,7 +251,7 @@ flex:1;
   justify-content : space-between;
 `
 
-const SelectCouponImg = styled.Image`
+const SelectCouponImg = styled(FastImage)`
   margin-left: 10px;
 `;
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-
+import {formatCommaNumber} from '../../../utils/CustomUtils';
 function PtPriceCard({ptTicketData,isSelected}) {
 
     // console.log('ptTicketData',ptTicketData)
@@ -12,18 +12,16 @@ function PtPriceCard({ptTicketData,isSelected}) {
         >
             <TextContainer>
                 <LeftTextContainer>
-                <PtTicketText
-                isSelected={isSelected}>{name}</PtTicketText>
+                <PtTicketText isSelected={isSelected}>
+                    {name.length > 14? name.substring(0, 14) + '...' : name}
+                </PtTicketText>
                 </LeftTextContainer>
+
 
                 <RightTextContainer>
 
-                <PtTicketText
-                isSelected={isSelected}
-                >{price}원</PtTicketText>
-
-                <PtTicketPriceText
-                isSelected={isSelected}>회당{pricePerTime}원</PtTicketPriceText>
+                <PtTicketText isSelected={isSelected}>{formatCommaNumber(price)}원</PtTicketText>
+                <PtTicketPriceText isSelected={isSelected}>회당{formatCommaNumber(pricePerTime)}원</PtTicketPriceText>
                
                 </RightTextContainer>
 
@@ -56,6 +54,7 @@ const LeftTextContainer = styled.View`
 `
 
 const RightTextContainer = styled.View`
+        align-items: flex-end;
 `
 
 const PtTicketText = styled.Text`

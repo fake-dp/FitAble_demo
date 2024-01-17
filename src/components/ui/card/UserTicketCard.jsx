@@ -2,9 +2,11 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Platform, Image ,View, TouchableOpacity,Dimensions} from 'react-native';
 import SmallLabel from '../label/SmallLabel';
+import FastImage from 'react-native-fast-image'
+
 function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
   const { id, center,locker,name,sportWear,trainerName,detail, usePercentage,type, status, startDate,endDate,left } = homeTicketList;
-  // console.log('userCardData',type, status,id );
+
 
 const deviceWidth = Dimensions.get('window').width;
 const padding = 30;  // 원하는 패딩 값으로 변경 가능
@@ -40,7 +42,16 @@ const cardWidth = deviceWidth - 2 * padding;
             </LabelContainer>
     
           </CardContent>
-            <CardDesText>{name} {trainerName}</CardDesText>
+            {/* <CardDesText>{name} {trainerName}</CardDesText> */}
+            <CardDesText>
+            {
+              `${name} ${trainerName ? `| ${trainerName}` : ''}`.length > 24 
+              ? `${name} ${trainerName ? `| ${trainerName}` : ''}`.substring(0, 24) + '...' 
+              : `${name} ${trainerName ? `| ${trainerName}` : ''}`
+            }
+            </CardDesText>
+
+
             <CardPeriodText>{detail}</CardPeriodText>
     
             <ProgressBarContainer>
@@ -100,7 +111,7 @@ const LabelContainer = styled.View`
     align-items: center;
 `
 
-const LabelImg = styled.Image`
+const LabelImg = styled(FastImage)`
     width: 20px;
     height: 20px;
     margin-right: 10px;

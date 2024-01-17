@@ -8,16 +8,16 @@ import UseTicketList from '../../ui/list/UseTicketList';
 import { ScrollView , Alert,ActivityIndicator, View} from 'react-native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
 import { StopCancelModal, SubNTicketCancelModal } from '../../ui/modal/MyPageCancelModal';
-
+import {postPaymentSubscriptionNextMonth} from '../../../api/cardApi';
 import {getTypeTickets, useStopTicket, requestRefundTicket,cancelSubscribeTicket,getDetailTicket ,getStopTickets} from '../../../api/useTicketsApi';
 import { useRecoilState } from 'recoil';
-import { subscribeListState, ticketListState } from '../../../store/atom';
+import { subscribeListState, ticketListState ,mainCenterIdState} from '../../../store/atom';
 import CancelPicker from '../../ui/custom/CancelPicker';
 
 function CenterTicketListTemplate(props) {
   const navigation = useNavigation();
   const [selectedTab, setSelectedTab] = useState('SUBSCRIBE');
-
+  const [mainCenterId, setMainCenterId] = useRecoilState(mainCenterIdState);
   const [showModal, setShowModal] = useState(false);
   const [stopShowModal, setStopShowModal] = useState(false);
 
@@ -121,6 +121,29 @@ function CenterTicketListTemplate(props) {
   }
 };
 
+//구독권 다음달 결제
+const postPaymentSubscriptionNextMonthBtn = async (id) => {
+  console.log('id',id)
+  try {
+      const response = await postPaymentSubscriptionNextMonth(id);
+      if(response){
+          console.log('구독권 다음달 결제 확인용 콘솔',response)
+          Alert.alert("알림","구독권 다음달 결제에 성공하였습니다.",['확인']);
+      }
+  } catch (error) {
+      // console.error('Error getting:', error.response.data);
+      if(error.response.data.code === 10403){
+        Alert.alert("알림","카드등록을 해주세요.",['확인']);
+      }else if(error.response.data.code === 10404){
+        Alert.alert("알림","구독권 다음달 결제에 실패하였습니다.",['확인']);
+      }else if(error.response.data.code === 20602){
+        Alert.alert("알림","해당이용권을 찾을수 없습니다.",['확인']);
+      }else{
+        Alert.alert("알림","구독권 다음달 결제에 실패하였습니다.",['확인']);
+}
+  }
+};
+
 
   // 이용권 목록 (구독권, 이용권)
   useEffect(() => {
@@ -179,9 +202,12 @@ function CenterTicketListTemplate(props) {
     setSelectedTab(tab);
   };
 
-  const addPayTicket = () => {
-    console.log('이용권 추가 구매');
-    };
+
+    const addTicketBuyBtn = (id) =>{
+      id ? 
+      navigation.navigate('DetailCenter', {id:id})
+      :navigation.navigate('SearchCenter');
+  }
 
     const changeCardInfoScreens = () => {
         navigation.navigate('InfoCard', {text:'isChange'});
@@ -242,7 +268,7 @@ const stopText = {
                 </View>
             )}
          <SubscribeList 
-        
+          postPaymentSubscriptionNextMonthBtn={postPaymentSubscriptionNextMonthBtn}
           onPress={changeCardInfoScreens}
           openCancelModal={openCancelModal}
           subscribeListData={subscribeList}/>
@@ -270,7 +296,7 @@ const stopText = {
       {ticketList.length !==0 && selectedTab === 'OTHER' && (
             <AddBtnContainer>
                 <MyBtn
-                onPress={addPayTicket}
+                onPress={()=>addTicketBuyBtn(mainCenterId)}
                 >이용권 추가 구매</MyBtn>
             </AddBtnContainer>
       )}

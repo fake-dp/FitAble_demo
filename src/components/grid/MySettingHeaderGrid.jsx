@@ -1,6 +1,7 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import {formatPhoneNumber} from '../../utils/CustomUtils';
+import FastImage from 'react-native-fast-image'
 function MySettingHeaderGrid({onPress,goEditMyProfileScreen,myInfo}) {
 
     const {name, phone} = myInfo;
@@ -11,7 +12,9 @@ function MySettingHeaderGrid({onPress,goEditMyProfileScreen,myInfo}) {
             <UserHeaderContainer>
                 <UserHeaderLeftContainer onPress={goEditMyProfileScreen}>
                 <MyNameText>{name}님</MyNameText>
-                <RigthIcon source={rightIcon}/>
+                <RigthIcon 
+                resizeMode={FastImage.resizeMode.contain}
+                source={rightIcon}/>
                 </UserHeaderLeftContainer>
 
                 <SettingContainerBtn onPress={onPress}>
@@ -41,7 +44,7 @@ background-color: ${COLORS.sub};
 `
 
 
-const RigthIcon = styled.Image`
+const RigthIcon = styled(FastImage)`
     width: 20px;
     height: 20px;
     margin-left: 8px;

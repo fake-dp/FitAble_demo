@@ -3,6 +3,7 @@ import { ScrollView, View, Dimensions, TouchableOpacity } from "react-native";
 import styled from "styled-components/native"; // styled-components 임포트 오타 수정
 import { COLORS } from "../../../constants/color";
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image'
 const { width } = Dimensions.get("window");
 
 function HomeSubBanner({ centersBanners }) {
@@ -18,7 +19,7 @@ function HomeSubBanner({ centersBanners }) {
           scrollRef.current?.scrollTo({ x: nextPage * width, animated: true });
           return nextPage;
         });
-      }, 2000);
+      }, 1800);
 
       return () => clearInterval(interval);
     }
@@ -36,7 +37,7 @@ function HomeSubBanner({ centersBanners }) {
         navigation.navigate('Store');
         break;
       case 'NOTICE_DETAIL':
-        navigation.navigate('DetailNotice', { noticeId: banner.path });
+        navigation.navigate('DetailNotice', { item: banner.path });
         console.log('Banner Pressed',banner.path);
         break;
       case 'STORE_DETAIL':
@@ -61,6 +62,8 @@ function HomeSubBanner({ centersBanners }) {
                 horizontal
                 pagingEnabled
                 ref={scrollRef}
+                bounces={false}
+                showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={(e) => { // onScroll 대신 onMomentumScrollEnd 사용
                     const newPage = Math.floor(e.nativeEvent.contentOffset.x / width);
                     if (newPage !== currentPage) {
@@ -72,7 +75,7 @@ function HomeSubBanner({ centersBanners }) {
                 {centersBanners.map((banner, index) => (
                            <TouchableOpacity key={banner.id} onPress={() => handleBannerPress(banner)}>
                     <BannerImageContainer>
-                             <BannerImage key={index} source={{ uri: banner.imageUrl }} resizeMode="cover" />
+                             <BannerImage key={index} source={{ uri: banner.imageUrl }} resizeMode="cover"/>
                     </BannerImageContainer>
                            </TouchableOpacity>
                     ))}
@@ -101,7 +104,8 @@ function HomeSubBanner({ centersBanners }) {
 export default HomeSubBanner;
 
 const BannerContainer = styled.View`
-  width: 100%;
+  width: 100%; 
+  /* width: ${Dimensions.get('window').width}px; */
   height: 80px;
   background-color: ${COLORS.box};
   border-radius: 13px;
@@ -111,8 +115,10 @@ const BannerContainer = styled.View`
 
 
 
-const BannerLogo = styled.Image`
+const BannerLogo = styled(FastImage)`
   margin: 0 23px 0 21px;
+  width: 34px;
+  height: 24px;
 `;
 
 const MainText = styled.Text`
@@ -129,10 +135,10 @@ line-height: 16.80px;
 color: ${COLORS.gray_100};
 `;
 
-const BannerImage = styled.Image`
-/* width: ${Dimensions.get('window').width}px; */
-  width: 90%;
-  height: 80px;
+const BannerImage = styled(FastImage)`
+  width: ${Dimensions.get('window').width-40}px;
+  /* width: 90%; */
+  height:80px;
   border-radius: 13px;
   `;
 
@@ -140,7 +146,7 @@ const BannerImageContainer = styled.View`
   width: ${Dimensions.get('window').width}px;
   height: 80px;
   background-color: transparent;
-  
+
 `;
 
 const DotContainer = styled.View`

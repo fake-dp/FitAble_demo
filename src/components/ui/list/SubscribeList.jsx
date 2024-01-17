@@ -4,7 +4,7 @@ import { COLORS } from '../../../constants/color';
 import { Fragment } from "react";
 import {formatCommaNumber} from '../../../utils/CustomUtils'
 import { useNavigation } from '@react-navigation/native';
-function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
+function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
   // SUBSCRIBE
 
   const navigation = useNavigation();
@@ -25,7 +25,8 @@ function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicke
                 {data.status === 'IN_USE' && <UsingText>이용중</UsingText>}
                 {data.status === 'USING_SOON' && <UsingText>이용예정</UsingText>}
                 </TextContainer>
-              <TitleText>{data.name}</TitleText>
+                <TitleText>{`${data.name}`.length > 18 ? `${data.name}`.substring(0, 18) + '...' : `${data.name}`}</TitleText>
+              
               {/* <DateText>{data.status}</DateText> */}
               {/* <DateText>{data.paymentStatus}</DateText> */}
             </ContentsBox>
@@ -45,7 +46,7 @@ function SubscribeList({ subscribeListData,onPress,openCancelModal,goDetailTicke
                   
                   {
                     data.paymentStatus === 'PAYMENT_FAILURE' && (
-                      <CancelNextBtnContainer onPress={()=>openCancelModal(data.id)}>
+                      <CancelNextBtnContainer onPress={()=>postPaymentSubscriptionNextMonthBtn(data.id)}>
                           <CancelBtnText>다음달 결제</CancelBtnText>
                        </CancelNextBtnContainer>
                     )

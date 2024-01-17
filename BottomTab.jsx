@@ -7,7 +7,7 @@ import HomeMainScreen from './src/screens/mainpage/HomeMainScreen';
 import HomeHeader from './src/components/ui/custom/HomeHeader';
 import { COLORS } from './src/constants/color';
 import { Image } from 'react-native';
-
+import FastImage from 'react-native-fast-image'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -110,9 +110,18 @@ export function MainTabScreen() {
         options={{
           title: '홈',
           tabBarIcon: ({ focused }) => (
-            <Image
+            // <FastImage
+            //   source={
+            //     focused? 
+            //     require('./src/assets/img/home_active.png') :
+            //     require('./src/assets/img/home_unactive.png')}
+            //   style={{ 
+            //     ...bottonIconSize,}}
+            //     // resizeMode={FastImage.resizeMode.contain}
+            // />
+            <Image  
               source={require('./src/assets/img/home_active.png')}
-              style={{ 
+              style={{
                 ...bottonIconSize,
                 tintColor: focused ? COLORS.white : COLORS.gray_400 }}
             />
@@ -124,12 +133,19 @@ export function MainTabScreen() {
        options={{
         title: '운동하기',
         tabBarIcon: ({ focused }) => (
-          <Image
-            source={require('./src/assets/img/sports_active.png')}
-            style={{ 
-              ...bottonExIconSize,
-              tintColor: focused ? COLORS.white : COLORS.gray_400 }}
-          />
+          // <FastImage
+          //   source={require('./src/assets/img/sports_active.png')}
+          //   style={{ 
+          //     ...bottonExIconSize,
+          //     tintColor: focused ? COLORS.white : COLORS.gray_400 }}
+          //     resizeMode={FastImage.resizeMode.contain}
+          // />
+          <Image  
+              source={require('./src/assets/img/sports_active.png')}
+              style={{
+                ...bottonExIconSize,
+                tintColor: focused ? COLORS.white : COLORS.gray_400 }}
+            />
         ),
             }}
       />
@@ -137,12 +153,19 @@ export function MainTabScreen() {
               options={{
                 title: '스토어',
                 tabBarIcon: ({ focused }) => (
-                  <Image
-                    source={require('./src/assets/img/store_active.png')}
-                    style={{ 
-                      ...bottonIconSize,
-                      tintColor: focused ? COLORS.white : COLORS.gray_400 }}
-                  />
+                  // <FastImage
+                  //   source={require('./src/assets/img/store_active.png')}
+                  //   style={{ 
+                  //     ...bottonIconSize,
+                  //     tintColor: focused ? COLORS.white : COLORS.gray_400 }}
+                  //     resizeMode={FastImage.resizeMode.contain}
+                  // />
+                  <Image  
+                  source={require('./src/assets/img/store_active.png')}
+                  style={{
+                    ...bottonIconSize,
+                    tintColor: focused ? COLORS.white : COLORS.gray_400 }}
+                />
                 ),
                     }}
       />
@@ -150,12 +173,21 @@ export function MainTabScreen() {
           options={{
             title: '마이',
             tabBarIcon: ({ focused }) => (
-              <Image
-                source={require('./src/assets/img/mypage_active.png')}
-                style={{ 
-                  ...bottonIconSize,
-                  tintColor: focused ? COLORS.white : COLORS.gray_400 }}
-              />
+              // <FastImage
+              //   source={focused? 
+              //     require('./src/assets/img/mypage_active.png'):
+              //     require('./src/assets/img/mypage_unactive.png')
+              //   }
+              //     style={{ 
+              //     ...bottonIconSize,}}
+              //     resizeMode={FastImage.resizeMode.contain}
+              // />
+              <Image  
+              source={require('./src/assets/img/mypage_unactive.png')}
+              style={{
+                ...bottonIconSize,
+                tintColor: focused ? COLORS.white : COLORS.gray_400 }}
+            />
             ),
                 }}
       />

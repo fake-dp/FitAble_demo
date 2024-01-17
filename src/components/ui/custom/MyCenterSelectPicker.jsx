@@ -50,11 +50,12 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       ref={pickerRef}
       onValueChange={handleValueChange}
     //   onDonePress={handleDonePress}
-      InputAccessoryView={() => null}
-    //   doneText="완료"
+      // InputAccessoryView={() => null}
+      value={selectedCenterId}
+      doneText="변경"
       onClose={handleDonePress}
         items={centerOptions}
-        placeholder={{ label: mainCenter, value: mainCenterId }}
+        placeholder={{}}
         style={{
           inputIOS: {
             fontSize: 16,

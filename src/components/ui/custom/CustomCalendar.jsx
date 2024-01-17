@@ -1,5 +1,5 @@
 import React, { useState,useEffect,useCallback } from 'react';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { Calendar, LocaleConfig,ExpandableCalendar, AgendaList, CalendarProvider, WeekCalendar } from 'react-native-calendars';
 import { COLORS } from '../../../constants/color';
 import { themeStyled } from '../../../constants/calendarTheme';
 import styled, { css } from 'styled-components/native';
@@ -9,6 +9,7 @@ import {getAvailableDates,getAvailableLessons} from '../../../api/lessonsApi';
 import { useRecoilState } from 'recoil';
 import {selectTodayState} from '../../../store/atom';
 import { useIsFocused } from '@react-navigation/native';
+import CalenderClassList from '../list/CalenderClassList';
 LocaleConfig.locales['ko'] = {
   monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
   monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
@@ -17,7 +18,7 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
-function CustomCalendar({mainCenterId,classList,setClassList}) {
+function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,handleCanceBtn,mainCenterId,handleReload,setClassList,weekView,mainCenter}) {
   const isFocused = useIsFocused();
 // console.log('mainCenterId',mainCenterId)
   const today = new Date();
@@ -122,7 +123,7 @@ function CustomCalendar({mainCenterId,classList,setClassList}) {
     return (
       <Container>
         <TitleText>{currentMonth}</TitleText>
-        <CalenderToggleBtn isActive={isActive} setIsActive={setIsActive}/>
+        {/* <CalenderToggleBtn isActive={isActive} setIsActive={setIsActive}/> */}
       </Container>
     );
   };
@@ -130,35 +131,69 @@ function CustomCalendar({mainCenterId,classList,setClassList}) {
 
   return (
     <>
+<CalendarProvider
+          date={todayString}
+        theme={themeStyled}
 
-    <Calendar
-    current={selected}
-  //  style={isActive ? { height: 320 } : { height: 150, backgroundColor: COLORS.sub }}
+    >
+      {weekView ? (
+        <WeekCalendar  
+        firstDay={1} markedDates={availableDates}
+        />
+      ) : (
+        <>
+   
+        <ExpandableCalendar
+          showHeader={false}
+        style={{
+            ...Platform.select({
+              ios: {
+                shadowColor: 'transparent',
+                zIndex: 99,
+                backgroundColor: '#fff',
+              },
+              android: {
+                elevation: 0
+              },
+              
+            })
+        }}
+        renderHeader={renderCustomHeader}
+        hideArrows
+        markedDates={{
+          ...availableDates,
+          ...{[selected]: { selected: true, disableTouchEvent: true,selectedColor: COLORS.main, }},
+          ...{[todayString]: { dotColor: '#FF7A00',marked: true, selected: selected === todayString}},
+        }}
+          onDayPress={handleDayPress}
+          theme={themeStyled&&themeStyled}
+          onMonthChange={(month) => {
+            setCurrentMonth(`${month.year}.${String(month.month).padStart(2, '0')}`);
+        }}
+          firstDay={1}
 
-    onMonthChange={(month) => {
-        // month에 현재 월 정보가 들어있음
-        setCurrentMonth(`${month.year}.${String(month.month).padStart(2, '0')}`);
-    }}
-
-    onDayPress={handleDayPress}
-    markedDates={{
-      ...availableDates,
-      ...{[selected]: { selected: true, disableTouchEvent: true,selectedColor: COLORS.main, }},
-      ...{[todayString]: { dotColor: '#FF7A00',marked: true, selected: selected === todayString}},
-    }}
-    theme={{
-      ...themeStyled,
-      dotStyle:{
-        marginTop: 10,
+        />
+      </>
+      )
       }
-    }}
+      <CalenderLine/>
 
-    renderHeader={renderCustomHeader} // 커스텀 헤더 적용
-    enableSwipeMonths={true} // 좌우 스크롤로 월 넘기기
-    hideArrows={true} // 화살표 숨기기
-    // renderDay={renderDay} // 커스텀 날짜 적용
-    />
+      <CalenderClassList 
+      mainCenterId={mainCenterId}
+      mainCenter={mainCenter}
+      handleReload={handleReload}
+      handleCanceBtn={handleCanceBtn}
+      handleBtn={handleBtn}
+      closeModal={closeModal}
+      classList={classList}
+      showModal={showModal}
+      selectedItem={selectedItem}
+      />
+    </CalendarProvider>
+  
+
     </>
+    
   );
 }
 
@@ -167,7 +202,7 @@ export default CustomCalendar;
 
 const Container = styled.View`
     background-color: ${COLORS.sub};
-    margin-bottom: 39px;
+    margin-bottom: 12px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -180,4 +215,17 @@ const TitleText = styled.Text`
     font-size: 20px;
     font-weight: 600;
     line-height: 28px;
+`
+
+const CalenderLine = styled.View`
+border-top-width: 1px;
+border-color: #535258;
+margin-top: 30px;
+padding: 0 20px;
+`
+
+const TestView = styled.View`
+
+`
+const TestText = styled.Text`
 `

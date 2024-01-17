@@ -3,6 +3,7 @@ import { COLORS } from '../../../constants/color';
 import ToggleBtn from '../../ui/toggle/ToggleBtn';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image'
 
 function TermsofUseTemplate(props) {
     const navigation = useNavigation();
@@ -81,7 +82,7 @@ color: ${COLORS.sub};
 font-weight: 500;
 line-height: 22.40px;
 `
-const SettingListRightIcon = styled.Image`
+const SettingListRightIcon = styled(FastImage)`
     width: 20px;
     height: 20px;
 `

@@ -8,7 +8,7 @@ import {getMyInfo} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { myinfoState } from '../../../store/atom';
 import { useState } from 'react';
-
+import FastImage from 'react-native-fast-image'
 function MyMainTemplate(props) {
 
     const navigation = useNavigation();
@@ -192,7 +192,7 @@ font-weight: 500;
 line-height: 22.40px;
 `
     
-const SettingListRightIcon = styled.Image`
+const SettingListRightIcon = styled(FastImage)`
     width: 20px;
     height: 20px;
 `

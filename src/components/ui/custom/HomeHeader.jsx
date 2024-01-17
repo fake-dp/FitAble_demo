@@ -5,6 +5,7 @@ import { Image ,TouchableOpacity} from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useState, useCallback } from 'react';
 import {getUnreadPush} from '../../../api/pushApi';
+import FastImage from 'react-native-fast-image'
 
 function HomeHeader({navigation}) {
     
@@ -36,15 +37,16 @@ function HomeHeader({navigation}) {
 
     return (
         <StyledPressable>
-              <Image
+              <CustomLogoImage
                 source={require('../../../assets/img/headerlogo.png')}
+                resizeMode={FastImage.resizeMode.cover}
                 />
          
             <IconContainer>                
               <TouchableOpacity
               onPress={goToScanScreen}
               >
-              <Image
+              <CustomImage
                 source={require('../../../assets/img/scan.png')}
                 />
                 </TouchableOpacity>
@@ -83,6 +85,13 @@ const IconContainer = styled.View`
   margin-right: 8%;
 `;
 
-const CustomImage = styled(Image)`
+const CustomLogoImage = styled(FastImage)`
+    width: 138px;
+    height: 24px;
+`;
+
+const CustomImage = styled(FastImage)`
     margin-left: 16px;
+    width: 24px;
+    height: 24px;
 `;

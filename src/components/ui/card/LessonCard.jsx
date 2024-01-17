@@ -19,7 +19,12 @@ function LessonCard({homeReservationList}) {
                     <CardTimeText>{startTime}~{endTime}</CardTimeText>
                     <CardSubTextContainer>
                         <CardDateText>{date}</CardDateText>
-                        <CardRightText>{trainers} {location && `| ${location}` }</CardRightText>
+                        {/* <CardRightText>{trainers} {location && `| ${location}` }</CardRightText> */}
+                        {/* <CardRightText>{`${trainers} ${location && `| ${location}`}`.length > 10 ? `${trainers} ${location && `| ${location}`}`.substring(0, 10) + '...' : `${trainers} ${location && `| ${location}`}`}</CardRightText> */}
+                        <CardRightText>{`${trainers} ${location ? `| ${location}` : ''}`.length > 10 ? `${trainers} ${location ? `| ${location}` : ''}`.substring(0, 10) + '...' : `${trainers} ${location ? `| ${location}` : ''}`}</CardRightText>
+
+
+
                     </CardSubTextContainer>
                 </CardContent>
             </CardContainer>

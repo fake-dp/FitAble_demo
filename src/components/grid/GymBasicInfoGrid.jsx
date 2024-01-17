@@ -3,6 +3,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import ConsultBtn from '../ui/buttonUi/ConsultBtn';
 import {formatPhoneNumber} from '../../utils/CustomUtils'
+import FastImage from 'react-native-fast-image'
 function GymBasicInfoGrid({onPress,address,phone,name}) {
     
     const phoneIcon = require('../../assets/img/phone.png');
@@ -19,7 +20,11 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
             {
                 address && (
                 <SubTextContainer>
-                    <Image source={mapIcon}/>
+                    <FastImage 
+                     resizeMode={FastImage.resizeMode.contain}
+                    source={mapIcon}
+                     style={{ width: 22, height: 22 }} 
+                    />
                     <SubText>{address}</SubText>
                 </SubTextContainer>
                 )
@@ -27,7 +32,11 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
             {
                 phone && (
                 <SubTextContainerBtn onPress={() => dialCall(phone)}>
-                    <Image source={phoneIcon}/>
+                    <FastImage 
+                     resizeMode={FastImage.resizeMode.contain}
+                    source={phoneIcon}
+                    style={{ width: 22, height: 22 }} 
+                    />
                     <SubText>{formatPhoneNumber(phone)}</SubText>
                 </SubTextContainerBtn>
                 )

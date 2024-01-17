@@ -3,6 +3,7 @@ import { COLORS } from '../../constants/color';
 import { Modal, TouchableOpacity,ScrollView } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { useState } from 'react';
+import FastImage from 'react-native-fast-image'
 function PhotoScrollGrid({images}) {
     const [isViewerVisible, setIsViewerVisible] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -27,12 +28,14 @@ function PhotoScrollGrid({images}) {
                overScrollMode="never"
             >
                 <PhotoScrollContainer>
-                    {images.map((image, index) => (
+                    {images && images.map((image, index) => (
                         <TouchableOpacity key={index} onPress={() => {
                             setCurrentImageIndex(index);
                             setIsViewerVisible(true);
                         }}>
-                            <PhotoScrollImg source={{ uri: image }} />
+                            <PhotoScrollImg 
+                            // resizeMode={FastImage.resizeMode.contain}
+                            source={{ uri: image }} />
                         </TouchableOpacity>
                     ))}
                 </PhotoScrollContainer>
@@ -77,7 +80,7 @@ flex-direction: row;
 margin-top: 20px;
 `
 
-const PhotoScrollImg = styled.Image`
+const PhotoScrollImg = styled(FastImage)`
 width: 90px;
 height: 90px;
 border-radius: 13px;

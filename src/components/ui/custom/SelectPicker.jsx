@@ -5,7 +5,9 @@ import { View,Text } from 'react-native';
 import { useState ,useRef, useCallback} from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-function SelectPicker({mainCenter,centerName,mainCenterId}) {
+import FastImage from 'react-native-fast-image'
+
+function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
     
     const navigation = useNavigation();
     const pickerRef = useRef();
@@ -23,7 +25,12 @@ function SelectPicker({mainCenter,centerName,mainCenterId}) {
       const handleDonePress = async() => {
         const selectedCenter = centerName.find(center => center.id === selectedCenterId);
         if (selectedCenter) {
-            console.log('selectedCenter',selectedCenter.id, selectedCenter.name)
+            setMyInfo(prevState => ({
+              ...prevState,
+              mainCenterId: selectedCenterId,
+              mainCenter: selectedCenter.name
+            }));
+            console.log('selectedCenter',selectedCenter.id,selectedCenterId, selectedCenter.name)
         }else{
             console.log('기타일껄요')
             navigation.navigate('SearchCenter');
@@ -55,11 +62,14 @@ function SelectPicker({mainCenter,centerName,mainCenterId}) {
       <RNPickerSelect
       ref={pickerRef}
       onValueChange={handleValueChange}
-    //   onDonePress={handleDonePress}
-      InputAccessoryView={() => null}
+      // onDonePress={handleDonePress}
+      // 변경 글
+      doneText="변경"
+      value={selectedCenterId}
+      // InputAccessoryView={() => null}
       onClose={handleDonePress}
         items={centerOptions}
-        placeholder={{ label: mainCenter, value: mainCenterId }}
+        placeholder={{  }}
         style={{
           inputIOS: {
             fontSize: 20,
@@ -90,6 +100,8 @@ const PickerContainer = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const DownIcon = styled.Image`
+const DownIcon = styled(FastImage)`
   margin-left: 8px;
+  width: 20px;
+  height: 20px;
 `;

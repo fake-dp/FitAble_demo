@@ -19,7 +19,6 @@ function UseTemplate(props) {
 
     const navigation = useNavigation();
     const route = useRoute();
-
     const cardId = route.params?.data;      
    
     // console.log('detailDat111a@@',cardId)
@@ -33,7 +32,7 @@ function UseTemplate(props) {
     const [totalPrice, setTotalPrice] = useState(detailData?.price);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
     // ... other code ...
-  
+    // console.log('cardId.id',cardId.id)
     const getDataDetailTicketCenter = async () => {
         try {
             const response = await getDetailTicketCenter(cardId.id);
@@ -43,23 +42,6 @@ function UseTemplate(props) {
             console.error('Error getting:', error.response.data);
         }
     }
-
-    // const handleOptionSelect = (id) => {
-    //     // console.log('id 확인:', id);
-      
-    //     if (id === 'none') {
-    //       setSelectedOption([]);
-    //     } else {
-    //       // 이미 선택된 옵션인 경우, 선택 해제
-    //       if (selectedOption.includes(id)) {
-    //         setSelectedOption(selectedOption.filter(optionId => optionId !== id));
-    //       } else {
-    //         // 새로운 옵션 선택, '사용 안 함' 옵션 해제
-    //         setSelectedOption([...selectedOption.filter(optionId => optionId !== 'none'), id]);
-    //       }
-    //     }
-    //   };
-
 
     const handleOptionSelect = (id) => {
       if (id === 'none') {
@@ -87,10 +69,6 @@ function UseTemplate(props) {
         navigation.goBack();
     };
 
-    const goTestModal = () => {
-        setShowModal(true)
-    }
-
     const closeModal = () => {
         setShowModal(false)
         navigation.navigate('DetailCenter');
@@ -117,15 +95,36 @@ function UseTemplate(props) {
         },[]));
 
 
-    const goCardInfoScreens = () => {
+        const formattedOptions = Object.values(selectedOptionDetails).map(option => ({
+            id: option.id,
+            salePrice: option.price || 0 // 예시, 실제 데이터에 맞게 조정 필요
+        }));
+    
+    
+    
+
+
+    const goPaymentScreens = () => {
         if(isExist){
             console.log('결제결제결제결제 바로결제결제')
-            navigation.navigate('PaymentWebView', { 
-                orderId: cardId.id, 
-                amount: totalPrice, 
-                goodsName: detailData.name 
-              });
+            const paymentInfoData = {
+                ticket: {
+                    id: detailData?.id,
+                    salePrice: detailData?.price,
+                },
+                options:formattedOptions,
+                totalPrice: totalPrice,
+                couponId: selectedCoupon?.id,
+            }
+            Object.keys(paymentInfoData).forEach(key => {
+                if (paymentInfoData[key] === undefined || paymentInfoData[key] === null) {
+                    delete paymentInfoData[key];
+                }
+            });
+            console.log('@@subPaymentInfoData',paymentInfoData)
+            navigation.navigate('PaymentWebView', { paymentInfoData });
         }else{  
+           
             navigation.navigate('InfoCard', {text: 'isUseCard'});
         }
     }
@@ -174,7 +173,7 @@ function UseTemplate(props) {
             setSelectedCoupon={setSelectedCoupon}
             />
 
-        <ActiveMainBtn onPress={goCardInfoScreens}>결제하기</ActiveMainBtn>
+        <ActiveMainBtn onPress={goPaymentScreens}>결제하기</ActiveMainBtn>
     </ScrollView>
         {
             showModal ?

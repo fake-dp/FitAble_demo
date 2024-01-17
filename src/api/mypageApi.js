@@ -74,9 +74,9 @@ export const postMainCenter = async (id) => {
 }
 
 // notice list api
-export const getNoticeList = async () => {
+export const getNoticeList = async (pageNumber = 0, pageSize = 1000) => {
     try {
-        const response = await customAxios.get(`/api/members/v1/notices`);
+        const response = await customAxios.get(`/api/members/v1/notices?page=${pageNumber}&size=${pageSize}`);
         return response.data;
     } catch (error) {
         throw error;

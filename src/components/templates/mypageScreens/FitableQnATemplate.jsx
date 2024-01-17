@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation,useRoute } from '@react-navigation/native';
 import MyBtn from '../../ui/buttonUi/MyBtn';
-import { useRoute } from '@react-navigation/native';
-import { useState,useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert,TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import {postInquiry,postFitAbleInquiry} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
@@ -13,6 +12,7 @@ import { inquiryListState ,myinfoState} from '../../../store/atom';
 import { formatDate } from '../../../utils/CustomUtils';
 import ImagePicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import FastImage from 'react-native-fast-image'
 function FitableQnATemplate(props) {
     const navigation = useNavigation();
     const route = useRoute();
@@ -27,6 +27,7 @@ function FitableQnATemplate(props) {
     // const [selectedImage, setSelectedImage] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]); 
     // console.log('inquiryList',inquiryList,selectedImages)
+           
 
     useFocusEffect(
         React.useCallback(() => {
@@ -291,7 +292,7 @@ const PlusBtnBox = styled.TouchableHighlight`
     margin-right: 10px;
 `
 
-const PlusBtn = styled.Image`
+const PlusBtn = styled(FastImage)`
     width: 24px;
     height: 24px;
 `;

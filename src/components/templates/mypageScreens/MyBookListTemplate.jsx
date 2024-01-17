@@ -115,9 +115,9 @@ function MyBookListTemplate(props) {
                                             <BookListTitleText>{detail.centerName}
                                             </BookListTitleText>
                                             <BookListNameContainer>
-                                            <BookListContentsText>{detail.name}</BookListContentsText>
+                                            <BookListContentsText>{`${detail.name} ${detail.trainers.join(', ')}`.length > 18 ? `${detail.name} ${detail.trainers.join(', ')}`.substring(0, 18) + '...' : `${detail.name} ${detail.trainers.join(', ')}`}</BookListContentsText>
                                          
-                                                    <BookListContentsTrainerText>{detail.trainers.join(', ')}</BookListContentsTrainerText>
+                                                    {/* <BookListContentsTrainerText>{detail.trainers.join(', ')}</BookListContentsTrainerText> */}
                                         
                                             </BookListNameContainer>
                                             <BookListMainContentsText>수업일 {detail.date} / {detail.startTime} ~ {detail.endTime}</BookListMainContentsText>
@@ -209,11 +209,12 @@ const Container = styled.View`
 
 const BookListContainer = styled.View`
     margin-top: 20px;
+    margin-bottom: 30px;
     
 `;
 
 const BookListWrapper = styled.View`
-    
+    margin-bottom: 20px;
 `;
 
 const BookFlexContainer = styled.View`

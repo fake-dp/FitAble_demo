@@ -35,8 +35,8 @@ function CalenderToggleBtn({isActive, setIsActive}) {
 export default CalenderToggleBtn;
 
 const ToggleContainer = styled.TouchableOpacity`
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   background-color: ${COLORS.box};
   border-radius: 34px;
   justify-content: center;
@@ -45,8 +45,8 @@ const ToggleContainer = styled.TouchableOpacity`
 `;
 
 const ToggleBall = styled.View`
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 100px;
   background-color: ${COLORS.box_two};
   justify-content: center;

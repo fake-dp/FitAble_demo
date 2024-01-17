@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Modal, ScrollView, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-
+import FastImage from 'react-native-fast-image'
 function PtSwiperBanner({ images }) {
     const scrollViewRef = useRef(null);
     const [activeButtonIndex, setActiveButtonIndex] = useState(0);
@@ -40,7 +40,7 @@ function PtSwiperBanner({ images }) {
                 {images && images.map((imageUrl, index) => (
                     <TouchableOpacity key={index} onPress={() => handleImageTap(index)}>
                         <BannerImageContainer>
-                            <BannerImage source={{ uri: imageUrl }} resizeMode="cover" />
+                            <BannerImage source={{ uri: imageUrl }} />
                         </BannerImageContainer>
                     </TouchableOpacity>
                 ))}
@@ -71,7 +71,7 @@ function PtSwiperBanner({ images }) {
                         style={{ backgroundColor: '#000' }}
                         >
                         {images && images.map((imageUrl, index) => (
-                            <Image key={index} source={{ uri: imageUrl }} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, resizeMode: 'contain' }} />
+                            <FastImage key={index} source={{ uri: imageUrl }} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, resizeMode: 'contain' }} />
                             ))}
                     </ScrollView>
 
@@ -99,7 +99,7 @@ const BannerImageContainer = styled.View`
   aspect-ratio: 1;
 `;
 
-const BannerImage = styled.Image`
+const BannerImage = styled(FastImage)`
   width: 100%;
   height: 100%;
 `;

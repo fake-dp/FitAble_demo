@@ -10,8 +10,6 @@ import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import MyInquiryList from '../../grid/MyInquiryList';
 import MyNoticeList from '../../grid/MyNoticeList';
-import CenterPicker from '../../ui/custom/CenterPicker';
-import SelectPicker from '../../ui/custom/SelectPicker';
 import MyCenterSelectPicker from '../../ui/custom/MyCenterSelectPicker';
 
 function CenterMarkTemplate(props) {
@@ -21,15 +19,13 @@ function CenterMarkTemplate(props) {
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
     const [noticeList, setNoticeList] = useState([]);
     const [inquiryList, setInquiryList] = useRecoilState(inquiryListState);
-
-    const [showPicker, setShowPicker] = useState(false);
     const [centerName, setCenterName] = useState([]);
+    const [pageNumber, setPageNumber] = useState(0);
 
     const getNoticeListData = async () => {
         try {
-            const response = await getNoticeList();
+            const response = await getNoticeList(pageNumber);
             setNoticeList(response.content);
-            // console.log('response@@',response.content)
         } catch (error) {
             console.error('Error getting!@:', error.response.data);
         }
@@ -68,7 +64,7 @@ function CenterMarkTemplate(props) {
             if(response){
                 setMyInfo({...myInfo, mainCenterId:id ,mainCenter: name});
                 Alert.alert('센터변경 완료', '메인센터가 변경되었습니다', [
-                    {text: '확인', onPress: () => setShowPicker(false)},
+                    {text: '확인',},
                     ]);
             }else{
                 Alert.alert('센터변경 실패', '다시한번 확인해주세요.');
@@ -78,22 +74,21 @@ function CenterMarkTemplate(props) {
             Alert.alert('에러', '센터 변경에 실패했습니다.');
         }
     }
-    console.log('myInfo',myInfo)
-
-    // useEffect(() => {
-    //     myInfo.mainCenterId &&
-    //     getNoticeListData();
-    //     getInquiryListData(myInfo.mainCenterId);
-    //     getValidCenterNameData()
-    // }, [myInfo]);
+    console.log('noticeList',noticeList.length)
 
     useFocusEffect(
         useCallback(() => {
-            myInfo.mainCenterId &&
-            getNoticeListData();
-            getInquiryListData(myInfo.mainCenterId);
-            getValidCenterNameData()
-        },[myInfo]));
+            const fetchData = async () => {
+                const noticeListData = myInfo.mainCenterId ? getNoticeListData() : Promise.resolve();
+                const inquiryListData = myInfo.mainCenterId ? getInquiryListData(myInfo.mainCenterId) : Promise.resolve();
+                const validCenterNameData = myInfo.mainCenterId ? getValidCenterNameData() : Promise.resolve();
+                await Promise.all([noticeListData, inquiryListData, validCenterNameData]);
+            };
+    
+            fetchData();
+        }, [myInfo])
+    );
+    
 
 
     const goBackScreens = () => {
@@ -106,7 +101,7 @@ function CenterMarkTemplate(props) {
 
     return (
         <Container>
-            <BackgroundWrapper isTrue={showPicker}>
+            <BackgroundWrapper>
 
             <BackbtnContainer>
             <GobackBlackGrid onPress={goBackScreens}/>
@@ -118,13 +113,6 @@ function CenterMarkTemplate(props) {
                 <SettingListBtnFirst>
                     <SettingListText>대표 센터</SettingListText>
 
-
-                    {/* <FirstSettingContainer
-                    onPress={() => setShowPicker(true)}
-                    >
-                      <SettingSubText>{myInfo?.mainCenter ? myInfo.mainCenter : "내 센터 등록하기"}</SettingSubText>
-                    <SettingListRightIcon source={rightIcon}/>
-                    </FirstSettingContainer> */}
                     <MyCenterSelectPicker 
                     mainCenter={myInfo?.mainCenter}
                     mainCenterId={myInfo?.mainCenterId}
@@ -142,24 +130,6 @@ function CenterMarkTemplate(props) {
                     <NoListText>등록된 센터가 없습니다</NoListText>
                 </NoListContainer> */}
             </ScrollView>
-            {
-          showPicker && (
-
-        // <MyCenterSelectPicker 
-        // centerOptions={centerName?.map(center => ({ label: center.name, value: center.id }))}
-        // onCenterSelect={(selectedCenterId) => {
-        // postMainCenterData(selectedCenterId);
-        // setShowPicker(false);
-        // }}
-        // />
-
-          <CenterPicker 
-          centerName={centerName}
-          setShowPicker={setShowPicker}
-          setMyInfo={setMyInfo}
-          postMainCenterData={postMainCenterData}
-          />
-          )}
         </Container>
     );
 }

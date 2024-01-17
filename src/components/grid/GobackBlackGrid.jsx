@@ -1,13 +1,16 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-import {Image } from 'react-native';
-
+import FastImage from 'react-native-fast-image'
 function GobackBlackGrid({children, onPress}) {
     
 const backArrow = require('../../assets/img/back_black.png');
     return (
         <GobackTouchable onPress={onPress}>
-            <Image source={backArrow}/>
+            <FastImage
+             source={backArrow}
+             style={{ width: 20, height: 20 }} 
+             resizeMode={FastImage.resizeMode.contain}
+             />
             <TitleText>{children}</TitleText>
         </GobackTouchable>
     );

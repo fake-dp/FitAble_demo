@@ -15,7 +15,7 @@ import {upDateMyInfo,joinInfo} from '../../../api/authApi'
 import {signUpInfoState,isLoginState,fcmTokenState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import FastImage from 'react-native-fast-image'
 function Agreementtemplate(props) {
 
     const navigation = useNavigation();
@@ -101,7 +101,7 @@ function Agreementtemplate(props) {
         birthDay: signUpInfo.birthDay,
         gender: signUpInfo.gender,
         password: signUpInfo.password,
-        fcmToken: null,
+        fcmToken: 'c9BI00A2dEQ8hWJGeoQfDu:APA91bFVNOLT6P-WKkMJhaSPgfALJnoFt4SDyz7sUNQR5TT-DIvVwM_yGVc0sVfhKC9WBRgzF3636FNXrGj0_2esjm2KS8ES0VhTcRoqkz5OLD5bGIvuVz8zSYz7-UYUpNSk1JqPiej5',
         agreements: {
           marketing: false,
           pushAlarm: false,
@@ -130,7 +130,7 @@ console.log('업데이트bodyData',bodyData)
           gender: signUpInfo.gender,
           phone: signUpInfo.phone,
           password: signUpInfo.password,
-          fcmToken: null,
+          fcmToken: 'c9BI00A2dEQ8hWJGeoQfDu:APA91bFVNOLT6P-WKkMJhaSPgfALJnoFt4SDyz7sUNQR5TT-DIvVwM_yGVc0sVfhKC9WBRgzF3636FNXrGj0_2esjm2KS8ES0VhTcRoqkz5OLD5bGIvuVz8zSYz7-UYUpNSk1JqPiej5',
           agreements: {
             marketing: false,
             pushAlarm: false,
@@ -189,7 +189,9 @@ console.log('업데이트bodyData',bodyData)
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => handleItemPress(item)}>
-                        <IconsImg source={rigthIcon}/>
+                        <IconsImg 
+                        resizeMode={FastImage.resizeMode.contain}
+                        source={rigthIcon}/>
                     </TouchableOpacity>
                   </IndexListContainer>
 
@@ -273,7 +275,7 @@ const BottomBtnContainer = styled.View`
   right: 0;    
 `;
 
-const IconsImg = styled.Image`
+const IconsImg = styled(FastImage)`
 width: 20px;
 height: 20px;
 margin-right: 23px;

@@ -49,3 +49,13 @@ export const getPaymentSubscriptionTotal = async (amount) => {
         throw error;
     }
 }
+
+// 구독권 다음달 결제
+export const postPaymentSubscriptionNextMonth = async (id) => {
+    try {
+        const response = await customAxios.post(`/api/members/v1/tickets/subscribe/next/payment`, id);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

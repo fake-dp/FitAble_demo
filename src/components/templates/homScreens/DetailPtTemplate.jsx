@@ -13,10 +13,11 @@ import { useRoute } from '@react-navigation/native';
 import { getDetailTrainers} from '../../../api/homeApi';
 import PtSwiperBanner from '../../ui/banner/PtSwiperBanner';
 import { useFocusEffect } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image'
 function DetailPtTemplate() {
     const route = useRoute();
     const id = route.params.id;
-    // console.log('Received id:', id);
+    console.log('Received id:', id);
     const scrollViewRef = useRef(null);
     const [selectedPtCardInfo, setSelectedPtCardInfo] = useRecoilState(selectedPtCardId);
 
@@ -33,11 +34,13 @@ function DetailPtTemplate() {
 
 
     const goConsultingScreens = (centerId,  trainerId, selectedName) => {
+        // console.log('id',trainerId)
         navigation.navigate('Consulting',{ centerId, trainerId, selectedName});
     };
 
-    const goPtPriceScreens = () => {
-        navigation.navigate('PT', {data:selectedPtCardInfo,images});
+    const goPtPriceScreens = (trainerId) => {
+        // console.log('id',trainerId)
+        navigation.navigate('PT', {data:selectedPtCardInfo,images,trainerId});
     };
 
     const getDetailTrainersData = async ( centerId, id) => {
@@ -72,7 +75,8 @@ function DetailPtTemplate() {
     return (
         <Container>
             <GobackTouchable onPress={goBackScreens}>
-            <BackArrow source={backArrow}/>
+            <BackArrow 
+            source={backArrow}/>
             </GobackTouchable>
             <ScrollView
               ref={scrollViewRef}
@@ -84,7 +88,9 @@ function DetailPtTemplate() {
                 images&&images.length>0 ? (
                     <PtSwiperBanner images={images}/>
                 ):(
-                    <Image source={testImg}/>
+                    <FastImage 
+                    
+                    source={testImg}/>
                 )
             }
            
@@ -110,7 +116,7 @@ function DetailPtTemplate() {
     <ConsultingBtnText>상담하기</ConsultingBtnText>
 </ConsultingBtn>
 
-<ParchaseBtn onPress={goPtPriceScreens}>
+<ParchaseBtn onPress={()=>goPtPriceScreens(id)}>
     <ParchaseBtnText>구매하기</ParchaseBtnText>
 </ParchaseBtn>
 </BtnContainer>
@@ -128,8 +134,10 @@ const Container = styled.View`
     /* padding: 0 20px; */
 `
 
-const BackArrow = styled.Image`
+const BackArrow = styled(FastImage)`
     margin: 56px 0 11px 20px;
+    width: 28px;
+    height: 28px;
 `
 
 const TestImg = styled.Image`

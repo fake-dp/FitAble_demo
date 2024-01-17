@@ -9,7 +9,7 @@ import {putStoreMarketing,putPushAlarm,putPushMarketing} from '../../../api/push
 import { useRecoilState } from 'recoil';
 import { myinfoState, fcmTokenState,isLoginState } from '../../../store/atom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import FastImage from 'react-native-fast-image'
 
 function MyAppSettingTemplate(props) {
  
@@ -190,7 +190,7 @@ font-size: 12px;
 font-weight: 400;
 `
 
-const SettingListRightIcon = styled.Image`
+const SettingListRightIcon = styled(FastImage)`
     width: 20px;
     height: 20px;
 `

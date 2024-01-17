@@ -5,7 +5,7 @@ import { COLORS } from '../../constants/color';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {formatDate} from '../../utils/CustomUtils';
-
+import FastImage from 'react-native-fast-image'
 function MyInquiryList({ inquiryList,centerId }) {
     console.log('inquiryList',inquiryList)
     const navigation = useNavigation();
@@ -61,7 +61,9 @@ const commentdown = require('../../assets/img/listdown.png');
             {
                 inquiry.isComment && (
                     <OnpressContainer onPress={() => toggleInquiryOpen(inquiry.id)}>
-                         <IconImg source={openInquiryIds.includes(inquiry.id) ? commentup : commentdown}/>
+                         <IconImg 
+                          resizeMode={FastImage.resizeMode.contain}
+                         source={openInquiryIds.includes(inquiry.id) ? commentup : commentdown}/>
                      </OnpressContainer>
                 )
             }
@@ -159,7 +161,7 @@ const QnAListUserDateText = styled.Text`
 const OnpressContainer = styled.TouchableOpacity`
 `;
 
-const IconImg = styled.Image`
+const IconImg = styled(FastImage)`
     width: 16px;
     height: 16px;
     `;
