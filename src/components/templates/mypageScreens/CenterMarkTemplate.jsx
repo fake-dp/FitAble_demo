@@ -32,7 +32,7 @@ function CenterMarkTemplate(props) {
     };
 
     const getInquiryListData = async (id) => {
-        console.log('id값',id)
+        // console.log('id값',id)
         try {
             if(id){
 
@@ -74,7 +74,7 @@ function CenterMarkTemplate(props) {
             Alert.alert('에러', '센터 변경에 실패했습니다.');
         }
     }
-    console.log('noticeList',noticeList.length)
+
 
     useFocusEffect(
         useCallback(() => {
@@ -95,7 +95,7 @@ function CenterMarkTemplate(props) {
         navigation.goBack();
     };
 
-    console.log('centerNamecenterName',centerName)
+    // console.log('centerNamecenterName',centerName)
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
 
@@ -119,16 +119,14 @@ function CenterMarkTemplate(props) {
                     centerName={centerName}
                     postMainCenterData={postMainCenterData}
                     />
+                    </SettingListBtnFirst>
 
-                </SettingListBtnFirst>
 
 
                 <MyNoticeList noticeList={noticeList}/>
                 <MyInquiryList inquiryList={inquiryList} centerId={myInfo.mainCenterId}/>
 
-                {/* <NoListContainer>
-                    <NoListText>등록된 센터가 없습니다</NoListText>
-                </NoListContainer> */}
+             
             </ScrollView>
         </Container>
     );

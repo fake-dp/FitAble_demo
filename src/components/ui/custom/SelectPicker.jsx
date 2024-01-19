@@ -67,9 +67,12 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
       doneText="변경"
       value={selectedCenterId}
       // InputAccessoryView={() => null}
+      textInputProps={{ underlineColorAndroid: 'transparent'}}
+      useNativeAndroidPickerStyle={false}
+      fixAndroidTouchableBug={true}
       onClose={handleDonePress}
         items={centerOptions}
-        placeholder={{  }}
+        placeholder={{}}
         style={{
           inputIOS: {
             fontSize: 20,

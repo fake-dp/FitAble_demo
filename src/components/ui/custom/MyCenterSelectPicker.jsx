@@ -1,7 +1,7 @@
 import RNPickerSelect from 'react-native-picker-select';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { View,Text } from 'react-native';
+import { View,Text,Platform } from 'react-native';
 import { useState ,useRef} from 'react';
 
 function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCenterData}) {
@@ -50,29 +50,33 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       ref={pickerRef}
       onValueChange={handleValueChange}
     //   onDonePress={handleDonePress}
-      // InputAccessoryView={() => null}
-      value={selectedCenterId}
-      doneText="변경"
+
+    doneText="변경"
+    value={selectedCenterId}
+    textInputProps={{ underlineColorAndroid: 'transparent'}}
+    useNativeAndroidPickerStyle={false}
+    fixAndroidTouchableBug={true}
       onClose={handleDonePress}
         items={centerOptions}
         placeholder={{}}
-        style={{
-          inputIOS: {
-            fontSize: 16,
-            fontWeight: 500,
-            color: COLORS.gray_400,
-          },
-          inputAndroid: {
-            fontSize: 16,
-            fontWeight: 500,
-            color: COLORS.gray_400,
-          },
-          placeholder:{
-            fontSize: 16,
-            fontWeight: 500,
-            color: COLORS.gray_400,
-          },
-        }}
+        // style={{
+        //   inputIOS: {
+        //     fontSize: 16,
+        //     fontWeight: 500,
+        //     color: COLORS.gray_400,
+        //   },
+        //   inputAndroid: {
+        //     fontSize: 16,
+        //     fontWeight: 500,
+        //     color: COLORS.gray_400,
+
+        //   },
+        //   placeholder:{
+        //     fontSize: 16,
+        //     fontWeight: 500,
+        //     color: COLORS.gray_400,
+        //   },
+        // }}
       />
       <DownIcon source={require('../../../assets/img/rightIcon.png')} />
     </PickerContainer>
