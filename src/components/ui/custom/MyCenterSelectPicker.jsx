@@ -49,16 +49,29 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       <RNPickerSelect
       ref={pickerRef}
       onValueChange={handleValueChange}
-    //   onDonePress={handleDonePress}
+      onDonePress={handleDonePress}
 
     doneText="변경"
     value={selectedCenterId}
     textInputProps={{ underlineColorAndroid: 'transparent'}}
     useNativeAndroidPickerStyle={false}
     fixAndroidTouchableBug={true}
-      onClose={handleDonePress}
+      // onClose={handleDonePress}
         items={centerOptions}
         placeholder={{}}
+        style={{
+          inputAndroid:{
+
+            color: COLORS.gray_400,
+            paddingRight: 6,
+            fontSize: 16,
+          },
+          inputIOS:{
+            paddingRight: 6,
+            fontSize: 16,
+            color: COLORS.gray_400,
+          },
+        }}
         // style={{
         //   inputIOS: {
         //     fontSize: 16,
@@ -92,15 +105,8 @@ const PickerContainer = styled.TouchableOpacity`
 `;
 
 const DownIcon = styled.Image`
-  margin-left: 8px;
+  /* margin-left: 8px; */
+  /* margin-left: ${Platform.OS === 'ios' ? '8px' : '0'}; */
   width: 20px;
     height: 20px;
 `;
-
-const SettingSubText = styled.Text`
-font-size: 14px;
-color: ${COLORS.gray_400};
-font-weight: 500;
-line-height: 22.40px;
-margin-right: 8px;
-`

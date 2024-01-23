@@ -82,7 +82,7 @@ function Logintempate({navigation}) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <LoginScreenView> 
             <TitleLogo 
-             resizeMode={FastImage.resizeMode.contain}
+            //  resizeMode={FastImage.resizeMode.contain}
 
             source={require('../../../assets/img/mainLogo.png')}/>
             <AuthInput
@@ -133,9 +133,9 @@ const LoginScreenView = styled.View`
 `
 
 const TitleLogo = styled(FastImage)`
-    margin-bottom: 30px;
-    width: 258px;
-    height: 96px;
+   margin-bottom: 50px;
+    width: 180px;
+    height: 34px;
 `
 
 const AboutContainer = styled.View`

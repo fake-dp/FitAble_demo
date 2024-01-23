@@ -1,7 +1,7 @@
 import RNPickerSelect from 'react-native-picker-select';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { View,Text } from 'react-native';
+import { Platform } from 'react-native';
 import { useState ,useRef, useCallback} from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -19,10 +19,15 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
 
 
     const handleValueChange = (value) => {
+      console.log('ba',value)
         setSelectedCenterId(value);
+        if(Platform.OS !== 'ios' && value === 'fake_id'){
+          navigation.navigate('SearchCenter');
+        }
       };
 
       const handleDonePress = async() => {
+        console.log('dd')
         const selectedCenter = centerName.find(center => center.id === selectedCenterId);
         if (selectedCenter) {
             setMyInfo(prevState => ({
@@ -52,7 +57,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
         useCallback(() => {
             handleValueChange(mainCenterId);
             return () => {
-                console.log('fuck')
+                console.log('hello')
             };
         }, [mainCenterId])
     );
@@ -62,15 +67,14 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
       <RNPickerSelect
       ref={pickerRef}
       onValueChange={handleValueChange}
-      // onDonePress={handleDonePress}
-      // 변경 글
+      onDonePress={handleDonePress}
       doneText="변경"
       value={selectedCenterId}
       // InputAccessoryView={() => null}
       textInputProps={{ underlineColorAndroid: 'transparent'}}
       useNativeAndroidPickerStyle={false}
       fixAndroidTouchableBug={true}
-      onClose={handleDonePress}
+      // onClose={handleDonePress}
         items={centerOptions}
         placeholder={{}}
         style={{
@@ -78,11 +82,16 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
             fontSize: 20,
             fontWeight: 'bold',
             color: COLORS.white,
+            paddingRight: 20,
           },
           inputAndroid: {
+            display: 'flex',
+            flexDirection: 'row',
             fontSize: 20,
             fontWeight: 'bold',
             color: COLORS.white,
+            paddingRight: 20,
+
           },
           placeholder:{
             fontSize: 20,
@@ -91,7 +100,10 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
           },
         }}
       />
-      <DownIcon source={require('../../../assets/img/whitedownex.png')} />
+
+      <DownIcon 
+      source={require('../../../assets/img/whitedownex.png')} />
+
     </PickerContainer>
     );
 };
@@ -101,10 +113,12 @@ export default SelectPicker;
 const PickerContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 `;
 
 const DownIcon = styled(FastImage)`
-  margin-left: 8px;
+  /* margin-left: 18px; */
   width: 20px;
   height: 20px;
+  align-self: center; 
 `;

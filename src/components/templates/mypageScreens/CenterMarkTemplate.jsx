@@ -70,8 +70,8 @@ function CenterMarkTemplate(props) {
                 Alert.alert('센터변경 실패', '다시한번 확인해주세요.');
             }
         }catch(error){
-            console.error('error:', error);
-            Alert.alert('에러', '센터 변경에 실패했습니다.');
+            // console.error('error:', error.response.data);
+            Alert.alert('센터변경 실패', '센터 변경에 실패했습니다.');
         }
     }
 
