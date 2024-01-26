@@ -130,12 +130,13 @@ const BannerContainer = styled.View`
 
 const BannerImageContainer = styled.View`
   width: ${Dimensions.get('window').width}px;
-  aspect-ratio: 1;
+  /* aspect-ratio: 1; */
 `;
 
 const BannerImage = styled(FastImage)`
   width: 100%;
   height: 100%;
+  /* object-fit: cover; */
 `;
 
 const ButtonBar = styled.View`

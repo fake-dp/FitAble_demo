@@ -115,6 +115,11 @@ function UseTemplate(props) {
                 options:formattedOptions,
                 totalPrice: totalPrice,
                 couponId: selectedCoupon?.id,
+                authInfo: {
+                    authToken: "",
+                    amount: "",
+                    tid: ""
+                }
             }
             Object.keys(paymentInfoData).forEach(key => {
                 if (paymentInfoData[key] === undefined || paymentInfoData[key] === null) {
@@ -122,13 +127,14 @@ function UseTemplate(props) {
                 }
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
-            navigation.navigate('PaymentWebView', { paymentInfoData });
+            console.log(';@@@detailData@@@',totalPrice, detailData.name)
+            navigation.navigate('PaymentWebView', { paymentInfoData ,totalPrice, goodsName: detailData.name });
         }else{  
            
             navigation.navigate('InfoCard', {text: 'isUseCard'});
         }
     }
-    // console.log(';@@@detailData@@@',detailData.price, detailData.name, cardId.id)
+    console.log(';@@@detailData@@@',totalPrice, detailData.name)
     // orderId: '49b74bb1-08e3-46c7-bb0b-70c76cb41037',
     // amount: 1004,
     // goodsName: '나이스페이-상품'

@@ -119,6 +119,11 @@ const goBackScreens = () => {
                 totalPrice: totalPrice,
                 trainerId: trainerId,
                 couponId: selectedCoupon?.id,
+                authInfo: {
+                    authToken: "",
+                    amount: "",
+                    tid: ""
+                  }
             }
             Object.keys(paymentInfoData).forEach(key => {
                 if (paymentInfoData[key] === undefined || paymentInfoData[key] === null) {
@@ -126,7 +131,7 @@ const goBackScreens = () => {
                 }
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
-            navigation.navigate('PaymentWebView', {paymentInfoData});
+            navigation.navigate('PaymentWebView', {paymentInfoData, totalPrice, goodsName: detailData.name});
         }else{  
             navigation.navigate('InfoCard', {text: 'isUseCard'});
         }

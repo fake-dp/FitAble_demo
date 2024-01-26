@@ -25,6 +25,7 @@ function Agreementtemplate(props) {
     const updateInfoText = route.params?.data;
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+    const [fcmToken, setFcmToken] = useRecoilState(fcmTokenState);
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
     const [checkedCount, setCheckedCount] = useState(0); 
@@ -101,12 +102,12 @@ function Agreementtemplate(props) {
         birthDay: signUpInfo.birthDay,
         gender: signUpInfo.gender,
         password: signUpInfo.password,
-        fcmToken: 'c9BI00A2dEQ8hWJGeoQfDu:APA91bFVNOLT6P-WKkMJhaSPgfALJnoFt4SDyz7sUNQR5TT-DIvVwM_yGVc0sVfhKC9WBRgzF3636FNXrGj0_2esjm2KS8ES0VhTcRoqkz5OLD5bGIvuVz8zSYz7-UYUpNSk1JqPiej5',
+        fcmToken: fcmToken,
         agreements: {
           marketing: false,
           pushAlarm: false,
           storeMarketing: false
-  }
+      }
 }
 console.log('업데이트bodyData',bodyData)
       try{
@@ -130,7 +131,7 @@ console.log('업데이트bodyData',bodyData)
           gender: signUpInfo.gender,
           phone: signUpInfo.phone,
           password: signUpInfo.password,
-          fcmToken: 'c9BI00A2dEQ8hWJGeoQfDu:APA91bFVNOLT6P-WKkMJhaSPgfALJnoFt4SDyz7sUNQR5TT-DIvVwM_yGVc0sVfhKC9WBRgzF3636FNXrGj0_2esjm2KS8ES0VhTcRoqkz5OLD5bGIvuVz8zSYz7-UYUpNSk1JqPiej5',
+          fcmToken: fcmToken,
           agreements: {
             marketing: false,
             pushAlarm: false,
