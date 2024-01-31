@@ -55,14 +55,14 @@ useEffect(() => {
     <View style={{ flex: 1 }}>
             <WebView
                 onNavigationStateChange={onNavigationStateChange}
-                // onLoadProgress={onLoadProgress}
+
                 allowsBackForwardNavigationGestures={true}
-                originWhitelist={['*']}
+                // originWhitelist={['*']}
                 mixedContentMode="always"
                 domStorageEnabled={true}
                 allowFileAccess={true}
                 allowUniversalAccessFromFileURLs={true}
-                
+
               onLoadEnd={handleEndLoading}
               ref={webviewRef}
               source={{ uri }}

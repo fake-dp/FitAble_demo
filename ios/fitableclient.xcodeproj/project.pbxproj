@@ -526,7 +526,7 @@
 				DEVELOPMENT_TEAM = 478226FDMY;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = fitableclient/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "FIT ABLE";
+				INFOPLIST_KEY_CFBundleDisplayName = "FIT ABLE 핏에이블";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -560,7 +560,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 478226FDMY;
 				INFOPLIST_FILE = fitableclient/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "FIT ABLE";
+				INFOPLIST_KEY_CFBundleDisplayName = "FIT ABLE 핏에이블";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
