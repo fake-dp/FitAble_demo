@@ -59,3 +59,13 @@ export const postPaymentSubscriptionNextMonth = async (id) => {
         throw error;
     }
 }
+
+// 결제 정보 저장 api
+export const postPaymentInfo = async (data) => {
+    try {
+        const response = await customAxios.post(`/api/members/v2/tickets/payment/info`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
