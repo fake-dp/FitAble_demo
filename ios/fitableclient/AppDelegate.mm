@@ -31,6 +31,10 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTLinkingManager.h>
+
+
+
 
 #define isOSVersionOver10 ([[[[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."] objectAtIndex:0] integerValue] >= 10)
 
@@ -49,6 +53,10 @@
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
+// @end위에 추가
+-  (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

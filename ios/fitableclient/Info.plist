@@ -20,6 +20,27 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.fitable.clientapp</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fitable</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array/>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -64,6 +85,7 @@
 		<string>upluscorporation</string>
 		<string>naversearchthirdlogin</string>
 		<string>Imslpay</string>
+    <string>fitable</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
