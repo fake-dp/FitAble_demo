@@ -32,6 +32,7 @@ import ChangePhoneNumberScreen from './src/screens/mypage/ChangePhoneNumberScree
 import ExerciseSearchCenterScreen from './src/screens/exercisepage/ExerciseSearchCenterScreen';
 import NoticeDetailScreen from './src/screens/mypage/NoticeDetailScreen';
 import PaymentWebViewScreen from './src/screens/mainpage/PaymentWebViewScreen';
+import PaymentResultScreen from './src/screens/mainpage/PaymentResultScreen';
 
 
 
@@ -90,6 +91,8 @@ function AppScreens({navigation}) {
           <Stack.Screen name="PT" component={PtScreen}/>
           <Stack.Screen name="PtDetail" component={PtDetailSrceen} options={{ headerShown: false,}}/>
           <Stack.Screen name="Use" component={UseScreen} />
+
+          <Stack.Screen name="PaymentResult" component={PaymentResultScreen}/>
 
           </Stack.Group>
 

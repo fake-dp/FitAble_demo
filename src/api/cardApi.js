@@ -69,3 +69,13 @@ export const postPaymentInfo = async (data) => {
         throw error;
     }
 }
+
+// 이용권 결제창 결제
+export const postNicepayPayment = async (data) => {
+    try {
+        const response = await customAxios.post(`/api/members/v2/tickets/payment`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

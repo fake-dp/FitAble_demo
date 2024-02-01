@@ -1,74 +1,145 @@
 import React,{ useRef, useEffect, useState} from 'react';
 import { WebView } from 'react-native-webview';
-import { View } from 'react-native';
-import {postPaymentInfo} from '../../api/cardApi';
+import { View,Text,ActivityIndicator } from 'react-native';
+import {postPaymentInfo,postNicepayPayment} from '../../api/cardApi';
+import { COLORS } from '../../constants/color';
+import { useNavigation } from '@react-navigation/native';
 function PaymentWebViewScreen(props) {
 
   const { paymentInfoData, totalPrice, goodsName} = props.route.params;
 
+  const navigation = useNavigation();
+
+  const [isPaymentProcessed, setIsPaymentProcessed] = useState(false);
+
   const [memberTicketId, setMemberTicketId] = useState(null);
+  const [moid, setMoid] = useState(null);
 
-  console.log('라우터전달',totalPrice, goodsName);
-
-const postInfoPaymentId = async () => {
-  try {
-    const response = await postPaymentInfo(paymentInfoData);
-    console.log('결제정보',response.memberTicketId);
-    setMemberTicketId(response.memberTicketId);
-  } catch (error) {
-    console.error('Error getting:', error.response.data);
-  }
+  const postInfoPaymentId = async () => {
+     try {
+       const response = await postPaymentInfo(paymentInfoData);
+         console.log('결제정보',response);
+         setMemberTicketId(response.memberTicketId);
+         setMoid(response.moid);
+     } catch (error) {
+       console.error('Error getting:', error.response);
+     }
 }
+
+  const handleNicePayment = async (data) => {
+
+    if (isPaymentProcessed) return;
+
+    try {
+      const response = await postNicepayPayment(data);
+        console.log('결제정보',response);
+        if(response){
+          setIsPaymentProcessed(true); 
+          navigation.navigate('PaymentResult');
+        }
+    } catch (error) {
+      console.error('Error getting:!!@@', error.response);
+    }
+  }
 
 useEffect(() => {
   if(paymentInfoData){
     postInfoPaymentId();
-    // console.log('memberTicketId',memberTicketId)
   }
 },[])
 
-
- const webviewRef = useRef(null);
-
- /** webview 로딩 완료시 */
- const handleEndLoading = () => {
-  console.log("handleEndLoading");
-  /** rn에서 웹뷰로 정보를 보내는 메소드 */
-  webviewRef.current.postMessage(JSON.stringify({ memberTicketId }));
-};
   // test배포용
   // const uri = `https://reactpaytest-app.vercel.app/payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`;
   // 배포용
-  const uri =`http://175.45.204.94/payment/Payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`
+  // const uri =`http://175.45.204.94/payment/Payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`
+
+  const uri = 'https://www.noteggdev.co.kr/payRequest_utf.php'
+
+  function getParameterByName(name,url) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 
   const onNavigationStateChange = (navState) => {
-    // navState 객체에는 url, title, loading 등의 정보가 포함되어 있음
     console.log('웹뷰 내비게이션 상태 변경:', navState);
+  
+    // navState.url에서 URL 객체를 생성
+    const url = navState.url;
+    const successUrl = 'https://www.noteggdev.co.kr/success.html';
+    if (url.startsWith(successUrl) && !isPaymentProcessed) {
+      const moid = getParameterByName('moid',url);
+      const paymentAmt = getParameterByName('paymentAmt',url);
+      const paymentMethod = getParameterByName('paymentMethod',url);
+      const mid = getParameterByName('mid',url);
+      const tid = getParameterByName('tid',url);
+      const authCode = getParameterByName('authCode',url);
+      const authDate = getParameterByName('authDate',url);
+      const acquCardCode = getParameterByName('acquCardCode',url);
+      const cardCode = getParameterByName('cardCode',url);
+      const cardName = getParameterByName('cardName',url);
+      const cardNumber = getParameterByName('cardNumber',url);
+      const cardQuota = getParameterByName('cardQuota',url);
 
-    // 특정 URL로 리디렉션되었는지 확인하고 필요한 작업 수행
-    // if (navState.url === 'https://acs.hanacard.co.kr/payapp/C000000000VPQC.web?authToke=') {
-    //   console.log('log확인용')
-    // }
-  };
+      const paymentData = {
+        memberTicketId,
+        moid,
+        paymentAmt,
+        paymentMethod,
+        mid,
+        tid,
+        authCode,
+        authDate,
+        acquCardCode,
+        cardCode,
+        cardName,
+        cardNumber,
+        cardQuota
+      }
 
-   return (
-    <View style={{ flex: 1 }}>
-            <WebView
-                onNavigationStateChange={onNavigationStateChange}
+      handleNicePayment(paymentData);
 
-                allowsBackForwardNavigationGestures={true}
-                // originWhitelist={['*']}
-                mixedContentMode="always"
-                domStorageEnabled={true}
-                allowFileAccess={true}
-                allowUniversalAccessFromFileURLs={true}
+      console.log(`MOID: ${moid}, 
+      Payment Amount: ${paymentAmt},
+       Payment Method: ${paymentMethod},
+       Payment mid: ${mid},
+       Payment tid: ${tid},
+       Payment authDate: ${authDate},
+       Payment acquCardCode: ${acquCardCode},
+       Payment authCode: ${authCode},
+       Payment cardCode: ${cardCode},
+       Payment cardName: ${cardName},
+       Payment cardNumber: ${cardNumber},
+       Payment cardQuota: ${cardQuota},`);
+       }
+    }
+  
 
-              onLoadEnd={handleEndLoading}
-              ref={webviewRef}
-              source={{ uri }}
-            />
+  if (memberTicketId && moid) {
+    return (
+      <WebView
+        onNavigationStateChange={onNavigationStateChange}
+        source={{ 
+          headers: {
+            'Content-Type': "application/x-www-form-urlencoded"
+          },
+          uri: uri,
+          method: 'POST',
+          body: `price=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}&moid=${moid}`
+        }}
+      />
+    );
+  } else {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.sub }}>
+      <ActivityIndicator size="large" color={COLORS.main} />
     </View>
-  );
+    )
+  }
 }
 
 export default PaymentWebViewScreen;
