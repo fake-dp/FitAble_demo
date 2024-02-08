@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
-import {getIsExistCard} from '../../../api/cardApi';
+import {getIsExistCard,postPaymentInfo} from '../../../api/cardApi';
 function PTpriceTemplate(props) {
 
     const navigation = useNavigation();
@@ -36,6 +36,27 @@ function PTpriceTemplate(props) {
     // const [salePrice, setSalePrice] = useState(0);
     // ... other code ...
 //   console.log('cardId.id',cardId.id)
+
+
+const postInfoPaymentId = async (paymentInfoData) => {
+   try {
+     const response = await postPaymentInfo(paymentInfoData);
+       if(response){
+           navigation.navigate('PaymentWebView', {
+               paymentInfoData, 
+               totalPrice, 
+               goodsName: detailData.name,
+               memberTicketId: response.memberTicketId,
+               moid: response.moid
+            });
+        }
+   } catch (error) {
+     console.error('Error getting:', error.response);
+   }
+}
+
+
+
 const goBackScreens = () => {
     navigation.goBack();
 };
@@ -78,33 +99,16 @@ const goBackScreens = () => {
 
 
 
-    const paymentInfoData = {
-        ticket: {
-            id: detailData?.id,
-            salePrice: detailData?.price,
-        },
-        options:formattedOptions,
-        totalPrice: totalPrice,
-        trainerId: trainerId,
-        couponId: selectedCoupon?.id,
-    }
-    console.log('@@subPaymentInfoData',paymentInfoData)
-
-    // {
-    //     "ticket": {
-    //       "id": "279ab60a-c265-47ff-93ae-71bcb7017cef",
-    //       "salePrice": 30000
+    // const paymentInfoData = {
+    //     ticket: {
+    //         id: detailData?.id,
+    //         salePrice: detailData?.price,
     //     },
-    //     "options": [
-    //       {
-    //         "id": "279ab60a-c265-47ff-93ae-71bcb7017cef",
-    //         "salePrice": 30000
-    //       }
-    //     ],
-    //     "trainerId": "f3i60a-c265-47ff-93ae-71bcb7017cef",
-    //     "couponId": "2ei60a-c265-47ff-93ae-71bcb7017cef",
-    //     "totalPrice": 320000,
-    //   }
+    //     options:formattedOptions,
+    //     totalPrice: totalPrice,
+    //     trainerId: trainerId,
+    //     couponId: selectedCoupon?.id,
+    // }
 
 
     const goPaymentScreens = () => {
@@ -131,7 +135,7 @@ const goBackScreens = () => {
                 }
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
-            navigation.navigate('PaymentWebView', {paymentInfoData, totalPrice, goodsName: detailData.name});
+            postInfoPaymentId(paymentInfoData)
         }else{  
             navigation.navigate('InfoCard', {text: 'isUseCard'});
         }

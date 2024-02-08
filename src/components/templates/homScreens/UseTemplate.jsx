@@ -12,7 +12,7 @@ import React, { useState, useCallback } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 import { useRoute } from '@react-navigation/native';
-import {getIsExistCard} from '../../../api/cardApi';
+import {getIsExistCard,postPaymentInfo} from '../../../api/cardApi';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import { useFocusEffect } from '@react-navigation/native';
 function UseTemplate(props) {
@@ -33,6 +33,26 @@ function UseTemplate(props) {
     const [selectedCoupon, setSelectedCoupon] = useState(null);
     // ... other code ...
     // console.log('cardId.id',cardId.id)
+
+    const postInfoPaymentId = async (paymentInfoData) => {
+        try {
+          const response = await postPaymentInfo(paymentInfoData);
+            if(response){
+                navigation.navigate('PaymentWebView', {
+                    paymentInfoData, 
+                    totalPrice, 
+                    goodsName: detailData.name,
+                    memberTicketId: response.memberTicketId,
+                    moid: response.moid
+                 });
+             }
+        } catch (error) {
+          console.error('Error getting:', error);
+        }
+     }
+
+     
+
     const getDataDetailTicketCenter = async () => {
         try {
             const response = await getDetailTicketCenter(cardId.id);
@@ -84,7 +104,7 @@ function UseTemplate(props) {
             // console.log('response',response);
             setIsExist(response.isExist);
         } catch (error) {
-            console.error('Error getting:', error);
+            console.error('Error getting:!@#!@3', error);
         }
     }
 
@@ -128,9 +148,8 @@ function UseTemplate(props) {
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
             console.log(';@@@detailData@@@',totalPrice, detailData.name)
-            navigation.navigate('PaymentWebView', { paymentInfoData ,totalPrice, goodsName: detailData.name });
+            postInfoPaymentId(paymentInfoData)
         }else{  
-           
             navigation.navigate('InfoCard', {text: 'isUseCard'});
         }
     }

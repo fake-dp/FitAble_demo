@@ -13,10 +13,18 @@ function PaymentResultScreen(props) {
 
     return (
         <Container>
+            <PaymentBoxContainer>
+
+            <PaymentTextContainer>
             <PaymentResultText>결제가 완료되었습니다.</PaymentResultText>
+            <PaymentSubText>결제되었습니다. 운동을 시작해주세요!</PaymentSubText>
+            </PaymentTextContainer>
+ 
+
             <PaymentResultBtn onPress={handlegoHome}>
-                <PaymentResultBtnText>확인</PaymentResultBtnText>
+                <PaymentResultBtnText>홈으로</PaymentResultBtnText>
             </PaymentResultBtn>
+            </PaymentBoxContainer>
         </Container>
     );
 }
@@ -27,28 +35,52 @@ const Container = styled.View`
     flex: 1;
     background-color: ${COLORS.sub};
     padding: 0 20px;
+    padding-top: 50%;
+    justify-content: center;
 `
 
 const PaymentResultText = styled.Text`
-    color: ${COLORS.gray_300};
-    font-size: 16px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
+    color: ${COLORS.white};
+    font-size: 28px;
+font-style: normal;
+font-weight: 400;
+line-height: 37.8px; 
+letter-spacing: -0.7px;
+text-align: center;
+`
+
+const PaymentSubText = styled.Text`
+    color: ${COLORS.white};
+text-align: center;
+font-family: Pretendard;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height:22.4px;
+letter-spacing: -0.35px;
+`
+
+const PaymentBoxContainer = styled.View`
+    flex-direction: column;
+    justify-content: space-between;
+    height:70%;
+`
+
+const PaymentTextContainer = styled.View`
 `
 
 const PaymentResultBtn = styled.TouchableOpacity`
-    width: 200px;
+    width: 100%;
     height: 56px;
     background-color: ${COLORS.main};
-    border-radius: 4px;
+    border-radius: 50px;
     align-items: center;
     justify-content: center;
 `;
 
 const PaymentResultBtnText = styled.Text`
-    color: ${COLORS.white};
+    color: ${COLORS.sub};
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 22.40px;
 `;

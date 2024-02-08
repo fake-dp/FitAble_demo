@@ -4,27 +4,28 @@ import { View,Text,ActivityIndicator } from 'react-native';
 import {postPaymentInfo,postNicepayPayment} from '../../api/cardApi';
 import { COLORS } from '../../constants/color';
 import { useNavigation } from '@react-navigation/native';
+import {getParameterByName} from '../../utils/CustomUtils';
 function PaymentWebViewScreen(props) {
 
-  const { paymentInfoData, totalPrice, goodsName} = props.route.params;
-
+  const { totalPrice, goodsName,memberTicketId, moid} = props.route.params;
+console.log('@라우터전달',totalPrice, goodsName,memberTicketId, moid)
   const navigation = useNavigation();
 
   const [isPaymentProcessed, setIsPaymentProcessed] = useState(false);
 
-  const [memberTicketId, setMemberTicketId] = useState(null);
-  const [moid, setMoid] = useState(null);
+//   const [memberTicketId, setMemberTicketId] = useState(null);
+//   const [moid, setMoid] = useState(null);
 
-  const postInfoPaymentId = async () => {
-     try {
-       const response = await postPaymentInfo(paymentInfoData);
-         console.log('결제정보',response);
-         setMemberTicketId(response.memberTicketId);
-         setMoid(response.moid);
-     } catch (error) {
-       console.error('Error getting:', error.response);
-     }
-}
+//   const postInfoPaymentId = async () => {
+//      try {
+//        const response = await postPaymentInfo(paymentInfoData);
+//         //  console.log('결제정보',response);
+//          setMemberTicketId(response.memberTicketId);
+//          setMoid(response.moid);
+//      } catch (error) {
+//        console.error('Error getting:', error.response);
+//      }
+// }
 
   const handleNicePayment = async (data) => {
 
@@ -38,15 +39,16 @@ function PaymentWebViewScreen(props) {
           navigation.navigate('PaymentResult');
         }
     } catch (error) {
-      console.error('Error getting:!!@@', error.response);
+      setIsPaymentProcessed(true); 
+      console.error('Error getting:!!@@', error.response.data.code === 20616);
+      if(error.response.data.code === 20616){
+       console.log('결제중복')
+      }
+    }finally{
+      setIsPaymentProcessed(true);
     }
   }
 
-useEffect(() => {
-  if(paymentInfoData){
-    postInfoPaymentId();
-  }
-},[])
 
   // test배포용
   // const uri = `https://reactpaytest-app.vercel.app/payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`;
@@ -54,15 +56,6 @@ useEffect(() => {
   // const uri =`http://175.45.204.94/payment/Payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`
 
   const uri = 'https://www.noteggdev.co.kr/payRequest_utf.php'
-
-  function getParameterByName(name,url) {
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
 
 
   const onNavigationStateChange = (navState) => {

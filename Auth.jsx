@@ -1,6 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/screens/authpage/LoginScreen';
-import SignupScreen from './src/screens/authpage/SignupScreen';
 
 import AuthPassword from './src/screens/authpage/AuthPassword';
 import AgreementScreen from './src/screens/authpage/AgreementScreen';
@@ -41,10 +40,6 @@ function Auth(props) {
             name="SignIn"
             component={LoginScreen}
             options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUp"
-            component={SignupScreen}
           />
           {/* 이건 회원가입 비밀번호 설정할때 */}
             <Stack.Screen
