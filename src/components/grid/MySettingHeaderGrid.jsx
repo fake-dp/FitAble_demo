@@ -68,7 +68,7 @@ const MyNameBtn = styled.TouchableOpacity``
 
 
 const SettingContainerBtn = styled.TouchableOpacity`
-    width: 23%;
+    width: 26%;
     height: 30px;
     background-color: ${COLORS.box};
     justify-content: center;

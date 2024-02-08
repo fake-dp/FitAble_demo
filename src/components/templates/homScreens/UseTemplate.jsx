@@ -125,7 +125,6 @@ function UseTemplate(props) {
 
 
     const goPaymentScreens = () => {
-        if(isExist){
             console.log('결제결제결제결제 바로결제결제')
             const paymentInfoData = {
                 ticket: {
@@ -149,9 +148,6 @@ function UseTemplate(props) {
             console.log('@@subPaymentInfoData',paymentInfoData)
             console.log(';@@@detailData@@@',totalPrice, detailData.name)
             postInfoPaymentId(paymentInfoData)
-        }else{  
-            navigation.navigate('InfoCard', {text: 'isUseCard'});
-        }
     }
     console.log(';@@@detailData@@@',totalPrice, detailData.name)
     // orderId: '49b74bb1-08e3-46c7-bb0b-70c76cb41037',

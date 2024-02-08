@@ -112,7 +112,6 @@ const goBackScreens = () => {
 
 
     const goPaymentScreens = () => {
-        if(isExist){
             console.log('결제결제결제결제 바로결제결제')
             const paymentInfoData = {
                 ticket: {
@@ -136,9 +135,6 @@ const goBackScreens = () => {
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
             postInfoPaymentId(paymentInfoData)
-        }else{  
-            navigation.navigate('InfoCard', {text: 'isUseCard'});
-        }
     }
 
     const closeModal = () => {
