@@ -169,8 +169,8 @@ console.log('업데이트bodyData',bodyData)
         {
             agreementList.map((item) => (
               
-                <ListContainer key={item.id} styledProps={agreementList.length ===2}>
-
+                <ListContainer key={item.id} 
+                styledProps={agreementList.length ===2}>
                     <CheckBoxStyle
                         value={isSelected[item.id]}
                         onValueChange={() => handleCheckboxChange(item.id)}
@@ -262,7 +262,7 @@ const ListText = styled.Text`
 color: ${COLORS.gray_100};
 font-size: 14px;
 font-weight: 400;
-text-decoration: underline solid ${COLORS.gray_100};
+/* text-decoration: underline solid ${COLORS.gray_100}; */
 line-height: 22.40px;
 `
 

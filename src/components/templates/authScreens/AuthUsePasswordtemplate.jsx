@@ -100,6 +100,7 @@ function AuthUsePasswordtemplate({navigation}) {
                 onChangeText={handlePasswordCheck}
                 secureTextEntry={true}
                 onSubmitEditing={()=>toAuthAgree(password)}
+                returnKeyType='done'
                 hasError={!isSamePassword && passwordCheck.length > 7}
                 />
                 {

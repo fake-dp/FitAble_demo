@@ -1,11 +1,11 @@
 // sr-a-1000
 import styled from 'styled-components/native';
 import {COLORS} from '../../../constants/color'
-import AuthInput from "../../ui/inputUi/AuthInput";
+import {AuthInput} from "../../ui/inputUi/AuthInput";
 import MainBtn from "../../ui/buttonUi/MainBtn";
 import React, {useCallback, useRef, useState} from 'react';
-import { useSetRecoilState } from 'recoil';
-import { isLoginState,phoneState } from '../../../store/atom';
+import { useSetRecoilState,useRecoilState } from 'recoil';
+import { isLoginState,phoneState,fcmTokenState } from '../../../store/atom';
 import { login } from '../../../api/authApi';
 import { Alert,TouchableWithoutFeedback, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,9 +14,16 @@ function Logintempate({navigation}) {
 
     const setIsLoggedIn = useSetRecoilState(isLoginState);
     const setMyPhone = useSetRecoilState(phoneState);
-
+    const [fcmToken, setFcmToken] = useRecoilState(fcmTokenState);
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
+
+    const [isFocused, setIsFocused] = useState(false);
+    const inputRef = useRef();
+  
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
     // const [isUseAppState, setIsUseAppState] = useState(false);
     // 회원가입 페이지 이동
     const toInfoScreens = useCallback(() => {
@@ -36,40 +43,40 @@ function Logintempate({navigation}) {
 
     const handleLogin = async () => {
       try {
-          const response = await login(phone, password); // 로그인 함수 호출
-  
+          const response = await login(phone, password, fcmToken); // 로그인 함수 호출
+          const isValidInput = phone.length > 10  && password.length > 7;
+
           // if (!response) {
           //     return Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('서버 응답 없음') }]);
           // }
   
-          const isValidInput = phone.length > 10  && password.length > 7;
-  
+        console.log('로그인 응답:',response.isUseApp, response)
           if (response.isUseApp && isValidInput) {
-              const { accessToken, refreshToken } = response;
-              await AsyncStorage.setItem("accessToken", accessToken);
-              await AsyncStorage.setItem("refreshToken", refreshToken);
+              // const { accessToken, refreshToken } = response;
+              // await AsyncStorage.setItem("accessToken", accessToken);
+              // await AsyncStorage.setItem("refreshToken", refreshToken);
   
-              setMyPhone(phone);
-              setPhone('');
-              setPassword('');
+              // setMyPhone(phone);
+              // setPhone('');
+              // setPassword('');
               setIsLoggedIn(true);
-              // return Alert.alert('로그인 성공하였습니다.', '', [{ text: '확인', onPress: () => setIsLoggedIn(true) }]);
+              // return Alert.alert('로그인 성공하였습니다.', '', [{ text: '확인', onPress: () => console.log('로그인 성공') }]);
           } 
   
           if (response.isUseApp === false && isValidInput) {
-            console.log('@useapp값 확인',response.isUseApp)
-            const { accessToken, refreshToken } = response;
-            await AsyncStorage.setItem("accessToken", accessToken);
-            await AsyncStorage.setItem("refreshToken", refreshToken);
+            // console.log('@useapp값 확인',response.isUseApp)
+            // const { accessToken, refreshToken } = response;
+            // await AsyncStorage.setItem("accessToken", accessToken);
+            // await AsyncStorage.setItem("refreshToken", refreshToken);
               return Alert.alert('추가정보를 입력해주세요.', '', [{ text: '확인', onPress: () => navigation.navigate('SignUpInfoGender', { data: 'newInfo' }) }]);
           }
   
       } catch (error) {
-          console.log('Error during login@@:', error);
-          if(error.code === 10202){
+          console.log('Error during login@@:', error.response.data);
+          if(error.response.data.code === 10202){
             Alert.alert('올바른 비밀번호로 입력해주세요.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
           }
-      else if(error.code === 10200){
+          else if(error.response.data.code === 20000){
         Alert.alert('가입되지 않은 정보입니다. \n먼저 회원가입을 해주세요.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
       }
     }
@@ -80,7 +87,8 @@ function Logintempate({navigation}) {
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <LoginScreenView> 
+          <InputContainer>
+        <LoginScreenView focus={isFocused}> 
             <TitleLogo 
             //  resizeMode={FastImage.resizeMode.contain}
 
@@ -90,6 +98,9 @@ function Logintempate({navigation}) {
              onChangeText={setPhone}
              placeholder="휴대폰번호"
              maxLength={11}
+             ref={inputRef}
+             onFocus={handleFocus}
+             onBlur={handleBlur}
             />
 
             <AuthInput
@@ -97,6 +108,9 @@ function Logintempate({navigation}) {
               onChangeText={setPassword}
               placeholder="비밀번호"
               onSubmitEditing={handleLogin}
+              ref={inputRef}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
  
 
@@ -117,6 +131,7 @@ function Logintempate({navigation}) {
                 >회원가입</AboutTextRigth>
             </AboutContainer>
         </LoginScreenView>
+            </InputContainer>
         </TouchableWithoutFeedback>
     );
 }
@@ -125,23 +140,31 @@ export default Logintempate;
 
 
 const LoginScreenView = styled.View`
-    flex:1;
+    /* flex: .9; */
+    flex: ${props => props.focus ? 0.88 : 1};
     background-color: ${COLORS.sub};
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     padding: 0 20px;
 `
 
+const InputContainer = styled.View`
+  flex:1;
+  background-color: ${COLORS.sub};
+`
+
 const TitleLogo = styled(FastImage)`
-   margin-bottom: 50px;
+    margin-bottom: 50px;
     width: 180px;
     height: 34px;
+    /* background-color: red; */
 `
 
 const AboutContainer = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-bottom: 100px;
     `
 
 const AboutTextLeft = styled.Text`
@@ -159,7 +182,4 @@ const AboutTextRigth = styled.Text`
 color: ${COLORS.gray_300};
 flex: 1;
 text-align: left;
-`
-const StyledText = styled.Text`
-color:red;
 `

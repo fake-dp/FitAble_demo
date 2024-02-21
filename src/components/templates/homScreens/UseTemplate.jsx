@@ -12,7 +12,7 @@ import React, { useState, useCallback } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 import { useRoute } from '@react-navigation/native';
-import {getIsExistCard,postPaymentInfo} from '../../../api/cardApi';
+import {postPaymentInfo} from '../../../api/cardApi';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import { useFocusEffect } from '@react-navigation/native';
 function UseTemplate(props) {
@@ -25,7 +25,6 @@ function UseTemplate(props) {
     const [showModal, setShowModal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     // const [selectedOption, setSelectedOption] = useState([]);
-    const [isExist , setIsExist] = useState(false);
     const [detailData, setDetailData] = useState([]);
     const [selectedOptionDetails, setSelectedOptionDetails] = useState({});
     const [selectedOption, setSelectedOption] = useState([]);
@@ -34,22 +33,22 @@ function UseTemplate(props) {
     // ... other code ...
     // console.log('cardId.id',cardId.id)
 
-    const postInfoPaymentId = async (paymentInfoData) => {
-        try {
-          const response = await postPaymentInfo(paymentInfoData);
-            if(response){
-                navigation.navigate('PaymentWebView', {
-                    paymentInfoData, 
-                    totalPrice, 
-                    goodsName: detailData.name,
-                    memberTicketId: response.memberTicketId,
-                    moid: response.moid
-                 });
-             }
-        } catch (error) {
-          console.error('Error getting:', error);
-        }
-     }
+    // const postInfoPaymentId = async (paymentInfoData) => {
+    //     try {
+    //       const response = await postPaymentInfo(paymentInfoData);
+    //         if(response){
+    //             navigation.navigate('PaymentWebView', {
+    //                 paymentInfoData, 
+    //                 totalPrice, 
+    //                 goodsName: detailData.name,
+    //                 memberTicketId: response.memberTicketId,
+    //                 moid: response.moid
+    //              });
+    //          }
+    //     } catch (error) {
+    //       console.error('Error getting:', error);
+    //     }
+    //  }
 
      
 
@@ -98,19 +97,9 @@ function UseTemplate(props) {
         navigation.navigate('Home');
     };
 
-    const isCardInfoData = async () => {
-        try {
-            const response = await getIsExistCard();
-            // console.log('response',response);
-            setIsExist(response.isExist);
-        } catch (error) {
-            console.error('Error getting:!@#!@3', error);
-        }
-    }
 
     useFocusEffect(
         useCallback(() => {
-            isCardInfoData();
             getDataDetailTicketCenter()
         },[]));
 
@@ -147,7 +136,8 @@ function UseTemplate(props) {
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
             console.log(';@@@detailData@@@',totalPrice, detailData.name)
-            postInfoPaymentId(paymentInfoData)
+            navigation.navigate('PaymentWebView', {paymentInfoData, totalPrice, goodsName: detailData.name});
+            // postInfoPaymentId(paymentInfoData)
     }
     console.log(';@@@detailData@@@',totalPrice, detailData.name)
     // orderId: '49b74bb1-08e3-46c7-bb0b-70c76cb41037',

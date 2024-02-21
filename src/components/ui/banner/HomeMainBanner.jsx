@@ -15,21 +15,21 @@ function HomeMainBanner({fitablesBanners}) {
 
       console.log('Home banners response111211:', fitablesBanners); // 응답 로깅
 
-      // useEffect(() => {
-      //   if (fitablesBanners && fitablesBanners.length > 0) {
-      //   const interval = setInterval(() => {
-      //     const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
-      //     setActiveButtonIndex(nextIndex);
-      //     if (scrollViewRef.current) {
-      //       scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
-      //     }
-      //   }, 2000);
+      useEffect(() => {
+        if (fitablesBanners && fitablesBanners.length > 0) {
+        const interval = setInterval(() => {
+          const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
+          setActiveButtonIndex(nextIndex);
+          if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
+          }
+        }, 2000);
     
-      //   return () => {
-      //     clearInterval(interval);
-      //   };
-      // }
-      // }, [activeButtonIndex,fitablesBanners]);
+        return () => {
+          clearInterval(interval);
+        };
+      }
+      }, [activeButtonIndex,fitablesBanners]);
 
 
       const handleScrollToIndex = (index) => {

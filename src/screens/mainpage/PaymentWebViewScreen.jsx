@@ -7,25 +7,25 @@ import { useNavigation } from '@react-navigation/native';
 import {getParameterByName} from '../../utils/CustomUtils';
 function PaymentWebViewScreen(props) {
 
-  const { totalPrice, goodsName,memberTicketId, moid} = props.route.params;
-console.log('@라우터전달',totalPrice, goodsName,memberTicketId, moid)
+  const {paymentInfoData, totalPrice, goodsName} = props.route.params;
+console.log('@라우터전달',totalPrice, goodsName)
   const navigation = useNavigation();
 
   const [isPaymentProcessed, setIsPaymentProcessed] = useState(false);
 
-//   const [memberTicketId, setMemberTicketId] = useState(null);
-//   const [moid, setMoid] = useState(null);
+  const [memberTicketId, setMemberTicketId] = useState(null);
+  const [moid, setMoid] = useState(null);
 
-//   const postInfoPaymentId = async () => {
-//      try {
-//        const response = await postPaymentInfo(paymentInfoData);
-//         //  console.log('결제정보',response);
-//          setMemberTicketId(response.memberTicketId);
-//          setMoid(response.moid);
-//      } catch (error) {
-//        console.error('Error getting:', error.response);
-//      }
-// }
+  const postInfoPaymentId = async () => {
+     try {
+       const response = await postPaymentInfo(paymentInfoData);
+        //  console.log('결제정보',response);
+         setMemberTicketId(response.memberTicketId);
+         setMoid(response.moid);
+     } catch (error) {
+       console.error('Error getting:', error.response);
+     }
+}
 
   const handleNicePayment = async (data) => {
 
@@ -49,21 +49,26 @@ console.log('@라우터전달',totalPrice, goodsName,memberTicketId, moid)
     }
   }
 
+  useEffect(() => {
+    if(paymentInfoData){
+      postInfoPaymentId();
+    }
+  },[])
 
+  
   // test배포용
   // const uri = `https://reactpaytest-app.vercel.app/payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`;
   // 배포용
   // const uri =`http://175.45.204.94/payment/Payment?totalPrice=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}`
-
-  const uri = 'https://www.noteggdev.co.kr/payRequest_utf.php'
-
+  // 118.67.133.204
+  // const uri = 'https://www.noteggdev.co.kr/payRequest_utf.php'
+  const uri = 'http://118.67.133.204/payRequest_utf.php'
 
   const onNavigationStateChange = (navState) => {
     console.log('웹뷰 내비게이션 상태 변경:', navState);
-  
     // navState.url에서 URL 객체를 생성
     const url = navState.url;
-    const successUrl = 'https://www.noteggdev.co.kr/success.html';
+    const successUrl = 'http://118.67.133.204/success.html';
     if (url.startsWith(successUrl) && !isPaymentProcessed) {
       const moid = getParameterByName('moid',url);
       const paymentAmt = getParameterByName('paymentAmt',url);
@@ -122,7 +127,7 @@ console.log('@라우터전달',totalPrice, goodsName,memberTicketId, moid)
           },
           uri: uri,
           method: 'POST',
-          body: `price=${totalPrice}&goodsName=${goodsName}&memberTicketId=${memberTicketId}&moid=${moid}`
+          body: `price=${totalPrice}&goodsName=${goodsName}&moid=${moid}`
         }}
       />
     );

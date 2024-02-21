@@ -81,7 +81,7 @@ const isSamePassword = password === passwordCheck;
              <BtnContainer>
                 <EctInput 
                 text='비밀번호'
-                placeholder="영어 소문자, 숫자, 특수문자 포함 8자리~16자리"
+                placeholder="영어 대소문자, 숫자, 특수문자 포함 8자리~16자리"
                 value={password}
                 onChangeText={handlePassword}
                 onBlur={validatePasswordInput}

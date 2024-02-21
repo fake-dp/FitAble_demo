@@ -3,7 +3,8 @@ import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const multipartAxios = axios.create({
-    baseURL: `${Config.API_URL}`,
+      baseURL: `${Config.API_URL}`,
+  // baseURL: `${Config.DEV_URL}`,
   });
   
   // 요청 인터셉터

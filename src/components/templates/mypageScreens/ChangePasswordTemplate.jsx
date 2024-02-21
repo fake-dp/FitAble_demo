@@ -167,7 +167,7 @@ function ChangePasswordTemplate(props) {
             <CertificationIputBox hasError={!!passwordError}>
             <TextInput
                 style={{marginLeft:10, fontSize:14, width:'100%'}}          
-                placeholder="영어 소문자, 숫자, 특수문자 포함 8자리~16자리"
+                placeholder="영어 대소문자, 숫자, 특수문자 포함 8자리~16자리"
                 placeholderTextColor={COLORS.gray_300}
                 onChangeText={passwrdTextChange}
                 onBlur={validatePasswordInput} 

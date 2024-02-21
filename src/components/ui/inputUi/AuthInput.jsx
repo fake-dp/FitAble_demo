@@ -1,60 +1,70 @@
-// UI-loinput
+import React, { useState } from 'react'; // React import 추가
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 import { TextInput, Image } from "react-native";
-import { useState } from 'react';
-import FastImage from 'react-native-fast-image'
-function AuthInput({value, onChangeText, placeholder,maxLength,onSubmitEditing}) {
+import FastImage from 'react-native-fast-image';
+
+export const AuthInput = React.forwardRef(({
+  value,
+  onChangeText,
+  placeholder,
+  maxLength,
+  onSubmitEditing,
+  onFocus,
+  onBlur,
+}, ref) => { // ref를 여기로 옮김
 
     const [showPassword, setShowPassword] = useState(false);
     const isPasswordInput = placeholder === '비밀번호';
 
     const handlePasswordVisibilityChange = () => {
         setShowPassword(!showPassword);
-        };
+    };
 
     return (
        <>
         {
             isPasswordInput ? (
-                <AuthTextInputContainer
-                isPasswordInput={isPasswordInput}
-                >
-           
-           {value.length > 0 && (
-            <TogglePasswordVisibility onPress={handlePasswordVisibilityChange}>
-              <FastImage 
-              style={{width:20,height:20}}
-              source={showPassword ? require('../../../assets/img/eye-open.png') : require('../../../assets/img/eye-closed.png')} />
-            </TogglePasswordVisibility>
-          )}
-                <AuthTextInput
-                  value={value}
-                  onChangeText={onChangeText}
-                  placeholder={placeholder}
-                  secureTextEntry={!showPassword}
-                  onSubmitEditing={onSubmitEditing}
-                />
+                <AuthTextInputContainer isPasswordInput={isPasswordInput}>
+                  {value.length > 0 && (
+                    <TogglePasswordVisibility onPress={handlePasswordVisibilityChange}>
+                      <FastImage 
+                        style={{width:20, height:20}}
+                        source={showPassword ? require('../../../assets/img/eye-open.png') : require('../../../assets/img/eye-closed.png')} />
+                    </TogglePasswordVisibility>
+                  )}
+                  <AuthTextInput
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder={placeholder}
+                    secureTextEntry={!showPassword}
+                    onSubmitEditing={onSubmitEditing}
+                    returnKeyType='done'
+                    ref={ref}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                  />
                 </AuthTextInputContainer>   
-            ):(
+            ) : (
                 <AuthTextInputContainer>
-                <AuthTextInput
-                value={value}
-                onChangeText={onChangeText}
-                placeholder={placeholder}
-                maxLength={maxLength}
-                keyboardType="numeric"
-                // keyboardType="number-pad"
-                />
+                  <AuthTextInput
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder={placeholder}
+                    maxLength={maxLength}
+                    keyboardType="numeric"
+                    ref={ref}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                  />
                 </AuthTextInputContainer>
             )
         }
        </>
-   
     );
-}
+});
 
-export default AuthInput;
+
 
 const TogglePasswordVisibility = styled.TouchableOpacity`
   position: absolute;

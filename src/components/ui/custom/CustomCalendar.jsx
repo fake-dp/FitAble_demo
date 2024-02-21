@@ -35,10 +35,10 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
     console.log('Selected day:', day.dateString);
     console.log('Available dates:', availableDates);
     
-    if (!availableDates[day.dateString]) {
-        console.log('This date is not available for selection.');
-        return;
-    }
+    // if (!availableDates[day.dateString]) {
+    //     console.log('This date is not available for selection.');
+    //     return;
+    // }
     // 사용자가 선택한 날짜가 오늘 날짜이면 selected를 false로 설정하고, 그렇지 않으면 해당 날짜를 selected로 설정합니다.
     if (mainCenterId && day.dateString === todayString) {
       setSelected(todayString);
@@ -163,7 +163,11 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
         markedDates={{
           ...availableDates,
           ...{[selected]: { selected: true, disableTouchEvent: true,selectedColor: COLORS.main, }},
-          ...{[todayString]: { dotColor: '#FF7A00',marked: true, selected: selected === todayString}},
+          // ...{[todayString]: { dotColor: '#FF7A00',marked: true, selected: selected === todayString}},
+          ...{[todayString]: selected === todayString ? 
+            { selected: true, selectedColor: COLORS.main, selectedTextColor: COLORS.sub, dotColor: '#FF7A00', marked: true } : 
+            { dotColor: '#FF7A00', marked: true }
+        },
         }}
           onDayPress={handleDayPress}
           theme={themeStyled&&themeStyled}

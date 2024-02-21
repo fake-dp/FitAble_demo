@@ -16,8 +16,8 @@ function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp,maxLeng
             value={value}
             onBlur={onBlur}
             maxLength={text==='연락처'? maxLength: text ==="인증번호" ? 6:null}
-            keyboardType={text==='연락처'? 'numeric':'default'}
-            returnKeyType={text==='연락처'? 'done':'next'}
+            keyboardType={text==='연락처' || text==='인증번호'? 'numeric':'default'}
+            returnKeyType={text==='연락처'|| text==='비밀번호 확인'? 'done':'next'}
             onSubmitEditing={onSubmitEditing}
             />
         </AuthTextInputContainer>

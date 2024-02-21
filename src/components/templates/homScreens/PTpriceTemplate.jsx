@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
-import {getIsExistCard,postPaymentInfo} from '../../../api/cardApi';
+import {postPaymentInfo} from '../../../api/cardApi';
 function PTpriceTemplate(props) {
 
     const navigation = useNavigation();
@@ -28,7 +28,6 @@ function PTpriceTemplate(props) {
     
     const [selectedOption, setSelectedOption] = useState([]);
     const [selectedOptionDetails, setSelectedOptionDetails] = useState({});
-    const [isExist , setIsExist] = useState(false);
     const [detailData, setDetailData] = useState([]);
 
     const [totalPrice, setTotalPrice] = useState(detailData?.price);
@@ -38,22 +37,22 @@ function PTpriceTemplate(props) {
 //   console.log('cardId.id',cardId.id)
 
 
-const postInfoPaymentId = async (paymentInfoData) => {
-   try {
-     const response = await postPaymentInfo(paymentInfoData);
-       if(response){
-           navigation.navigate('PaymentWebView', {
-               paymentInfoData, 
-               totalPrice, 
-               goodsName: detailData.name,
-               memberTicketId: response.memberTicketId,
-               moid: response.moid
-            });
-        }
-   } catch (error) {
-     console.error('Error getting:', error.response);
-   }
-}
+// const postInfoPaymentId = async (paymentInfoData) => {
+//    try {
+//      const response = await postPaymentInfo(paymentInfoData);
+//        if(response){
+//            navigation.navigate('PaymentWebView', {
+//                paymentInfoData, 
+//                totalPrice, 
+//                goodsName: detailData.name,
+//                memberTicketId: response.memberTicketId,
+//                moid: response.moid
+//             });
+//         }
+//    } catch (error) {
+//      console.error('Error getting:', error.response);
+//    }
+// }
 
 
 
@@ -134,7 +133,8 @@ const goBackScreens = () => {
                 }
             });
             console.log('@@subPaymentInfoData',paymentInfoData)
-            postInfoPaymentId(paymentInfoData)
+            navigation.navigate('PaymentWebView', {paymentInfoData, totalPrice, goodsName: detailData.name});
+            // postInfoPaymentId(paymentInfoData)
     }
 
     const closeModal = () => {
@@ -146,19 +146,7 @@ const goBackScreens = () => {
         navigation.navigate('Home');
     };
 
-
-    const isCardInfoData = async () => {
-        try {
-            const response = await getIsExistCard();
-            console.log('response',response);
-            setIsExist(response.isExist);
-        } catch (error) {
-            console.error('Error getting:', error);
-        }
-    }
-
     useEffect(() => {
-        isCardInfoData();
         getDataDetailTicketCenter()
     },[]);
 

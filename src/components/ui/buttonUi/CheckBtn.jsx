@@ -9,7 +9,9 @@ function CheckBtn({ onPress, allCheck}) {
     console.log('allCheck',allCheck, 'onPress',onPress)
 
     return (
-        <StyledPressable allCheck={allCheck}>
+        <StyledPressable 
+        onPress={onPress}
+        allCheck={allCheck}>
             <StyledText
              allCheck={allCheck}
             >약관 전체동의</StyledText>
@@ -52,7 +54,7 @@ function CheckBtn({ onPress, allCheck}) {
 
 export default CheckBtn;
 
-const StyledPressable = styled.View`
+const StyledPressable = styled.TouchableOpacity`
     width: 100%;
     height: 60px;
     border-radius: 13px;

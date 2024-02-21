@@ -103,6 +103,7 @@ function SignUpInfoTemplate(props) {
 
     // 인증번호 확인
     const checkCerityNumber = async (phone, number) => {
+        // navigation.navigate('SignUpInfoGender')
         if(number.length===0){
             Alert.alert('인증번호 오류', '인증번호를 입력해주세요', [{text: '확인', onPress: () => console.log('OK Pressed')}]);
         }
@@ -124,6 +125,8 @@ function SignUpInfoTemplate(props) {
 // 인증번호 확인 (비밀번호 찾기)
 const checkCerityNumberfindPasswrod = async (phone, number) => {
     // console.log('dfasdf')
+    // navigation.navigate('NewPassword')
+
     if(number.length===0){
         Alert.alert('인증번호 오류', '인증번호를 입력해주세요', [{text: '확인', onPress: () => console.log('OK Pressed')}]);
     }
@@ -171,8 +174,12 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
         }
     }
 
-    const isCertiActive = name.length > 1  && phone.length === 11;
+    const isNameValid = name.trim().split(/\s+/).length === 1 && /^[a-zA-Z가-힣\s]*$/.test(name);
+    const isCertiActive = isNameValid && phone.length === 11;
     // console.log('회원가입 정보',name, phone)
+
+    //인증번호 유효성
+    const isCertiNumberValid = number.length === 6;
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -220,6 +227,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                    isSignUp={false}
                    onChangeText={handleCertiNumberTextChange}
                    maxLength={6}
+                     keyboardType="numeric"
                    />
                     <CertificationTimer>0{formatTime(secondsLeft)}</CertificationTimer>
                 </CertificationIputBox>
@@ -236,14 +244,18 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                     stepBtn === 0 ? (
                         <GetCertificationNextBtn 
                         onPress={findPass ? ()=>nextFindPasswordBtn(phone):()=>nextBtn(phone)} 
-                        isActive={isCertiActive}>
+                        isActive={isCertiActive}
+                        disabled={!isCertiActive}
+                        >
                         <GetCertificationNextText isActive={isCertiActive}>인증번호 받기</GetCertificationNextText>
                         </GetCertificationNextBtn>
                     ):(
                         <GetCertificationNextBtn 
                         onPress={findPass ? ()=>checkCerityNumberfindPasswrod(phone,number):()=>checkCerityNumber(phone,number)}
-                        isActive={isCertiActive}>
-                        <GetCertificationNextText isActive={isCertiActive}>다음</GetCertificationNextText>
+                        isActive={isCertiNumberValid}
+                        disabled={!isCertiNumberValid}
+                        >
+                        <GetCertificationNextText isActive={isCertiNumberValid}>다음</GetCertificationNextText>
                         </GetCertificationNextBtn>
                     )
                 }
