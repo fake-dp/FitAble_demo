@@ -23,6 +23,9 @@ function MainCalenderTemplate({centerName}) {
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null); 
 
+    const [isReserveButtonDisabled, setIsReserveButtonDisabled] = useState(false);
+const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
+
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
     const [shouldFetch, setShouldFetch] = useState(true);
     const getMyInfoData = async () => {
@@ -41,6 +44,8 @@ function MainCalenderTemplate({centerName}) {
 
     const handleCanceBtn = async(id,status) => {
         console.log('취소클릭',id)
+        if (isCancelButtonDisabled) return;
+        setIsCancelButtonDisabled(true);
         try{
             const response = await cancelReservation(id);
             if(response){
@@ -50,7 +55,8 @@ function MainCalenderTemplate({centerName}) {
                 }
                 ).catch(error => {
                     console.error("Error fetching lesson list", error.response);
-                });
+                }
+                );
             }
         }catch(error){
             if(error.response.data.code === 20903){
@@ -67,11 +73,15 @@ function MainCalenderTemplate({centerName}) {
                     ]);
             }
             // console.error('Error getting:@@', error.response.data);
+        } finally {
+            setIsCancelButtonDisabled(false);
         }
     }
    
     const handleReserveAndWaitingBtn = async(id,status) => {
         // console.log('예약대기클릭',id,status)
+        if (isReserveButtonDisabled) return;
+        setIsReserveButtonDisabled(true);
         try{
             const response = await postReservations(id);
             console.log('response',response)
@@ -105,6 +115,8 @@ function MainCalenderTemplate({centerName}) {
                 Alert.alert("예약 불가",`대기 가능 인원을 초과했습니다`,['확인']);
             }
             console.error('Error getting!!:', error.response.data.code);
+        }   finally {
+            setIsReserveButtonDisabled(false);
         }
     }
 
@@ -179,9 +191,9 @@ function MainCalenderTemplate({centerName}) {
        closeModal={closeModal}
        showModal={showModal}
        selectedItem={selectedItem}
+       isReserveButtonDisabled={isReserveButtonDisabled}
+       isCancelButtonDisabled={isCancelButtonDisabled}
        />
-     
-       
         </Container>
     );
 }

@@ -24,7 +24,7 @@ function BellList(props) {
           case 'ETC':
             return 'Mileage';
           case 'NOTICE':
-            return 'Mileage';
+            return 'DetailNotice';
           case 'INQUIRY':
             if (optionName === 'CENTER') {
               return 'MyCenter';
@@ -45,7 +45,7 @@ function BellList(props) {
 
 
     const goDetailScreen = async(id,type,optionName,path) => {
-         console.log('oid',id,type,optionName,path)
+         console.log('oiddfadsfasd',id,type,optionName,path)
         //  const screenName = determineScreenFromType(type,optionName);
         //  navigation.navigate(screenName,{path:path});
          try {

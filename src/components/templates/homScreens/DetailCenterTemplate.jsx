@@ -109,7 +109,7 @@ function DetailCenterTemplate({ route }) {
           setBtnName('TICKET');
           setActiveButton('TICKET');
       } else {
-        Alert.alert('이용 가능한 상품이 없습니다.');
+        Alert.alert('이용권을 준비하고 있습니다');
       }
 
         scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });

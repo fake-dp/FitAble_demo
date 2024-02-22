@@ -18,7 +18,7 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
-function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,handleCanceBtn,mainCenterId,handleReload,setClassList,weekView,mainCenter}) {
+function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,handleCanceBtn,mainCenterId,handleReload,setClassList,weekView,mainCenter,isReserveButtonDisabled, isCancelButtonDisabled}) {
   const isFocused = useIsFocused();
 // console.log('mainCenterId',mainCenterId)
   const today = new Date();
@@ -192,6 +192,8 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
       classList={classList}
       showModal={showModal}
       selectedItem={selectedItem}
+      isReserveButtonDisabled={isReserveButtonDisabled}
+      isCancelButtonDisabled={isCancelButtonDisabled}
       />
     </CalendarProvider>
   

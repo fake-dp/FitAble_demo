@@ -1,16 +1,16 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import {TextInput , ScrollView, TouchableOpacity} from 'react-native';
+import {TextInput , ScrollView, TouchableOpacity, Platform,Keyboard} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
 import ConsultingLabelGrid from '../../grid/ConsultingLabelGrid';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,useRef} from 'react';
 import ConsultBigBtn from '../../ui/buttonUi/ConsultBigBtn';
 import { useRoute } from '@react-navigation/native';
 import { getTrainersName,postConsulting } from '../../../api/homeApi';
 import { Alert } from 'react-native';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
+import { KeyboardAwareScrollView }from 'react-native-keyboard-aware-scroll-view';
 
 function ConsultingTemplate(props) {
     const route = useRoute();
@@ -28,6 +28,16 @@ function ConsultingTemplate(props) {
   const [selectPromotionTags, setSelectPromotionTags] = useState([]);
   const [writeCoution, setWriteCoution] = useState('');
 const [isTextValid, setIsTextValid] = useState(false); 
+
+
+const [isFocused, setIsFocused] = useState(false);
+const scrollViewRef = useRef();
+const inputRef = useRef();
+const handleFocus = () => {
+  // 스크롤뷰의 현재 위치로 스크롤
+  scrollViewRef.current.scrollTo({ y: 200, animated: true });
+};
+const handleBlur = () => setIsFocused(false);
 
     const [postTagData, setPostTagData] = useState({
         centerId: centerId,
@@ -134,9 +144,16 @@ const [isTextValid, setIsTextValid] = useState(false);
 
 
     return (
+      <KeyboardAwareScrollView 
+      enableOnAndroid={true}
+      showsVerticalScrollIndicator={false} // 스크롤 바 제거
+      bounces={false} 
+      extraScrollHeight={100}>
+  
         <Container>
             <ScrollView
               bounces={false}
+              ref={scrollViewRef}
               showsVerticalScrollIndicator={false}
               overScrollMode="never">
             <GobackGrid onPress={goBackScreens}>상담하기</GobackGrid>
@@ -150,12 +167,15 @@ const [isTextValid, setIsTextValid] = useState(false);
             />
             <InfoContainer>
                 <Title>질병 및 유의사항</Title>
-                <CoutionContainer>
+                <CoutionContainer focus={isFocused}>
                     <ConsultInputText
                     placeholder="질병 및 유의사항이 있다면 적어주세요" 
+                    ref={inputRef}
+                    maxLength={50}
                     onChangeText={handleTextInputChange}
                     onSubmitEditing={(e) => handleTextInputSubmit(e.nativeEvent.text)}
-                    style={{marginLeft: 16, fontSize: 14}}
+                    style={{marginLeft: 16, fontSize: 14, marginRight: 16, color: COLORS.white, fontWeight: '500'}}
+                    onBlur={handleBlur}
                     />
                 </CoutionContainer>
             </InfoContainer>
@@ -206,21 +226,20 @@ const [isTextValid, setIsTextValid] = useState(false);
             >상담요청</ConsultBigBtn>
             </ScrollView>
         </Container>
+        </KeyboardAwareScrollView>
     );
 }
 
 export default ConsultingTemplate;
 
 const Container = styled.View`
-    flex:1;
+     flex: 1;
     padding: 0 20px;
-    background-color: ${COLORS.sub};
+    background-color: ${ COLORS.sub };
 `
 
 const InfoContainer = styled.View`
     margin-top: 20px;
-    /* border-top-width: 1px; */
-    /* border-color: ${COLORS.gray_500}; */
 `
 
 const Title = styled.Text`

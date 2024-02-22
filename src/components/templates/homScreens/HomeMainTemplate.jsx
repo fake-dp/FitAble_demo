@@ -117,17 +117,21 @@ useFocusEffect(
 
     return (
         <Container>
-          <ScrollView>
+          <ScrollView
+          showsVerticalScrollIndicator={false}
+          overScrollMode="never"
+          bounces={false}
+          >
         <HomeMainBanner fitablesBanners={fitablesBanners}/>
         <SubContainer>
         <HomeSubBanner centersBanners={centersBanners}/>
         <TitleTextContainer>
         <TitleText>현재 내 이용권</TitleText>
-        <TouchableOpacity onPress={goMyPageTicketListScreen}>
+        <AllContentsClickBox onPress={goMyPageTicketListScreen}>
         {
           homeTicketList.length !== 0 && <AllText>전체보기</AllText>
         }
-        </TouchableOpacity>
+        </AllContentsClickBox>
         </TitleTextContainer>
         </SubContainer>
   {
@@ -145,6 +149,7 @@ useFocusEffect(
     bounces={false}
     showsVerticalScrollIndicator={false}
     overScrollMode="never"
+    showsHorizontalScrollIndicator={false}
     >
     {homeTicketList.map((item, index) => (
         <UserTicketCard
@@ -160,9 +165,9 @@ useFocusEffect(
     <SubContainer>
     <TitleTextContainer>
 <TitleReservationsText>예약된 운동</TitleReservationsText>
-<TouchableOpacity onPress={goMyPageReservationListScreen}>
+<AllContentsClickBox onPress={goMyPageReservationListScreen}>
 <AllReservationText>전체보기</AllReservationText>
-</TouchableOpacity>
+</AllContentsClickBox>
     </TitleTextContainer>
   </SubContainer>
 <ScrollView
@@ -170,8 +175,8 @@ ref={ticketScrollViewRef}
 horizontal={true}
 bounces={false}
 showsVerticalScrollIndicator={false}
-overScrollMode="never"
->
+showsHorizontalScrollIndicator={false}
+overScrollMode="never">
   {
     homeReservationList.map((item, index) => (
     <LessonCard
@@ -211,11 +216,19 @@ justify-content: space-between;
 align-items: center;
 margin-top: 24px;
 `
+
+const AllContentsClickBox = styled.TouchableOpacity`
+padding: 10px;
+display: flex;
+justify-content: center;
+align-items: center;
+`
+
 const AllText = styled.Text`
 color: ${COLORS.gray_200};
 font-size: 12px;
 font-weight: 400;
-margin-top: 20px;
+padding-top: 20px;
 `
 
 

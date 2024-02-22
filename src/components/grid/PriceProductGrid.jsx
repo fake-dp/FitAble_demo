@@ -39,6 +39,7 @@ export default PriceProductGrid;
 
 const Container = styled.View`
     padding: 0 20px;
+    width: 100%;
 `
 
 const ContainerLine = styled.View`
@@ -59,6 +60,7 @@ const MainTitleText = styled.Text`
 const ProductContainer = styled.View`
     flex-direction: row;
     margin-top: 12px;
+    width: 65%;
 `
 
 const ProductImage = styled(FastImage)`
@@ -76,13 +78,13 @@ const ProductText = styled.Text`
 
 const ProductPriceContainer = styled.View`
     margin-left: 12px;
+    width: 100%;
 `
 
 const ProductPriceText = styled.Text`
     font-size: 14px;
     font-weight: 400;
     line-height: 22.40px;
-    width: 58%;
+    width: 100%;
     color: ${COLORS.gray_300};
-
-`
+`;

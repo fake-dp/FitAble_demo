@@ -38,7 +38,7 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
                   <BtnWraper>
                     {
                       data.stopTicket && (
-                      <CancelBtnContainer onPress={()=>openStopModal(data.id)}>
+                      <CancelBtnContainer onPress={()=>openStopModal(data.id, data.centerName, data.name)}>
                         <CancelBtnText>중지</CancelBtnText>
                      </CancelBtnContainer>)
                     }

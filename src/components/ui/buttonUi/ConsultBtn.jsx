@@ -27,5 +27,5 @@ const ConsultBtnText = styled.Text`
 font-size: 14px;
 font-weight: 500;
 line-height: 22.40px;
-color: ${COLORS.white};
+color: ${COLORS.main};
 `

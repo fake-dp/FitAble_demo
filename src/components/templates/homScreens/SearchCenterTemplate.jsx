@@ -1,10 +1,10 @@
 
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import { ScrollView, TouchableOpacity ,View,TextInput} from 'react-native';
+import { ScrollView, TouchableOpacity ,View,TextInput,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
 import { getSearchCenter } from '../../../api/homeApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,6 +17,12 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
     const [searchData, setSearchData] = useState([])
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const inputRef = useRef(null);
+
+    const focusTextInput = () => {
+      inputRef.current.focus();
+  };
 
   // console.log('labelText',labelText)
     useEffect(() => {
@@ -140,10 +146,17 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
         navigation.navigate('DetailCenter', { id });
     }
 
+    const TestClose = () =>{
+      setSearchQuery('')
+      setSearchData([])
+    }
+
     const search = require('../../../assets/img/search.png');
     const close = require('../../../assets/img/close_20.png');
+    const searchclose = require('../../../assets/img/searchclose.png');
     // console.log('searchCenterText',searchCenterText)
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
             <GobackGrid onPress={goBackScreens}>{searchCenterText ? searchCenterText:'이용권 구매'}</GobackGrid>
             
@@ -162,12 +175,13 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                         </TitleContainer>
                     )
                 }
-                <SearchContainer>
+                <SearchContainer onPress={focusTextInput} activeOpacity={1}>
                 <ImageIcon 
                 
                 source={search}
                 />
                 <TextInput
+                ref={inputRef}
                 style={{marginLeft: 10, fontSize: 16, color: COLORS.white}}
                 placeholder="센터를 입력해주세요"
                 placeholderTextColor={COLORS.gray_200}
@@ -176,7 +190,13 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
                 onChangeText={handleSearchQueryChange}
                 onSubmitEditing={handleSearch}
                 returnKeyType="done"
+                value={searchQuery}
                 />
+                <CloseBtnContainer onPress={TestClose}>
+
+                <ImageIcon 
+                source={searchclose}/>
+                </CloseBtnContainer>
                 </SearchContainer>
     
               
@@ -235,6 +255,7 @@ function SearchCenterTemplate({searchCenterText,labelText}) {
             
 
         </Container>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -257,14 +278,21 @@ const TitleText = styled.Text`
     line-height: 37.80px;
 `
 
-const SearchContainer = styled.View`
+const SearchContainer = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
+    /* justify-content: space-between; */
     margin-top: 40px;
     background-color: ${COLORS.box};
     height: 50px;
     border-radius: 13px;
     margin-bottom: 28px;
+`
+
+const CloseBtnContainer = styled.TouchableOpacity`
+    position: absolute;
+    right: 16px;
+    padding: 10px;
 `
 
 const ImageIcon = styled(FastImage)`

@@ -76,7 +76,7 @@ function Logintempate({navigation}) {
           if(error.response.data.code === 10202){
             Alert.alert('올바른 비밀번호로 입력해주세요.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
           }
-          else if(error.response.data.code === 20000){
+          else if(error.response.data.code === 10200){
         Alert.alert('가입되지 않은 정보입니다. \n먼저 회원가입을 해주세요.', '', [{ text: '확인', onPress: () => console.log('실패') }]);
       }
     }

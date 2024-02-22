@@ -58,8 +58,8 @@ function MyBookListTemplate(props) {
 
     console.log('selectedDetail',selectedDetail, cancelId)
 
-    const handleClickModal = (text, id) => {
-        console.log('detail.status',text, id)
+    const handleClickModal = (text, id, test) => {
+        console.log('detail.status',text, id,test)
         setSelectedDetail({ status: text });
         setCancelId(id);
         setShowModal(true)
@@ -125,9 +125,12 @@ function MyBookListTemplate(props) {
                                         
                                         <BookBtnContainer>
                                                 {
-                                                    detail.status === "RESERVED" && (
-                                                        <BookListBtnContainer onPress={()=>handleClickModal(detail.status ,detail.id)}>
-                                                        <BookListBtnText>예약취소</BookListBtnText>
+                                                    detail.status === "RESERVED" && detail.isAvailableCancel === true &&(
+                                                        <BookListBtnContainer 
+                                                        onPress={()=>handleClickModal(detail.status ,detail.id)}
+                                                      >
+                                                        <BookListBtnText
+                                                        >예약취소</BookListBtnText>
                                                         </BookListBtnContainer> 
                                                     )
                                                 }
@@ -229,7 +232,7 @@ const BookListTitle = styled.View`
     border-bottom-color: ${COLORS.gray_100};
     padding-bottom: 12px;
     margin-bottom: 28px;
-    margin-top: 20px;
+    margin-top: 24px;
  
 `;
 

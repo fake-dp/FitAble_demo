@@ -21,7 +21,7 @@ function LessonCard({homeReservationList}) {
                         <CardDateText>{date}</CardDateText>
                         {/* <CardRightText>{trainers} {location && `| ${location}` }</CardRightText> */}
                         {/* <CardRightText>{`${trainers} ${location && `| ${location}`}`.length > 10 ? `${trainers} ${location && `| ${location}`}`.substring(0, 10) + '...' : `${trainers} ${location && `| ${location}`}`}</CardRightText> */}
-                        <CardRightText>{`${trainers} ${location ? `| ${location}` : ''}`.length > 10 ? `${trainers} ${location ? `| ${location}` : ''}`.substring(0, 10) + '...' : `${trainers} ${location ? `| ${location}` : ''}`}</CardRightText>
+                        <CardRightText>{`${trainers} ${location ? `| ${location}` : ''}`.length > 10 ? `${trainers} ${location ? `• ${location}` : ''}`.substring(0, 10) + '...' : `${trainers} ${location ? `| ${location}` : ''}`}</CardRightText>
 
 
 
@@ -35,16 +35,16 @@ function LessonCard({homeReservationList}) {
 export default LessonCard;
 
 const Container = styled.View`
-
     padding: 0px 0px 0px 20px;
-
+    margin-bottom: 100px;
     `;
 
 const CardContainer = styled.View`
    /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
    width: ${({ cardWidth }) => cardWidth}px;
-   padding: 25px 40px 25px 16px;
-  height: 120px;
+   /* padding: 25px 40px 25px 16px; */
+   padding: 20px;
+  /* height: 120px; */
   border-radius: 13px;
   background-color: ${COLORS.sub};
   border: 1px solid ${COLORS.gray_400};

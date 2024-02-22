@@ -61,9 +61,9 @@ export const getAvailableDates = async (id) => {
 }
 
 // 센터별 예약 가능한 수업 조회
-export const getAvailableLessons = async (id, date) => {
+export const getAvailableLessons = async (id, date, pageNumber = 0, pageSize = 1000) => {
     try {
-        const response = await customAxios.get(`/api/members/v1/centers/${id}/lessons/date/${date}`);
+        const response = await customAxios.get(`/api/members/v1/centers/${id}/lessons/date/${date}?page=${pageNumber}&size=${pageSize}`);
         return response.data;
     } catch (error) {
         throw error;

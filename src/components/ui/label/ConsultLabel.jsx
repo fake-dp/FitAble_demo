@@ -46,7 +46,7 @@ function ConsultLabel({ tag, selected, onPress,customTag, setCustomTag }) {
             value={customTag}
             onChangeText={handleTextInputChange}
             onSubmitEditing={handleTextInputSubmit}
-            placeholder="기타 태그 입력"
+            placeholder="기타 사항 입력"
           />
       )}
     </>

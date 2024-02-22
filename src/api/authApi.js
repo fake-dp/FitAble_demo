@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseURL = Config.API_URL;
 // const baseURL = Config.DEV_URL;
-console.log('baseURLbaseURLbas',baseURL)
-console.log('fuck')
+console.log('baseURLbaseURLbas11',baseURL)
+
 // login api
 export const login = async (phone, password, fcmToken) => {
     try {

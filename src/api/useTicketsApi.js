@@ -32,14 +32,15 @@ export const requestRefundTicket = async (id) => {
 }
 
 // [앱] 회원 이용권 목록 조회
-export const getTypeTickets = async (type) => {
+export const getTypeTickets = async (type, pageNumber = 0, pageSize = 1000) => {
     try {
-        const response = await customAxios.get(`/api/members/v1/tickets/type/${type}`);
+        const response = await customAxios.get(`/api/members/v1/tickets/type/${type}?page=${pageNumber}&size=${pageSize}`);
         return response.data;
     } catch (error) {
         throw error;
     }
 }
+
 
 // [앱] 회원 이용권 상세 조회
 export const getDetailTicket = async (id) => {

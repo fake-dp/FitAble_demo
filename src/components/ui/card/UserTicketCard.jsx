@@ -81,8 +81,9 @@ const CardContainer = styled.View`
    width: ${({ cardWidth }) => cardWidth}px;
 
   /* padding: 27px 30px 30px 24px; */
-  padding: 20px 25px 30px 25px;
-  height: 210px;
+  /* padding: 20px 25px 30px 25px; */
+  padding: 20px;
+  /* height: 210px; */
   border-radius: 13px;
   background-color: ${COLORS.sub};
   border: 1px solid ${COLORS.gray_400};

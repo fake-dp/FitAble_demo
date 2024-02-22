@@ -27,6 +27,8 @@ function CenterTicketListTemplate(props) {
   const [stopTicketList, setStopTicketList] = useState([])
 
   const [ticketStopId, setTicketStopId] = useState(null)
+  const [ticketName, setTicketName] = useState(null)
+  const [centerName, setCenterName] = useState(null)
   const [ticketSubNRefundId, setTicketSubNRefundId] = useState(null)
 
   const [loading, setLoading] = useState(true);
@@ -70,21 +72,22 @@ function CenterTicketListTemplate(props) {
 };
 
   // 중지권 요청
-  const postUseStopTicket = async (id) => {
+  const postUseStopTicket = async (id, centerName, name) => {
   // console.log('udd,',id)
-  try {
-      const response = await useStopTicket(id);
-      if(response){
-          console.log('중지권 사용 확인용 콘솔',response)
-          Alert.alert("알림","중지권 사용에 성공하였습니다.",[ 
-          { text: '확인', onPress: () =>  setStopShowModal(false)}]);
-          // setStopShowModal(false)
-      }else{
-          Alert.alert("알림","중지권 사용에 실패하였습니다.",['확인']);
-      }
-  } catch (error) {
-      console.error('Error getting:', error);
-  }
+  Alert.alert('중지권 사용',`${centerName} ${name}의 이용권 중지가 요청되었습니다`)
+  // try {
+  //     const response = await useStopTicket(id);
+  //     if(response){
+  //         console.log('중지권 사용 확인용 콘솔',response)
+  //         Alert.alert("알림",`${centerName} ${name}의 이용권 중지가 요청되었습니다`,[ 
+  //         { text: '확인', onPress: () =>  setStopShowModal(false)}]);
+  //         // setStopShowModal(false)
+  //     }else{
+  //         Alert.alert("알림","중지권 사용에 실패하였습니다.",['확인']);
+  //     }
+  // } catch (error) {
+  //     console.error('Error getting:', error);
+  // }
 };
 
   // 환불 요청
@@ -144,7 +147,6 @@ const postPaymentSubscriptionNextMonthBtn = async (id) => {
   }
 };
 
-
   // 이용권 목록 (구독권, 이용권)
   useEffect(() => {
 
@@ -155,7 +157,7 @@ const postPaymentSubscriptionNextMonthBtn = async (id) => {
  
   // 환불 및 구독 요청 확인 버튼
   const postSubNRefundBtn = (id,type) => {
-    console.log('난 환불 및 구독 버튼이얌 헤헤gpgpgp id',id, type)
+    // console.log('난 환불 및 구독 버튼이얌 헤헤gpgpgp id',id, type)
     // postRefundTicket(id);
     if(type === 'SUBSCRIBE'){
       postCancelSubscribeTicket(id);
@@ -166,21 +168,23 @@ const postPaymentSubscriptionNextMonthBtn = async (id) => {
 
   // 환불 및 구독 모달 오픈
   const openCancelModal = (id) => {
-    console.log('난 환불 및 구독 버튼이얌 헤헤 id',id)
+    // console.log('난 환불 및 구독 버튼이얌 헤헤 id',id)
     setShowModal(true)
     setTicketSubNRefundId(id)
   }
   // console.log('ticketSubNRefundId',ticketSubNRefundId)
 
   // 중지
-  const openStopModal = (id) => {
+  const openStopModal = (id, center, name) => {
     setTicketStopId(id)
+    setCenterName(center)
+    setTicketName(name)
     getStopTicketsListData(id);
   }
 
-  const postStopticketBtn = (ticketStopId) => {
-    console.log('난 @@중지 버튼이얌 헤헤 id',ticketStopId)
-    postUseStopTicket(ticketStopId);
+  const postStopticketBtn = (ticketStopId,centerName,ticketName) => {
+    // console.log('난 @@중지 버튼이얌 헤헤 id@!@#',centerName,ticketName)
+    postUseStopTicket(ticketStopId,centerName,ticketName);
   }
 
 
@@ -314,7 +318,7 @@ const stopText = {
             <StopCancelModal 
             closeModal={stopCloseModal}
             text={stopText}
-            postStopticketBtn={()=>postStopticketBtn(ticketStopId)}
+            postStopticketBtn={()=>postStopticketBtn(ticketStopId,centerName,ticketName)}
          />
         )
       }
@@ -324,6 +328,8 @@ const stopText = {
           stopTicketList={stopTicketList}
           setStopShowModal={setStopShowModal}
           ticketStopId={ticketStopId}
+          ticketName={ticketName}
+          centerName={centerName}
           setShowStopTicketPicker={setShowStopTicketPicker}/>)
       }
       </>

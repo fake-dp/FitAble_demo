@@ -33,9 +33,9 @@ export const changePassword = async (password) => {
 }
 
 // get mileages
-export const getMileages = async () => {
+export const getMileages = async (pageNumber = 0, pageSize = 1000) => {
     try {
-        const response = await customAxios.get("/api/members/v1/mileages");
+        const response = await customAxios.get(`/api/members/v1/mileages?page=${pageNumber}&size=${pageSize}`);
         return response.data;
     } catch (error) {
         throw error;

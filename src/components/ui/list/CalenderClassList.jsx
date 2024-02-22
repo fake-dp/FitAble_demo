@@ -3,13 +3,13 @@ import FastImage from 'react-native-fast-image'
 import { styled, css } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { ScrollView ,Image} from 'react-native';
+
 import BookNWaitingCancelModal from '../modal/BookNWaitingCancelModal';
-function CalenderClassList({selectedItem,showModal,classList,mainCenter,mainCenterId,handleReload,handleCanceBtn,handleBtn,closeModal}) {
+function CalenderClassList({isCancelButtonDisabled,isReserveButtonDisabled,selectedItem,showModal,classList,mainCenter,mainCenterId,handleReload,handleCanceBtn,handleBtn,closeModal}) {
 
     const reroad = require('../../../assets/img/reroad.png');
     const userIcon = require('../../../assets/img/userIcon.png');
-
-
+    const userIcon_inactive = require('../../../assets/img/userIcon_inactive.png');
 
     return (
         <>
@@ -23,16 +23,12 @@ function CalenderClassList({selectedItem,showModal,classList,mainCenter,mainCent
                     <ReroadText>새로고침</ReroadText>
                 </ReroadBtn>
             </ReroadContainer>
-            )
-       }
-
-<ScrollView
-            bounces={false}
-            showsVerticalScrollIndicator={false}
-        >
+            )}
+            <ScrollView
+                bounces={false}
+                showsVerticalScrollIndicator={false}>
             {
                 mainCenter && mainCenterId && classList.length === 0 ? (
-                    
                         <NoListContainer>
                             <NoListText>등록된 수업이 없습니다</NoListText>
                         </NoListContainer>
@@ -41,17 +37,20 @@ function CalenderClassList({selectedItem,showModal,classList,mainCenter,mainCent
             }
         {
            classList && classList.map((item, index) => (
-                
                 <CenterListContainer key={index} isLastItem={index === classList.length - 1}>
                     <CenterList>
                         <CenterListText>{item.name}</CenterListText>
                         <CenterListDate
                         status={item.status}
                         >{item.startTime} ~ {item.endTime}</CenterListDate>
-                        <CenterListText>{item.trainers.join(', ')} 강사 | {item.location}</CenterListText>
-
+                        <CenterListText>{item.trainers.join(', ')} 강사{item.location ? ` • ${item.location}` : ''}</CenterListText>
                         <CenterRecruitContainer>
-                        <Image source={userIcon}/>
+                        <FastImage
+                         source={item.status ==="END" ? userIcon_inactive : userIcon}
+                         style={{ width: 20, height: 20 }} 
+                         resizeMode={FastImage.resizeMode.contain}
+                         />
+
                         <CenterRecruitmentText>{item.reservationMembers.current} / {item.reservationMembers.max}</CenterRecruitmentText>
                         {
                             item.status === "WAITING" ? (
@@ -62,24 +61,23 @@ function CalenderClassList({selectedItem,showModal,classList,mainCenter,mainCent
                         }
                         </CenterRecruitContainer>
                     </CenterList>
-
                         {
                             item.status === "NOT_AVAILABLE" ? 
                             (null):(
                                 <CenterListRight>
-                                <CenterListBtn onPress={item.status !== "END" ? () => handleBtn(item.status,item.id, item) : null}>
-                                    <CenterListRightTopText
-                                    status={item.status}>
-                                        {/* {item.status} */}
+                                <CenterListBtn 
+                                // disabled={isReserveButtonDisabled}
+                                onPress={item.status !== "END" ? () => handleBtn(item.status,item.id, item) : null}>
+                                    <CenterListRightTopText status={item.status}>
+                                    {/* {item.status} */}
                                     {item.status === "AVAILABLE"? '예약' : item.status ==="WAITING_AVAILABLE"? '대기' : item.status ==="END"? '종료' : item.status === "RESERVED" || item.status === "WAITING" ? '취소':''}
                                     </CenterListRightTopText>
                                 </CenterListBtn>
                             </CenterListRight>
                             )
                         }
-                  
                     {
-                showModal && (
+                    showModal && (
                     <BookNWaitingCancelModal 
                         closeModal={closeModal}
                         text={selectedItem.status === "RESERVED" ? "예약" : selectedItem.status === "WAITING" ? "대기" : ""}
@@ -89,9 +87,8 @@ function CalenderClassList({selectedItem,showModal,classList,mainCenter,mainCent
                  }
                 </CenterListContainer>
             ))
-        }
+         }
         </ScrollView>
-
         </>
     );
 }

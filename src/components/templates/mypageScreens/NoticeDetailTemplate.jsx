@@ -10,13 +10,14 @@ function NoticeDetailTemplate(props) {
 
     const route = useRoute();
     const itemId = route?.params.item
-
+    const pathId = route?.params.path
+  console.log('itemIditemId',itemId,pathId)
     const [noticeDetailData, setNoticeDetailData] = useState(null);
     const navigation = useNavigation();
 
-    const getNoticeDetailData = async () => {
+    const getNoticeDetailData = async (id) => {
         try {
-            const response = await getNoticeDetail(itemId);
+            const response = await getNoticeDetail(id);
             // console.log('res',response)
             setNoticeDetailData(response);
         } catch (error) {
@@ -28,9 +29,11 @@ function NoticeDetailTemplate(props) {
 
     useEffect(()=> {
         if(itemId){
-            getNoticeDetailData()
+            getNoticeDetailData(itemId)
+        }else if(pathId){
+            getNoticeDetailData(pathId)
         }
-    },[itemId])
+    },[itemId,pathId])
 
     const goBack = () => {
         navigation.goBack();
