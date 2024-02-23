@@ -15,6 +15,8 @@ import { useRoute } from '@react-navigation/native';
 import {postPaymentInfo} from '../../../api/cardApi';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import { useFocusEffect } from '@react-navigation/native';
+import PaymentAgreementGrid from '../../grid/PaymentAgreementGrid';
+import MainBtn from '../../ui/buttonUi/MainBtn';
 function UseTemplate(props) {
 
     const navigation = useNavigation();
@@ -30,6 +32,25 @@ function UseTemplate(props) {
     const [selectedOption, setSelectedOption] = useState([]);
     const [totalPrice, setTotalPrice] = useState(detailData?.price);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
+
+    // 결제 이용약관 상태 동의
+    const [isInfoAgree, setIsInfoAgree] = useState(false);
+    const [isRefundAgree, setIsRefundAgree] = useState(false);
+    const [isCenterAgree, setIsCenterAgree] = useState(false);
+
+    const handleToggleInfoAgree = () => {
+        setIsInfoAgree(!isInfoAgree);
+    }
+
+    const handleToggleRefundAgree = () => {
+        setIsRefundAgree(!isRefundAgree);
+    }
+
+    const handleToggleCenterAgree = () => {
+        setIsCenterAgree(!isCenterAgree);
+    }
+
+
     // ... other code ...
     // console.log('cardId.id',cardId.id)
 
@@ -151,6 +172,8 @@ function UseTemplate(props) {
         goHomeText: '홈으로 가기',
     }
 
+    const isActiveBtn = isInfoAgree && isRefundAgree && isCenterAgree && totalPrice !== 0 ? true : false;
+
     return (
         <Container>
         <ScrollView
@@ -184,7 +207,18 @@ function UseTemplate(props) {
             setSelectedCoupon={setSelectedCoupon}
             />
 
-        <ActiveMainBtn onPress={goPaymentScreens}>결제하기</ActiveMainBtn>
+        <PaymentAgreementGrid 
+                    handleToggleInfoAgree={handleToggleInfoAgree}
+                    handleToggleRefundAgree={handleToggleRefundAgree}
+                    handleToggleCenterAgree={handleToggleCenterAgree}
+                    isInfoAgree={isInfoAgree}
+                    isRefundAgree={isRefundAgree}
+                    isCenterAgree={isCenterAgree}
+        />
+        <MainBtn
+                colorProp={isActiveBtn}
+                onPress={goPaymentScreens}>결제하기</MainBtn>
+        {/* <ActiveMainBtn onPress={goPaymentScreens}>결제하기</ActiveMainBtn> */}
     </ScrollView>
         {
             showModal ?

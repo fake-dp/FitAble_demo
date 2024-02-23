@@ -39,7 +39,7 @@ function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,o
                   {
                     data.paymentStatus === 'PAYMENT_SUCCESS' && (
                       <CancelBtnContainer onPress={()=>openCancelModal(data.id)}>
-                        <CancelBtnText>구독취소</CancelBtnText>
+                        <CancelBtnText>해지예약</CancelBtnText>
                        </CancelBtnContainer>
                     )
                   }

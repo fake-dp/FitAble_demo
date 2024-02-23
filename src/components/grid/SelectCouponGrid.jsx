@@ -8,8 +8,8 @@ import {formatCommaNumber} from '../../utils/CustomUtils';
 import { getPaymentSubscriptionTotal } from '../../api/cardApi';
 import FastImage from 'react-native-fast-image'
 function SelectCouponGrid({price,couponInfo,selectedOptionDetails,totalPrice, setTotalPrice,text,selectedCoupon, setSelectedCoupon,salePrice, setSalePrice}) {
-  const downcoupon = require('../../assets/img/downcoupon.png');
-  const upcoupon = require('../../assets/img/upcoupon.png');
+  const upcoupon = require('../../assets/img/downcoupon.png');
+  const downcoupon = require('../../assets/img/upcoupon.png');
   const [threeBtn, setThreeBtn] = useRecoilState(threeBtnState);
 
   const [isCouponOpen, setIsCouponOpen] = useState(false);
@@ -54,6 +54,19 @@ if (selectedCoupon && selectedCoupon.centerName !== '선택 안함') {
   }
 }
 
+// 구독권의 총 금액 계산 salePrice
+
+// 구독권의 총 금액 계산
+let subCouponDiscount = 0;
+if (selectedCoupon && selectedCoupon.centerName !== '선택 안함') {
+  if (selectedCoupon.discountRate != null) {
+    subCouponDiscount = salePrice * selectedCoupon.discountRate / 100;
+  } else if (selectedCoupon.discountAmount != null) {
+    subCouponDiscount = selectedCoupon.discountAmount;
+  }
+}
+
+
 const getPaymentSubscriptionTotalData = async (price) => {
   if (price === undefined || price ===null) {
     return;
@@ -62,13 +75,14 @@ const getPaymentSubscriptionTotalData = async (price) => {
       const response = await getPaymentSubscriptionTotal(price);
       console.log('response@!@#!@#',response);
       setSalePrice(response.price);
-      const newTotalPrice = response.price + totalOptionPrice - couponDiscount;
-      setTotalPrice(newTotalPrice);
+      const newTotalPrice = response.price + totalOptionPrice - subCouponDiscount;
+      // setTotalPrice(newTotalPrice);
+      setTotalPrice(Math.max(0, newTotalPrice));
   } catch (error) {
       console.error('Error getting123123:', error.response);
   } 
 }
-// console.log('selectedCoupon',selectedCoupon)
+console.log('couponInfo',salePrice,totalPrice,subCouponDiscount,couponInfo)
 
 // 총 결제 금액 계산
 
@@ -78,79 +92,87 @@ useEffect(() => {
     getPaymentSubscriptionTotalData(price);
   }else{
     const newTotalPrice = price + totalOptionPrice - couponDiscount;
-    setTotalPrice(newTotalPrice);
+    // setTotalPrice(newTotalPrice);
+    setTotalPrice(Math.max(0, newTotalPrice));
   }
 }, [price, totalOptionPrice, couponDiscount,text]);
 
-console.log('subPrice',subPrice)
 
   return (
     <Container>
       <MainTitleText>쿠폰 선택</MainTitleText>
-      
-      <SelectCouponContainerBox onPress={toggleCoupon}>
+      {
+        couponInfo && couponInfo.length > 0 ? (
+          <SelectCouponContainerBox onPress={toggleCoupon}>
 
-      <SelectCouponContainer onPress={toggleCoupon} activeOpacity={0.8}>
-        <TouchableOpacity onPress={toggleCoupon}>
-
-          <SelectCouponInnerContainer>
-          {
-            selectedCoupon ? (
-              <>
+          <SelectCouponContainer onPress={toggleCoupon} activeOpacity={0.8}>
+            <TouchableOpacity onPress={toggleCoupon}>
+    
+              <SelectCouponInnerContainer>
               {
-                selectedCoupon.centerName === '선택 안함' ? (
-                  <SelectCouponText>{selectedCoupon?.centerName}</SelectCouponText>
-                ) : (
-                  <SelectCouponText>[{selectedCoupon?.centerName}] {selectedCoupon?.couponName}</SelectCouponText>
-                )
-              }
-              {/* <SelectCouponText>[{selectedCoupon?.centerName}] {selectedCoupon?.couponName}</SelectCouponText> */}
-              {/* <SelectCouponText>{selectedCoupon.endDate}</SelectCouponText> */}
-              </>
-            ):(<SelectCouponText>쿠폰을 선택해주세요</SelectCouponText>)
-          }
-
-          </SelectCouponInnerContainer>
-
-        </TouchableOpacity>
-        {
-          couponInfo && updateCouponInfoData.length===0 ? '' :  (
-                <LeftContainer onPress={toggleCoupon} activeOpacity={0.8}>
-                     <SelectCouponText>{selectedCoupon?.endDate}</SelectCouponText>
-                <SelectCouponImg 
-                resizeMode={FastImage.resizeMode.contain}
-                source={isCouponOpen ? upcoupon : downcoupon} />
-              </LeftContainer>
-            )
-        }
-      </SelectCouponContainer>
-      { isCouponOpen && (
-          <>
-          {
-            
-            couponInfo && updateCouponInfoData.map((item) => (
-              <TouchableOpacity key={item.id} onPress={() => handleSelectCoupon(item)}>
-                <CouponListContainer>
+                selectedCoupon ? (
+                  <>
                   {
-                    item.centerName === '선택 안함' ? (
-                      <CouponListText>{item.centerName}</CouponListText>
-                    ):(
-                      <>
-                      <CouponListText>[{item.centerName}] {item.couponName}</CouponListText>
-                      <CouponListText>{item.endDate}</CouponListText>
-                      </>
+                    selectedCoupon.centerName === '선택 안함' ? (
+                      <SelectCouponText>{selectedCoupon?.centerName}</SelectCouponText>
+                    ) : (
+                      <SelectCouponText>[{selectedCoupon?.centerName}] {selectedCoupon?.couponName}</SelectCouponText>
                     )
                   }
-
+                  {/* <SelectCouponText>[{selectedCoupon?.centerName}] {selectedCoupon?.couponName}</SelectCouponText> */}
+                  {/* <SelectCouponText>{selectedCoupon.endDate}</SelectCouponText> */}
+                  </>
+                ):(<SelectCouponText>쿠폰을 선택해주세요</SelectCouponText>)
+              }
+    
+              </SelectCouponInnerContainer>
+    
+            </TouchableOpacity>
+            {
+              couponInfo && updateCouponInfoData.length===0 ? '' :  (
+                    <LeftContainer onPress={toggleCoupon} activeOpacity={0.8}>
+                         <SelectCouponText>{selectedCoupon?.endDate}</SelectCouponText>
+                        <SelectCouponImg 
+                    resizeMode={FastImage.resizeMode.contain}
+                    source={isCouponOpen ? upcoupon : downcoupon} />
+                  </LeftContainer>
+                )
+            }
+          </SelectCouponContainer>
+          { isCouponOpen && (
+              <>
+              {
+                
+                couponInfo && updateCouponInfoData.map((item) => (
+                  <TouchableOpacity key={item.id} onPress={() => handleSelectCoupon(item)}>
+                    <CouponListContainer>
+                      {
+                        item.centerName === '선택 안함' ? (
+                          <CouponListText>{item.centerName}</CouponListText>
+                        ):(
+                          <>
+                          <CouponListText>[{item.centerName}] {item.couponName}</CouponListText>
+                          <CouponListText>{item.endDate}</CouponListText>
+                          </>
+                        )
+                      }
+    
+                 
+                    </CouponListContainer>
+                    </TouchableOpacity>
+                    ))
+              }
              
-                </CouponListContainer>
-                </TouchableOpacity>
-                ))
-          }
-         
-        </>
-      )}
-      </SelectCouponContainerBox>
+            </>
+          )}
+          </SelectCouponContainerBox>
+        ):
+        (<NoSelectCouponContainer>
+          <NoCouponListText>쿠폰을 사용할 수 없는 상품입니다</NoCouponListText>
+        </NoSelectCouponContainer>
+        )
+      }
+   
       <ContainerLine />
 
 
@@ -196,9 +218,14 @@ console.log('subPrice',subPrice)
              selectedCoupon?.discountRate === null ? (
                  <PriceListText>{selectedCoupon?.discountAmount}원</PriceListText>
                ):(
-                 <PriceListText>-{formatCommaNumber(Math.floor(price*(selectedCoupon?.discountRate)/100))}원</PriceListText>
+                  text === 'sub'? (
+                    <PriceListText>-{formatCommaNumber(Math.floor(salePrice*(selectedCoupon?.discountRate)/100))}원</PriceListText>
+                  ):(
+                    <PriceListText>-{formatCommaNumber(Math.floor(price*(selectedCoupon?.discountRate)/100))}원</PriceListText>
+                  )
                )
            }
+           {/* salePrice */}
            </PriceListContainer>
           }
 
@@ -230,6 +257,14 @@ const SelectCouponContainerBox = styled.View`
   border-radius: 13px;
   width: 100%;
 `;
+
+const NoSelectCouponContainer = styled.View`
+  padding: 15px 16px;
+  background-color: ${COLORS.box};
+  border-radius: 13px;
+  margin-top: 10px;
+`
+
 const SelectCouponContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
@@ -253,6 +288,8 @@ flex:1;
 
 const SelectCouponImg = styled(FastImage)`
   margin-left: 10px;
+  width: 22px;
+  height: 22px;
 `;
 
 const SelectCouponText = styled.Text`
@@ -283,6 +320,12 @@ const CouponListContainer = styled.View`
 const CouponListText = styled.Text`
     font-size: 14px;
 color: ${COLORS.gray_100};
+font-weight: 400;
+line-height: 22.40px;
+`
+const NoCouponListText = styled.Text`
+font-size: 14px;
+color: ${COLORS.gray_400};
 font-weight: 400;
 line-height: 22.40px;
 `

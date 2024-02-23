@@ -112,12 +112,12 @@ function CenterTicketListTemplate(props) {
   try {
       const response = await cancelSubscribeTicket(id);
       if(response){
-          console.log('구독 취소 확인용 콘솔',response)
-          Alert.alert("알림","구독 취소에 성공하였습니다.",[
+          // console.log('구독 취소 확인용 콘솔',response)
+          Alert.alert("해지 예약 완료",`현재 보유한 구독권은 아래 날짜까지 사용 가능합니다.\n ${response.endDate}`,[
           { text: '확인', onPress: () =>  setShowModal(false)}]);
           // setShowModal(false)
       }else{
-          Alert.alert("알림","구독 취소에 실패하였습니다.",['확인']);
+          Alert.alert("알림","구독 해지 예약에 실패하였습니다.",['확인']);
       }
   } catch (error) {
       console.error('Error getting:', error);
@@ -220,8 +220,8 @@ const postPaymentSubscriptionNextMonthBtn = async (id) => {
 
 const subscribeCancelText = {
     title: '해지 예약',
-    content: '정말로 구독을 취소하시겠어요?',
-    contentsub: '구독을 취소하면 다음 달 구독권을 사용할 수 없습니다',
+    content: '정말로 구독을 해지하시겠어요?',
+    contentsub: '구독을 해지하면 다음 달 구독권을 사용할 수 없습니다',
     checkText: '확인',
     closeText: '닫기',
 }

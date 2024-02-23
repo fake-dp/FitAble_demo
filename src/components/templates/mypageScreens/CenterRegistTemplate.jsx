@@ -79,9 +79,9 @@ function CenterRegistTemplate(props) {
     };
    
     const text = {
-        title: '대표 센터으로 등록',
-        content: '선택하신 센터을 대표 센터으로 등록하시겠어요?',
-        closeText: '닫기',
+        title: '대표센터로 등록',
+        content: '선택하신 센터를 대표 센터로 등록하시겠어요?',
+        closeText: '취소',
         goHomeText: '등록',
     }
 

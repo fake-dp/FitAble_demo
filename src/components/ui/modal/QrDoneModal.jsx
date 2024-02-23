@@ -22,7 +22,11 @@ function QrDoneModal({myTicketInfo}) {
         <ListText>{myTicketInfo?.name}</ListText>
         <ContentContainer>
         <ListText>{myTicketInfo?.ticketName}</ListText>
-        <ListText>잔여일수 {myTicketInfo?.leftDay}일 / 잔여횟수 {myTicketInfo?.leftTime}회</ListText>
+        {/* <ListText>잔여일수 {myTicketInfo?.leftDay}일 / 잔여횟수 {myTicketInfo?.leftTime}회</ListText> */}
+        <ListText>
+            잔여일수 {myTicketInfo?.leftDay}일
+            {myTicketInfo?.leftTime > 0 && ` / 잔여횟수 ${myTicketInfo?.leftTime}회`}
+        </ListText>
         </ContentContainer>
         </ListContainer>
 

@@ -25,7 +25,7 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
                 {data.status === 'USING_SOON'&& <UsingText>이용예정</UsingText>}
                 {data.status === 'STOP'&& <UsingText>중지중</UsingText>}
                 </TextContainer>
-                <TitleText>{`${data.name}`.length > 18 ? `${data.name}`.substring(0, 18) + '...' : `${data.name}`}</TitleText>
+                <TitleText>{`${data.name}`.length > 16 ? `${data.name}`.substring(0, 16) + '...' : `${data.name}`}</TitleText>
 
               {/* <DateText>{data.status}</DateText> */}
               {/* <DateText>{data.paymentStatus}</DateText> */}

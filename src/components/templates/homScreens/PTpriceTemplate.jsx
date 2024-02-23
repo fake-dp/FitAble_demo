@@ -14,6 +14,8 @@ import SelectCouponGrid from '../../grid/SelectCouponGrid';
 import PriceModal from '../../ui/modal/PriceModal';
 import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import {postPaymentInfo} from '../../../api/cardApi';
+import PaymentAgreementGrid from '../../grid/PaymentAgreementGrid';
+import MainBtn from '../../ui/buttonUi/MainBtn';
 function PTpriceTemplate(props) {
 
     const navigation = useNavigation();
@@ -32,6 +34,24 @@ function PTpriceTemplate(props) {
 
     const [totalPrice, setTotalPrice] = useState(detailData?.price);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
+
+        // 결제 이용약관 상태 동의
+        const [isInfoAgree, setIsInfoAgree] = useState(false);
+        const [isRefundAgree, setIsRefundAgree] = useState(false);
+        const [isCenterAgree, setIsCenterAgree] = useState(false);
+    
+        const handleToggleInfoAgree = () => {
+            setIsInfoAgree(!isInfoAgree);
+        }
+    
+        const handleToggleRefundAgree = () => {
+            setIsRefundAgree(!isRefundAgree);
+        }
+    
+        const handleToggleCenterAgree = () => {
+            setIsCenterAgree(!isCenterAgree);
+        }
+    
     // const [salePrice, setSalePrice] = useState(0);
     // ... other code ...
 //   console.log('cardId.id',cardId.id)
@@ -166,6 +186,7 @@ const goBackScreens = () => {
         goHomeText: '홈으로 가기',
     }
 
+    const isActiveBtn = isInfoAgree && isRefundAgree && isCenterAgree && totalPrice !== 0 ? true : false;
 
     return (
         <Container>
@@ -204,11 +225,19 @@ const goBackScreens = () => {
         selectedCoupon={selectedCoupon}
         setSelectedCoupon={setSelectedCoupon}
         />
+        <PaymentAgreementGrid
+                            handleToggleInfoAgree={handleToggleInfoAgree}
+                            handleToggleRefundAgree={handleToggleRefundAgree}
+                            handleToggleCenterAgree={handleToggleCenterAgree}
+                            isInfoAgree={isInfoAgree}
+                            isRefundAgree={isRefundAgree}
+                            isCenterAgree={isCenterAgree}
+                            />
 
     </ScrollView>
-        <ActiveMainBtn
+    <MainBtn
         onPress={goPaymentScreens}
-        >결제하기</ActiveMainBtn>
+        colorProp={isActiveBtn}>결제하기</MainBtn>
         {
             showModal ?
             <PriceModal

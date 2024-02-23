@@ -99,13 +99,15 @@ const ReroadContainer = styled.View`
 margin-top: 28px;
 /* border-top-width: 1px;
 border-color: #535258; */
-padding: 0 20px;
+padding: 10px 20px;
 background-color: ${COLORS.sub};
+/* background-color: red; */
 `
 const ReroadBtn = styled.TouchableOpacity`
 flex-direction: row;
 align-items: center;
 justify-content: flex-end;
+/* background-color: red; */
 `
 const ReroadIcon = styled(FastImage)`
 width: 15px;

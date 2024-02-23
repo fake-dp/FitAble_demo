@@ -45,9 +45,9 @@ const cardWidth = deviceWidth - 2 * padding;
             {/* <CardDesText>{name} {trainerName}</CardDesText> */}
             <CardDesText>
             {
-              `${name} ${trainerName ? `| ${trainerName}` : ''}`.length > 24 
-              ? `${name} ${trainerName ? `| ${trainerName}` : ''}`.substring(0, 24) + '...' 
-              : `${name} ${trainerName ? `| ${trainerName}` : ''}`
+              `${name} ${trainerName ? `• ${trainerName} 강사` : ''}`.length > 24 
+              ? `${name} ${trainerName ? `• ${trainerName} 강사` : ''}`.substring(0, 24) + '...' 
+              : `${name} ${trainerName ? `• ${trainerName} 강사` : ''}`
             }
             </CardDesText>
 

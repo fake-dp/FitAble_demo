@@ -52,8 +52,10 @@ function ScanTemplate(props) {
 
             try{
                 const response = await getQrTicketCheckInList(qrToken);
-                // console.log('qrponse',response)
-                if(response){
+                console.log('qrponse',response.tickets.length)
+                if(response.tickets.length === 0){
+                    Alert.alert('입장 불가', '이용할 센터의 QR 코드를 찍어주세요.', [{ text: '확인', onPress: () =>console.log('end') }]);
+                }else if(response.tickets.length > 0){
                     setQrCenterId(response.id);
                     setQrTicketList(response.tickets);
                     setShowQrModal(true);

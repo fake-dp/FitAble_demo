@@ -17,6 +17,8 @@ import { useRecoilState } from 'recoil';
 import { showSubModalState } from '../../../store/atom';
 import SubPaymentModal from '../../ui/modal/SubPaymentModal';
 import { useFocusEffect } from '@react-navigation/native';
+import PaymentAgreementGrid from '../../grid/PaymentAgreementGrid';
+import MainBtn from '../../ui/buttonUi/MainBtn';
 function SubscribeTemplate(props) {
 
     const navigation = useNavigation();
@@ -35,6 +37,25 @@ function SubscribeTemplate(props) {
     const [salePrice, setSalePrice] = useState(0);
 
     const [isButtonClicked, setIsButtonClicked] = useState(false);
+
+
+    // 결제 이용약관 상태 동의
+    const [isInfoAgree, setIsInfoAgree] = useState(false);
+    const [isRefundAgree, setIsRefundAgree] = useState(false);
+    const [isCenterAgree, setIsCenterAgree] = useState(false);
+
+    const handleToggleInfoAgree = () => {
+        setIsInfoAgree(!isInfoAgree);
+    }
+
+    const handleToggleRefundAgree = () => {
+        setIsRefundAgree(!isRefundAgree);
+    }
+
+    const handleToggleCenterAgree = () => {
+        setIsCenterAgree(!isCenterAgree);
+    }
+
     console.log('cardId',cardId,isExist)
     const getDataDetailTicketCenter = async () => {
         try {
@@ -101,14 +122,14 @@ function SubscribeTemplate(props) {
     // 구독권 결제 합계 데이터
     const formattedOptions = Object.values(selectedOptionDetails).map(option => ({
         id: option.id,
-        salePrice: option.price || 0 // 예시, 실제 데이터에 맞게 조정 필요
+        salePrice: option.price || 0
     }));
 
     console.log('formattedOptions',formattedOptions)
 
     let couponDiscount = 0;
     if (selectedCoupon?.discountRate != null) {
-        couponDiscount = detailData?.price * selectedCoupon?.discountRate / 100;
+        couponDiscount = salePrice * selectedCoupon?.discountRate / 100;
       } else if (selectedCoupon?.discountAmount != null) {
         couponDiscount = selectedCoupon?.discountAmount;
       }
@@ -177,6 +198,10 @@ const subPaymentInfoData1 = {
     couponId: selectedCoupon?.id,
 }
 console.log('@@subPaymentInfoData',subPaymentInfoData1)
+// isInfoAgree,isRefundAgree, isCenterAgree
+// const isActiveBtn = isInfoAgreetotalPrice === 0 ? false : true;
+
+const isActiveBtn = isInfoAgree && isRefundAgree && isCenterAgree && totalPrice !== 0 ? true : false;
 
 // console.log('detailDatadetailData',detailData,subPaymentInfoData)
     return (
@@ -215,10 +240,26 @@ console.log('@@subPaymentInfoData',subPaymentInfoData1)
             setSalePrice={setSalePrice}
         />
 
+        <PaymentAgreementGrid 
+            handleToggleInfoAgree={handleToggleInfoAgree}
+            handleToggleRefundAgree={handleToggleRefundAgree}
+            handleToggleCenterAgree={handleToggleCenterAgree}
+            isInfoAgree={isInfoAgree}
+            isRefundAgree={isRefundAgree}
+            isCenterAgree={isCenterAgree}
+        />
+
     </ScrollView>
-        <ActiveMainBtn
+    <BtnContainer>
+        <MainBtn
+        colorProp={isActiveBtn}
         onPress={goCardInfoScreens}
-        >구독하기</ActiveMainBtn>
+        >구독하기</MainBtn>
+    </BtnContainer>
+        {/* <ActiveMainBtn
+        onPress={goCardInfoScreens}
+        >구독하기</ActiveMainBtn> */}
+        
         {
             paymentModal && (
                 <SubPaymentModal 
@@ -240,6 +281,10 @@ const Container = styled.View`
 
 const GobackContainer = styled.View`
  padding: 0 20px;
+`
+
+const BtnContainer = styled.View`
+    padding: 0 20px;
 `
 
 

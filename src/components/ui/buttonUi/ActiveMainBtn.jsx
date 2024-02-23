@@ -29,7 +29,7 @@ const Container = styled.View`
 
 
 const StyledPressable = styled.Pressable`
-    width: 350px;
+    width: 90%;
     height: 60px;
     border-radius: 50px;
     justify-content: center;
