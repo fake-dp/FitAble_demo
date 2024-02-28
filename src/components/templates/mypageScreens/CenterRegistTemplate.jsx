@@ -10,7 +10,7 @@ import PriceModal from '../../ui/modal/PriceModal';
 import {getValidCenter,postMainCenter} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
 import { myinfoState } from '../../../store/atom';
-
+import FastImage from 'react-native-fast-image'
 function CenterRegistTemplate(props) {
     const [showModal, setShowModal] = useState(false);
     const [initialSelectedItemId, setInitialSelectedItemId] = useState('');
@@ -84,11 +84,18 @@ function CenterRegistTemplate(props) {
         closeText: '취소',
         goHomeText: '등록',
     }
-
+    const backArrow = require('../../../assets/img/back_arrow.png');
     return (
         <Container>
-            <GobackGrid onPress={goBackScreens}>대표 센터 등록</GobackGrid>
-
+            {/* <GobackGrid onPress={goBackScreens}>대표 센터 등록</GobackGrid> */}
+            <GobackTouchable onPress={goBackScreens}>
+            <FastImage 
+            source={backArrow}
+            style={{ width: 30, height: 28 }} 
+            resizeMode={FastImage.resizeMode.contain}
+            />
+            <TitleText>대표 센터 등록</TitleText>
+        </GobackTouchable>
             <ScrollView
             bounces={false}
             showsVerticalScrollIndicator={false}
@@ -126,9 +133,23 @@ function CenterRegistTemplate(props) {
 
 export default CenterRegistTemplate;
 
+const GobackTouchable = styled.TouchableOpacity`
+flex-direction: row;
+align-items: center;
+margin-bottom: 10px;
+padding: 0 10px;
+`;
+
+const TitleText = styled.Text`
+color: ${COLORS.white};
+font-size: 20px;
+font-weight: 600;
+margin-left: 12px;
+`
+
 const Container = styled.View`
   flex: 1;
-  padding: 0 20px;
+  padding: 0 10px;
   background-color: ${COLORS.sub};
 `;
 

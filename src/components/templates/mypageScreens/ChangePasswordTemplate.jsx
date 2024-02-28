@@ -3,7 +3,7 @@ import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput ,Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import { formatTime } from '../../../utils/CustomUtils';
 import {changePassword} from '../../../api/mypageApi';
 import {getCertificationNumber,checkCertificationNumber} from '../../../api/certificationApi';
@@ -41,6 +41,21 @@ function ChangePasswordTemplate(props) {
     const checkPasswrdTextChange = (text) => {
         setCheckPassword(text);
     }
+
+    const phoneInputRef = useRef(null);
+    const phoneSeInputRef = useRef(null);
+    const certificationInputRef = useRef(null);
+
+    const focusOnPhoneInput = () => {
+        phoneInputRef.current.focus();
+    };
+
+    const focusOnPhoneSeInput = () => {
+        phoneSeInputRef.current.focus();
+    };
+    const focusOnCertificationInput = () => {
+        certificationInputRef.current.focus();
+    };
 
       // 비밀번호 검증
     const validatePasswordInput = () => {
@@ -139,14 +154,19 @@ function ChangePasswordTemplate(props) {
         <CertificationTextContainer>
         <CeritText>인증번호</CeritText>
         </CertificationTextContainer> 
-            <CertificationIputBox>
+            <CertificationIputBox
+             activeOpacity={1}
+             onPress={focusOnCertificationInput}
+            >
             <TextInput
                 style={{marginLeft: 10, fontSize: 14}}          
                 placeholder="인증번호 6자리를 입력해주세요"
                 placeholderTextColor={COLORS.gray_300}
                 onChangeText={certificationTextChange}
                 maxLength={6}
+                keyboardType="number-pad"
                 onSubmitEditing={() => checkCertificaitonFn(phone, number)}
+                ref={certificationInputRef}
                 // secureTextEntry={true}
                 />
                  <CertificationTimer>
@@ -164,7 +184,10 @@ function ChangePasswordTemplate(props) {
         <PasswordContainer>
         <CeritText>새 비밀번호 입력</CeritText>
         </PasswordContainer> 
-            <CertificationIputBox hasError={!!passwordError}>
+            <CertificationIputBox 
+                    activeOpacity={1}
+                    onPress={focusOnPhoneInput}
+            hasError={!!passwordError}>
             <TextInput
                 style={{marginLeft:10, fontSize:14, width:'100%'}}          
                 placeholder="영어 대소문자, 숫자, 특수문자 포함 8자리~16자리"
@@ -173,6 +196,7 @@ function ChangePasswordTemplate(props) {
                 onBlur={validatePasswordInput} 
                 secureTextEntry={true}
                 maxLength={16}
+                ref={phoneInputRef}
                 />
             </CertificationIputBox>
                 {
@@ -184,7 +208,10 @@ function ChangePasswordTemplate(props) {
             <SecondPasswordContainer>
         <CeritText>새 비밀번호 입력 확인</CeritText>
         </SecondPasswordContainer> 
-            <CertificationIputBox hasError={!isSamePassword && checkPassword.length > 7}>
+            <CertificationIputBox hasError={!isSamePassword && checkPassword.length > 7}
+            activeOpacity={1}
+            onPress={focusOnPhoneSeInput}
+            >
             <TextInput
                 style={{marginLeft:10, fontSize:14, width:'100%'}}          
                 placeholder="한 번 더 입력해주세요"
@@ -192,6 +219,7 @@ function ChangePasswordTemplate(props) {
                 onChangeText={checkPasswrdTextChange}
                 secureTextEntry={true}
                 onSubmitEditing={() => changePasswrod(password)}
+                ref={phoneSeInputRef}
                 />
             </CertificationIputBox>
             {
@@ -208,7 +236,7 @@ function ChangePasswordTemplate(props) {
                     <GetCertificationNextBtn 
                     isActive={number.length > 5}
                     onPress={()=>checkCertificaitonFn(phone, number)}>
-                        <GetCertificationNextText isActive={number.length > 5}>다음</GetCertificationNextText>
+                        <GetCertificationNextText isActive={number.length === 6}>다음</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     )
                 }
@@ -271,7 +299,7 @@ font-weight: 400;
 line-height: 22.40px;
 `
 
-const CertificationIputBox = styled.View`
+const CertificationIputBox = styled.TouchableOpacity`
 flex-direction: row;
 border-width: ${props => props.hasError ? '1px' : '1px'};
    border-color: ${props => props.hasError ? 'red' : COLORS.gray_200};

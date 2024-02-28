@@ -13,7 +13,7 @@ function HomeMainBanner({fitablesBanners}) {
 
 
 
-      console.log('Home banners response111211:', fitablesBanners); // 응답 로깅
+      // console.log('Home banners response111211:', fitablesBanners); // 응답 로깅
 
       useEffect(() => {
         if (fitablesBanners && fitablesBanners.length > 0) {

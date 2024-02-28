@@ -90,8 +90,9 @@ margin-right: 8px;
 const CloseBtnContainer = styled.TouchableOpacity`
     position: absolute;
     top: 80px;
-    right: 30px;
+    right: 2px;
     z-index: 10;
+    padding : 10px 20px;
 `
 
 const CloseBtnText = styled.Text`

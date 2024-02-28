@@ -2,8 +2,12 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import { useNavigation } from '@react-navigation/native';
-
+import { useRoute } from '@react-navigation/native';
 function PaymentResultScreen(props) {
+
+    const route = useRoute();
+
+    const resultFails = route.params?.result;
 
     const navigation = useNavigation();
 
@@ -14,13 +18,19 @@ function PaymentResultScreen(props) {
     return (
         <Container>
             <PaymentBoxContainer>
-
-            <PaymentTextContainer>
-            <PaymentResultText>결제가 완료되었습니다.</PaymentResultText>
-            <PaymentSubText>결제되었습니다. 운동을 시작해주세요!</PaymentSubText>
-            </PaymentTextContainer>
- 
-
+            {
+                resultFails === 'fail' ?(
+                    <PaymentTextContainer>
+                    <PaymentResultText>결제가 실패되었습니다</PaymentResultText>
+                    <PaymentSubText>다시 결제를 시도해주세요.</PaymentSubText>
+                    </PaymentTextContainer>
+                ):(
+                    <PaymentTextContainer>
+                    <PaymentResultText>결제가 완료되었습니다</PaymentResultText>
+                    <PaymentSubText>결제되었습니다. 운동을 시작해주세요!</PaymentSubText>
+                    </PaymentTextContainer>
+                )
+            }
             <PaymentResultBtn onPress={handlegoHome}>
                 <PaymentResultBtnText>홈으로</PaymentResultBtnText>
             </PaymentResultBtn>

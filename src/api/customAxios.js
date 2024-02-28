@@ -18,7 +18,7 @@ console.log('Config.DEV_URL',test2)
 // 요청 인터셉터
 customAxios.interceptors.request.use(async (config) => {
     const token = await AsyncStorage.getItem("accessToken");
-    console.log('Access token from AsyncStorage:', token); // 콘솔 로그 추가
+    // console.log('Access token from AsyncStorage:', token); // 콘솔 로그 추가
     if (token) {
       config.headers["Authorization"] = `${token}`;
     }

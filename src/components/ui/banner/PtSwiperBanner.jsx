@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Modal, ScrollView, Image, Dimensions, TouchableOpacity, Text } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
@@ -9,7 +9,20 @@ function PtSwiperBanner({ images }) {
     const [activeImageIndex, setActiveImageIndex] = useState(0); // 여기를 추가합니다.
     const [modalVisible, setModalVisible] = useState(false);
     
+    useEffect(() => {
+        if (modalVisible) {
+            const timer = setTimeout(() => {
+                if (scrollViewRef.current) {
+                    const xOffset = activeImageIndex * Dimensions.get('window').width;
+                    scrollViewRef.current.scrollTo({ x: xOffset, animated: false });
+                }
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [modalVisible, activeImageIndex]);
+
     const handleImageTap = (index) => {
+        console.log('Image Tapped:', index);
         setActiveImageIndex(index);
         setModalVisible(true);
     };
@@ -40,7 +53,9 @@ function PtSwiperBanner({ images }) {
                 {images && images.map((imageUrl, index) => (
                     <TouchableOpacity key={index} onPress={() => handleImageTap(index)}>
                         <BannerImageContainer>
-                            <BannerImage source={{ uri: imageUrl }} />
+                            <BannerImage source={{ uri: imageUrl }} 
+                            resizeMode='contain'
+                            />
                         </BannerImageContainer>
                     </TouchableOpacity>
                 ))}
@@ -64,6 +79,7 @@ function PtSwiperBanner({ images }) {
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
+                        ref={scrollViewRef} 
                         onMomentumScrollEnd={(event) => {
                             const pageIndex = Math.floor(event.nativeEvent.contentOffset.x / Dimensions.get('window').width);
                             setActiveButtonIndex(pageIndex);
@@ -71,12 +87,15 @@ function PtSwiperBanner({ images }) {
                         style={{ backgroundColor: '#000' }}
                         >
                         {images && images.map((imageUrl, index) => (
-                            <FastImage key={index} source={{ uri: imageUrl }} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, resizeMode: 'contain' }} />
+                            <FastImage key={index} source={{ uri: imageUrl }} 
+                            resizeMode={FastImage.resizeMode.contain} 
+                            style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }} />
+                            // style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, resizeMode: 'contain' }} />
                             ))}
                     </ScrollView>
 
-                    <TouchableOpacity style={{ position: 'absolute', top: 50, right: 20 }} onPress={closeModal}>
-                        <Text style={{color:'#fff', fontWeight:800, fontSize:18}}>닫기</Text>
+                    <TouchableOpacity style={{ position: 'absolute', top: 50, right: 4, paddingVertical:16, paddingHorizontal:20, backgroundColor:COLORS.sub, borderRadius:20 }} onPress={closeModal}>
+                        <Text style={{color:COLORS.main, fontWeight:800, fontSize:18}}>닫기</Text>
                     </TouchableOpacity>
                 </Modal>
                             
@@ -96,7 +115,8 @@ const BannerContainer = styled.View`
 
 const BannerImageContainer = styled.View`
   width: ${Dimensions.get('window').width}px;
-  aspect-ratio: 1;
+  /* aspect-ratio: 1; */
+  height: 100%;
 `;
 
 const BannerImage = styled(FastImage)`

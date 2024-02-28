@@ -17,12 +17,14 @@ import {getDetailTicketCenter} from '../../../api/useTicketsApi';
 import { useFocusEffect } from '@react-navigation/native';
 import PaymentAgreementGrid from '../../grid/PaymentAgreementGrid';
 import MainBtn from '../../ui/buttonUi/MainBtn';
+import { useRecoilState } from 'recoil';
+import {mainCenterIdState} from '../../../store/atom';
 function UseTemplate(props) {
 
     const navigation = useNavigation();
     const route = useRoute();
     const cardId = route.params?.data;      
-   
+   const [mainCenterId, setMainCenterId] = useRecoilState(mainCenterIdState);
     // console.log('detailDat111a@@',cardId)
     const [showModal, setShowModal] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -111,7 +113,7 @@ function UseTemplate(props) {
 
     const closeModal = () => {
         setShowModal(false)
-        navigation.navigate('DetailCenter');
+        navigation.navigate('DetailCenter',{id:mainCenterId});
     }
 
     const goHomeScreens = () => {

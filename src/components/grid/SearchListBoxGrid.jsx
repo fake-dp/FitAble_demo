@@ -12,8 +12,8 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
     return (
         <TouchableOpacity   
         onPress={() => onPress(id)}>
-            
-        <Container key={id} isSelected={ isSelected}>
+            <InnerContainer isSelected={isSelected}>
+        <Container key={id} isSelected={isSelected}>
             <ContentsBox>
             <TitleText isSelected={isSelected}>{name}</TitleText>
             <SubTextContainer>
@@ -51,6 +51,7 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
                 )
            }
         </Container>
+        </InnerContainer>
         </TouchableOpacity>
     );
 }
@@ -61,17 +62,21 @@ const Container = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 37px;
+    padding: 20px 10px;
+`
+
+const InnerContainer = styled.View`
     border-radius: ${(props) => (props.isSelected ? '15px': '0')};
-    padding:${(props) => (props.isSelected ? '15px 5px': '0')};
     background-color: ${(props) => (props.isSelected ? COLORS.box : 'transparent')}; 
-    box-shadow: ${(props) => (props.isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.3)' : '0px 0px 0px rgba(0, 0, 0, 0)')}; 
- 
-` 
+    box-shadow: ${(props) => (props.isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.3)' : '0px 0px 0px rgba(0, 0, 0, 0)')};
+    /* margin-bottom: 10px; */
+    padding: 0 4px;
+
+`
 
 const ContentsBox = styled.View`
     /* flex-direction: row; */
-    width: 50%;
+    width: 64%;
 `
 
 const TitleText = styled.Text`
@@ -88,28 +93,28 @@ margin-top: 8px;
 `
 
 const MapIcon = styled(FastImage)`
-width: 15px;
-height: 15px;
+width: 18px;
+height: 18px;
 margin-right: 4px;
 margin-top: 2px;
 `
 
 const MapText = styled.Text`
-font-size: 12px;
+font-size: 14px;
 color: ${COLORS.gray_200};
-font-weight: 400;
+font-weight: 300;
 line-height: 19.20px;
-`
+`;
 
 const TagContainer = styled.View`
 flex-direction: row;
 flex-wrap: wrap;
-width: 184px;
+width: 100%;
 margin-top: 23px;
-`
+`;
 
 const TagBox = styled.View`
-padding: 3px 7px;
+padding: 4px 12px;
 border : 1px solid ${COLORS.gray_200};
 border-radius: 50px;
 margin-right: 4px;
@@ -120,10 +125,11 @@ const TagText = styled.Text`
 font-size: 12px;
 color: ${COLORS.gray_200};
 font-weight: 400;
+
 `
 
 const MainSpotImage = styled(FastImage)`
-width: 130px;
-height: 106px;
+width: 114px;
+height: 114px;
 border-radius: 15px;
 `

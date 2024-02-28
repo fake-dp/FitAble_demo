@@ -162,7 +162,7 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
         hideArrows
         markedDates={{
           ...availableDates,
-          ...{[selected]: { selected: true, disableTouchEvent: true,selectedColor: COLORS.main, }},
+          ...{[selected]: { selected: true, disableTouchEvent: true,selectedColor: COLORS.main,selectedTextColor: COLORS.sub }},
           // ...{[todayString]: { dotColor: '#FF7A00',marked: true, selected: selected === todayString}},
           ...{[todayString]: selected === todayString ? 
             { selected: true, selectedColor: COLORS.main, selectedTextColor: COLORS.sub, dotColor: '#FF7A00', marked: true } : 

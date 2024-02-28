@@ -88,12 +88,17 @@ margin-bottom: 30px;
 `;
 
 const ModalCloseButton = styled.TouchableOpacity`
+width: 60px;
+height: 60px;
+position: absolute;
+top: 0;
+right: 0;
 `;
 
 const ModalCloseBox = styled(FastImage)`
     position: absolute;
     right: 15px;
     top: 15px;
-    width: 20px;
-  height: 20px;
+    width: 28px;
+    height: 28px;
 `

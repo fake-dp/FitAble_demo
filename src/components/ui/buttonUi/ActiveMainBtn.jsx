@@ -41,5 +41,7 @@ const StyledPressable = styled.Pressable`
 `
 
 const StyledText = styled.Text`
+    font-size: 16px;
+    font-weight: 600;
      color: ${ COLORS.sub }
 `

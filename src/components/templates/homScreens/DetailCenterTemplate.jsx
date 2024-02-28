@@ -190,11 +190,15 @@ function DetailCenterTemplate({ route }) {
             >
               {
                 detailData?.mainImage ? (
+                  <ImgContainer>
                   <MainImg 
-                  // resizeMode={FastImage.resizeMode.contain}
+                  resizeMode={FastImage.resizeMode.contain}
                   source={{uri:detailData?.mainImage}}/>
+                  </ImgContainer>
                   ):(
-                  <NoImg source={notImg}/>
+                    <ImgContainer>
+                      <NoImg source={notImg}/>
+                    </ImgContainer>
                 )
               }
             <GobackTouchable onPress={goBackScreens}>
@@ -203,7 +207,7 @@ function DetailCenterTemplate({ route }) {
             source={backArrow} 
             resizeMode={FastImage.resizeMode.contain}
             />
-            {/* <Image source={testArrow}/> */}
+   
             </GobackTouchable>
 
             <GymBasicInfoGrid 
@@ -322,16 +326,22 @@ const Container = styled.View`
     background-color: ${COLORS.sub};
     /* padding: 0 20px; */
 `
-
-
-const MainImg = styled(FastImage)`
+const ImgContainer = styled.View`
     width: 100%;
     height: 312px;
 `
 
+const MainImg = styled(FastImage)`
+    width: 100%;
+    height: 100%;
+    // 중앙 정렬 비율 맞게
+    
+`
+
 const NoImg = styled(FastImage)`
     width: 100%;
-    height: 312px;
+    height: 100%;
+    /* height: 312px; */
 `
 
 const GobackTouchable = styled.TouchableOpacity`

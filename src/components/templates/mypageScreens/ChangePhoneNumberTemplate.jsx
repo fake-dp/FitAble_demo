@@ -3,7 +3,7 @@ import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput ,Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { formatTime } from '../../../utils/CustomUtils';
 import {changePhone} from '../../../api/mypageApi';
 import {getCertificationNumber,checkCertificationNumber} from '../../../api/certificationApi';
@@ -21,6 +21,17 @@ function ChangePhoneNumberTemplate(props) {
     const [showCertificationInput, setShowCertificationInput] = useState(false);
     const [stepBtn, setStepBtn] = useState(0);
    
+    const phoneInputRef = useRef(null);
+    const certificationInputRef = useRef(null);
+
+    const focusOnPhoneInput = () => {
+        phoneInputRef.current.focus();
+    };
+
+    const focusOnCertificationInput = () => {
+        certificationInputRef.current.focus();
+    };
+
     const phoneTextChange = (text) => {
         setPhone(text);
     }
@@ -28,7 +39,7 @@ function ChangePhoneNumberTemplate(props) {
     const certificationTextChange = (text) => {
         setNumber(text);
     }
-
+    console.log('myInfo.phone === phon1e',myInfo.phone === phone)
     // 휴대폰번호 변경
     const changePhoneNum = async (phone, number) => {
         try{
@@ -94,7 +105,7 @@ function ChangePhoneNumberTemplate(props) {
     }
 
     const nextBtn = (phone) => {
-
+        console.log('myInfo.phzzzzone === phone',myInfo.phone === phone)
         const phoneRegex = /^010\d{8}$/;
 
         if(!phoneRegex.test(phone)){
@@ -102,8 +113,14 @@ function ChangePhoneNumberTemplate(props) {
                 {text: '확인', onPress: () => console.log('OK Pressed')},
               ]);
             return;
+        }else if(myInfo.phone === phone){
+            Alert.alert('휴대폰번호 오류', '현재 이용 중인 휴대폰번호입니다', [
+                {text: '확인', onPress: () => console.log('OK Pressed')},
+                ]);
+            return;
         }else{
             getCertification(phone);
+            // console.log('다음단계')
         }
     }
 
@@ -117,7 +134,10 @@ function ChangePhoneNumberTemplate(props) {
         <TextContainer>
             <GuideText>새로운 휴대폰번호</GuideText>
         </TextContainer> 
-        <PasswordIputBox>
+        <PasswordIputBox
+            activeOpacity={1}
+            onPress={focusOnPhoneInput}
+        >
             <TextInput
                 style={{marginLeft: 10, fontSize: 14}}
                 placeholder="변경할 휴대폰번호 11자리를 - 없이 입력해주세요"
@@ -125,6 +145,7 @@ function ChangePhoneNumberTemplate(props) {
                 onChangeText={phoneTextChange}
                 maxLength={11}
                 keyboardType="numeric"
+                ref={phoneInputRef}
                 />
         </PasswordIputBox>
         
@@ -134,14 +155,19 @@ function ChangePhoneNumberTemplate(props) {
                 <CertificationTextContainer>
                 <GuideText>인증번호</GuideText>
      </CertificationTextContainer> 
-     <CertificationIputBox>
+     <CertificationIputBox
+             activeOpacity={1}
+             onPress={focusOnCertificationInput}
+     >
         <TextInput
             style={{marginLeft: 10, fontSize: 14}}
             placeholder="인증번호 6자리를 입력해주세요"
             placeholderTextColor={COLORS.gray_300}
             onChangeText={certificationTextChange}
             maxLength={6}
+            keyboardType="numeric"
             onSubmitEditing={() => changePhoneNum(phone, number)}
+            ref={certificationInputRef}
             // secureTextEntry={true}
             />
              <CertificationTimer>
@@ -163,8 +189,8 @@ function ChangePhoneNumberTemplate(props) {
                         <GetCertificationNextText isActive={phone.length > 10}>다음</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     ) : (
-                        <GetCertificationNextBtn isActive={number.length > 5} onPress={()=>changePhoneNum(phone, number)}>
-                        <GetCertificationNextText isActive={number.length > 5}>다음</GetCertificationNextText>
+                        <GetCertificationNextBtn isActive={number.length === 6} onPress={()=>changePhoneNum(phone, number)}>
+                        <GetCertificationNextText isActive={number.length === 6}>수정</GetCertificationNextText>
                     </GetCertificationNextBtn>
                     )
                 }
@@ -199,7 +225,7 @@ font-weight: 400;
 line-height: 22.40px;
 `
 
-const PasswordIputBox = styled.View`
+const PasswordIputBox = styled.TouchableOpacity`
 flex-direction: row;
 border: 1px solid ${COLORS.gray_200}; 
 border-radius: 13px;
@@ -207,7 +233,7 @@ height: 52px;
 align-items: center;
 `
 
-const CertificationIputBox = styled.View`
+const CertificationIputBox = styled.TouchableOpacity`
 flex-direction: row;
 border: 1px solid ${COLORS.gray_200}; 
 border-radius: 13px;

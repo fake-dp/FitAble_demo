@@ -2,8 +2,17 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import CheckBox from '@react-native-community/checkbox';
 import { Linking } from 'react-native';
-
+import {getAgreeTerms} from '../../api/cardApi';
+import { centerIdState } from '../../store/atom';
+import { useRecoilState } from 'recoil';
+import { useState } from 'react';
+import TermsModal from '../ui/modal/TermsModal';
 function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handleToggleInfoAgree, handleToggleRefundAgree, handleToggleCenterAgree }) {
+
+
+    const [mainCenterId, setMainCenterId] = useRecoilState(centerIdState)
+    const [termData, setTermData] = useState([])
+    const [modalVisible, setModalVisible] = useState(false);
 
     const handleLinkPress = (url) => {
         Linking.canOpenURL(url).then(supported => {
@@ -16,9 +25,29 @@ function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handle
       };
 
 
+      const getTermsData = async () => {
+        try{
+            const response = await getAgreeTerms(mainCenterId);
+            if(response){
+                console.log('response',response,response.ticketCenterTerms)
+                setTermData(response.ticketCenterTerms)
+                setModalVisible(true)
+            }
+        }catch(e){
+            console.log('error',e)
+        }
+    }
+
+    const hanldeCloseModal = () => {
+        setModalVisible(false)
+    }
+
+    // console.log('termData',termData)
+
 
 
     return (
+        <>
         <Container>
             <AgreementContainer>
 
@@ -85,15 +114,24 @@ function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handle
              <SubAgreementContainer>   
         <AgreementLink
             activeOpacity={1}
-        >
+            onPress={getTermsData}
+            >
         <AgreementStringText>이용권 센터 약관</AgreementStringText>
         </AgreementLink>
         <AgreementText>에 동의합니다.</AgreementText>
         </SubAgreementContainer>
         </AgreementTextContainer>
         </AgreementContainer>
-
+      
         </Container>
+        {modalVisible && modalVisible&&
+            <TermsModal 
+            modalVisible={modalVisible}
+            hanldeCloseModal={hanldeCloseModal}
+            termData={termData}
+            />
+        }
+            </>
     );
 }
 

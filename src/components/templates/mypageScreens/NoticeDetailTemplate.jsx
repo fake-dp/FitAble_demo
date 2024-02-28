@@ -53,7 +53,6 @@ function NoticeDetailTemplate(props) {
             
              <WebView
                 originWhitelist={['*']}
-                
                 // source={{ html: noticeDetailData ? noticeDetailData.context : '' }}
                 source={{
                     html: `

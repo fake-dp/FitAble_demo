@@ -13,6 +13,7 @@ import { formatDate } from '../../../utils/CustomUtils';
 import ImagePicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FastImage from 'react-native-fast-image'
+
 function FitableQnATemplate(props) {
     const navigation = useNavigation();
     const route = useRoute();
@@ -20,7 +21,7 @@ function FitableQnATemplate(props) {
 
     const centerInquiryText = route.params?.text;
     const centerInquiryId = route.params?.centerId;
-
+    console.log('centerInquiryText',centerInquiryText,centerInquiryId)
     const [inquiryText, setInquiryText] = useState('');
     const [inquiryList, setInquiryList] = useRecoilState(inquiryListState);
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
@@ -47,7 +48,7 @@ function FitableQnATemplate(props) {
         console.log('inquiryText',inquiryText)
     };
     const goBackScreens = () => {
-        if(inquiryText.length > 0){
+        if(inquiryText.length > 0 || selectedImages.length > 0){
             Alert.alert(
                 "주의",
                 "작성 중인 내용을 등록하지 않고 나가시겠습니까?",
@@ -83,7 +84,7 @@ function FitableQnATemplate(props) {
                 );
 
         } catch (error) {
-            console.error('Error getting:', error);
+            // console.error('Error getting:123', error);
             Alert.alert(
                 "문의 실패",
                 "문의 등록에 실패하였습니다.",
@@ -96,7 +97,7 @@ function FitableQnATemplate(props) {
         console.log('datadata',data)
         try {
             const response = await postFitAbleInquiry(data);
-            console.log('응답성공',response)
+            // console.log('응답성공',response)
          
             if(response){
                 setInquiryText('')
@@ -109,7 +110,7 @@ function FitableQnATemplate(props) {
             }
             
         } catch (error) {
-            console.error('Error getting:', error.response.data);
+            // console.error('Error getting:22', error.response.data);
             Alert.alert(
                 "문의 실패",
                 "문의 등록에 실패하였습니다.",
@@ -120,41 +121,80 @@ function FitableQnATemplate(props) {
 
 
 
-    const handleRegistBtn = (centerInquiryId, inquiryText) => {
-
-        console.log('centerInquiryId, inquiryText',centerInquiryId, inquiryText)
-
-        if(centerInquiryText){
-            const data = {
-                centerId: centerInquiryId,
-                context: inquiryText
-            }
-
-            postCenterInquiryData(data);
-        }else{
-            const formData = new FormData();
-            const requestDto = {
-                context: inquiryText
-            };
-            formData.append("requestDto", JSON.stringify(requestDto));
-            // const imageFile = { uri: '', type: 'image/jpeg', name: 'image.jpg' };
-            // formData.append("images", imageFile);
-                // 이미지 파일 추가
-            selectedImages.forEach((image, index) => {
-            // 이미지 파일 이름을 지정하여 FormData에 추가
-            formData.append('images', {
-                uri: image, // 이미지 파일 경로 또는 URL
-                type: 'image/jpeg', // 이미지 타입 (예: image/jpeg)
-                name: `image${index}.jpg` // 이미지 파일 이름
-            });
-        });
-             
-            console.log('formData1111',formData)
-            fitableInquiryData(formData);
-      
+const handleCenterRegisterBtn = (centerInquiryId, inquiryText) => {
+    // console.log('centerInquiryId, inquiryText',centerInquiryId, inquiryText,centerInquiryText)
+    if(centerInquiryText){
+        const data = {
+            centerId: centerInquiryId,
+            context: inquiryText
         }
-        // console.log('등록하였습니다.',inquiryText);
+        // console.log('data',data)
+        if(inquiryText.length < 10){
+            Alert.alert(
+                "문의 실패",
+                "문의 내용을 10자 이상 입력해주세요.",
+                [{text:'확인'}]
+                );
+        }else{
+            postCenterInquiryData(data);
+        }
+    }
+}
+
+const handleFitableRegisterBtn = (inquiryText) => {
+    const formData = new FormData();
+    const requestDto = {
+        context: inquiryText
     };
+    formData.append("requestDto", JSON.stringify(requestDto));
+    // const imageFile = { uri: '', type: 'image/jpeg', name: 'image.jpg' };
+    // formData.append("images", imageFile);
+        // 이미지 파일 추가
+    selectedImages.forEach((image, index) => {
+    // 이미지 파일 이름을 지정하여 FormData에 추가
+    formData.append('images', {
+        uri: image, // 이미지 파일 경로 또는 URL
+        type: 'image/jpeg', // 이미지 타입 (예: image/jpeg)
+        name: `image${index}.jpg` // 이미지 파일 이름
+    });
+});
+     
+    console.log('formData1111',formData)
+    fitableInquiryData(formData);
+}
+
+    // const handleRegistBtn = (centerInquiryId, inquiryText) => {
+    //     console.log('centerInquiryId, inquiryText',centerInquiryId, inquiryText)
+    //     if(centerInquiryText){
+    //         const data = {
+    //             centerId: centerInquiryId,
+    //             context: inquiryText
+    //         }
+    //         postCenterInquiryData(data);
+    //     }else{
+    //         const formData = new FormData();
+    //         const requestDto = {
+    //             context: inquiryText
+    //         };
+    //         formData.append("requestDto", JSON.stringify(requestDto));
+    //         // const imageFile = { uri: '', type: 'image/jpeg', name: 'image.jpg' };
+    //         // formData.append("images", imageFile);
+    //             // 이미지 파일 추가
+    //         selectedImages.forEach((image, index) => {
+    //         // 이미지 파일 이름을 지정하여 FormData에 추가
+    //         formData.append('images', {
+    //             uri: image, // 이미지 파일 경로 또는 URL
+    //             type: 'image/jpeg', // 이미지 타입 (예: image/jpeg)
+    //             name: `image${index}.jpg` // 이미지 파일 이름
+    //         });
+    //     });
+             
+    //         console.log('formData1111',formData)
+    //         fitableInquiryData(formData);
+      
+    //     }
+    //     // console.log('등록하였습니다.',inquiryText);
+    // };
 
     const handleAnswerListBtn = () => {
         navigation.navigate('ProductQnA');
@@ -169,15 +209,25 @@ function FitableQnATemplate(props) {
 
       ImagePicker.openPicker({
         multiple: true, 
-        maxFiles: 3 - selectedImages.length, 
+        maxFiles: 3, 
         width: 300,
         height: 400,
         cropping: true,
+        compressImageQuality: 0.8,
+        compressImageMaxWidth: 750,
+        compressImageMaxHeight: 750,
       })
         .then(images => {
           console.log(images);
           setSelectedImages(images.map(image => image.path));
         })
+        // .then(newImages => {
+        //     console.log(newImages);
+        //     // 새 이미지들을 기존 이미지 배열에 추가
+        //     const updatedImages = [...selectedImages, ...newImages.map(image => image.path)];
+        //     setSelectedImages(updatedImages);
+        // })
+        
         .catch(error => {
           console.log(error);
         });
@@ -247,8 +297,13 @@ function FitableQnATemplate(props) {
        
          
                 </KeyboardAwareScrollView>
-                <MyBtn onPress={()=>handleRegistBtn(centerInquiryId, inquiryText)}>등록하기</MyBtn>
-
+                {
+                    centerInquiryText && centerInquiryId ? (
+                         <MyBtn onPress={()=>handleCenterRegisterBtn(centerInquiryId, inquiryText)}>tpsx등록하기11</MyBtn>
+                    ):(
+                        <MyBtn onPress={()=>handleFitableRegisterBtn(inquiryText)}>등록하기</MyBtn>
+                    )
+                }
         </Container>
             </TouchableWithoutFeedback>
     );

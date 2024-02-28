@@ -10,9 +10,10 @@ import { Platform } from 'react-native';
 import QrCheckModal from '../../ui/modal/QrCheckModal';
 import QrCancelModal from '../../ui/modal/QrCancelModal';
 import QrDoneModal from '../../ui/modal/QrDoneModal';
-import {qrTicketListState,qrFailTextState} from '../../../store/atom';
+import {qrTicketListState,qrFailTextState,mainCenterIdState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import FastImage from 'react-native-fast-image'
+
 
 if (Platform.OS === 'android') {
   // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
@@ -23,6 +24,8 @@ if (Platform.OS === 'android') {
 }
 
 function ScanTemplate(props) {
+
+    const [centerId, setCenterId] = useRecoilState(mainCenterIdState);
 
     const navigation = useNavigation();
     const [qrBanners, setQrBanners] = useState([]);
@@ -37,25 +40,36 @@ function ScanTemplate(props) {
 
         const [scaned, setScaned] = useState(true);
         const ref = useRef(null);
-      
+        console.log('centerId',centerId)
         useEffect(() => {
           // 종료후 재시작을 했을때 초기화
           setScaned(true);
         }, []);
-
+       
         const onBarCodeRead = async(event) => {
             if (!scaned) return;
             setScaned(false);
             Vibration.vibrate();
             const qrToken = event.nativeEvent.codeStringValue;
             // console.log('qrToken',qrToken)
-
+            console.log('centerIdcenterIdcenterId',centerId)
             try{
                 const response = await getQrTicketCheckInList(qrToken);
-                console.log('qrponse',response.tickets.length)
-                if(response.tickets.length === 0){
+                // console.log('qrponse',response.tickets.length)
+
+                // 이상한 센터 들 갔을 때
+                if(response.id !== centerId){
+                    console.log('qrponse',response)
                     Alert.alert('입장 불가', '이용할 센터의 QR 코드를 찍어주세요.', [{ text: '확인', onPress: () =>console.log('end') }]);
-                }else if(response.tickets.length > 0){
+
+                // 이용권이 없을 때
+                }else if(response.id === centerId && response.tickets.length === 0){
+                    console.log('qrponse',response)
+                    Alert.alert('입장 불가', '이용 가능한 이용권이 없습니다.', [{ text: '확인', onPress: () =>console.log('end') }]);
+
+                // 이용권이 있고 올바름 그럼 다음 단계 넘어감
+                }else if(response.tickets.length > 0 && response.id === centerId){
+                    console.log('qrponse',response)
                     setQrCenterId(response.id);
                     setQrTicketList(response.tickets);
                     setShowQrModal(true);
@@ -64,8 +78,9 @@ function ScanTemplate(props) {
                     Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요.', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
                 }
             }catch(error){
-                // console.error('Error getting:', error.response.data);
+                console.log('Error getting:', error.response.data);
                 if(error){
+                    console.log('error',error.response.data)
                     Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요.', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
                 }
             } finally {

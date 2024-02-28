@@ -36,7 +36,17 @@ function TermsofUseTemplate(props) {
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
 
-                <SettingList>
+                <SettingListBtn >
+                    <SettingListText>마케팅 정보 수신 동의</SettingListText>
+                    <SettingListRightIcon source={rightIcon}/>
+                </SettingListBtn>
+
+                <SettingListBtn >
+                    <SettingListText>푸시 알림 수신 동의</SettingListText>
+                    <SettingListRightIcon source={rightIcon}/>
+                </SettingListBtn>
+
+                {/* <SettingList>
                     <SettingListText>마케팅 정보 수신 동의</SettingListText>
                     <ToggleBtn />
                 </SettingList>
@@ -44,7 +54,7 @@ function TermsofUseTemplate(props) {
                 <SettingList>
                     <SettingListText>푸시 알림 수신 동의</SettingListText>
                     <ToggleBtn />
-                </SettingList>
+                </SettingList> */}
             </SettingListContainer>
         </Container>
     );

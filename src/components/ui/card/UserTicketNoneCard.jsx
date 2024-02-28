@@ -10,11 +10,9 @@ const cardWidth = deviceWidth - 2 * padding;
   
   return (
     <Container>
-         <CardContainer cardWidth={cardWidth}>
+         <CardContainer cardWidth={cardWidth} onPress={onPress}>
             <CardText>사용 중인 이용권이 없습니다</CardText>
-            <RegisteredBtn
-            onPress={onPress}
-            >
+            <RegisteredBtn>
                 <BtnCardText>내 센터 등록하기</BtnCardText>
             </RegisteredBtn>
          </CardContainer>
@@ -32,7 +30,7 @@ const Container = styled.View`
   padding: 0 20px;
 `;
 
-const CardContainer = styled.View`
+const CardContainer = styled.TouchableOpacity`
    /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
    width: ${({ cardWidth }) => cardWidth}px;
   height: 210px;
@@ -52,7 +50,7 @@ font-weight: 500;
 line-height: 22.40px;
 `
 
-const RegisteredBtn = styled.TouchableOpacity`
+const RegisteredBtn = styled.View`
     background-color: ${COLORS.main};
     border-radius: 80px;
     width: 173px;

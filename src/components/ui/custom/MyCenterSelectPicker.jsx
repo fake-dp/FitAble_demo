@@ -32,6 +32,7 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
 
       const handleValueChange = (value) => {
         setSelectedCenterId(value);
+        
       };
 
       const handleDonePress = async() => {
@@ -50,7 +51,11 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       ref={pickerRef}
       onValueChange={handleValueChange}
       onDonePress={handleDonePress}
+      // 닫기
+      // onClose={handleDonePress}
 
+      // 취소 text
+      cancelText="취소"
     doneText="변경"
     value={selectedCenterId}
     textInputProps={{ underlineColorAndroid: 'transparent'}}

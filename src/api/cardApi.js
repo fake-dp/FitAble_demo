@@ -79,3 +79,13 @@ export const postNicepayPayment = async (data) => {
         throw error;
     }
 }
+
+// 이용권 센터 약관 동의
+export const getAgreeTerms = async (id) => {
+    try {
+        const response = await customAxios.get(`/api/members/v1/centers/${id}/ticketTerms`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

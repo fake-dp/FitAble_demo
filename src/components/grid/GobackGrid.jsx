@@ -1,6 +1,6 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 
 function GobackGrid({children, onPress}) {
     

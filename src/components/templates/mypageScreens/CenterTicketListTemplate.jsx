@@ -73,21 +73,20 @@ function CenterTicketListTemplate(props) {
 
   // 중지권 요청
   const postUseStopTicket = async (id, centerName, name) => {
-  // console.log('udd,',id)
-  Alert.alert('중지권 사용',`${centerName} ${name}의 이용권 중지가 요청되었습니다`)
-  // try {
-  //     const response = await useStopTicket(id);
-  //     if(response){
-  //         console.log('중지권 사용 확인용 콘솔',response)
-  //         Alert.alert("알림",`${centerName} ${name}의 이용권 중지가 요청되었습니다`,[ 
-  //         { text: '확인', onPress: () =>  setStopShowModal(false)}]);
-  //         // setStopShowModal(false)
-  //     }else{
-  //         Alert.alert("알림","중지권 사용에 실패하였습니다.",['확인']);
-  //     }
-  // } catch (error) {
-  //     console.error('Error getting:', error);
-  // }
+
+  try {
+      const response = await useStopTicket(id);
+      if(response){
+          console.log('중지권 사용 확인용 콘솔',response)
+          Alert.alert("알림",`${centerName} ${name}의 이용권 중지가 요청되었습니다`,[ 
+          { text: '확인', onPress: () =>  setStopShowModal(false)}]);
+          // setStopShowModal(false)
+      }else{
+          Alert.alert("알림","중지권 사용에 실패하였습니다.",['확인']);
+      }
+  } catch (error) {
+      console.error('Error getting:', error);
+  }
 };
 
   // 환불 요청

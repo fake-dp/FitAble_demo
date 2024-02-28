@@ -42,7 +42,10 @@ console.log('@라우터전달',totalPrice, goodsName)
       setIsPaymentProcessed(true); 
       console.error('Error getting:!!@@', error.response.data.code === 20616);
       if(error.response.data.code === 20616){
+        navigation.navigate('PaymentResult', {result: 'fail'});
        console.log('결제중복')
+      }else{
+        navigation.navigate('PaymentResult', {result: 'fail'});
       }
     }finally{
       setIsPaymentProcessed(true);

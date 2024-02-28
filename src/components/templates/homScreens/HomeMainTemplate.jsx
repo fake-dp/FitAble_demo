@@ -128,9 +128,9 @@ useFocusEffect(
         <TitleTextContainer>
         <TitleText>현재 내 이용권</TitleText>
         <AllContentsClickBox onPress={goMyPageTicketListScreen}>
-        {
+        {/* {
           homeTicketList.length !== 0 && <AllText>전체보기</AllText>
-        }
+        } */}
         </AllContentsClickBox>
         </TitleTextContainer>
         </SubContainer>

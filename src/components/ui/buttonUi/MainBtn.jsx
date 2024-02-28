@@ -18,7 +18,7 @@ function MainBtn({children, onPress, colorProp,disabled}) {
                 onPress={handlePress}
                 colorProp={colorProp}
                 disabled={!colorProp || disabled} 
-            >
+                >
                 <StyledText
                 colorProp={colorProp}
                 >{children}</StyledText>
@@ -30,7 +30,6 @@ export default MainBtn;
 
 
 
-
 const StyledPressable = styled.Pressable`
     width: 100%;
     /* padding: 0 20px; */
@@ -39,10 +38,12 @@ const StyledPressable = styled.Pressable`
     justify-content: center;
     align-items: center;
     background-color: ${({ colorProp }) => (colorProp ? COLORS.main : COLORS.box)};
-    margin-top: 49px;
+    margin-top: 24px;
     margin-bottom: 23px;
 `
 
 const StyledText = styled.Text`
+    font-size: 16px;
+    font-weight: 600;
      color: ${({ colorProp }) => (colorProp ? COLORS.sub : COLORS.gray_300)};
 `

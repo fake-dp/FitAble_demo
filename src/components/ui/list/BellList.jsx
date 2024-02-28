@@ -8,6 +8,7 @@ function BellList(props) {
     console.log('data',data)
 
     const determineScreenFromType = (type, optionName) => {
+      console.log('typetypetype',type,optionName)
         switch (type) {
           case 'LESSON':
             return 'MyBookList';

@@ -83,7 +83,7 @@ const ButtonContainer = styled.View`
 `
 
 const CloseBtn = styled.TouchableOpacity`
-background-color: ${COLORS.white};
+background-color: ${COLORS.box};
 height: 48px;
 width: 48%;
 

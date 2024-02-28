@@ -224,6 +224,7 @@ const BookFlexContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
    
 `
 
