@@ -89,6 +89,7 @@ line-height: 30px;
 const SubTextContainer = styled.View`
 flex-direction: row;
 /* align-items: center; */
+width: 100%;
 margin-top: 8px;
 `
 
@@ -100,6 +101,7 @@ margin-top: 2px;
 `
 
 const MapText = styled.Text`
+flex: 1;
 font-size: 14px;
 color: ${COLORS.gray_200};
 font-weight: 300;
@@ -125,7 +127,6 @@ const TagText = styled.Text`
 font-size: 12px;
 color: ${COLORS.gray_200};
 font-weight: 400;
-
 `
 
 const MainSpotImage = styled(FastImage)`

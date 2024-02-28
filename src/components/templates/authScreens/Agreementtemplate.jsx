@@ -29,7 +29,7 @@ function Agreementtemplate(props) {
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
     const [checkedCount, setCheckedCount] = useState(0); 
-   console.log('isSelected',isSelected)
+   console.log('isSelected',isSelected,updateInfoText,signUpInfo)
 
     // 모든 목록 리스트 체크 여부 확인
     const toggleAllCheck = () => {

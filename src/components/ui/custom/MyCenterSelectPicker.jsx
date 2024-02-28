@@ -32,8 +32,12 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
 
       const handleValueChange = (value) => {
         setSelectedCenterId(value);
-        
       };
+
+      const handleClose = () => {
+        // Picker가 닫힐 때 선택된 센터 ID를 초기값으로 재설정
+        setSelectedCenterId(mainCenterId);
+    };
 
       const handleDonePress = async() => {
         const selectedCenter = centerName.find(center => center.id === selectedCenterId);
@@ -52,10 +56,9 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       onValueChange={handleValueChange}
       onDonePress={handleDonePress}
       // 닫기
-      // onClose={handleDonePress}
+      onClose={handleClose}
 
       // 취소 text
-      cancelText="취소"
     doneText="변경"
     value={selectedCenterId}
     textInputProps={{ underlineColorAndroid: 'transparent'}}

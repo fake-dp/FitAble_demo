@@ -42,6 +42,10 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
         }
       };
 
+      const handleClose = () => {
+        setSelectedCenterId(mainCenterId);
+    };
+
       const centerOptions = centerName.map(center => ({
         label: center.name, // 센터 이름을 라벨로 사용
         value: center.id    // 센터 ID를 값으로 사용
@@ -74,7 +78,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
       textInputProps={{ underlineColorAndroid: 'transparent'}}
       useNativeAndroidPickerStyle={false}
       fixAndroidTouchableBug={true}
-      // onClose={handleDonePress}
+      onClose={handleClose}
         items={centerOptions}
         placeholder={{}}
         style={{
