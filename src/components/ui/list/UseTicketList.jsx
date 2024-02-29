@@ -69,6 +69,8 @@ export default UseTicketList;
 const Container = styled.View`
     flex-direction: row;
     justify-content: space-between;
+    width: 100%;
+    flex:1;
 `
 
 const LineStyle = styled.View`
@@ -79,10 +81,17 @@ const LineStyle = styled.View`
     margin-bottom: ${({ isLast }) => (isLast ? '60px' : '30px')};
 `;
 
-const ContentsBox = styled.TouchableOpacity``
+const ContentsBox = styled.TouchableOpacity`
+    /* flex:2; */
+    width: 58%;
+`
 
 const TextContainer = styled.View`
     flex-direction: row;
+`
+const SubTextContainer = styled.View`
+      align-items: flex-end;
+      width: 42%;
 `
 
 const TitleText = styled.Text`
@@ -90,10 +99,6 @@ color: ${COLORS.sub};
 font-size: 14px;
 font-weight: 400;
 line-height: 22.40px;
-`
-
-const SubTextContainer = styled.View`
-      align-items: flex-end;
 `
 
 const DateText = styled.Text`

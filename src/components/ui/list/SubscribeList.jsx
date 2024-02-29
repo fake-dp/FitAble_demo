@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
   // SUBSCRIBE
   console.log('subscribeListDatasubscribeListDatasubscribeListData',subscribeListData)
-  
+
   const navigation = useNavigation();
 
   const detailScreen = (id) => {
@@ -31,7 +31,7 @@ function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,o
               {/* <DateText>{data.status}</DateText> */}
               {/* <DateText>{data.paymentStatus}</DateText> */}
 
-          {/* cancel 혜지, next머시기 다음달결제 혜지예약이나  둘중에 하나라도 true면  결제수단 변경*/}
+          {/* cancel 해지예약 버튼, nextPayment 다음달결제 혜지예약이나  둘중에 하나라도 true면  결제수단 변경 버튼이 보이게 해야해*/}
 
             </ContentsBox>
             <SubTextContainer>
@@ -41,7 +41,7 @@ function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,o
                   <>
                   <BtnContainer>
                   {
-                    data.paymentStatus === 'PAYMENT_SUCCESS' && (
+                    data.cancel && (
                       <CancelBtnContainer onPress={()=>openCancelModal(data.id)}>
                         <CancelBtnText>해지예약</CancelBtnText>
                        </CancelBtnContainer>
@@ -49,7 +49,7 @@ function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,o
                   }
                   
                   {
-                    data.paymentStatus === 'PAYMENT_FAILURE' && (
+                    data.nextPayment && (
                       <CancelNextBtnContainer onPress={()=>postPaymentSubscriptionNextMonthBtn(data.id)}>
                           <CancelBtnText>다음달 결제</CancelBtnText>
                        </CancelNextBtnContainer>
@@ -57,7 +57,7 @@ function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,o
                   }
                   </BtnContainer>
                   {
-                    data.paymentStatus === 'PAYMENT_SUCCESS' || data.paymentStatus === 'PAYMENT_FAILURE' ? (
+                    data.cancel || data.nextPayment ? (
                       <TextContainerBtn onPress={onPress}>
                       <UnderLineText>결제 수단 변경</UnderLineText>
                       </TextContainerBtn>) : null
@@ -80,6 +80,7 @@ export default SubscribeList;
 const Container = styled.View`
     flex-direction: row;
     justify-content: space-between;
+    width: 100%;
 `
 
 const LineStyle = styled.View`
@@ -90,9 +91,12 @@ const LineStyle = styled.View`
 `;
 
 const ContentsBox = styled.TouchableOpacity`
-    /* background-color: red; */
+      width:70% ;
 `
-
+const SubTextContainer = styled.View`
+      align-items: flex-end;
+      width:30% ;
+`
 const TextContainer = styled.View`
     flex-direction: row;
 `
@@ -102,10 +106,6 @@ color: ${COLORS.sub};
 font-size: 14px;
 font-weight: 400;
 line-height: 22.40px;
-`
-
-const SubTextContainer = styled.View`
-      align-items: flex-end;
 `
 
 const DateText = styled.Text`

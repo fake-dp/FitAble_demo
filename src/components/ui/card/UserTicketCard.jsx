@@ -4,7 +4,7 @@ import { Platform, Image ,View, TouchableOpacity,Dimensions} from 'react-native'
 import SmallLabel from '../label/SmallLabel';
 import FastImage from 'react-native-fast-image'
 
-function UserTicketCard({ homeTicketList,detailTicketsScreen }) {
+function UserTicketCard({ homeTicketList,detailTicketsScreen, index,isLast }) {
   const { id, center,locker,name,sportWear,trainerName,detail, usePercentage,type, status, startDate,endDate,left } = homeTicketList;
 
 
@@ -20,7 +20,9 @@ const cardWidth = deviceWidth - 2 * padding;
     <Container>
       {
         status === "EXPIRED" || status ==="STOP_PENDING"? null : (
-          <CardContainer cardWidth={cardWidth}>
+          <CardContainer cardWidth={cardWidth}
+          isLast={isLast}
+          >
           <InnerContainer onPress={()=>detailTicketsScreen(id)}>
           <CardContent>
             <CardMainText>{center.name}</CardMainText>
@@ -88,6 +90,7 @@ const CardContainer = styled.View`
   background-color: ${COLORS.sub};
   border: 1px solid ${COLORS.gray_400};
   margin-top: 12px;
+  margin-right: ${({ isLast }) => isLast ? '20px' : '0px'};
 `;
 
 const InnerContainer = styled.TouchableOpacity`

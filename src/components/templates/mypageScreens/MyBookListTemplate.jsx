@@ -208,12 +208,12 @@ const Container = styled.View`
   flex: 1;
   padding: 0 20px;
   background-color: ${COLORS.white};
+  width: 100%;
 `;
 
 const BookListContainer = styled.View`
     margin-top: 20px;
     margin-bottom: 30px;
-    
 `;
 
 const BookListWrapper = styled.View`
@@ -232,7 +232,7 @@ const BookListTitle = styled.View`
     padding-bottom: 12px;
     margin-bottom: 28px;
     margin-top: 24px;
- 
+
 `;
 
 const BookListTitleDate = styled.Text`
@@ -252,6 +252,11 @@ const BookListTitleText = styled.Text`
 
 const BookListContents = styled.View`
     margin-bottom: 30px;   
+    width :76%;
+`;
+
+const BookBtnContainer = styled.View`
+    margin-bottom: 40px;
 `;
 
 const BookListContentsText = styled.Text`
@@ -262,13 +267,6 @@ const BookListContentsText = styled.Text`
     margin-right: 5px;
 `;
 
-const BookListContentsTrainerText = styled.Text`
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 22.40px;
-    color: ${COLORS.sub};
-`;
-
 const BookListMainContentsText = styled.Text`
     font-size: 14.8px;
     font-weight: 500;
@@ -277,9 +275,6 @@ const BookListMainContentsText = styled.Text`
     margin-top: 5px;
 `;
 
-const BookBtnContainer = styled.View`
-    margin-bottom: 40px;
-`;
 
 const BookListNameContainer = styled.View`
 display: flex;

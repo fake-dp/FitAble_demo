@@ -154,9 +154,11 @@ useFocusEffect(
     >
     {homeTicketList.map((item, index) => (
         <UserTicketCard
-        key={index}
+        key={item.id}
+        index={index}
         homeTicketList={item}
         detailTicketsScreen={detailTicketsScreen}
+        isLast={index === homeTicketList.length - 1} 
         />
         ))}
     </ScrollView>
