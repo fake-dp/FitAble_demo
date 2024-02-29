@@ -178,29 +178,34 @@ function DetailCenterTemplate({ route }) {
     const backArrow = require('../../../assets/img/back_arrow.png');
     const testArrow = require('../../../assets/img/back_black.png');
 
-  console.log('selectedCard@@',selectedCardInfo,selectedUseCardInfo)
-        console.log('detailData',detailData)
+  // console.log('selectedCard@@',selectedCardInfo,selectedUseCardInfo)
+        console.log('detailData!@#!@#!@#',detailData.mainImage)
     return (
         <Container>
             <ScrollView
               ref={scrollViewRef}
               bounces={false}
               showsVerticalScrollIndicator={false}
-              overScrollMode="never"
-            >
+              overScrollMode="never">
+
+
               {
-                detailData?.mainImage ? (
+               detailData && detailData?.mainImage ? (
                   <ImgContainer>
                   <MainImg 
-                  resizeMode={FastImage.resizeMode.contain}
+                  resizeMode={FastImage?.resizeMode?.contain}
                   source={{uri:detailData?.mainImage}}/>
                   </ImgContainer>
                   ):(
                     <ImgContainer>
-                      <NoImg source={notImg}/>
+                      <NoImg 
+                      source={notImg}/>
                     </ImgContainer>
                 )
               }
+
+ 
+
             <GobackTouchable onPress={goBackScreens}>
             <FastImage 
             style={{width: 28, height: 28}}
@@ -212,9 +217,9 @@ function DetailCenterTemplate({ route }) {
 
             <GymBasicInfoGrid 
             onPress={()=>goConsultingScreens(id)}
-            name={detailData.name}
-            address={detailData.address}
-            phone={detailData.phone}
+            name={detailData?.name}
+            address={detailData?.address}
+            phone={detailData?.phone}
             />
 
 
@@ -224,9 +229,9 @@ function DetailCenterTemplate({ route }) {
               onPressUse={() => handleBtnPress(id,'TICKET')}
               setActiveButton={setActiveButton}
               activeButton={activeButton}
-              subscription={detailData.subscription}
-              pt={detailData.pt}
-              ticket={detailData.ticket}
+              subscription={detailData?.subscription}
+              pt={detailData?.pt}
+              ticket={detailData?.ticket}
             />
       
      
@@ -259,19 +264,19 @@ function DetailCenterTemplate({ route }) {
         {btnName !== 'PT' && (
         
         <>
-        {detailData.description && (<LongTextGrid description={detailData.description} />)}
-        {detailData.tags?.length > 0 && (<ShopTagGrid tags={detailData.tags}/>)}
-        {detailData.programs?.length > 0 && (<OperatingProgram programs={detailData.programs}/>)}
-        {detailData.operationTimes?.length > 0 && (<OperatingTime operationTimes={detailData.operationTimes}/>)}
-        {detailData.facilities?.length > 0 && (<FacilitiesGrid facilities={detailData.facilities}/>)}
-        {detailData.images?.length > 0 && (<PhotoScrollGrid images={detailData.images}/>)}
+        {detailData?.description && (<LongTextGrid description={detailData.description} />)}
+        {detailData?.tags?.length > 0 && (<ShopTagGrid tags={detailData.tags}/>)}
+        {detailData?.programs?.length > 0 && (<OperatingProgram programs={detailData.programs}/>)}
+        {detailData?.operationTimes?.length > 0 && (<OperatingTime operationTimes={detailData.operationTimes}/>)}
+        {detailData?.facilities?.length > 0 && (<FacilitiesGrid facilities={detailData.facilities}/>)}
+        {detailData?.images?.length > 0 && (<PhotoScrollGrid images={detailData.images}/>)}
            {
-             detailData.links?.homepage && detailData.links?.instagram && detailData.links?.kakao && detailData.links?.blog && (   
+             detailData?.links?.homepage && detailData.links?.instagram && detailData.links?.kakao && detailData.links?.blog && (   
              <AboutChannel
-             homepage={detailData.links?.homepage}
-             instagram={detailData.links?.instagram}
-             kakao={detailData.links?.kakao}
-             blog={detailData.links?.blog}
+             homepage={detailData?.links?.homepage}
+             instagram={detailData?.links?.instagram}
+             kakao={detailData?.links?.kakao}
+             blog={detailData?.links?.blog}
              />)
            }
             </>
@@ -325,24 +330,33 @@ const Container = styled.View`
     flex: 1;
     background-color: ${COLORS.sub};
     /* padding: 0 20px; */
-`
+`;
 const ImgContainer = styled.View`
     width: 100%;
     height: 312px;
-`
+`;
 
-const MainImg = styled(FastImage)`
-    width: 100%;
-    height: 100%;
-    // 중앙 정렬 비율 맞게
-    
-`
+
 
 const NoImg = styled(FastImage)`
     width: 100%;
     height: 100%;
     /* height: 312px; */
-`
+`;
+
+const MainImg = styled.Image`
+    width: 100%;
+    height: 100%;
+
+    /* aspect-ratio: 1; */
+`;
+
+// const MainImg = styled(FastImage)`
+//     width: 100%;
+//     height: 100%;
+//     // 중앙 정렬 비율 맞게
+    
+// `;
 
 const GobackTouchable = styled.TouchableOpacity`
 position: absolute;

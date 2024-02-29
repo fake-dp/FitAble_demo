@@ -11,10 +11,6 @@ const customAxios = axios.create({
   },
 });
 
-const test = Config.API_URL;
-const test2 = Config.DEV_URL;
-console.log('Config.API_URL1',test)
-console.log('Config.DEV_URL',test2)
 // 요청 인터셉터
 customAxios.interceptors.request.use(async (config) => {
     const token = await AsyncStorage.getItem("accessToken");

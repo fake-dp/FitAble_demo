@@ -10,7 +10,7 @@ import {autoLoginApi} from './src/api/authApi';
 function AppInner() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log('ddgegeg')
   useEffect(() => {
     const checkLoginStatus = async () => {
       setIsLoading(true);
@@ -27,8 +27,6 @@ function AppInner() {
           const response =  await autoLoginApi(token);
           if(response){
           const { accessToken, refreshToken } = response;
-          console.log('accessToken',accessToken)
-          console.log('refreshToken',refreshToken)
           await AsyncStorage.setItem('accessToken',accessToken);
           await AsyncStorage.setItem('refreshToken',refreshToken);
           setIsLoggedIn(true);
