@@ -12,7 +12,7 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
     console.log('id@@@확인용',id)
     navigation.navigate('TicketDetail', {data:"OTHER",id:id})
   };
-  
+  console.log('useTicketListData',useTicketListData)
   return (
       <View>
         {useTicketListData.map((data,index) => (
@@ -24,9 +24,10 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
                 {data.status === 'IN_USE'&& <UsingText>이용중</UsingText>}
                 {data.status === 'USING_SOON'&& <UsingText>이용예정</UsingText>}
                 {data.status === 'STOP'&& <UsingText>중지중</UsingText>}
+                {/* {data.status === 'EXPIRED'&& <UsingText>만료</UsingText>} */}
                 </TextContainer>
                 <TitleText>{`${data.name}`.length > 16 ? `${data.name}`.substring(0, 16) + '...' : `${data.name}`}</TitleText>
-
+                {/* EXPIRED 일때 중지버튼이랑 환불 버튼 안보이게 */}
               {/* <DateText>{data.status}</DateText> */}
               {/* <DateText>{data.paymentStatus}</DateText> */}
               {/* <DateText>{`${data.stopTicket}`}</DateText> */}
@@ -35,20 +36,22 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
               <IsCardText>{data.paymentType}</IsCardText>
               <TitleText>{formatCommaNumber(data.price)}원</TitleText>
               
-                  <BtnWraper>
-                    {
-                      data.stopTicket && (
-                      <CancelBtnContainer onPress={()=>openStopModal(data.id, data.centerName, data.name)}>
-                        <CancelBtnText>중지</CancelBtnText>
-                     </CancelBtnContainer>)
-                    }
-                    {
-                    data.paymentStatus === 'PAYMENT_SUCCESS' && (
-                         <CancelBtnContainer onPress={()=>openCancelModal(data.id)}>
-                         <CancelBtnText>환불</CancelBtnText>
-                      </CancelBtnContainer>)
-                    }
-                </BtnWraper>
+              <BtnWraper>
+              {data.status !== 'EXPIRED' && (
+             <>
+              {data.stopTicket && (
+                 <CancelBtnContainer onPress={() => openStopModal(data.id, data.centerName, data.name)}>
+                   <CancelBtnText>중지</CancelBtnText>
+                </CancelBtnContainer>
+              )}
+              {data.paymentStatus === 'PAYMENT_SUCCESS' && (
+                <CancelBtnContainer onPress={() => openCancelModal(data.id)}>
+                    <CancelBtnText>환불</CancelBtnText>
+                </CancelBtnContainer>
+               )}
+             </>
+             )}
+              </BtnWraper>
           
             </SubTextContainer>
           </Container>

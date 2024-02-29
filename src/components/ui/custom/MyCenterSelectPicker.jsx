@@ -44,6 +44,7 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
         if (selectedCenter) {
             console.log('selectedCenter',selectedCenter.id, selectedCenter.name)
             await postMainCenterData(selectedCenter.id, selectedCenter.name);
+            setSelectedCenterId(selectedCenter.id);
         }else{
             console.log('기타일껄요')
         }

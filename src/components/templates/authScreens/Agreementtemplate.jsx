@@ -110,17 +110,17 @@ function Agreementtemplate(props) {
       }
 }
 console.log('업데이트bodyData',bodyData)
-      try{
-        const response = await upDateMyInfo(bodyData);
-        console.log('updateInfoUser response:', response)
-        if(response){
-          // navigation.navigate('Home');
-          console.log('resaaa',response)
-          setIsLoggedIn(true);
-        }
-      }catch(error){
-        console.error('updateInfoUser error:', error.response.data);
-      }
+      // try{
+      //   const response = await upDateMyInfo(bodyData);
+      //   console.log('updateInfoUser response:', response)
+      //   if(response){
+      //     // navigation.navigate('Home');
+      //     console.log('resaaa',response)
+      //     setIsLoggedIn(true);
+      //   }
+      // }catch(error){
+      //   console.error('updateInfoUser error:', error.response.data);
+      // }
     }
 
     const signUpinfoApi = async (signUpInfo) => {
@@ -139,20 +139,20 @@ console.log('업데이트bodyData',bodyData)
           }
       }
       console.log('회원가입bodyData',bodyData)
-      try{
-        const response = await joinInfo(bodyData);
-        console.log('signUpinfoApi response:', response)
-        if(response){
-          // navigation.navigate('Home');
-          console.log('회원가입 응답',response)
-          const { accessToken, refreshToken } = response;
-          await AsyncStorage.setItem("accessToken", accessToken);
-          await AsyncStorage.setItem("refreshToken", refreshToken);
-          setIsLoggedIn(true);
-        }
-      }catch(error){
-        console.error('signUpinfoApi error:', error.response.data);
-      }
+      // try{
+      //   const response = await joinInfo(bodyData);
+      //   console.log('signUpinfoApi response:', response)
+      //   if(response){
+      //     // navigation.navigate('Home');
+      //     console.log('회원가입 응답',response)
+      //     const { accessToken, refreshToken } = response;
+      //     await AsyncStorage.setItem("accessToken", accessToken);
+      //     await AsyncStorage.setItem("refreshToken", refreshToken);
+      //     setIsLoggedIn(true);
+      //   }
+      // }catch(error){
+      //   console.error('signUpinfoApi error:', error.response.data);
+      // }
     }
     const rigthIcon = require('../../../assets/img/rightIcon.png');
     
@@ -175,7 +175,6 @@ console.log('업데이트bodyData',bodyData)
                         value={isSelected[item.id]}
                         onValueChange={() => handleCheckboxChange(item.id)}
                         tintColors={{ true: COLORS.main, false: COLORS.main }}
-
                         onCheckColor={COLORS.main}
                         onFillColor={COLORS.box}
                         onTintColor={COLORS.box}
@@ -214,8 +213,7 @@ console.log('업데이트bodyData',bodyData)
             onPress={()=>handlePass(signUpInfo)}
             >다음</MainBtn> : ''
         }
-           
-            </BottomBtnContainer>
+       </BottomBtnContainer>
 
         </AuthContainer>
     );
