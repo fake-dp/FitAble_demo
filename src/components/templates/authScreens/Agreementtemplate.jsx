@@ -7,7 +7,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { Text, StyleSheet, View, Platform,TouchableOpacity, Image} from 'react-native';
 import CheckBtn from '../../ui/buttonUi/CheckBtn';
 import AgreementModal from '../../ui/modal/AgreementModal';
-import { agreementList} from '../../../data/AgreementData'
+import { agreementList} from '../../../data/AgreementData';
 import GobackGrid from '../../grid/GobackGrid';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
@@ -15,7 +15,8 @@ import {upDateMyInfo,joinInfo} from '../../../api/authApi'
 import {signUpInfoState,isLoginState,fcmTokenState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
+import { Linking } from 'react-native';
 function Agreementtemplate(props) {
 
     const navigation = useNavigation();
@@ -26,33 +27,51 @@ function Agreementtemplate(props) {
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
     const [fcmToken, setFcmToken] = useRecoilState(fcmTokenState);
+    
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
-    const [checkedCount, setCheckedCount] = useState(0); 
-   console.log('isSelected',isSelected,updateInfoText,signUpInfo)
 
-    // 모든 목록 리스트 체크 여부 확인
-    const toggleAllCheck = () => {
-        const updatedSelection = {};
-        const newAllCheck = !allCheck;
     
-        agreementList.forEach((item) => {
-          updatedSelection[item.id] = newAllCheck;
-        });
-    
-        setAllCheck(newAllCheck);
-        setSelection(updatedSelection);
-        console.log('updatedSelection',updatedSelection, 'newAllCheck',newAllCheck)
+    console.log('isSelected11',signUpInfo.agreements)
+
+
+    useEffect(() => {
+      const newSelection = {
+        ...isSelected,
+        3: signUpInfo.agreements.pushAlarm,
+        4: signUpInfo.agreements.marketing,
+        5: signUpInfo.agreements.storeMarketing,
       };
+      setSelection(newSelection);
+  }, [signUpInfo.agreements.pushAlarm, signUpInfo.agreements.marketing, signUpInfo.agreements.storeMarketing]);
+  
     
-        // 개별 목록 리스트 체크 여부 확인
-        const handleCheckboxChange = (id) => {
-          setSelection((prevState) => {
-            const updatedSelection = { ...prevState };
-            updatedSelection[id] = !prevState[id];
-            return updatedSelection;
-          });
-        };
+      
+
+  const toggleAllCheck = () => {
+    const newAllCheck = !allCheck;
+
+    // 모든 체크박스 상태를 newAllCheck 값으로 설정합니다.
+    const updatedSelection = { ...isSelected };
+    for (const key of Object.keys(isSelected)) {
+        updatedSelection[key] = newAllCheck;
+    }
+
+    setAllCheck(newAllCheck);
+    setSelection(updatedSelection);
+
+    setSignUpInfo(prevInfo => ({
+        ...prevInfo,
+        agreements: {
+            pushAlarm: newAllCheck,
+            marketing: newAllCheck,
+            storeMarketing: newAllCheck,
+        }
+    }));
+};
+
+
+    
 
       const goBackNavigation = () => {
         // 로그인 화면으로 이동
@@ -60,35 +79,76 @@ function Agreementtemplate(props) {
         // setSignUpInfo({...signUpInfo, name: '', phone: ''});
     }
 
-// 선택된 체크박스 개수 업데이트
-  useEffect(() => {
-    const count = Object.values(isSelected).filter((value) => value).length;
-    setCheckedCount(count);
-  }, [isSelected]);
+    useEffect(() => {
+      const initialSelection = agreementList.reduce((acc, item) => {
+        acc[item.id] = item.isCheck;
+        return acc;
+      }, {});
+      setSelection(initialSelection);
+    }, []);
+    
 
-   // 모든 목록 리스트 체크 여부 확인
-  useEffect(() => {
-    if(checkedCount >= 4) {     
-        const allChecked = Object.values(isSelected).every((value) => value);
-        setAllCheck(allChecked);
-    }else{
-        return;
-    }
-  }, [isSelected]);
+    const handleCheckboxChange = (id) => {
+      const newIsSelected = !isSelected[id];
+      const updatedSelection = {
+          ...isSelected,
+          [id]: newIsSelected,
+      };
+  
+      // 개별 체크박스 변경 후, 모든 체크박스가 체크되어 있는지 확인
+      // const allChecked = Object.values(updatedSelection).every(value => value);
+      const allChecked = Object.keys(updatedSelection).every(key => updatedSelection[key]);
+      // 전체 체크박스 상태 업데이트
+      setAllCheck(allChecked);
+      setSelection(updatedSelection);
+    
+      // 선택 체크박스에 따라 signUpInfo의 agreements 업데이트
+      if (id === 3) { // pushAlarm
+          setSignUpInfo((prevInfo) => ({
+              ...prevInfo,
+              agreements: {
+                  ...prevInfo.agreements,
+                  pushAlarm: newIsSelected
+              }
+          }));
+      } else if (id === 4) { // marketing
+          setSignUpInfo((prevInfo) => ({
+              ...prevInfo,
+              agreements: {
+                  ...prevInfo.agreements,
+                  marketing: newIsSelected
+              }
+          }));
+      } else if (id === 5) { // storeMarketing
+          setSignUpInfo((prevInfo) => ({
+              ...prevInfo,
+              agreements: {
+                  ...prevInfo.agreements,
+                  storeMarketing: newIsSelected
+              }
+          }));
+      }
+  };
+  
+  
+    
 
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleItemPress = (item) => {
-      setSelectedItem(item);
-      setModalVisible(true);
+
+  // const [selectedItem, setSelectedItem] = useState(null);
+
+
+    const handleItemPress = (url) => {
+      Linking.canOpenURL(url).then(supported => {
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          console.log("Don't know how to open URI: " + url);
+        }
+      });
     };
   
-    const closeModal = () => {
-      setModalVisible(false);
-      setSelectedItem(null);
-    };
 
     const handlePass = (signUpInfo) => {
       updateInfoText ? updateInfoUser(signUpInfo) : signUpinfoApi(signUpInfo)
@@ -104,27 +164,27 @@ function Agreementtemplate(props) {
         password: signUpInfo.password,
         fcmToken: fcmToken,
         agreements: {
-          marketing: false,
-          pushAlarm: false,
-          storeMarketing: false
+          marketing: signUpInfo.agreements.marketing,
+          pushAlarm: signUpInfo.agreements.pushAlarm,
+          storeMarketing: signUpInfo.agreements.storeMarketing
       }
 }
 console.log('업데이트bodyData',bodyData)
-      // try{
-      //   const response = await upDateMyInfo(bodyData);
-      //   console.log('updateInfoUser response:', response)
-      //   if(response){
-      //     // navigation.navigate('Home');
-      //     console.log('resaaa',response)
-      //     setIsLoggedIn(true);
-      //   }
-      // }catch(error){
-      //   console.error('updateInfoUser error:', error.response.data);
-      // }
+      try{
+        const response = await upDateMyInfo(bodyData);
+        console.log('updateInfoUser response:', response)
+        if(response){
+          // navigation.navigate('Home');
+          console.log('resaaa',response)
+          setIsLoggedIn(true);
+        }
+      }catch(error){
+        console.error('updateInfoUser error:', error.response.data);
+      }
     }
 
     const signUpinfoApi = async (signUpInfo) => {
-      console.log('signUpInfo@@@',signUpInfo)
+      // console.log('signUpInfo@@@',signUpInfo)
       const bodyData = {
           name: signUpInfo.name,
           birthDay: signUpInfo.birthDay,
@@ -133,29 +193,33 @@ console.log('업데이트bodyData',bodyData)
           password: signUpInfo.password,
           fcmToken: fcmToken,
           agreements: {
-            marketing: false,
-            pushAlarm: false,
-            storeMarketing: false
+            marketing: signUpInfo.agreements.marketing,
+            pushAlarm: signUpInfo.agreements.pushAlarm,
+            storeMarketing: signUpInfo.agreements.storeMarketing
           }
       }
       console.log('회원가입bodyData',bodyData)
-      // try{
-      //   const response = await joinInfo(bodyData);
-      //   console.log('signUpinfoApi response:', response)
-      //   if(response){
-      //     // navigation.navigate('Home');
-      //     console.log('회원가입 응답',response)
-      //     const { accessToken, refreshToken } = response;
-      //     await AsyncStorage.setItem("accessToken", accessToken);
-      //     await AsyncStorage.setItem("refreshToken", refreshToken);
-      //     setIsLoggedIn(true);
-      //   }
-      // }catch(error){
-      //   console.error('signUpinfoApi error:', error.response.data);
-      // }
+      try{
+        const response = await joinInfo(bodyData);
+        console.log('signUpinfoApi response:', response)
+        if(response){
+          // navigation.navigate('Home');
+          console.log('회원가입 응답',response)
+          const { accessToken, refreshToken } = response;
+          await AsyncStorage.setItem("accessToken", accessToken);
+          await AsyncStorage.setItem("refreshToken", refreshToken);
+          setIsLoggedIn(true);
+        }
+      }catch(error){
+        console.error('signUpinfoApi error:', error.response.data);
+      }
     }
     const rigthIcon = require('../../../assets/img/rightIcon.png');
     
+
+    const isActiveBtn = isSelected[0] && isSelected[1] && isSelected[2];
+
+
     return (
         <AuthContainer>
             <GobackGrid onPress={goBackNavigation}/>
@@ -182,34 +246,26 @@ console.log('업데이트bodyData',bodyData)
                         tintColor={COLORS.main}
                     />
 
-                  <IndexListContainer onPress={() => handleItemPress(item)}>
-                    <TouchableOpacity key={item.id} onPress={() => handleItemPress(item)}>
+                  <IndexListContainer key={item.id} onPress={() => handleItemPress(item.url)}>
+                    <TouchableOpacity key={item.id} onPress={() => handleItemPress(item.url)}>
                         <ListText>{item.title}</ListText>
                         <SubTitleText>{item.subText}</SubTitleText>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => handleItemPress(item)}>
                         <IconsImg 
                         resizeMode={FastImage.resizeMode.contain}
                         source={rigthIcon}/>
-                    </TouchableOpacity>
+          
                   </IndexListContainer>
 
                 </ListContainer>
             ))
         }
-        
-        <AgreementModal 
-        modalVisible={modalVisible}
-        selectedItem={selectedItem}
-        closeModal={closeModal}
-        />
-
-
       <BottomBtnContainer>
         {
-            checkedCount >= 3 ? <MainBtn
-            colorProp={checkedCount >=3 ? true : false}
+            isActiveBtn ? 
+            <MainBtn
+            colorProp={isActiveBtn}
             onPress={()=>handlePass(signUpInfo)}
             >다음</MainBtn> : ''
         }
@@ -245,10 +301,6 @@ height: 24px;
 
 const ListContainer = styled.View`
 flex-direction: row;
-/* justify-content: space-between; */
-/* align-items: center;*/
-/* background-color: red; */
-/* border-bottom-width: 1px; */
 border-bottom-color: ${COLORS.white};
 
 border-bottom-width: ${(props) => (props.styledProps ? 1 : 0)};

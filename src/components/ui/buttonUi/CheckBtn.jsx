@@ -1,12 +1,14 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import CheckBox from '@react-native-community/checkbox';
+import FastImage from 'react-native-fast-image';
 
 
 
 function CheckBtn({ onPress, allCheck}) {
 
     console.log('allCheck',allCheck, 'onPress',onPress)
+    const unActiveCheck = require('../../../assets/img/unactivecheck.png');
+    const activeCheck = require('../../../assets/img/activecheck.png');
 
     return (
         <StyledPressable 
@@ -15,38 +17,10 @@ function CheckBtn({ onPress, allCheck}) {
             <StyledText
              allCheck={allCheck}
             >약관 전체동의</StyledText>
-            <CheckBoxStyle
-               value={allCheck}
-               onValueChange={onPress}
-               on={true}
-               enabled={true}
-               tintColors={{ true: COLORS.main, false: COLORS.main }}
-            //    offAnimationType={'none'}
-            //    animateTransitions={false}
-
-            // animationDuration={5}
-            // onAnimationType={'none'}
-            //    onCheckColor={COLORS.main}
-            //    onFillColor={COLORS.box}
-            //    onTintColor={COLORS.box}
-            //    boxType={'square'}
-            //    tintColor={COLORS.main}
-            //    hideBox={true}
-            animated={false}
-               onAnimationDidStop={() => console.log('onAnimationDidStop')}
-               lineWidth={2}
-               hideBox={
-                allCheck ? false : true
-               }
-               boxType={'square'}
-               tintColor={COLORS.main}
-               onCheckColor={COLORS.sub}
-               onFillColor={COLORS.box}
-               onTintColor={COLORS.box}
-            //    animationDuration={0.5}
-            //    onAnimationType={'bounce'}
-            //    offAnimationType={'bounce'}
-            />
+            <FastImage
+                source={allCheck ? activeCheck : unActiveCheck}
+                style={{ width: 18, height: 18 }}
+                resizeMode={FastImage.resizeMode.contain}/> 
         </StyledPressable>
     );
 }
@@ -75,9 +49,3 @@ const StyledText = styled.Text`
 font-weight: 600;
 line-height: 22.40px;
 `
-
-const CheckBoxStyle = styled(CheckBox)`
-width: 25px;
-height: 25px;
-
-`;

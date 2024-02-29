@@ -15,7 +15,7 @@ function BellList(props) {
           case 'TICKET':
             return 'CenterTicket';
           case 'SUBSCRIBE':
-            return 'SubscribeScreen';
+            return 'CenterTicket';
           case 'STORE':
             return 'Store';
           case 'CONSULTING':

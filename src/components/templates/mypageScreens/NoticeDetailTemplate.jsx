@@ -108,7 +108,9 @@ export default NoticeDetailTemplate;
 
 const Container = styled.View`
     flex:1;
+    /* padding: 0 20px; */
     padding: 0 20px;
+
     background-color: ${COLORS.white};
 `
 
@@ -126,6 +128,8 @@ font-size: 16px;
 font-weight: 400;
 letter-spacing: -0.4px;
 color: ${COLORS.sub};
+padding: 0 10px;
+
 `
 
 const DateText = styled.Text`
@@ -135,4 +139,7 @@ letter-spacing: -0.35px;
 color: ${COLORS.gray_300};
 margin-top: 5px;
 margin-bottom: 20px;
+padding: 0 10px;
+
+
 `

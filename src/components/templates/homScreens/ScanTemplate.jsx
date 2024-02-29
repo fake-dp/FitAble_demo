@@ -58,30 +58,30 @@ function ScanTemplate(props) {
                 // console.log('qrponse',response.tickets.length)
 
                 // 이상한 센터 들 갔을 때
-                if(response.id !== centerId){
-                    console.log('qrponse',response)
-                    Alert.alert('입장 불가', '이용할 센터의 QR 코드를 찍어주세요.', [{ text: '확인', onPress: () =>console.log('end') }]);
+                // if(response.id !== centerId){
+                //     console.log('qrponse',response)
+                //     Alert.alert('입장 불가', '이용할 센터의 QR 코드를 찍어주세요.', [{ text: '확인', onPress: () =>console.log('end') }]);
 
-                // 이용권이 없을 때
-                }else if(response.id === centerId && response.tickets.length === 0){
+                if(response.tickets.length === 0){
                     console.log('qrponse',response)
                     Alert.alert('입장 불가', '이용 가능한 이용권이 없습니다.', [{ text: '확인', onPress: () =>console.log('end') }]);
 
-                // 이용권이 있고 올바름 그럼 다음 단계 넘어감
-                }else if(response.tickets.length > 0 && response.id === centerId){
+                }else if(response.tickets.length > 0){
                     console.log('qrponse',response)
                     setQrCenterId(response.id);
                     setQrTicketList(response.tickets);
                     setShowQrModal(true);
                     // navigation.navigate('HomeMain')
                 }else{
-                    Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요.', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
+                    Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
                 }
             }catch(error){
                 console.log('Error getting:', error.response.data);
-                if(error){
+                if(error.response.data.status === 404){
+                    Alert.alert('인식 불가', '이용할 센터의 QR 코드를 찍어주세요', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
+                } else if(error){
                     console.log('error',error.response.data)
-                    Alert.alert('입장 실패', '입장에 실패하였습니다. \n다시 시도해주세요.', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
+                    Alert.alert('인식 불가', '이용할 센터의 QR 코드를 찍어주세요', [{ text: '확인', onPress: () => navigation.navigate('HomeMain') }]);
                 }
             } finally {
                 setTimeout(() => {
