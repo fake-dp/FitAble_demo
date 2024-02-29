@@ -27,8 +27,8 @@ function Logintempate({navigation}) {
     // const [isUseAppState, setIsUseAppState] = useState(false);
     // 회원가입 페이지 이동
     const toInfoScreens = useCallback(() => {
-        navigation.navigate('SignUpInfo');
-        // navigation.navigate('Agreement');
+        // navigation.navigate('SignUpInfo');
+        navigation.navigate('Agreement');
       }, [navigation]);
 
       // 비밀번호 찾기
