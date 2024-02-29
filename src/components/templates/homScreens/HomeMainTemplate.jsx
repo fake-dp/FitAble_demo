@@ -134,6 +134,7 @@ useFocusEffect(
         </AllContentsClickBox>
         </TitleTextContainer>
         </SubContainer>
+
   {
     // 센터 등록하기 이용권 없을때
     homeTicketList.length === 0 && homeReservationList.length === 0 ?
@@ -201,56 +202,55 @@ overScrollMode="never">
 export default HomeMainTemplate;
 
 const Container = styled.View`
-    flex:1;
-    background-color: ${COLORS.sub};
-`
+  flex: 1;
+  background-color: ${COLORS.sub};
+`;
 
 const SubContainer = styled.View`
-    padding: 0 20px;
-    margin-top: 24px;
-`
+  padding: 0 20px;
+  margin-top: 24px;
+`;
 
 const TitleTextContainer = styled.View`
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-margin-top: 24px;
-`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const AllContentsClickBox = styled.TouchableOpacity`
-padding: 10px;
-display: flex;
-justify-content: center;
-align-items: center;
-`
+  padding: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const AllText = styled.Text`
-color: ${COLORS.gray_200};
-font-size: 12px;
-font-weight: 400;
-padding-top: 20px;
-`
-
+  color: ${COLORS.gray_200};
+  font-size: 12px;
+  font-weight: 400;
+  padding-top: 20px;
+`;
 
 const TitleText = styled.Text`
-font-size: 20px;
-font-weight: 700;
-line-height: 30px;
-color: ${COLORS.white};
-margin-top: 20px;
-`
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  color: ${COLORS.white};
+  margin-top: 20px;
+`;
 
 const TitleReservationsText = styled.Text`
-font-size: 20px;
-font-weight: 700;
-line-height: 30px;
-color: ${COLORS.white};
-margin-top: 22px;
-`
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  color: ${COLORS.white};
+  margin-top: 22px;
+`;
 
 const AllReservationText = styled.Text`
-color: ${COLORS.gray_200};
-font-size: 12px;
-font-weight: 400;
-margin-top: 40px;
-`
+  color: ${COLORS.gray_200};
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 40px;
+`;

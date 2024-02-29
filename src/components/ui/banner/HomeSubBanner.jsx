@@ -104,16 +104,16 @@ function HomeSubBanner({ centersBanners }) {
 export default HomeSubBanner;
 
 const BannerContainer = styled.View`
-  width: 100%; 
+  width: 100%;
   /* width: ${Dimensions.get('window').width}px; */
   height: 80px;
-  background-color: ${COLORS.box};
+  /* background-color: ${COLORS.box}; */
+  background-color: ${COLORS.sub};
+
   border-radius: 13px;
   flex-direction: row;
   align-items: center;
 `;
-
-
 
 const BannerLogo = styled(FastImage)`
   margin: 0 23px 0 21px;
@@ -122,31 +122,30 @@ const BannerLogo = styled(FastImage)`
 `;
 
 const MainText = styled.Text`
-font-size: 14px;
-font-weight: 500;
-line-height: 22.40px;
-color: ${COLORS.white};
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22.4px;
+  color: ${COLORS.white};
 `;
 
 const SubText = styled.Text`
-font-size: 12px;
-font-weight: 400;
-line-height: 16.80px;
-color: ${COLORS.gray_100};
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  color: ${COLORS.gray_100};
 `;
 
 const BannerImage = styled(FastImage)`
-  width: ${Dimensions.get('window').width-40}px;
+  width: ${Dimensions.get('window').width - 40}px;
   /* width: 90%; */
-  height:80px;
+  height: 80px;
   border-radius: 13px;
-  `;
+`;
 
 const BannerImageContainer = styled.View`
   width: ${Dimensions.get('window').width}px;
   height: 80px;
   background-color: transparent;
-
 `;
 
 const DotContainer = styled.View`
@@ -159,7 +158,7 @@ const DotContainer = styled.View`
 const Dot = styled.View`
   width: 10px;
   height: 10px;
-  background-color: ${props => props.active ? COLORS.main : COLORS.gray_300};
+  background-color: ${props => (props.active ? COLORS.main : COLORS.gray_300)};
   border-radius: 5px;
   margin: 0 5px;
 `;

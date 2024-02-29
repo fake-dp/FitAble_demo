@@ -24,15 +24,15 @@ export default UserTicketNoneCard;
 
 
 
-
 const Container = styled.View`
   /* width: 100%; */
   padding: 0 20px;
+  margin-bottom: 24px;
 `;
 
-const CardContainer = styled.TouchableOpacity`
-   /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
-   width: ${({ cardWidth }) => cardWidth}px;
+const CardContainer = styled.View`
+  /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
+  width: ${({cardWidth}) => cardWidth}px;
   height: 210px;
   border-radius: 13px;
   background-color: ${COLORS.sub};
@@ -44,24 +44,24 @@ const CardContainer = styled.TouchableOpacity`
 `;
 
 const CardText = styled.Text`
-color: ${COLORS.white};
-font-size: 16px;
-font-weight: 500;
-line-height: 22.40px;
-`
+  color: ${COLORS.white};
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22.4px;
+`;
 
-const RegisteredBtn = styled.View`
-    background-color: ${COLORS.main};
-    border-radius: 80px;
-    width: 173px;
-    height: 60px;
-    margin-top: 13px;
-    justify-content: center;
-    align-items: center;
-`
+const RegisteredBtn = styled.TouchableOpacity`
+  background-color: ${COLORS.main};
+  border-radius: 80px;
+  width: 173px;
+  height: 60px;
+  margin-top: 13px;
+  justify-content: center;
+  align-items: center;
+`;
 
 const BtnCardText = styled.Text`
   color: ${COLORS.sub};
-font-size: 16px;
-font-weight: 700;
-`
+  font-size: 16px;
+  font-weight: 700;
+`;

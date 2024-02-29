@@ -6,7 +6,8 @@ import {formatCommaNumber} from '../../../utils/CustomUtils'
 import { useNavigation } from '@react-navigation/native';
 function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
   // SUBSCRIBE
-
+  console.log('subscribeListDatasubscribeListDatasubscribeListData',subscribeListData)
+  
   const navigation = useNavigation();
 
   const detailScreen = (id) => {
@@ -29,6 +30,9 @@ function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,o
               
               {/* <DateText>{data.status}</DateText> */}
               {/* <DateText>{data.paymentStatus}</DateText> */}
+
+          {/* cancel 혜지, next머시기 다음달결제 혜지예약이나  둘중에 하나라도 true면  결제수단 변경*/}
+
             </ContentsBox>
             <SubTextContainer>
               <IsCardText>{data.paymentType}</IsCardText>

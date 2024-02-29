@@ -229,8 +229,6 @@ const BookFlexContainer = styled.View`
 `
 
 const BookListTitle = styled.View`
-    border-bottom-width: 1px;
-    border-bottom-color: ${COLORS.gray_100};
     padding-bottom: 12px;
     margin-bottom: 28px;
     margin-top: 24px;

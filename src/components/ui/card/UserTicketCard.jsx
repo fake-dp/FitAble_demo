@@ -77,8 +77,8 @@ const Container = styled.View`
 `;
 
 const CardContainer = styled.View`
-   /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
-   width: ${({ cardWidth }) => cardWidth}px;
+  /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
+  width: ${({cardWidth}) => cardWidth}px;
 
   /* padding: 27px 30px 30px 24px; */
   /* padding: 20px 25px 30px 25px; */
@@ -91,61 +91,61 @@ const CardContainer = styled.View`
 `;
 
 const InnerContainer = styled.TouchableOpacity`
-width: 100%;
-`
+  width: 100%;
+`;
 
 const CardContent = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 22px;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 22px;
 `;
 
 const CardMainText = styled.Text`
   font-size: 16px;
-font-weight: 700;
-line-height: 22.40px;
+  font-weight: 700;
+  line-height: 22.4px;
   color: ${COLORS.white};
 `;
 
 const LabelContainer = styled.View`
-    flex-direction: row;
-    align-items: center;
-`
+  flex-direction: row;
+  align-items: center;
+`;
 
 const LabelImg = styled(FastImage)`
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-`
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+`;
 
 const CardDesText = styled.Text`
-font-size: 14px;
-font-weight: 400;
-line-height: 22.40px;
-color: ${COLORS.gray_200};
-margin-bottom: 4px;
-`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.4px;
+  color: ${COLORS.gray_200};
+  margin-bottom: 4px;
+`;
 
 const CardPeriodText = styled.Text`
-font-size: 32px;
-font-weight: 600;
-line-height: 43.20px;
-color: ${COLORS.white};
-margin-bottom: 9px;
-`
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 43.2px;
+  color: ${COLORS.white};
+  margin-bottom: 9px;
+`;
 
 const CardDateContainer = styled.View`
-flex-direction: row;
-justify-content: space-between;
-margin-top: 15px;
-`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px;
+`;
 
 const CardExpirationText = styled.Text`
-font-size: 12px;
-font-weight: 400;
-line-height: 16.80px;
-color: ${COLORS.gray_200};
-`
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  color: ${COLORS.gray_200};
+`;
 
 const ProgressBarContainer = styled.View`
   /* flex: 1; */
@@ -156,11 +156,19 @@ const ProgressBarContainer = styled.View`
 `;
 
 const ProgressBar = styled.View`
-  /* flex: ${({ percentage }) => percentage / 100}; */
-  width: ${({ percentage }) => percentage}%;
+  /* flex: ${({percentage}) => percentage / 100}; */
+  width: ${({percentage}) => percentage}%;
   height: 100%;
   /* background-color: ${COLORS.main}; */
-  background-color: ${({ status }) => status === "IN_USE" ? 
-  COLORS.main : status === "STOP"? COLORS.gray_400 : status === "EXPIRING_SOON" ? '#FF7A00' :status ==="USING_SOON" ? COLORS.white : null};
+  background-color: ${({status}) =>
+    status === 'IN_USE'
+      ? COLORS.main
+      : status === 'STOP'
+      ? COLORS.gray_400
+      : status === 'EXPIRING_SOON'
+      ? '#FF7A00'
+      : status === 'USING_SOON'
+      ? COLORS.white
+      : null};
   border-radius: 4px;
 `;
