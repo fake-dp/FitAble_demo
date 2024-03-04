@@ -76,7 +76,7 @@ const InnerContainer = styled.View`
 
 const ContentsBox = styled.View`
     /* flex-direction: row; */
-    width: 64%;
+    width: 60%;
 `
 
 const TitleText = styled.Text`
@@ -130,7 +130,7 @@ font-weight: 400;
 `
 
 const MainSpotImage = styled(FastImage)`
-width: 114px;
+width: 130px;
 height: 114px;
 border-radius: 15px;
 `

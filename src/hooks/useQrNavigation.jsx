@@ -1,24 +1,40 @@
-import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { accelerometer } from 'react-native-sensors';
-// if (Platform.OS === 'ios') {
-//   // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
-//   accelerometer = require('react-native-sensors').accelerometer;
-// } 
-const THRESHOLD = 1.5;
-// console.log('accelerometer',accelerometer)
-const useQrNavigation = (navigation) => {
-  useEffect(() => {
-    const subscription = accelerometer.subscribe(({ x, y, z }) => {
-      if (Math.abs(x) > THRESHOLD || Math.abs(y) > THRESHOLD || Math.abs(z) > THRESHOLD) {
-        navigation.navigate('Scan');
-      }
-    });
+import { useNavigation } from '@react-navigation/native';
+import { useRecoilState } from 'recoil';
+import { QRState } from '../store/atom';
 
-    // 구독 해제
-    return () => subscription.unsubscribe();
-  }, [navigation]); 
+const useQrNavigation = () => {
+    const navigation = useNavigation();
+    const [qr, setQR] = useRecoilState(QRState);
+    const [subscription, setSubscription] = useState(null);
 
+    useEffect(() => {
+        if (qr) {
+            if (!subscription) {
+                const newSubscription = accelerometer.subscribe(({ x, y, z, timestamp }) => {
+                    const totalAcceleration = Math.sqrt(x * x + y * y + z * z);
+                    if (totalAcceleration > 3) { 
+                        console.log('Device shaken');
+                        navigation.navigate('Scan');
+                    }
+                });
+
+                setSubscription(newSubscription);
+            }
+        } else {
+            if (subscription) {
+                subscription.unsubscribe();
+                setSubscription(null);
+            }
+        }
+
+        return () => {
+            if (subscription) {
+                subscription.unsubscribe();
+            }
+        };
+    }, [qr, navigation]);
 
 };
 

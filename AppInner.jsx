@@ -7,9 +7,12 @@ import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View,Alert } from 'react-native';
 import {autoLoginApi} from './src/api/authApi';
+
 function AppInner() {
+
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [isLoading, setIsLoading] = useState(true);
+
   console.log('ddgegeg')
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -41,7 +44,6 @@ function AppInner() {
 
     checkLoginStatus();
 }, []);
-
 
 
   if (isLoading) {

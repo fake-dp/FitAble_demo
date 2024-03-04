@@ -6,6 +6,7 @@ function ConsultInput(props) {
     return (
         <ConsultTextInputContainer>
         <ConsultInputText 
+        style={{marginLeft: 16, fontSize: 14, marginRight: 16, color: COLORS.white, fontWeight: '500'}}
         {...props}
         />
         </ConsultTextInputContainer>
@@ -16,16 +17,14 @@ export default ConsultInput;
 
 
 const ConsultTextInputContainer = styled.View`
-     width: 100%;
+      margin-top: 20px;
     background-color: ${COLORS.box};
-    border-radius: 10px;
-    margin-bottom: 13px;
-    padding: 9px 10px;
-    /* padding:${Platform.OS === 'ios' ? '20px 20px 0px 20px;' : '25px 20px 0 20px'}; */
-    color: ${COLORS.white};
-    ${props => props.isPasswordInput && `
-   
-    `}
+    flex-direction: row;
+    border-radius: 13px;
+    height: 50px;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
 `;
 
 
@@ -36,5 +35,5 @@ const ConsultInputText = styled(TextInput).attrs(() => ({
     color: ${COLORS.white};
     font-size: 14px;
     font-weight: 500;
-    line-height: 22.40px;
+    /* line-height: 22.40px; */
 `;

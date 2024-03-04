@@ -34,12 +34,13 @@ import NoticeDetailScreen from './src/screens/mypage/NoticeDetailScreen';
 import PaymentWebViewScreen from './src/screens/mainpage/PaymentWebViewScreen';
 import PaymentResultScreen from './src/screens/mainpage/PaymentResultScreen';
 
-
+import useQrNavigation from './src/hooks/useQrNavigation';
 
 const Stack = createNativeStackNavigator();
 
 // 여기서 스크린 등록하장 !!
 function AppScreens({navigation}) {
+  useQrNavigation();
   return (
       <Stack.Navigator
         screenOptions={{

@@ -52,7 +52,7 @@ const handleBlur = () => setIsFocused(false);
 
         if(trainerId){
             console.log('트레이너 아이디',trainerId)
-                   if (postTagData.purpose !== selectPurposeTags || postTagData.time !== selectTimeTags || postTagData.promotion !== selectPromotionTags) {
+                  //  if (postTagData.purpose !== selectPurposeTags || postTagData.time !== selectTimeTags || postTagData.promotion !== selectPromotionTags) {
             setPostTagData({
                 centerId: centerId,
                 trainerId: selectTrainerId,
@@ -61,10 +61,10 @@ const handleBlur = () => setIsFocused(false);
                 promotion: selectPromotionTags,
                 caution: writeCoution,
             });
-        }
+        // }
         }else{
             console.log('트레이너 아이디 없음')
-                   if (postTagData.purpose !== selectPurposeTags || postTagData.time !== selectTimeTags || postTagData.promotion !== selectPromotionTags) {
+                  //  if (postTagData.purpose !== selectPurposeTags || postTagData.time !== selectTimeTags || postTagData.promotion !== selectPromotionTags) {
             setPostTagData({
                 centerId: centerId,
                 purpose: selectPurposeTags,
@@ -72,7 +72,7 @@ const handleBlur = () => setIsFocused(false);
                 promotion: selectPromotionTags,
                 caution: writeCoution,
             });
-        }
+        // }
         }
        }, [selectPurposeTags, selectTimeTags, selectPromotionTags, centerId, trainerId,writeCoution]);
 
@@ -104,7 +104,7 @@ const handleBlur = () => setIsFocused(false);
         setIsBoxOpen(false);
         };
 
-    const postConsultingBtn = async () => {
+    const postConsultingBtn = async (postTagData) => {
         console.log('요청 버튼 클릭')
         if(
             selectPurposeTags.length === 0 ||
@@ -116,8 +116,10 @@ const handleBlur = () => setIsFocused(false);
         }else{
             try{
                 const response = await postConsulting(postTagData);
-                console.log('상담요청',response,postTagData)
-                Alert.alert('상담요청이 완료되었습니다.', '', [{ text: '확인', onPress: () => navigation.goBack()  }]);
+                if(response){
+                    console.log('상담요청 완료',response)
+                    Alert.alert('상담요청이 완료되었습니다.', '', [{ text: '확인', onPress: () => navigation.goBack()  }]);
+                  }
             }catch(error){
                 console.error("Error fetching search", error);
             }
@@ -138,9 +140,9 @@ const handleBlur = () => setIsFocused(false);
             Alert.alert('50글자 내외로 작성해주세요. ', '', [{ text: '확인', onPress:()=>setWriteCoution('')}]);
         }
     };
-
-      const downIcon = require('../../../assets/img/downcoupon.png');
-      const upIcon = require('../../../assets/img/upcoupon.png');
+    console.log('writeCoution',writeCoution)
+      const downIcon = require('../../../assets/img/upcoupon.png');
+      const upIcon = require('../../../assets/img/downcoupon.png');
 
 
     return (
@@ -176,6 +178,7 @@ const handleBlur = () => setIsFocused(false);
                     onSubmitEditing={(e) => handleTextInputSubmit(e.nativeEvent.text)}
                     style={{marginLeft: 16, fontSize: 14, marginRight: 16, color: COLORS.white, fontWeight: '500'}}
                     onBlur={handleBlur}
+                    value={writeCoution}
                     />
                 </CoutionContainer>
             </InfoContainer>
@@ -217,12 +220,13 @@ const handleBlur = () => setIsFocused(false);
             }
 
             <ConsultBigBtn
+            // isActived={true}
                 isActived={
                     selectPurposeTags.length > 0 &&
                     selectTimeTags.length > 0 &&
                     selectPromotionTags.length > 0
                 }
-                onPress={postConsultingBtn}
+                onPress={()=>postConsultingBtn(postTagData)}
             >상담요청</ConsultBigBtn>
             </ScrollView>
         </Container>
@@ -266,8 +270,8 @@ const SelectTrainerContainer = styled.View`
 `;
 
 const SelectCouponImg = styled(FastImage)`
-  width: ${props => props.isProp ? '20px' : '16px'};
-  height: ${props => props.isProp ? '20px' : '16px'};
+  width: 22px;
+  height: 22px;
 `;
 
 const SelectText = styled.Text`

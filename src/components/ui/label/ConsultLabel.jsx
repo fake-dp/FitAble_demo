@@ -4,52 +4,36 @@ import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 import ConsultInput from '../inputUi/ConsultInput';
 
-function ConsultLabel({ tag, selected, onPress,customTag, setCustomTag }) {
-
+function ConsultLabel({  tag, selected, onPress, isCustomTagActive, customTag, setCustomTag, submitCustomTag }) {
 
   const [showTextInput, setShowTextInput] = useState(false);
-  // const [customTag, setCustomTag] = useState("");
 
   const handleTagClick = () => {
     if (tag === "기타") {
       setShowTextInput((prevShowTextInput) => !prevShowTextInput);
-      // onPress(tag);
+      onPress(tag);
     } else {
       onPress(tag);
     }
   };
 
-  const handleTextInputChange = (text) => {
-    setCustomTag(text);
-  };
 
-  const handleTextInputSubmit = () => {
-    console.log('dpsxj')
-    if (customTag.trim() !== "") {
-      onPress(customTag.trim());
-      // setShowTextInput(false);
-      // setCustomTag("");
-    }
-  };
-
-  return (
-    <>
-    <TouchableOpacity onPress={handleTagClick}>
-    <Container selected={selected || (tag === "기타" && showTextInput)}>
-        <TagTitle selected={selected || (tag === "기타" && showTextInput)}>
-          {tag}
-        </TagTitle>
-      </Container>
-    </TouchableOpacity>
-    {showTextInput && (
-          <ConsultInput
-            value={customTag}
-            onChangeText={handleTextInputChange}
-            onSubmitEditing={handleTextInputSubmit}
-            placeholder="기타 사항 입력"
-          />
-      )}
-    </>
+    return (
+      <>
+          <TouchableOpacity onPress={handleTagClick}>
+          <Container selected={selected || (tag === "기타" && isCustomTagActive)}>
+                    <TagTitle selected={selected || (tag === "기타" && isCustomTagActive)}>{tag}</TagTitle>
+              </Container>
+          </TouchableOpacity>
+          {isCustomTagActive && (
+              <ConsultInput
+                  value={customTag}
+                  onChangeText={setCustomTag}
+                  onEndEditing={submitCustomTag}
+                  placeholder="기타 사항 입력"
+              />
+          )}
+      </>
   );
 }
 

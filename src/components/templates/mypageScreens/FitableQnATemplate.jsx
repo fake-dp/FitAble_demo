@@ -283,6 +283,7 @@ const handleFitableRegisterBtn = (inquiryText) => {
                     placeholderTextColor={COLORS.gray_300}
                     onChangeText={inquiryTextChange}
                     value={inquiryText}
+                    maxLength={1000}
                     // 리턴
                     // returnKeyType="done"
                 />
@@ -299,7 +300,7 @@ const handleFitableRegisterBtn = (inquiryText) => {
                 </KeyboardAwareScrollView>
                 {
                     centerInquiryText && centerInquiryId ? (
-                         <MyBtn onPress={()=>handleCenterRegisterBtn(centerInquiryId, inquiryText)}>tpsx등록하기11</MyBtn>
+                         <MyBtn onPress={()=>handleCenterRegisterBtn(centerInquiryId, inquiryText)}>등록하기</MyBtn>
                     ):(
                         <MyBtn onPress={()=>handleFitableRegisterBtn(inquiryText)}>등록하기</MyBtn>
                     )

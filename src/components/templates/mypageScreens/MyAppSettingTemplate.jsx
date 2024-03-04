@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import ToggleBtn from '../../ui/toggle/ToggleBtn';
@@ -7,19 +7,23 @@ import { useNavigation } from '@react-navigation/native';
 import WithdrawalModal from '../../ui/modal/WithdrawalModal';
 import {putStoreMarketing,putPushAlarm,putPushMarketing} from '../../../api/pushApi';
 import { useRecoilState } from 'recoil';
-import { myinfoState, fcmTokenState,isLoginState } from '../../../store/atom';
+import { myinfoState, fcmTokenState,isLoginState, QRState } from '../../../store/atom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
 
 function MyAppSettingTemplate(props) {
- 
+  
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
     const [myInfo, setMyInfo] = useRecoilState(myinfoState);
     const [fcmToken, setFcmToken] = useRecoilState(fcmTokenState);
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+    const [qr, setQR] = useRecoilState(QRState);
+ 
 
-      
+
+
+    
     const openModal = () => {
         setShowModal(true)
     }
@@ -39,7 +43,9 @@ function MyAppSettingTemplate(props) {
     const handleTogglePushAlarm = async () => {
         try {
             const updatedValue = !myInfo.pushAlarm;
-            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: fcmToken });  // FCM 토큰 값 설정 필요
+            const fcmTokenToSend = updatedValue ? fcmToken : null;
+            console.log('updatedValuefcmTokenToSend',updatedValue,fcmTokenToSend)
+            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: fcmTokenToSend });  // FCM 토큰 값 설정 필요
             // 성공적으로 업데이트 된 경우 Recoil 상태 업데이트
             console.log('응답v푸시',response)
             setMyInfo(prev => ({ ...prev, pushAlarm: updatedValue }));
@@ -78,7 +84,9 @@ function MyAppSettingTemplate(props) {
           // AsyncStorage에서 토큰 삭제
           await AsyncStorage.removeItem("accessToken");
           await AsyncStorage.removeItem("refreshToken");
-          
+          // fcmtoken 삭제
+            await AsyncStorage.removeItem("fcmToken");
+            setFcmToken(null);
           // 다른 로그아웃 관련 로직 추가 가능
       
           // 사용자 로그인 상태를 false로 업데이트
@@ -91,7 +99,8 @@ function MyAppSettingTemplate(props) {
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
     const {pushAlarm, storeMarketing,marketing} = myInfo
-    console.log('myInfomyInfo',pushAlarm,marketing,storeMarketing)
+    console.log('myInfo',myInfo)
+    // console.log('myInfomyInfo',pushAlarm,marketing,storeMarketing,fcmToken)
 
   return (
     <Container>
@@ -120,9 +129,10 @@ function MyAppSettingTemplate(props) {
                     <ToggleBtn isActive={myInfo.storeMarketing} toggleActive={handleToggleStoreMarketing} />
                 </SettingList>
                 <SettingList>
-                    <SettingListText>QR 출입증</SettingListText>
-                    <ToggleBtn />
+                     <SettingListText>QR 출입증</SettingListText>
+                     <ToggleBtn isActive={qr} toggleActive={() => setQR(!qr)} />
                 </SettingList>
+
 
                 <GridLine/>
                 <SettingListBtn onPress={goTermsScreens}>

@@ -191,3 +191,8 @@ export const qrFailTextState = atom({
   key: 'qrFailTextState',
   default: [],
 });
+
+export const QRState = atom({
+  key: 'QRState',
+  default: false,
+});

@@ -1,67 +1,83 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from "../../constants/color";
 import ConsultLabel from '../ui/label/ConsultLabel';
-function ConsultingLabelTag({TagData, setSelectedTags,selectedTags}) {
+function ConsultingLabelTag({ TagData, setSelectedTags, selectedTags }) {
+    const [customTag, setCustomTag] = useState(''); // 사용자 정의 태그 입력값
+    const [isCustomTagActive, setIsCustomTagActive] = useState(false); // 사용자 정의 태그 입력 필드 활성화 상태
+    console.log('selectedTags',selectedTags)
 
-    console.log('selectedTags@@',selectedTags)
+    useEffect(() => {
+        console.log('selectedTags',customTag)
+    }, [customTag])
 
-    const [customTags, setCustomTags] = useState([]);
 
-    const handleCustomTagChange = (index, value) => {
-      const newTags = [...customTags];
-      newTags[index] = value;
-      setCustomTags(newTags);
-    }
-  
+    const handleTagPress = (tag) => {
+        if (tag === "기타") {
+            if (!isCustomTagActive && selectedTags.length < 3) {
+                setIsCustomTagActive(true);
+                setSelectedTags([...selectedTags, `기타:${customTag}`]);
+            } else {
+                setIsCustomTagActive(false); 
+                setSelectedTags(selectedTags.filter((selectedTag) => !selectedTag.startsWith("기타:")));
+                setCustomTag("");
+            }
+        } else {
+            if (selectedTags.includes(tag)) {
+                setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
+            } else {
+                if (selectedTags.length < 3) {
+                    setSelectedTags([...selectedTags, tag]);
+                }
+            }
+        }
+    };
+    
+    // 사용자 정의 태그 변경 핸들러
+    const handleCustomTagChange = (value) => {
+        setCustomTag(value);
+    };
+    
+    const handleCustomTagSubmit = () => {
+        if (customTag.trim()) {
+            const newSelectedTags = [...selectedTags.filter((selectedTag) => !selectedTag.startsWith("기타:"))];
+            if (newSelectedTags.length < 3) {
+                setSelectedTags([...newSelectedTags, `기타:${customTag.trim()}`]);
+            }
+        }
+    };
+    
+    
 
     return (
         <>
-        {
-            TagData.map((item, index) => {
-                return (
-                    <GridContainer key={index}>
-                        <Title>{item.title}</Title>
-                        <SubTitle>{item.subtext}</SubTitle>
-                        <TagContainer>
-                            {
-                                item.tag.map((tag, index) => (
-                                    <ConsultLabel 
-                                    key={index} 
-                                    tag={tag}
-                                    customTag={customTags[index] || ''} 
-                                    setCustomTag={(value) => handleCustomTagChange(index, value)} 
-                                    selected={selectedTags.includes(tag)}
-                                    onPress={(tag) => {
-                                        if (tag === "기타") {
-                                            // 기존에 선택된 기타 태그가 있다면 삭제
-                                            setSelectedTags((prevTags) => prevTags.filter((t) => t !== customTags[index]));
-                                    
-                                            // 새로운 사용자 지정 태그 추가
-                                            if (customTags[index].trim() !== "" && !selectedTags.includes(customTags[index].trim())) {
-                                                setSelectedTags((prevTags) => [...prevTags, customTags[index].trim()]);
-                                            }
-                                        } else {
-                                            if (selectedTags.includes(tag)) {
-                                                setSelectedTags((prevTags) => prevTags.filter((t) => t !== tag));
-                                            } else if (selectedTags.length < 3) {
-                                                setSelectedTags((prevTags) => [...prevTags, tag]);
-                                            }
-                                        }
-                                    }}                                    
-                                    />
-                                ))
-                            }
-                        </TagContainer>
-                    </GridContainer>
-                )
-            }
-            )
-        } 
+            {TagData.map((item, idx) => (
+                <GridContainer key={idx}>
+                    <Title>{item.title}</Title>
+                    <SubTitle>{item.subtext}</SubTitle>
+                    <TagContainer>
+                        {item.tag.map((tag, tagIdx) => (
+                            <ConsultLabel
+                                key={tagIdx}
+                                tag={tag}
+                                // selected={selectedTags.includes(tag)}
+                                selected={selectedTags.includes(tag) || (tag === "기타" && customTag && isCustomTagActive)}
+                                onPress={() => handleTagPress(tag)}
+                                isCustomTagActive={isCustomTagActive && tag === "기타"}
+                                customTag={customTag}
+                                setCustomTag={handleCustomTagChange}
+                                submitCustomTag={handleCustomTagSubmit}
+                            />
+                        ))}
+                    </TagContainer>
+                </GridContainer>
+            ))}
         </>
     );
 }
+
+
 
 export default ConsultingLabelTag;
 
@@ -72,6 +88,7 @@ const GridContainer = styled.View`
   border-bottom-width: 1px;
   border-bottom-color: ${COLORS.gray_500};
   padding-bottom: 25px;
+  width : 100%;
   ${(props) =>
     props.isLastItem &&
     `
