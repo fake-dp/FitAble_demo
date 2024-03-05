@@ -5,17 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 function BellList(props) {
     const navigation = useNavigation();
     const { data, maindate } = props; 
-    console.log('data',data)
+    // console.log('data',data)
 
     const determineScreenFromType = (type, optionName) => {
       console.log('typetypetype',type,optionName)
         switch (type) {
           case 'LESSON':
             return 'MyBookList';
-          case 'TICKET':
-            return 'CenterTicket';
-          case 'SUBSCRIBE':
-            return 'CenterTicket';
           case 'STORE':
             return 'Store';
           case 'CONSULTING':
@@ -45,25 +41,27 @@ function BellList(props) {
 
 
 
-    const goDetailScreen = async(id,type,optionName,path) => {
-         console.log('oiddfadsfasd',id,type,optionName,path)
-        //  const screenName = determineScreenFromType(type,optionName);
-        //  navigation.navigate(screenName,{path:path});
-         try {
+      const goDetailScreen = async (id, type, optionName, path) => {
+        // console.log('oiddfadsfasd', id, type, optionName, path);
+        try {
             const response = await postReadPushAlarm(id);
             console.log('읽음', response);
-            if(response){
-                const screenName = determineScreenFromType(type,optionName);
-                navigation.navigate(screenName,{path:path});
-            }else{
-                return;
+            if (response) {
+                if (type === 'TICKET') {
+                    navigation.navigate('CenterTicket', { path: 'OTHER' });
+                } else if (type === 'SUBSCRIBE') {
+                    navigation.navigate('CenterTicket', { path: 'SUBSCRIBE' });
+                } else {
+                    // 기타 타입의 경우 determineScreenFromType 함수로 스크린 이름 가져오기
+                    const screenName = determineScreenFromType(type, optionName);
+                    navigation.navigate(screenName, { path: path });
+                }
             }
-            // 화면으로 이동
-          } catch (error) {
+        } catch (error) {
             console.error('읽음오류입니당', error);
-          }
-
-    }
+        }
+    };
+    
 
     return (
         <>

@@ -6,7 +6,7 @@ import {formatCommaNumber} from '../../../utils/CustomUtils'
 import { useNavigation } from '@react-navigation/native';
 function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
   // SUBSCRIBE
-  console.log('subscribeListDatasubscribeListDatasubscribeListData',subscribeListData)
+  // console.log('subscribeListDatasubscribeListDatasubscribeListData',subscribeListData)
 
   const navigation = useNavigation();
 

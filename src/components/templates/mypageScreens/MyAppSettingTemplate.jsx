@@ -45,8 +45,7 @@ function MyAppSettingTemplate(props) {
             const updatedValue = !myInfo.pushAlarm;
             const fcmTokenToSend = updatedValue ? fcmToken : null;
             console.log('updatedValuefcmTokenToSend',updatedValue,fcmTokenToSend)
-            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: fcmTokenToSend });  // FCM 토큰 값 설정 필요
-            // 성공적으로 업데이트 된 경우 Recoil 상태 업데이트
+            const response = await putPushAlarm({ isOn: updatedValue, fcmToken: fcmTokenToSend });
             console.log('응답v푸시',response)
             setMyInfo(prev => ({ ...prev, pushAlarm: updatedValue }));
         } catch (error) {

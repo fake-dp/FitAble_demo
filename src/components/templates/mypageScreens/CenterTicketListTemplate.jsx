@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import SubscribeList from '../../ui/list/SubscribeList';
 import UseTicketList from '../../ui/list/UseTicketList';
 import { ScrollView , Alert,ActivityIndicator, View} from 'react-native';
@@ -16,7 +17,10 @@ import CancelPicker from '../../ui/custom/CancelPicker';
 
 function CenterTicketListTemplate(props) {
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState('SUBSCRIBE');
+
+  const route = useRoute(); 
+  const path = route.params?.path; 
+  const [selectedTab, setSelectedTab] = useState(path || 'SUBSCRIBE');
   const [mainCenterId, setMainCenterId] = useRecoilState(mainCenterIdState);
   const [showModal, setShowModal] = useState(false);
   const [stopShowModal, setStopShowModal] = useState(false);
@@ -32,6 +36,11 @@ function CenterTicketListTemplate(props) {
   const [ticketSubNRefundId, setTicketSubNRefundId] = useState(null)
 
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setSelectedTab(path || 'SUBSCRIBE');
+}, [path]);
+
   // 이용권 목록 (구독, 이용)
   const getTypeTicketsListData = async (type) => {
     try {
@@ -54,7 +63,7 @@ function CenterTicketListTemplate(props) {
   const getStopTicketsListData = async (id) => {
   try {
       const response = await getStopTickets(id);
-      console.log('response',response.stopTickets)
+      // console.log('response',response.stopTickets)
       if(response){
         setShowStopTicketPicker(true)
         setStopTicketList(response.stopTickets)
