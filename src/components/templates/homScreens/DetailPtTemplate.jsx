@@ -136,8 +136,8 @@ const Container = styled.View`
 
 const BackArrow = styled(FastImage)`
     margin: 56px 0 11px 20px;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 20px;
 `
 
 const TestImg = styled.Image`

@@ -159,6 +159,7 @@ useFocusEffect(
         homeTicketList={item}
         detailTicketsScreen={detailTicketsScreen}
         isLast={index === homeTicketList.length - 1} 
+        isMargin={homeReservationList.length > 0 ? true : false}
         />
         ))}
     </ScrollView>

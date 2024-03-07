@@ -97,6 +97,7 @@ useEffect(() => {
   }
 }, [price, totalOptionPrice, couponDiscount,text]);
 
+const couponText= selectedCoupon ? null :'쿠폰을 선택해주세요'
 
   return (
     <Container>
@@ -105,7 +106,7 @@ useEffect(() => {
         couponInfo && couponInfo.length > 0 ? (
           <SelectCouponContainerBox onPress={toggleCoupon}>
 
-          <SelectCouponContainer onPress={toggleCoupon} activeOpacity={0.8}>
+          <SelectCouponContainer onPress={toggleCoupon} activeOpacity={1}>
             <TouchableOpacity onPress={toggleCoupon}>
     
               <SelectCouponInnerContainer>
@@ -122,7 +123,7 @@ useEffect(() => {
                   {/* <SelectCouponText>[{selectedCoupon?.centerName}] {selectedCoupon?.couponName}</SelectCouponText> */}
                   {/* <SelectCouponText>{selectedCoupon.endDate}</SelectCouponText> */}
                   </>
-                ):(<SelectCouponText>쿠폰을 선택해주세요</SelectCouponText>)
+                ):(<SelectCouponText>{couponText}</SelectCouponText>)
               }
     
               </SelectCouponInnerContainer>
@@ -130,36 +131,40 @@ useEffect(() => {
             </TouchableOpacity>
             {
               couponInfo && updateCouponInfoData.length===0 ? '' :  (
-                    <LeftContainer onPress={toggleCoupon} activeOpacity={0.8}>
+                    <LeftContainer onPress={toggleCoupon} activeOpacity={1}>
                          <SelectCouponText>{selectedCoupon?.endDate}</SelectCouponText>
-                        <SelectCouponImg 
-                    resizeMode={FastImage.resizeMode.contain}
-                    source={isCouponOpen ? upcoupon : downcoupon} />
+                         {
+                            selectedCoupon?.centerName === '선택 안함' || couponText ? (
+                              <SelectCouponImg 
+                              resizeMode={FastImage.resizeMode.contain}
+                              source={isCouponOpen ? upcoupon : downcoupon} 
+                              />
+                            ) : null
+                         }
                   </LeftContainer>
                 )
             }
+
           </SelectCouponContainer>
           { isCouponOpen && (
               <>
               {
                 
                 couponInfo && updateCouponInfoData.map((item) => (
-                  <TouchableOpacity key={item.id} onPress={() => handleSelectCoupon(item)}>
-                    <CouponListContainer>
-                      {
-                        item.centerName === '선택 안함' ? (
-                          <CouponListText>{item.centerName}</CouponListText>
-                        ):(
-                          <>
+                  <TouchableOpacity key={item.id} onPress={() => (item.centerName === '선택 안함' || item.isUsable) && handleSelectCoupon(item)}>
+                  <CouponListContainer style={{ opacity: item.isUsable || item.centerName === '선택 안함' ? 1 : 0.5 }}>
+                    {
+                      item.centerName === '선택 안함' ? (
+                        <CouponListText>{item.centerName}</CouponListText>
+                      ) : (
+                        <>
                           <CouponListText>[{item.centerName}] {item.couponName}</CouponListText>
                           <CouponListText>{item.endDate}</CouponListText>
-                          </>
-                        )
-                      }
-    
-                 
-                    </CouponListContainer>
-                    </TouchableOpacity>
+                        </>
+                      )
+                    }
+                  </CouponListContainer>
+                </TouchableOpacity>
                     ))
               }
              
@@ -296,7 +301,7 @@ const SelectCouponText = styled.Text`
   font-size: 14px;
   font-weight: 400;
   line-height: 22.40px;
-  color: ${COLORS.gray_300};
+  color: ${COLORS.gray_100};
   margin-left: 8px;
 `;
 

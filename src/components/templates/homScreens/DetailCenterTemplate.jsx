@@ -176,7 +176,7 @@ function DetailCenterTemplate({ route }) {
 
     const notImg = require('../../../assets/img/notDetailImg.png');
     const backArrow = require('../../../assets/img/back_arrow.png');
-    const testArrow = require('../../../assets/img/back_black.png');
+   
 
   // console.log('selectedCard@@',selectedCardInfo,selectedUseCardInfo)
         console.log('detailData!@#!@#!@#',detailData.mainImage)
@@ -208,7 +208,7 @@ function DetailCenterTemplate({ route }) {
 
             <GobackTouchable onPress={goBackScreens}>
             <FastImage 
-            style={{width: 28, height: 28}}
+            style={{width: 24, height: 20}}
             source={backArrow} 
             resizeMode={FastImage.resizeMode.contain}
             />

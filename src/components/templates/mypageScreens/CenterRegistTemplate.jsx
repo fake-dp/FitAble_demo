@@ -91,7 +91,7 @@ function CenterRegistTemplate(props) {
             <GobackTouchable onPress={goBackScreens}>
             <FastImage 
             source={backArrow}
-            style={{ width: 30, height: 28 }} 
+            style={{ width: 24, height: 20 }} 
             resizeMode={FastImage.resizeMode.contain}
             />
             <TitleText>대표 센터 등록</TitleText>

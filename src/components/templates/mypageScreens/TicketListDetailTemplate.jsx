@@ -72,14 +72,17 @@ function TicketListDetailTemplate(props) {
 
                 <SpotTitleText isUsed={detailTicketData?.status}>{center?.name}</SpotTitleText>
                 <UseTicketTitleText isUsed={detailTicketData?.status}>
-                     {name && name.length > 12 ? name.substring(0, 12) + '...' : name}
+                     {/* {name && name.length > 12 ? name.substring(0, 12) + '...' : name} */}
+                     {name}
                 </UseTicketTitleText>
 
+            <SubTextFixContainer>
             <SubTextContainer>
             <SubText isUsed={detailTicketData?.status}>{startDate && formatReplaceString(startDate)}~{endDate&&formatReplaceString(endDate)}</SubText>
              <SubText isUsed={detailTicketData?.status}>
              {type === 'TICKET_TIME' ||type === 'PT_TIME' ||type === 'RENTAL_SPORTSWEAR_TIME' ? `${leftTime&&leftTime}회` : `${leftDay&&leftDay}일`} 남음{status&&status ==='STOP' && '(중지)'}</SubText>
             </SubTextContainer>
+            </SubTextFixContainer>
             {/* <SubText>type:{type&&type}, status:{status&&status}</SubText> */}
             </HeaderContainer>
 
@@ -189,13 +192,14 @@ const Container = styled.View`
 
 const HeaderContainer = styled.View`
     width: 100%;
-    height: 260px;
+    height: 300px;
     background-color: ${props => props.isUsed === 'IN_USE' ? COLORS.sub : COLORS.gray_200};
-    padding: 0 20px;
+    /* padding: 0 20px; */
 `
 
 const GobackContainer = styled.View`
      margin-top:40px ;
+     padding: 0 20px;
 `
 
 const SpotTitleText = styled.Text`
@@ -203,8 +207,9 @@ color: ${props => props.isUsed === 'IN_USE' ? COLORS.gray_200 : COLORS.gray_400}
 font-size: 14px;
 font-weight: 500;
 line-height: 22.40px;
-margin-top: 52px;
+margin-top: 28px;
 margin-bottom: 20px;
+padding: 0 20px;
 `
 
 const UseTicketTitleText = styled.Text`
@@ -214,12 +219,22 @@ font-weight: 600;
 line-height: 43.20px;
 color: ${props => props.isUsed === 'IN_USE' ? COLORS.main : COLORS.gray_400};
 margin-bottom: 6px;
+padding: 0 20px;
+width: 100%;
+`
+
+const SubTextFixContainer = styled.View`
+    padding: 0 20px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
 `
 
 const SubTextContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 `
 
 const SubText = styled.Text`

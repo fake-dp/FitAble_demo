@@ -4,10 +4,10 @@ import { Platform, Image ,View, TouchableOpacity,Dimensions} from 'react-native'
 import SmallLabel from '../label/SmallLabel';
 import FastImage from 'react-native-fast-image'
 
-function UserTicketCard({ homeTicketList,detailTicketsScreen, index,isLast }) {
+function UserTicketCard({ homeTicketList,detailTicketsScreen, index,isLast,isMargin }) {
   const { id, center,locker,name,sportWear,trainerName,detail, usePercentage,type, status, startDate,endDate,left } = homeTicketList;
 
-
+console.log('isMargin',isMargin)
 const deviceWidth = Dimensions.get('window').width;
 const padding = 30;  // 원하는 패딩 값으로 변경 가능
 const cardWidth = deviceWidth - 2 * padding;
@@ -22,6 +22,7 @@ const cardWidth = deviceWidth - 2 * padding;
         status === "EXPIRED" || status ==="STOP_PENDING"? null : (
           <CardContainer cardWidth={cardWidth}
           isLast={isLast}
+          isMargin={isMargin}
           >
           <InnerContainer onPress={()=>detailTicketsScreen(id)}>
           <CardContent>
@@ -88,8 +89,10 @@ const CardContainer = styled.View`
   /* height: 210px; */
   border-radius: 13px;
   background-color: ${COLORS.sub};
+  /* background-color: red; */
   border: 1px solid ${COLORS.gray_400};
   margin-top: 12px;
+  margin-bottom: ${({ isMargin }) => isMargin ? '0px' : '110px'};
   margin-right: ${({ isLast }) => isLast ? '20px' : '0px'};
 `;
 

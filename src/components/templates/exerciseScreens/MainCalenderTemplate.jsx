@@ -43,7 +43,6 @@ const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
 
 
     const handleCanceBtn = async(id,status) => {
-        console.log('취소클릭',id)
         if (isCancelButtonDisabled) return;
         setIsCancelButtonDisabled(true);
         try{
@@ -59,6 +58,7 @@ const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
                 );
             }
         }catch(error){
+            console.log('error',error)
             if(error.response.data.code === 20903){
                 Alert.alert("알림","예약 가능한 인원이 없습니다.",[
                     {text: '확인', onPress: () => 
@@ -66,12 +66,14 @@ const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
                 }
                     ]);
             }else if(error.response.data.code === 20606){
-                Alert.alert("취소 불가","취소할 수 있는 시간이 지났습니다",[
+                Alert.alert("취소 불가","취소 가능 횟수를 초과하셨습니다",[
                     {text: '확인', onPress: () => 
                     setShowModal(false)
                 }
-                    ]);
+            ]);
             }
+            // 취소 가능 횟수를 초과하셨습니다
+            // 취소할 수 있는 시간이 지났습니다
             // console.error('Error getting:@@', error.response.data);
         } finally {
             setIsCancelButtonDisabled(false);
@@ -84,7 +86,7 @@ const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
         setIsReserveButtonDisabled(true);
         try{
             const response = await postReservations(id);
-            console.log('response',response)
+            console.log('ㅇㅖ약크',response)
             if(response && status === "AVAILABLE"){
                 getAvailableLessons(myInfo.mainCenterId, selectedToday).then(data => {
                     setClassList(data.content)
@@ -152,7 +154,7 @@ const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(false);
         navigation.navigate('ExSearchCenter');
     };
     const {mainCenter, mainCenterId} = myInfo
-    console.log('classList',classList,mainCenterId)
+    // console.log('classList',classList,mainCenterId)
     const downIcon = require('../../../assets/img/whitedownex.png');
 
     return (

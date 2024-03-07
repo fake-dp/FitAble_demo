@@ -5,7 +5,7 @@ export const themeStyled = {
         textSectionTitleColor: COLORS.white,
         selectedDayBackgroundColor: COLORS.sub,
         selectedDayTextColor: COLORS.gray_400,
-        todayTextColor: COLORS.gray_300,
+        todayTextColor: COLORS.white,
         dayTextColor: COLORS.gray_400,
         textDisabledColor: 'transparent',
         dotColor: COLORS.main,
