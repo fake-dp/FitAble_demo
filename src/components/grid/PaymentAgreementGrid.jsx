@@ -1,15 +1,16 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import CheckBox from '@react-native-community/checkbox';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import {getAgreeTerms} from '../../api/cardApi';
 import { centerIdState } from '../../store/atom';
 import { useRecoilState } from 'recoil';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import TermsModal from '../ui/modal/TermsModal';
 function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handleToggleInfoAgree, handleToggleRefundAgree, handleToggleCenterAgree }) {
 
-
+    const navigation = useNavigation();
     const [mainCenterId, setMainCenterId] = useRecoilState(centerIdState)
     const [termData, setTermData] = useState([])
     const [modalVisible, setModalVisible] = useState(false);
@@ -24,6 +25,11 @@ function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handle
         });
       };
 
+      const handleAndroidLink = (url) => {
+        navigation.navigate('BannerWebView', {uri: url})
+    }
+
+const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleLinkPress;
 
       const getTermsData = async () => {
         try{
@@ -64,7 +70,7 @@ function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handle
             <AgreementLink
             // 깜빡임 방지 하이라트 제어
             activeOpacity={1}
-            onPress={()=>handleLinkPress('https://www.naver.com')}
+            onPress={()=>isAndroidLink('https://www.naver.com')}
             >
             <AgreementStringText>개인정보 제3자 제공동의</AgreementStringText>
             </AgreementLink>
@@ -87,7 +93,7 @@ function PaymentAgreementGrid({ isInfoAgree,isRefundAgree, isCenterAgree, handle
                         />
             <AgreementLink
             activeOpacity={1}
-            onPress={()=>handleLinkPress('https://www.google.com')}
+            onPress={()=>isAndroidLink('https://www.google.com')}
             >
             <AgreementStringText>취소 및 환불 규정</AgreementStringText>
             </AgreementLink>

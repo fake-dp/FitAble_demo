@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState,useRef } from 'react';
 import { getHomeQrBanners } from '../../../api/homeApi';
 import {getQrTicketCheckInList} from '../../../api/qrApi';
-// import { Camera, CameraType } from "react-native-camera-kit";
+import { Camera, CameraType } from "react-native-camera-kit";
 import { Platform } from 'react-native';
 import QrCheckModal from '../../ui/modal/QrCheckModal';
 import QrCancelModal from '../../ui/modal/QrCancelModal';
@@ -15,13 +15,13 @@ import { useRecoilState } from 'recoil';
 import FastImage from 'react-native-fast-image'
 
 
-if (Platform.OS === 'android') {
-  // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
-} else {
-    Camera = require('react-native-camera-kit').Camera;
-    CameraType = require('react-native-camera-kit').CameraType;
-    // console.log('@@',Camera, CameraType);
-}
+// if (Platform.OS === 'android') {
+//   // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
+// } else {
+//     Camera = require('react-native-camera-kit').Camera;
+//     CameraType = require('react-native-camera-kit').CameraType;
+//     // console.log('@@',Camera, CameraType);
+// }
 
 function ScanTemplate(props) {
 
@@ -170,7 +170,22 @@ function ScanTemplate(props) {
                  onReadCode={onBarCodeRead}/>
                  </Rectangular>
                 ):(
-                    <Rectangular />
+                    <Rectangular>
+                    <Camera
+                        ref={ref}
+                        cameraType={CameraType.Back} // Front/Back(default)
+                  
+                        //  focusMode
+                        style={{ width: '100%', height: '100%' }} 
+                        // Barcode Scanner Props
+                        scanBarcode
+                        showFrame={false}
+                        laserColor="rgba(0, 0, 0, 0)"
+                        frameColor="rgba(0, 0, 0, 0)"
+                        surfaceColor="rgba(0, 0, 0, 0)"
+                        onReadCode={onBarCodeRead}/>
+                    
+                  </Rectangular>
                 )
             }
             <SubText>휴대폰을 흔들면 QR코드를 촬영할 수 있어요!</SubText>

@@ -2,7 +2,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { View,Text,Platform } from 'react-native';
-import { useState ,useRef} from 'react';
+import { useState ,useRef, useEffect} from 'react';
 
 function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCenterData}) {
 
@@ -16,28 +16,36 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
 
     const openPicker = () => {
       pickerRef.current?.togglePicker(true);
+ 
     };
 
     const centerOptions = centerName.map(center => ({
-        label: center.name, // 센터 이름을 라벨로 사용
-        value: center.id    // 센터 ID를 값으로 사용
+        label: center.name,
+        value: center.id  
     }));
 
-    // centerOptions.push({
-    //     label: '이용할 센터 추가',
-    //     value: 'fake_id'
-    // });
  
-    console.log('centerOptions',centerOptions)
+    // console.log('centerOptions',centerOptions)
 
       const handleValueChange = (value) => {
         setSelectedCenterId(value);
+        if(Platform.OS === 'android'){
+          console.log('value',value)
+        }
       };
 
       const handleClose = () => {
         // Picker가 닫힐 때 선택된 센터 ID를 초기값으로 재설정
         setSelectedCenterId(mainCenterId);
     };
+
+
+    useEffect(() => {
+      if(Platform.OS === 'android'){
+        handleDonePress();
+      }
+    }, [selectedCenterId]);
+
 
       const handleDonePress = async() => {
         const selectedCenter = centerName.find(center => center.id === selectedCenterId);
@@ -70,10 +78,12 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
         placeholder={{}}
         style={{
           inputAndroid:{
-
             color: COLORS.gray_400,
             paddingRight: 6,
             fontSize: 16,
+            zIndex: 10,
+            fontSize: 16,
+            padding: 10
           },
           inputIOS:{
             paddingRight: 6,
@@ -81,24 +91,6 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
             color: COLORS.gray_400,
           },
         }}
-        // style={{
-        //   inputIOS: {
-        //     fontSize: 16,
-        //     fontWeight: 500,
-        //     color: COLORS.gray_400,
-        //   },
-        //   inputAndroid: {
-        //     fontSize: 16,
-        //     fontWeight: 500,
-        //     color: COLORS.gray_400,
-
-        //   },
-        //   placeholder:{
-        //     fontSize: 16,
-        //     fontWeight: 500,
-        //     color: COLORS.gray_400,
-        //   },
-        // }}
       />
       <DownIcon source={require('../../../assets/img/rightIcon.png')} />
     </PickerContainer>
@@ -110,12 +102,9 @@ export default MyCenterSelectPicker;
 const PickerContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  /* background-color: red; */
 `;
 
 const DownIcon = styled.Image`
-  /* margin-left: 8px; */
-  /* margin-left: ${Platform.OS === 'ios' ? '8px' : '0'}; */
   width: 20px;
     height: 20px;
 `;

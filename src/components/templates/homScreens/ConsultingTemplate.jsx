@@ -144,14 +144,24 @@ const handleBlur = () => setIsFocused(false);
       const downIcon = require('../../../assets/img/upcoupon.png');
       const upIcon = require('../../../assets/img/downcoupon.png');
 
+      const ScrollViewComponent = Platform.OS === 'ios' ? KeyboardAwareScrollView : ScrollView;
 
     return (
-      <KeyboardAwareScrollView 
-      enableOnAndroid={true}
-      showsVerticalScrollIndicator={false} // 스크롤 바 제거
-      bounces={false} 
-      extraScrollHeight={100}>
+      // <KeyboardAwareScrollView 
+      // enableOnAndroid={true}
+      // showsVerticalScrollIndicator={false} // 스크롤 바 제거
+      // bounces={false} 
+      // extraScrollHeight={100}>
+      <ScrollViewComponent
+      bounces={false}
+      ref={scrollViewRef}
+      showsVerticalScrollIndicator={false}
+      overScrollMode="never"
+      {...(Platform.OS === 'ios' && { enableOnAndroid: true, extraScrollHeight: 50 })}
+  >
   
+
+
         <Container>
             <ScrollView
               bounces={false}
@@ -230,7 +240,7 @@ const handleBlur = () => setIsFocused(false);
             >상담요청</ConsultBigBtn>
             </ScrollView>
         </Container>
-        </KeyboardAwareScrollView>
+         </ScrollViewComponent>
     );
 }
 

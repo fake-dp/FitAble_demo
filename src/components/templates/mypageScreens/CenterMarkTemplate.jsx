@@ -30,7 +30,7 @@ function CenterMarkTemplate(props) {
             console.error('Error getting!@:', error.response.data);
         }
     };
-
+    console.log('noticeList',noticeList)
     const getInquiryListData = async (id) => {
         // console.log('id값',id)
         try {
@@ -86,7 +86,7 @@ function CenterMarkTemplate(props) {
             };
     
             fetchData();
-        }, [myInfo])
+        }, [myInfo.mainCenterId])
     );
     
 

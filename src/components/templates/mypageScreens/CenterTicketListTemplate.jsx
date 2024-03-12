@@ -135,6 +135,7 @@ function CenterTicketListTemplate(props) {
 //구독권 다음달 결제
 const postPaymentSubscriptionNextMonthBtn = async (id) => {
   console.log('id',id)
+
   try {
       const response = await postPaymentSubscriptionNextMonth(id);
       if(response){
@@ -142,7 +143,7 @@ const postPaymentSubscriptionNextMonthBtn = async (id) => {
           Alert.alert("알림","구독권 다음달 결제에 성공하였습니다.",['확인']);
       }
   } catch (error) {
-      // console.error('Error getting:', error.response.data);
+      console.error('Error getting:', error.response);
       if(error.response.data.code === 10403){
         Alert.alert("알림","카드등록을 해주세요.",['확인']);
       }else if(error.response.data.code === 10404){

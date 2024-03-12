@@ -35,12 +35,23 @@ import PaymentWebViewScreen from './src/screens/mainpage/PaymentWebViewScreen';
 import PaymentResultScreen from './src/screens/mainpage/PaymentResultScreen';
 
 import useQrNavigation from './src/hooks/useQrNavigation';
-
+import useQrAndroidNavigation from './src/hooks/useQrAndroidNavigation';
+import { Platform } from 'react-native';
 const Stack = createNativeStackNavigator();
 
 // 여기서 스크린 등록하장 !!
 function AppScreens({navigation}) {
-  useQrNavigation();
+  // useQrNavigation();
+
+  if (Platform.OS === 'android') {
+    useQrAndroidNavigation();
+    console.log('ff')
+  }else{
+    useQrNavigation();
+  }
+
+
+
   return (
       <Stack.Navigator
         screenOptions={{

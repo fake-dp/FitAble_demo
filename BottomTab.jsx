@@ -73,7 +73,7 @@ function StoreMainScreens({ navigation }) {
 function MyMainScreen({ navigation }) {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Myheader" component={MyScreen}
+      <Stack.Screen name="MyHeader" component={MyScreen}
          options={{
           ...baseOptions
         }}

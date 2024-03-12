@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { Dimensions , Alert, FlatList} from 'react-native';
+import { Dimensions , Alert, FlatList,Platform} from 'react-native';
 import { useState, useEffect } from 'react';
 import { BookCancelModal } from '../../ui/modal/MyPageCancelModal';
 import {getReservations, cancelReservation} from '../../../api/lessonsApi';
@@ -99,7 +99,7 @@ function MyBookListTemplate(props) {
         checkText: '네',
         closeText: '아니오',
     }
-                   
+                 
 
     const renderItem = ({ item, index }) => (
         <BookListWrapper>
@@ -109,9 +109,15 @@ function MyBookListTemplate(props) {
                             </BookListTitle>
 
                             {
-                                item.details.map((detail, index) => (
+                                item?.details?.map((detail, index) => (
                                     <BookFlexContainer key={index}>
-                                        <BookListContents>
+                                        <BookListContents
+                                        isActive={
+                                            Platform.OS === 'android' ? 
+                                            (detail.status === "RESERVED" && detail.isAvailableCancel === true || detail.status === "WAITING") : 
+                                            true
+                                        }
+                                        >
                                             <BookListTitleText>{detail.centerName}
                                             </BookListTitleText>
                                             <BookListNameContainer>
@@ -155,14 +161,6 @@ function MyBookListTemplate(props) {
 
 
 
-    // if (loading) {
-    //     return (
-    //       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:COLORS.white }}>
-    //         <ActivityIndicator size="large" color={COLORS.sub} />
-    //       </View>
-    //     );
-    //   }
-
     return (
      <Container>
         <GobackBlackGrid onPress={goBackScreens}>전체 예약 목록</GobackBlackGrid>
@@ -179,11 +177,11 @@ function MyBookListTemplate(props) {
                 data={bookListData}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => String(index)} // 고유한 키를 제공합니다.
-        ListEmptyComponent={(
-          <NoListContainer windowHeight={windowHeight}>
-            <NoListText>예약 내역이 없습니다.</NoListText>
-          </NoListContainer>
-        )}
+        // ListEmptyComponent={(
+        //   <NoListContainer windowHeight={windowHeight}>
+        //     <NoListText>예약 내역이 없습니다.</NoListText>
+        //   </NoListContainer>
+        // )}
       />
       
     </BookListContainer>
@@ -214,6 +212,7 @@ const Container = styled.View`
 const BookListContainer = styled.View`
     margin-top: 20px;
     margin-bottom: 30px;
+    
 `;
 
 const BookListWrapper = styled.View`
@@ -252,7 +251,9 @@ const BookListTitleText = styled.Text`
 
 const BookListContents = styled.View`
     margin-bottom: 30px;   
-    width :76%;
+    /* width :76%; */
+    width: ${props => props.isActive ? '73%' : '100%'}; 
+    /* background-color: red; */
 `;
 
 const BookBtnContainer = styled.View`

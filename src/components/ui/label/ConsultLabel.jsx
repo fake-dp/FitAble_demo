@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from "../../../constants/color";
 import ConsultInput from '../inputUi/ConsultInput';
@@ -41,12 +41,11 @@ export default ConsultLabel;
 
 const Container = styled.View`
   margin-bottom: 10px;
-  padding: 8px 13px;
-
+  padding: ${Platform.OS === 'ios' ? '8px 12px' : '4px 10px'};
   background-color: ${({ selected }) =>
     selected ? COLORS.box : COLORS.box_two};
   border-radius: 80px;
-  margin-right: 8px;
+  margin-right: ${Platform.OS === 'ios' ? '8px' : '4px'};
 `;
 
 const TagTitle = styled.Text`

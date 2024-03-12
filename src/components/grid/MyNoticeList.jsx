@@ -49,12 +49,6 @@ const goNoticeListDetail = (item) => {
             ) 
 
         }
-        {/* {noticeList.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE).map((item) => (
-            <ListTextContainer key={item.id} onPress={()=>goNoticeListDetail(item.id)}>
-            <ListTitle numberOfLines={1}>{item.title}</ListTitle>
-            <ListDate>{item.createAt}</ListDate>
-            </ListTextContainer>
-        ))} */}
       </View>
       <StyledScrollView 
   ref={scrollViewRef}

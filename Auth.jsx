@@ -7,6 +7,7 @@ import AuthNewPassword from './src/screens/authpage/AuthNewPassword';
 import { COLORS } from './src/constants/color';
 import SignUpInfoScreen from './src/screens/authpage/SignUpInfoScreen';
 import SignUpInfoGenderScreen from './src/screens/authpage/SignUpInfoGenderScreen';
+import TermWebViewScreen from './src/screens/authpage/TermWebViewScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +65,10 @@ function Auth(props) {
           <Stack.Screen
             name="SignUpInfoGender"
             component={SignUpInfoGenderScreen}
+          />
+          <Stack.Screen
+            name="TermWebView"
+            component={TermWebViewScreen}
           />
         </Stack.Navigator>
     );

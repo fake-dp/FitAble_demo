@@ -4,7 +4,7 @@ import EctInput from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
 import React, {useCallback, useRef, useState, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import { Text, StyleSheet, View, Platform,TouchableOpacity, Image} from 'react-native';
+import { Text, StyleSheet, View, Platform,TouchableOpacity, Linking} from 'react-native';
 import CheckBtn from '../../ui/buttonUi/CheckBtn';
 import AgreementModal from '../../ui/modal/AgreementModal';
 import { agreementList} from '../../../data/AgreementData';
@@ -16,7 +16,7 @@ import {signUpInfoState,isLoginState,fcmTokenState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image';
-import { Linking } from 'react-native';
+
 function Agreementtemplate(props) {
 
     const navigation = useNavigation();
@@ -149,6 +149,12 @@ function Agreementtemplate(props) {
       });
     };
   
+    const handleAndroidLink = (url) => {
+      console.log('url',url)
+      navigation.navigate('TermWebView', {uri: url})
+  }
+  
+  const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleItemPress;
 
     const handlePass = (signUpInfo) => {
       updateInfoText ? updateInfoUser(signUpInfo) : signUpinfoApi(signUpInfo)
@@ -184,7 +190,7 @@ console.log('업데이트bodyData',bodyData)
     }
 
     const signUpinfoApi = async (signUpInfo) => {
-      // console.log('signUpInfo@@@',signUpInfo)
+      console.log('signUpInfo@@@',signUpInfo)
       const bodyData = {
           name: signUpInfo.name,
           birthDay: signUpInfo.birthDay,
@@ -198,6 +204,19 @@ console.log('업데이트bodyData',bodyData)
             storeMarketing: signUpInfo.agreements.storeMarketing
           }
       }
+    //   const bodyData = {
+    //     name: '삐낑큐',
+    //     birthDay: '1992-03-04',
+    //     gender: 'MALE',
+    //     phone: '111-2311-3312',
+    //     password: 'qwer1234!',
+    //     fcmToken: fcmToken,
+    //     agreements: {
+    //       marketing: signUpInfo.agreements.marketing,
+    //       pushAlarm: signUpInfo.agreements.pushAlarm,
+    //       storeMarketing: signUpInfo.agreements.storeMarketing
+    //     }
+    // }
       console.log('회원가입bodyData',bodyData)
       try{
         const response = await joinInfo(bodyData);
@@ -246,8 +265,8 @@ console.log('업데이트bodyData',bodyData)
                         tintColor={COLORS.main}
                     />
 
-                  <IndexListContainer key={item.id} onPress={() => handleItemPress(item.url)}>
-                    <TouchableOpacity key={item.id} onPress={() => handleItemPress(item.url)}>
+                  <IndexListContainer key={item.id} onPress={() => isAndroidLink(item.url)}>
+                    <TouchableOpacity key={item.id} onPress={() => isAndroidLink(item.url)}>
                         <ListText>{item.title}</ListText>
                         <SubTitleText>{item.subText}</SubTitleText>
                     </TouchableOpacity>
@@ -284,7 +303,8 @@ padding:0 20px;
 `
 
 const AgreementContainer = styled.View`
-margin-top: 34px;
+/* margin-top: 34px; */
+margin-top: ${Platform.OS === 'ios' ? '34px' : '4px'};
 `
 
 const AuthText = styled.Text`
@@ -305,7 +325,7 @@ border-bottom-color: ${COLORS.white};
 
 border-bottom-width: ${(props) => (props.styledProps ? 1 : 0)};
 margin-top: 24px;
-padding: ${Platform.OS === 'ios' ? '0 20px 0 10px' : '0 19px 0 10px'};
+padding: ${Platform.OS === 'ios' ? '0 20px 0 10px' : '0px'};
 `;
 
 const ListText = styled.Text`

@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import GobackGrid from '../../grid/GobackGrid';
 import { useState, useEffect } from 'react';
 import SearchListBoxGrid from '../../grid/SearchListBoxGrid';
-import { ScrollView, View } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import PriceModal from '../../ui/modal/PriceModal';
 import {getValidCenter,postMainCenter} from '../../../api/mypageApi';
 import { useRecoilState } from 'recoil';
@@ -65,12 +65,18 @@ function CenterRegistTemplate(props) {
         try{
             const response = await postMainCenter(id);
             // console.log('response123',response)
-            setMyInfo(prevState => ({
-                ...prevState,
-                mainCenterId: id,
-                mainCenter: name
-            }));
-            setShowModal(false)
+            if(response){
+
+                setMyInfo(prevState => ({
+                    ...prevState,
+                    mainCenterId: id,
+                    mainCenter: name
+                }));
+              
+                Alert.alert('알림', '대표센터로 등록되었습니다.', [
+                    {text: '확인', onPress: () =>  setShowModal(false)},
+                    ]);
+            }
             // navigation.navigate('Mypage');
         }
         catch(error){

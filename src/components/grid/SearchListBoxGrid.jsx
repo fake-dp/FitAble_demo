@@ -1,7 +1,7 @@
 import {Image } from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Platform} from 'react-native';
 import FastImage from 'react-native-fast-image'
 function SearchListBoxGrid({searchListData,onPress, isSelected}) {
 
@@ -76,12 +76,12 @@ const InnerContainer = styled.View`
 
 const ContentsBox = styled.View`
     /* flex-direction: row; */
-    width: 60%;
+    width: ${Platform.OS === 'ios' ? '60%' : '64%'};
 `
 
 const TitleText = styled.Text`
 color: ${(props) => (props.isSelected ? COLORS.main : COLORS.white)};
-font-size: 20px;
+font-size: ${Platform.OS === 'ios' ? '20px' : '17px'};
 font-weight: 600;
 line-height: 30px;
 `
@@ -116,21 +116,23 @@ margin-top: 23px;
 `;
 
 const TagBox = styled.View`
-padding: 4px 12px;
+padding: ${Platform.OS === 'ios' ? '4px 12px' : '2px 8px'};
 border : 1px solid ${COLORS.gray_200};
-border-radius: 50px;
+border-radius: 40px;
 margin-right: 4px;
 margin-bottom: 4px;
 `
 
 const TagText = styled.Text`
-font-size: 12px;
+font-size: ${Platform.OS === 'ios' ? '12px' : '10px'};
 color: ${COLORS.gray_200};
 font-weight: 400;
 `
 
 const MainSpotImage = styled(FastImage)`
-width: 130px;
-height: 114px;
+/* width: 130px;
+height: 114px; */
+width: ${Platform.OS === 'ios' ? '130px' : '100px'};
+height: ${Platform.OS === 'ios' ? '114px' : '94px'};
 border-radius: 15px;
 `

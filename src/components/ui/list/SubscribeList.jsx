@@ -4,6 +4,7 @@ import { COLORS } from '../../../constants/color';
 import { Fragment } from "react";
 import {formatCommaNumber} from '../../../utils/CustomUtils'
 import { useNavigation } from '@react-navigation/native';
+import { Platform } from "react-native";
 function SubscribeList({ postPaymentSubscriptionNextMonthBtn,subscribeListData,onPress,openCancelModal,goDetailTicketScreens }) {
   // SUBSCRIBE
   // console.log('subscribeListDatasubscribeListDatasubscribeListData',subscribeListData)
@@ -91,11 +92,13 @@ const LineStyle = styled.View`
 `;
 
 const ContentsBox = styled.TouchableOpacity`
-      width:70% ;
+      /* width:70% ; */
+      width: ${Platform.OS === 'ios' ? '70%' : '66%'};
 `
 const SubTextContainer = styled.View`
       align-items: flex-end;
-      width:30% ;
+      /* width:30% ; */
+      width: ${Platform.OS === 'ios' ? '30%' : '34%'};
 `
 const TextContainer = styled.View`
     flex-direction: row;
@@ -133,7 +136,7 @@ const CancelBtnContainer = styled.TouchableOpacity`
 const CancelNextBtnContainer = styled.TouchableOpacity`
     border: 1px solid ${COLORS.sub};
     border-radius: 100px;
-    padding: 4px 11px;
+    padding: 4px 12px;
     margin-top: 16px;
     margin-bottom: 18px;
     margin-left: 8px;

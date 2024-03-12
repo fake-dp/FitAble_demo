@@ -2,7 +2,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { Platform } from 'react-native';
-import { useState ,useRef, useCallback} from 'react';
+import { useState ,useRef, useCallback, useEffect} from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image'
@@ -15,6 +15,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
     const [selectedCenterId, setSelectedCenterId] = useState(mainCenterId);
     const openPicker = () => {
       pickerRef.current?.togglePicker(true);
+      console.log('dd')
     };
 
 
@@ -56,6 +57,11 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
         value: 'fake_id'
     });
 
+    useEffect(() => {
+      if(Platform.OS === 'android'){
+        handleDonePress();
+      }
+    }, [selectedCenterId]);
 
     useFocusEffect(
         useCallback(() => {
@@ -95,7 +101,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
             fontWeight: 'bold',
             color: COLORS.white,
             paddingRight: 20,
-
+  
           },
           placeholder:{
             fontSize: 20,

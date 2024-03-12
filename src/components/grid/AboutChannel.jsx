@@ -1,9 +1,11 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image'
 function AboutChannel(props) {
 
+    const navigation = useNavigation();
     const blog = require('../../assets/img/blog.png');
     const homepage = require('../../assets/img/homepage.png');
     const instar = require('../../assets/img/instar.png');
@@ -14,32 +16,39 @@ function AboutChannel(props) {
           if (supported) {
             Linking.openURL(url);
           } else {
-            console.log("Don't know how to open URI: " + url);
+            console.log("Don't know how to open URI123: " + url);
           }
         });
       };
+      
+      const handleAndroidLink = (url) => {
+        console.log('url',url)
+        navigation.navigate('BannerWebView', {uri: url})
+    }
+
+const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleLinkPress;
 
     return (
         <Container>
             <MainTitleText>바로가기</MainTitleText>
             <AboutChannelContainer>
                 
-                <AboutContainer onPress={()=> handleLinkPress(props.homepage)}>
+                <AboutContainer onPress={()=> isAndroidLink(props.homepage)}>
                 <AboutChannelImg source={homepage}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>홈페이지</AboutText>
                 </AboutContainer>
 
-                <AboutContainer onPress={()=> handleLinkPress(props.instagram)}>
+                <AboutContainer onPress={()=> isAndroidLink(props.instagram)}>
                 <AboutChannelImg source={instar}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>인스타그램</AboutText>
                 </AboutContainer>
 
-                <AboutContainer onPress={()=> handleLinkPress(props.blog)}>
+                <AboutContainer onPress={()=> isAndroidLink(props.blog)}>
                 <AboutChannelImg source={blog}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>블로그</AboutText>
                 </AboutContainer>
 
-                <AboutContainer onPress={()=> handleLinkPress(props.kakao)}>
+                <AboutContainer onPress={()=> isAndroidLink(props.kakao)}>
                 <AboutChannelImg source={kakao}  resizeMode={FastImage.resizeMode.contain} />
                 <AboutText>카카오채널</AboutText>
                 </AboutContainer>
