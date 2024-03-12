@@ -289,13 +289,10 @@ const CenterContainer = styled.View`
 `;
 
 const UpdownImg = styled(FastImage)`
-  width: ${props => props.isProp ? '24px' : '18px'};
-  height: ${props => props.isProp ? '24px' : '18px'};
-`;
-const downImg = styled(FastImage)`
-    width: 20px;
+  width: 20px;
     height: 20px;
 `;
+
 
 const CenterListText = styled.Text`
 color: ${COLORS.gray_400};

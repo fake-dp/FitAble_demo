@@ -222,6 +222,7 @@ const postPaymentSubscriptionNextMonthBtn = async (id) => {
   }
 
     const changeCardInfoScreens = () => {
+      console.log('dd')
         navigation.navigate('InfoCard', {text:'isChange'});
     };
 

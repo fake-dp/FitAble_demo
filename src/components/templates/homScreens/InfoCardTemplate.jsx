@@ -111,7 +111,7 @@ function InfoCardTemplate(props) {
     const goBackScreens = () => {
         navigation.goBack();
     };
-const isValid = cardNumber.length === 25 && cardDate.length === 5 && cardPassword.length === 2
+const isValid = cardNumber?.length === 25 && cardDate?.length === 5 && cardPassword?.length === 2
 
     return (
         <Container>
@@ -127,7 +127,7 @@ const isValid = cardNumber.length === 25 && cardDate.length === 5 && cardPasswor
                              style={{marginLeft: 10, fontSize: 16}}
                              placeholder="1234 - 1234 - 1234 -1234"
                              placeholderTextColor={COLORS.gray_300}
-                             value={formatCardNumber(cardNumber)}
+                             value={cardNumber&&formatCardNumber(cardNumber)}
                              onChangeText={setCardNumber}
                              maxLength={25}
                              keyboardType="numeric"
@@ -141,7 +141,7 @@ const isValid = cardNumber.length === 25 && cardDate.length === 5 && cardPasswor
                              style={{marginLeft: 10, fontSize: 16}}
                             placeholder="MM/YY"
                             placeholderTextColor={COLORS.gray_300}
-                            value={formatCardExpirationDate(cardDate)}
+                            value={cardDate&&formatCardExpirationDate(cardDate)}
                             onChangeText={setCardDate}
                             maxLength={5}
                             keyboardType="numeric"
