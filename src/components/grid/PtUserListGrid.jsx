@@ -33,7 +33,7 @@ function PtUserListGrid({handleUserClick,ptData,trainersData}) {
                             <PtTimeText>수업 가능 시간</PtTimeText>
                                 {
                                 ptUser.times.map((time, index) => (
-                                    <PtUserTimeText key={index}>{time.type} {time.startTime} : {time.endTime}</PtUserTimeText>
+                                    <PtUserTimeText key={index}>{time.type} {time.startTime} ~ {time.endTime}</PtUserTimeText>
                                     ))
                                 }
                         </PtUserTimeContainer>
