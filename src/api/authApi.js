@@ -53,3 +53,14 @@ export const autoLoginApi = async (refreshToken) => {
       throw refreshError.response; // 오류 수정
   }
 }
+
+// 회원탈퇴
+
+export const deleteMyInfo = async () => {
+  try {
+      const response = await customAxios.delete('/api/members/v1/member');
+      return response.data;
+  } catch (error) {
+      throw error;
+  }
+}

@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil';
 import { myinfoState, fcmTokenState,isLoginState, QRState } from '../../../store/atom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FastImage from 'react-native-fast-image'
-
+import {deleteMyInfo} from '../../../api/authApi';
 function MyAppSettingTemplate(props) {
   
     const navigation = useNavigation();
@@ -20,7 +20,6 @@ function MyAppSettingTemplate(props) {
     const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
     const [qr, setQR] = useRecoilState(QRState);
  
-
 
 
     
@@ -88,19 +87,17 @@ function MyAppSettingTemplate(props) {
         }
     };
     
-
-    const handleLogout = async () => {
+// 회원탈퇴
+    const handleDeleteMyInfo = async () => {
         try {
-          // AsyncStorage에서 토큰 삭제
-          await AsyncStorage.removeItem("accessToken");
-          await AsyncStorage.removeItem("refreshToken");
-          // fcmtoken 삭제
-            await AsyncStorage.removeItem("fcmToken");
-            setFcmToken(null);
-          // 다른 로그아웃 관련 로직 추가 가능
-
-          // 사용자 로그인 상태를 false로 업데이트
-          setIsLoggedIn(false);
+        const response = await deleteMyInfo();
+        if(response){
+            console.log('res',response)
+            await AsyncStorage.removeItem("accessToken");
+            await AsyncStorage.removeItem("refreshToken");
+            // setFcmToken(null);
+            setIsLoggedIn(false);
+          }
         } catch (error) {
           console.error('Error during logout:', error);
         }
@@ -108,8 +105,7 @@ function MyAppSettingTemplate(props) {
 
     const rightIcon = require('../../../assets/img/rightIcon.png');
 
-    const {pushAlarm, storeMarketing,marketing} = myInfo
-    console.log('myInfo',myInfo)
+
     // console.log('myInfomyInfo',pushAlarm,marketing,storeMarketing,fcmToken)
 
   return (
@@ -161,7 +157,7 @@ function MyAppSettingTemplate(props) {
                 {
                     showModal && (
                         <WithdrawalModal 
-                        handleLogout={handleLogout}
+                        handleLogout={handleDeleteMyInfo}
                         closeModal={closeModal}
                         />
                     )

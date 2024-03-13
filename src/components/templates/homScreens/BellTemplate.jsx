@@ -16,7 +16,7 @@ function BellTemplate(props) {
     const getBellData = async () => {
         try{
             const response = await getPushAlarmHistory();
-            console.log('response@@!',response.content)
+            // console.log('response@@!',response.content)
             setBellList(response.content);
         } catch (error){
             console.error('Error getting:', error);

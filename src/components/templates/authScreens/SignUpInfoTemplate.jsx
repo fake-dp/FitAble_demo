@@ -58,7 +58,7 @@ function SignUpInfoTemplate(props) {
             const response = await checkPhone(phone);
             console.log('읍답코드',response)
             if(response){
-                Alert.alert('사용 가능', '사용 가능한 번호입니다.', [
+                Alert.alert('사용 가능', '사용 가능한 번호입니다', [
                     {text: '확인', onPress: () => getCertification(phone)},
                     ]);
                     
@@ -66,7 +66,7 @@ function SignUpInfoTemplate(props) {
         }catch(error){
             console.log('error',error)
             if(error.response.data.code === 10201){
-            Alert.alert('휴대폰번호 오류', '가입되지 않은 휴대폰번호로\n 인증해주시길 바랍니다.', [
+            Alert.alert('휴대폰번호 오류', '이미 가입된 휴대폰번호입니다', [
                 {text: '확인', onPress: () => console.log('OK Pressed')}
                 ]);
             }
@@ -93,11 +93,11 @@ function SignUpInfoTemplate(props) {
                 });
             }, 1000);
             } else {
-                Alert.alert('인증 실패', '인증 번호를 받아오는데 실패했습니다.');
+                Alert.alert('인증 실패', '인증 번호를 받아오는데 실패했습니다');
             }
         } catch (error) {
             console.error('getCertification error:', error);
-            Alert.alert('에러', '인증 번호를 받아오는데 문제가 발생했습니다.');
+            Alert.alert('에러', '인증 번호를 받아오는데 문제가 발생했습니다');
         }
     }
 
@@ -113,7 +113,7 @@ function SignUpInfoTemplate(props) {
             if(response){
             clearInterval(interval); 
             setSignUpInfo({...signUpInfo, name: name, phone: phone});
-            Alert.alert('인증번호 확인', '인증번호를 확인하였습니다.',[{text: '확인', onPress: () => navigation.navigate('SignUpInfoGender')}]);
+            Alert.alert('인증번호 확인', '인증번호를 확인하였습니다',[{text: '확인', onPress: () => navigation.navigate('SignUpInfoGender')}]);
             }
         }catch(error){
             if(error.response.data.code === 10106){
@@ -135,7 +135,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
         if(response){
         clearInterval(interval); 
         setSignUpInfo({...signUpInfo, name: name, phone: phone});
-        Alert.alert('인증번호 확인', '인증번호를 확인하였습니다.',[{text: '확인', onPress: () => navigation.navigate('NewPassword')}]);
+        Alert.alert('인증번호 확인', '인증번호를 확인하였습니다',[{text: '확인', onPress: () => navigation.navigate('NewPassword')}]);
         }
     }catch(error){
         if(error.response.data.code === 10106){

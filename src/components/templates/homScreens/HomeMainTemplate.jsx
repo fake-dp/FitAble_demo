@@ -222,7 +222,6 @@ const TitleTextContainer = styled.View`
 
 const AllContentsClickBox = styled.TouchableOpacity`
   padding: 10px;
-
   display: flex;
   justify-content: center;
   align-items: center;

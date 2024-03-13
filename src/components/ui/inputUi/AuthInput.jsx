@@ -30,7 +30,8 @@ export const AuthInput = React.forwardRef(({
                     <TogglePasswordVisibility onPress={handlePasswordVisibilityChange}>
                       <SecretIcon 
                          resizeMode='contain'
-                        source={showPassword ? require('../../../assets/img/eye_open.png') : require('../../../assets/img/eye_closed.png')} />
+                         tintColor={COLORS.white}
+                         source={showPassword ? require('../../../assets/img/eye_open.png') : require('../../../assets/img/eye_closed.png')} />
                     </TogglePasswordVisibility>
                   )}
                   <AuthTextInput

@@ -36,7 +36,8 @@ const StyledPressable = styled.Pressable`
     align-items: center;
     background-color:${COLORS.main};
     /* margin-top: 49px; */
-    margin-top: ${props => props.btnName ? '0px' : '49px'};
+    /* margin-top: ${props => props.btnName ? '0px' : '49px'}; */
+    margin-top:0;
     margin-bottom: 23px;
 `
 

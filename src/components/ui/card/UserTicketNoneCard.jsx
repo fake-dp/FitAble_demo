@@ -30,7 +30,7 @@ const Container = styled.View`
   margin-bottom: 24px;
 `;
 
-const CardContainer = styled.View`
+const CardContainer = styled.TouchableOpacity`
   /* width: ${Platform.OS === 'ios' ? '340px' : '350px'}; */
   width: ${({cardWidth}) => cardWidth}px;
   height: 210px;
@@ -50,7 +50,7 @@ const CardText = styled.Text`
   line-height: 22.4px;
 `;
 
-const RegisteredBtn = styled.TouchableOpacity`
+const RegisteredBtn = styled.View`
   background-color: ${COLORS.main};
   border-radius: 80px;
   width: 173px;

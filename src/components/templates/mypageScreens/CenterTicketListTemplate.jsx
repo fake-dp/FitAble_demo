@@ -14,6 +14,7 @@ import {getTypeTickets, useStopTicket, requestRefundTicket,cancelSubscribeTicket
 import { useRecoilState } from 'recoil';
 import { subscribeListState, ticketListState ,mainCenterIdState} from '../../../store/atom';
 import CancelPicker from '../../ui/custom/CancelPicker';
+import SubPaymentModal from '../../ui/modal/SubPaymentModal';
 
 function CenterTicketListTemplate(props) {
   const navigation = useNavigation();
@@ -24,6 +25,9 @@ function CenterTicketListTemplate(props) {
   const [mainCenterId, setMainCenterId] = useRecoilState(mainCenterIdState);
   const [showModal, setShowModal] = useState(false);
   const [stopShowModal, setStopShowModal] = useState(false);
+
+  const [subPriceModal, setSubPriceModal] = useState(false);
+  const [subPriceModalData, setSubPriceModalData] = useState('');
 
   const [subscribeList, setSubscribeList] = useRecoilState(subscribeListState);
   const [ticketList, setTicketList] = useRecoilState(ticketListState);
@@ -134,27 +138,55 @@ function CenterTicketListTemplate(props) {
 
 //구독권 다음달 결제
 const postPaymentSubscriptionNextMonthBtn = async (id) => {
-  console.log('id',id)
+  console.log('dasasdfasdfasdff',id)
+  // setSubPriceModal(true)
+  //     setTimeout(() => {
+  //     setSubPriceModal(false);
+  //   }, 3000);
 
   try {
       const response = await postPaymentSubscriptionNextMonth(id);
       if(response){
           console.log('구독권 다음달 결제 확인용 콘솔',response)
-          Alert.alert("알림","구독권 다음달 결제에 성공하였습니다.",['확인']);
+          setSubPriceModal(true)
+          setSubPriceModalData(response);
+          // Alert.alert("알림","구독권 다음달 결제에 성공하였습니다.",['확인']);
       }
   } catch (error) {
-      console.error('Error getting:', error.response);
+      // console.log('ddddd')
+      // console.error('Error getting:', error.response);
       if(error.response.data.code === 10403){
-        Alert.alert("알림","카드등록을 해주세요.",['확인']);
+        Alert.alert("결제 실패","카드를 등록해주세요",['확인']);
       }else if(error.response.data.code === 10404){
-        Alert.alert("알림","구독권 다음달 결제에 실패하였습니다.",['확인']);
+        Alert.alert("결제 실패","정기 결제가 정상적으로 이루어지지 않았습니다.\n다른 카드로 시도해주세요.",['확인']);
       }else if(error.response.data.code === 20602){
-        Alert.alert("알림","해당이용권을 찾을수 없습니다.",['확인']);
+        Alert.alert("결제 실패","해당 이용권을 찾을 수 없습니다.\n센터에 문의해주세요.",['확인']);
       }else{
-        Alert.alert("알림","구독권 다음달 결제에 실패하였습니다.",['확인']);
+        Alert.alert("결제 실패","정기 결제가 정상적으로 이루어지지 않았습니다.\n다른 카드로 시도해주세요.",['확인']);
 }
+  } finally {
+      setTimeout(() => {
+        setSubPriceModal(false);
+      }, 3000);
   }
 };
+
+
+// try{
+//     const response = await postPaymentSubscription(subPaymentInfoData);
+//     console.log('response',response)
+//     if(response){
+//       setSubPriceModal(true);
+//         setPaymentModalData(response);
+//     }
+// }catch(error){
+//     console.error('Error getting:', error.response.data);
+// }finally{
+//     setTimeout(() => {
+//       setSubPriceModal(false);
+//     }, 3000);
+// }
+// }
 
   // 이용권 목록 (구독권, 이용권)
   useEffect(() => {
@@ -341,6 +373,14 @@ const stopText = {
           ticketName={ticketName}
           centerName={centerName}
           setShowStopTicketPicker={setShowStopTicketPicker}/>)
+      }
+      {
+        subPriceModal && (
+          <SubPaymentModal 
+             paymentModalData={subPriceModalData}
+          />
+        )
+        
       }
       </>
   );

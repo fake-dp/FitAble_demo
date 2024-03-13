@@ -308,6 +308,7 @@ function DetailCenterTemplate({ route }) {
           <ActiveMainBtn
           onPress={handleTypeDetail}
           // btnName={id}
+          
           >이용하기</ActiveMainBtn>
         )}
          </StickyBtnContainer>
