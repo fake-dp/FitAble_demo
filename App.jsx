@@ -119,6 +119,8 @@
 // );
 
 // export default Main;
+
+
 import React, { useEffect } from 'react';
 import AppInner from './AppInner';
 import { RecoilRoot } from 'recoil';
@@ -139,12 +141,12 @@ async function requestUserPermission() {
   }
 }
 
-// Configure notification channel for Android devices
+
 const configureNotificationChannel = () => {
   PushNotification.createChannel(
     {
-      channelId: "test-id",
-      channelName: "test channel",
+      channelId: "fitable-client",
+      channelName: "fitable client channel",
       channelDescription: "A default channel for all the notifications",
       soundName: "default",
       importance: 4,
@@ -206,7 +208,8 @@ function App() {
     const unsubscribeMessage = messaging().onMessage(async remoteMessage => {
       const {title, body} = remoteMessage.notification;
       PushNotification.localNotification({
-        channelId: "test-channel-id",
+        smallIcon: "ic_fitablet_round",
+        channelId: "fitable-client",
         title: title,
         message: body,
         playSound: true,

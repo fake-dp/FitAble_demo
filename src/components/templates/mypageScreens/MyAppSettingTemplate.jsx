@@ -53,6 +53,17 @@ function MyAppSettingTemplate(props) {
         }
     };
 
+
+    const QrAsyncStorageToggleBtn = async () => {
+        try {
+            const updatedValue = !qr;
+            await AsyncStorage.setItem("qr", updatedValue.toString());
+            setQR(updatedValue);
+        } catch (error) {
+            console.error("Error updating qr status:", error);
+        }
+    };
+
     const handleTogglePushMarketing = async () => {
         try {
             const updatedValue = !myInfo.marketing;
@@ -87,7 +98,7 @@ function MyAppSettingTemplate(props) {
             await AsyncStorage.removeItem("fcmToken");
             setFcmToken(null);
           // 다른 로그아웃 관련 로직 추가 가능
-      
+
           // 사용자 로그인 상태를 false로 업데이트
           setIsLoggedIn(false);
         } catch (error) {
@@ -129,7 +140,7 @@ function MyAppSettingTemplate(props) {
                 </SettingList>
                 <SettingList>
                      <SettingListText>QR 출입증</SettingListText>
-                     <ToggleBtn isActive={qr} toggleActive={() => setQR(!qr)} />
+                     <ToggleBtn isActive={qr} toggleActive={QrAsyncStorageToggleBtn} />
                 </SettingList>
 
 
@@ -144,7 +155,7 @@ function MyAppSettingTemplate(props) {
                 onPress={openModal}
                 >
                     <GoodByeText>
-                        회원 탈퇴(임시로그아웃)
+                        회원 탈퇴
                     </GoodByeText>
                 </GoodByeBtn>
                 {

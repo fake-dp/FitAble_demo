@@ -15,8 +15,7 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
 
 
     const openPicker = () => {
-      pickerRef.current?.togglePicker(true);
- 
+        pickerRef.current.togglePicker(true)
     };
 
     const centerOptions = centerName.map(center => ({
@@ -64,13 +63,14 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       ref={pickerRef}
       onValueChange={handleValueChange}
       onDonePress={handleDonePress}
+
       // 닫기
       onClose={handleClose}
 
       // 취소 text
     doneText="변경"
     value={selectedCenterId}
-    textInputProps={{ underlineColorAndroid: 'transparent'}}
+    // textInputProps={{ underlineColorAndroid: 'transparent'}}
     useNativeAndroidPickerStyle={false}
     fixAndroidTouchableBug={true}
       // onClose={handleDonePress}
@@ -83,7 +83,7 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
             fontSize: 16,
             zIndex: 10,
             fontSize: 16,
-            padding: 10
+            padding: 10,
           },
           inputIOS:{
             paddingRight: 6,
@@ -102,9 +102,10 @@ export default MyCenterSelectPicker;
 const PickerContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
+  /* background-color: blue; */
 `;
 
 const DownIcon = styled.Image`
-  width: 20px;
+    width: 20px;
     height: 20px;
 `;

@@ -26,7 +26,7 @@
                     android:value="true"/>
         <!-- Change the resource name to your App's accent color - or any other color you want -->
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-                    android:resource="@color/white"/> <!-- or @android:color/{name} to use a standard color -->
+                    android:resource="@color/ic_fitablet_background"/>
 
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
@@ -59,8 +59,10 @@
          <action android:name="android.intent.action.VIEW" />
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
                <data android:scheme="http" />
-    <data android:scheme="https" />
+              <data android:scheme="https" />
         </intent-filter>
       </activity>
     </application>
