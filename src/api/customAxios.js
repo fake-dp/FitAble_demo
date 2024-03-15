@@ -3,13 +3,14 @@ import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const customAxios = axios.create({
+  // baseURL: `${Config.API_URL}`,
   baseURL: `${Config.API_URL}`,
-  // baseURL: `${Config.DEV_URL}`,
   timeout: 10000,
   headers: {
     'content-type': 'application/json',
   },
 });
+console.log('Config.API_URL',Config.API_URL)
 
 // 요청 인터셉터
 customAxios.interceptors.request.use(async (config) => {
@@ -28,16 +29,16 @@ customAxios.interceptors.request.use(async (config) => {
     if (error && error.response && error.response.status === 401 && error.response.data && error.response.data.code === 10100) {
       originalRequest._retry = true;
       const refreshToken = await AsyncStorage.getItem("refreshToken");
-      // console.log('Refresh token from AsyncStorage:', refreshToken); // 콘솔 로그 추가
+      console.log('지금 스토리지에 있는 토큰값:', refreshToken); 
       if (!refreshToken) {
         console.error("Refresh token is not available.");
         return Promise.reject(error);
       }
-      // console.log("Sending refreshToken:", refreshToken);
+      console.log("여기서 리프레쉬 토큰을 받아서 재발급합니당", refreshToken);
 
       try {
         const response = await axios.post(`${Config.API_URL}/api/members/v1/token`, { refreshToken });
-        console.log("Refresh token response@@:", response.data);
+        console.log("새롭게 받았습니당!!:", response.data);
         const { accessToken, refreshToken: newRefreshToken } = response.data;
         
         await AsyncStorage.setItem("accessToken", accessToken);
@@ -48,10 +49,14 @@ customAxios.interceptors.request.use(async (config) => {
         originalRequest.headers.Authorization = `${accessToken}`;
         return customAxios(originalRequest);
       } catch (refreshError) {
-        // await AsyncStorage.removeItem("accessToken");
-        // await AsyncStorage.removeItem("refreshToken");
-        console.error('Token refresh failed:!', refreshError.response.data);
-        return Promise.reject(error); // 원래의 오류 반환
+        console.error('Token refresh failed:!123', refreshError.response.status);
+        if (refreshError.response && refreshError.response.status === 401 && refreshError.response.data && refreshError.response.data.code === 10100) {
+          await AsyncStorage.removeItem("accessToken");
+          await AsyncStorage.removeItem("refreshToken");
+          await AsyncStorage.removeItem("isLogin");
+          return Promise.reject(refreshError);
+        }
+        return Promise.reject(refreshError); // 원래의 오류 반환
       }
     }
     return Promise.reject(error);

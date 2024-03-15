@@ -1,9 +1,7 @@
 import axios from "axios";
 import Config from 'react-native-config';
-import customAxios from "./customAxios";
-
+// const baseURL = Config.API_URL;
 const baseURL = Config.API_URL;
-// const baseURL = Config.DEV_URL;
 // 인증번호 받기
 export const getCertificationNumber = async (phone) => {
     try {

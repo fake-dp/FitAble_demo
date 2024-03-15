@@ -159,7 +159,7 @@ function TicketListDetailTemplate(props) {
                          <UpdownImg 
                          isProp={showContent}
                          resizeMode={FastImage.resizeMode.contain}
-                         source={showContent ? upIcon : downIcon} />
+                         source={showContent ? downIcon : upIcon} />
                         </CenterContainer>
 
                         {

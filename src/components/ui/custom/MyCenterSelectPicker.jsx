@@ -58,42 +58,67 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
       };
 
     return (
-        <PickerContainer onPress={openPicker}>
-      <RNPickerSelect
-      ref={pickerRef}
-      onValueChange={handleValueChange}
-      onDonePress={handleDonePress}
+      <>
+        {
+          Platform.OS === 'ios' ? (
+            <PickerContainer onPress={openPicker}>
+            <RNPickerSelect
+            ref={pickerRef}
+            onValueChange={handleValueChange}
+            onDonePress={handleDonePress}
+            onClose={handleClose}
+            doneText="변경"
+            value={selectedCenterId}
+              items={centerOptions}
+              placeholder={{}}
+              style={{
+                inputIOS:{
+                  paddingRight: 6,
+                  fontSize: 16,
+                  color: COLORS.gray_400,
+                },
+              }}
+            />
+            <DownIcon source={require('../../../assets/img/rightIcon.png')} />
+          </PickerContainer>
+          ):(
+            <AndroidContainer>
+            <RNPickerSelect
 
-      // 닫기
-      onClose={handleClose}
+            onValueChange={handleValueChange}
+    
+          value={selectedCenterId}
+          textInputProps={{ underlineColorAndroid: 'transparent'}}
+          useNativeAndroidPickerStyle={false}
+          fixAndroidTouchableBug={true}
+            // onClose={handleDonePress}
+              items={centerOptions}
+              Icon={() => {
+                return <DownIcon 
+                resizeMode='contain'
+                source={require('../../../assets/img/rightIcon.png')} />
+              }
+              }
+              placeholder={{}}
+              style={{
+                inputAndroid:{
+                  color: COLORS.gray_400,
+                  height: 50,
+                  fontSize: 16,
+                  padding: 10,
+                  marginRight: 30,
+                },
+              iconContainer: {
+                top: 16,
+                right: 12,
+              },
+            }}
+            />
+  </AndroidContainer>
 
-      // 취소 text
-    doneText="변경"
-    value={selectedCenterId}
-    // textInputProps={{ underlineColorAndroid: 'transparent'}}
-    useNativeAndroidPickerStyle={false}
-    fixAndroidTouchableBug={true}
-      // onClose={handleDonePress}
-        items={centerOptions}
-        placeholder={{}}
-        style={{
-          inputAndroid:{
-            color: COLORS.gray_400,
-            paddingRight: 6,
-            fontSize: 16,
-            zIndex: 10,
-            fontSize: 16,
-            padding: 10,
-          },
-          inputIOS:{
-            paddingRight: 6,
-            fontSize: 16,
-            color: COLORS.gray_400,
-          },
-        }}
-      />
-      <DownIcon source={require('../../../assets/img/rightIcon.png')} />
-    </PickerContainer>
+          )
+        }
+        </>
     );
 }
 
@@ -102,7 +127,10 @@ export default MyCenterSelectPicker;
 const PickerContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  /* background-color: blue; */
+`;
+
+const AndroidContainer = styled.View`
+width: auto;
 `;
 
 const DownIcon = styled.Image`

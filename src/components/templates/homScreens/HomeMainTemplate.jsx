@@ -57,6 +57,7 @@ function HomeMainTemplate(props) {
     const getUseHomeBanners = async () => {
         try {
           const response = await getHomeBanners();
+           console.log('rd홈홈홈s',response.mainCenterId)
             setFitablesBanners(response.fitables);
             setCentersBanners(response.centers);
             setMainCenterId(response.mainCenterId);
@@ -84,7 +85,7 @@ function HomeMainTemplate(props) {
           console.error('Error getting home reservations:', error.response); // 에러 로깅
         }
       };
-console.log('mainCenterId',mainCenterId,homeReservationList)
+// console.log('mainCenterId',mainCenterId,homeReservationList)
 
 
 

@@ -47,28 +47,14 @@ function Logintempate({navigation}) {
           const response = await login(phone, password, fcmToken); // 로그인 함수 호출
           const isValidInput = phone.length > 10  && password.length > 7;
 
-          // if (!response) {
-          //     return Alert.alert('로그인 실패하였습니다.', '', [{ text: '확인', onPress: () => console.log('서버 응답 없음') }]);
-          // }
   
         console.log('로그인 응답:',response.isUseApp, response)
           if (response.isUseApp && isValidInput) {
-              // const { accessToken, refreshToken } = response;
-              // await AsyncStorage.setItem("accessToken", accessToken);
-              // await AsyncStorage.setItem("refreshToken", refreshToken);
-  
-              // setMyPhone(phone);
-              // setPhone('');
-              // setPassword('');
-              setIsLoggedIn(true);
-              // return Alert.alert('로그인 성공하였습니다.', '', [{ text: '확인', onPress: () => console.log('로그인 성공') }]);
+            const loginState = await AsyncStorage.getItem('isLogin');
+            console.log('loginSt123ate',loginState)
+            setIsLoggedIn(loginState);
           } 
-  
           if (response.isUseApp === false && isValidInput) {
-            // console.log('@useapp값 확인',response.isUseApp)
-            // const { accessToken, refreshToken } = response;
-            // await AsyncStorage.setItem("accessToken", accessToken);
-            // await AsyncStorage.setItem("refreshToken", refreshToken);
               return Alert.alert('추가정보를 입력해주세요.', '', [{ text: '확인', onPress: () => navigation.navigate('SignUpInfoGender', { data: 'newInfo' }) }]);
           }
   

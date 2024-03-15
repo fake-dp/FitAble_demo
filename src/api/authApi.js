@@ -3,22 +3,27 @@ import customAxios from "./customAxios";
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// const baseURL = Config.API_URL;
 const baseURL = Config.API_URL;
-// const baseURL = Config.DEV_URL;
 
 // login api
 export const login = async (phone, password, fcmToken) => {
     try {
         const response = await axios.post(`${baseURL}/api/members/v1/login`, { phone, password, fcmToken });
         const { accessToken, refreshToken } = response.data;
-        await AsyncStorage.setItem("accessToken", accessToken);
-        await AsyncStorage.setItem("refreshToken", refreshToken);
-        console.log('로그인 데이터 acce',accessToken)
-        console.log('로그인 데이터 ref',refreshToken)
-        return response.data;
-      } catch (error) {
-        throw error;
+        if (accessToken && refreshToken) {
+          await AsyncStorage.setItem("accessToken", accessToken);
+          await AsyncStorage.setItem("refreshToken", refreshToken);
+          await AsyncStorage.setItem("isLogin", "true"); 
+      } else {
+          throw new Error('Missing tokens'); 
       }
+
+      return response.data;
+  } catch (error) {
+      console.error("Login failed:", error);
+      throw error; 
+  }
 };
 
 // Join api
@@ -41,16 +46,26 @@ export const upDateMyInfo = async (data) => {
       throw error;
   }
 }
-
-export const autoLoginApi = async (refreshToken) => {
+export const autoLoginApi = async () => {
   try {
-      const response = await axios.post(`${baseURL}/api/members/v1/token`, {refreshToken});
-      // const { accessToken } = response.data;
-      // await AsyncStorage.setItem("accessToken", accessToken);
-      return response.data; // 갱신 성공 시 true 반환
+      const refreshToken = await AsyncStorage.getItem("refreshToken");
+      if (!refreshToken) {
+          throw new Error("No refreshToken found");
+      }
+
+      const response = await axios.post(`${baseURL}/api/members/v1/token`, { refreshToken });
+      const { accessToken, newRefreshToken } = response.data;
+
+      // 새로운 액세스 토큰과 리프레시 토큰 저장
+          await AsyncStorage.setItem("accessToken", accessToken);
+      if (newRefreshToken) {
+          await AsyncStorage.setItem("refreshToken", newRefreshToken);
+      }
+
+      return true;
   } catch (refreshError) {
-      console.error('Token refresh failed:@@@@@', refreshError);
-      throw refreshError.response; // 오류 수정
+      console.error('Auto login failed:', refreshError);
+      return false;
   }
 }
 

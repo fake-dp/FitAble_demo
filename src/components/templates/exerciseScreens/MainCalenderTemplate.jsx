@@ -208,7 +208,7 @@ const Container = styled.View`
     background-color: ${COLORS.sub};
     /* padding: 0 20px; */
 `
-const TitleContainer = styled.TouchableOpacity`
+const TitleContainer = styled.View`
     padding: 0 20px;
     margin-bottom: 42px;
     flex-direction: row;

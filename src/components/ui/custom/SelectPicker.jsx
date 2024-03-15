@@ -15,12 +15,12 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
     const [selectedCenterId, setSelectedCenterId] = useState(mainCenterId);
     const openPicker = () => {
       pickerRef.current?.togglePicker(true);
-      console.log('dd')
+      // console.log('dd')
     };
 
 
     const handleValueChange = (value) => {
-      console.log('ba',value)
+      // console.log('ba',value)
         setSelectedCenterId(value);
         if(Platform.OS !== 'ios' && value === 'fake_id'){
           navigation.navigate('SearchCenter');
@@ -28,7 +28,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
       };
 
       const handleDonePress = async() => {
-        console.log('dd')
+        // console.log('dd')
         const selectedCenter = centerName.find(center => center.id === selectedCenterId);
         if (selectedCenter) {
             setMyInfo(prevState => ({
@@ -73,48 +73,81 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
     );
 
    return (
-    <PickerContainer onPress={openPicker}>
-      <RNPickerSelect
-      ref={pickerRef}
-      onValueChange={handleValueChange}
-      onDonePress={handleDonePress}
-      doneText="변경"
-      value={selectedCenterId}
-      // InputAccessoryView={() => null}
-      textInputProps={{ underlineColorAndroid: 'transparent'}}
-      useNativeAndroidPickerStyle={false}
-      fixAndroidTouchableBug={true}
-      onClose={handleClose}
-        items={centerOptions}
-        placeholder={{}}
-        style={{
-          inputIOS: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: COLORS.white,
-            paddingRight: 20,
-          },
-          inputAndroid: {
-            display: 'flex',
-            flexDirection: 'row',
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: COLORS.white,
-            paddingRight: 20,
+     <>
+     {
+      Platform.OS === 'ios' ? (
+        <PickerContainer onPress={openPicker}>
+        <RNPickerSelect
+        ref={pickerRef}
+        onValueChange={handleValueChange}
+        onDonePress={handleDonePress}
+        doneText="변경"
+        value={selectedCenterId}
+        // InputAccessoryView={() => null}
+          onClose={handleClose}
+          items={centerOptions}
+          placeholder={{}}
+          style={{
+            inputIOS: {
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: COLORS.white,
+              paddingRight: 20,
+            },
+            placeholder:{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: COLORS.white,
+            },
+          }}
+        />
   
-          },
-          placeholder:{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: COLORS.white,
-          },
-        }}
-      />
+        <DownIcon 
+        source={require('../../../assets/img/whitedownex.png')} />
+      </PickerContainer>
+      ):( 
+        <AndroidContainer>
+        <RNPickerSelect
 
-      <DownIcon 
-      source={require('../../../assets/img/whitedownex.png')} />
+        onValueChange={handleValueChange}
+        value={selectedCenterId}
+        // InputAccessoryView={() => null}
+        textInputProps={{ underlineColorAndroid: 'transparent'}}
+        useNativeAndroidPickerStyle={false}
+        fixAndroidTouchableBug={true}
+        // onClose={handleClose}
+          items={centerOptions}
+          placeholder={{}}
+          Icon={() => {
+            return <DownIcon 
+            resizeMode='contain'
+            source={require('../../../assets/img/whitedownex.png')} />
+          }
+          }
+          style={{
+            inputAndroid:{
+              color: COLORS.white,
+              height: 50,
+              fontSize: 22,
+              padding: 10,
+              marginRight: 30,
+            },
+            iconContainer: {
+              top: 14,
+              right: 12,
+            },
+            placeholder:{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: COLORS.white,
+            },
+          }}
+        />
+        </AndroidContainer>
 
-    </PickerContainer>
+      )
+     }
+    </>
     );
 };
 
@@ -125,9 +158,10 @@ const PickerContainer = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 `;
-
+const AndroidContainer = styled.View`
+width: auto;
+`;
 const DownIcon = styled(FastImage)`
-  /* margin-left: 18px; */
   width: 20px;
   height: 20px;
   align-self: center; 

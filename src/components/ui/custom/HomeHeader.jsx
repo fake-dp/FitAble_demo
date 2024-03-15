@@ -22,7 +22,7 @@ function HomeHeader({navigation}) {
 
     const getUnreadPushData = async () => {
       const response = await getUnreadPush();
-      console.log('response@@@@@@',response.isExistUnread)
+      // console.log('response@@@@@@',response.isExistUnread)
       if(response){
         setIsAlarmRead(response.isExistUnread)
       }

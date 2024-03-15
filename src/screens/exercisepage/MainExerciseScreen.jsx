@@ -14,7 +14,7 @@ function MainExerciseSreen(props) {
   const getValidCenterNameData = async () => {
       try {
           const response = await getValidCenterName();
-          console.log('response@@@@@',response);
+          // console.log('response@@@@@',response);
           setCenterName(response);
       } catch (error) {
           console.error('Error getting:', error);

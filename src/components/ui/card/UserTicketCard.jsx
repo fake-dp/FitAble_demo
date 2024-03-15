@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image'
 function UserTicketCard({ homeTicketList,detailTicketsScreen, index,isLast,isMargin }) {
   const { id, center,locker,name,sportWear,trainerName,detail, usePercentage,type, status, startDate,endDate,left } = homeTicketList;
 
-console.log('isMargin',isMargin)
+
 const deviceWidth = Dimensions.get('window').width;
 const padding = 30;  // 원하는 패딩 값으로 변경 가능
 const cardWidth = deviceWidth - 2 * padding;
@@ -162,10 +162,8 @@ const ProgressBarContainer = styled.View`
 `;
 
 const ProgressBar = styled.View`
-  /* flex: ${({percentage}) => percentage / 100}; */
   width: ${({percentage}) => percentage}%;
   height: 100%;
-  /* background-color: ${COLORS.main}; */
   background-color: ${({status}) =>
     status === 'IN_USE'
       ? COLORS.main
@@ -177,4 +175,5 @@ const ProgressBar = styled.View`
       ? COLORS.white
       : null};
   border-radius: 4px;
+  /* margin-left: ${({percentage}) => 100 - percentage}%; */
 `;
