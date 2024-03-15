@@ -147,21 +147,10 @@ export function MainTabScreen() {
         ),
             }}
       />
-      <Tab.Screen name="Store" component={StoreMainScreens} 
+      {/* <Tab.Screen name="Store" component={StoreMainScreens} 
               options={{
                 title: '스토어',
                 tabBarIcon: ({ focused }) => (
-                //   <FastImage
-                //   source={
-                //     focused? 
-                //     require('./src/assets/img/store_active.png') :
-                //     require('./src/assets/img/store_unactive.png')}
-                //   style={{ 
-                //     ...bottonIconSize,
-                //     tintColor: focused ? COLORS.white : COLORS.gray_400 
-                //   }}
-                //     resizeMode={FastImage.resizeMode.contain}
-                // />
                   <Image  
                   source={require('./src/assets/img/store_active.png')}
                   style={{
@@ -170,7 +159,7 @@ export function MainTabScreen() {
                 />
                 ),
                     }}
-      />
+      /> */}
       <Tab.Screen name="Mypage" component={MyMainScreen} 
           options={{
             title: '마이',
