@@ -218,8 +218,12 @@ const handleFitableRegisterBtn = (inquiryText) => {
         compressImageMaxHeight: 750,
       })
         .then(images => {
-          console.log(images);
-          setSelectedImages(images.map(image => image.path));
+          if(images.length > 3){
+            Alert.alert("알림", "이미지는 최대 3개까지만 선택 가능합니다.");
+            return;
+          }else{
+              setSelectedImages(images.map(image => image.path));
+          }
         })
         // .then(newImages => {
         //     console.log(newImages);

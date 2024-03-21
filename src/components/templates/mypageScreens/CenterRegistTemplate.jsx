@@ -111,6 +111,7 @@ function CenterRegistTemplate(props) {
             {searchList.map((item) => (
                 //  <React.Fragment key={item.id}>
                 <SearchListBoxGrid 
+                isRegistCenter={true}
                 key={item.id}
                 onPress={()=>handleRegistCenterBtn(item.id, item.name)}
                 searchListData={item}
@@ -143,7 +144,7 @@ const GobackTouchable = styled.TouchableOpacity`
 flex-direction: row;
 align-items: center;
 margin-bottom: 10px;
-padding: 0 10px;
+/* padding: 0 10px; */
 `;
 
 const TitleText = styled.Text`
@@ -155,7 +156,7 @@ margin-left: 12px;
 
 const Container = styled.View`
   flex: 1;
-  padding: 0 10px;
+  padding: 0 20px;
   background-color: ${COLORS.sub};
 `;
 

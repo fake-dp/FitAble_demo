@@ -89,6 +89,10 @@ function MyAppSettingTemplate(props) {
     
 // 회원탈퇴
     const handleDeleteMyInfo = async () => {
+        //test할떄
+                    // await AsyncStorage.removeItem("accessToken");
+                    // await AsyncStorage.removeItem("refreshToken");
+                    // setIsLoggedIn(false);
         try {
         const response = await deleteMyInfo();
         if(response){

@@ -1,4 +1,4 @@
-import {ScrollView} from 'react-native';
+import {ScrollView,Alert} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
@@ -56,7 +56,7 @@ function SubscribeTemplate(props) {
         setIsCenterAgree(!isCenterAgree);
     }
 
-    console.log('cardId',cardId,isExist)
+    console.log('cardI1d',cardId,isExist,isButtonClicked)
     const getDataDetailTicketCenter = async () => {
         try {
             const response = await getDetailTicketCenter(cardId.id);
@@ -104,6 +104,7 @@ function SubscribeTemplate(props) {
 
     useFocusEffect(
         useCallback(() => {
+            setIsButtonClicked(false)
             isCardInfoData();
             getDataDetailTicketCenter()
         },[]));
@@ -133,9 +134,11 @@ function SubscribeTemplate(props) {
       } else if (selectedCoupon?.discountAmount != null) {
         couponDiscount = selectedCoupon?.discountAmount;
       }
-    console.log('couponDiscount',couponDiscount)
+
+
+
     const goCardInfoScreens = async() => {
-        console.log('dd클릭')
+        console.log('dd클릭',isExist)
 
         if (isButtonClicked) {
             return;
@@ -164,7 +167,10 @@ function SubscribeTemplate(props) {
                     setPaymentModal(true);
                 }
             }catch(error){
-                console.error('Error getting1111:', error.response.data);
+                console.error('Error getting1111:@@', error.response.data.code);
+                if(error.response.data.code === 10404){
+                    Alert.alert('결제 실패', '정기 결제가 정상적으로 이루어지지 않았습니다. \n다른 카드로 시도해주세요', [{ text: '확인', onPress: () => console.log(error.response.data) }]);
+                }
             }finally{
                 setTimeout(() => {
                     setPaymentModal(false);
@@ -173,8 +179,8 @@ function SubscribeTemplate(props) {
                 }, 1500);
             }
 
-        }else{  
-
+        }else if(isExist === false){  
+            console.log('false니까 여기')
             const subPaymentInfoData = {
                 ticket: {
                     id: detailData?.id,
@@ -184,20 +190,12 @@ function SubscribeTemplate(props) {
                 totalPrice: totalPrice,
                 couponId: selectedCoupon?.id,
             }
-            console.log('@@subPaymentInfoData',subPaymentInfoData)
+            console.log('@@subPaymentInfoData',subPaymentInfoData,isExist)
             navigation.navigate('InfoCard', {text: 'isCard', subPaymentInfoData});
+            // navigation.navigate('InfoCardbirt', {text: 'isCard', subPaymentInfoData});
         }
 }
-const subPaymentInfoData1 = {
-    ticket: {
-        id: detailData?.id,
-        salePrice: salePrice - couponDiscount,
-    },
-    options:formattedOptions,
-    totalPrice: totalPrice,
-    couponId: selectedCoupon?.id,
-}
-console.log('@@subPaymentInfoData',subPaymentInfoData1)
+
 // isInfoAgree,isRefundAgree, isCenterAgree
 // const isActiveBtn = isInfoAgreetotalPrice === 0 ? false : true;
 

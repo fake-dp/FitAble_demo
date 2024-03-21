@@ -4,14 +4,14 @@ export const agreementList = [
         title: '[필수] 이용약관 동의',
         subText:'',
         isCheck: false,
-        url: 'https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f914',
+        url: 'https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148',
     },
     {
         id: 1,
         title: '[필수] 구독/P.T 약관',
         subText:'',
         isCheck: false,
-        url: 'https://www.naver.com',
+        url: 'https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148',
     },
     {
         id: 2,
@@ -25,7 +25,7 @@ export const agreementList = [
         title: '[선택] 푸시 알림 수신 동의',
         subText:'공지사항, 출석, 결제 알림',
         isCheck: false,
-        url: 'https://www.naver.com',
+        url: 'https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148',
     },
     {
         id: 4,
@@ -33,13 +33,13 @@ export const agreementList = [
         subText:'센터 이벤트, 쿠폰 지급, 할인 소식',
         mainTitle: '푸시 알림 수신 동의',
         isCheck: false,
-        url: 'https://www.naver.com',
+        url: 'https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148',
     },
     {
         id: 5,
         title: '[선택] 스토어 마케팅 정보 수신 동의',
         subText:'핏에이블 스토어 이벤트, 할인 소식',
         isCheck: false,
-        url: 'https://www.naver.com',
+        url: 'https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148',
     },
 ];

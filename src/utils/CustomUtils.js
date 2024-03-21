@@ -58,8 +58,8 @@ export function formatCardExpirationDate(input) {
 
 // 카드 번호 포맷
 export function formatCardNumber(input) {
-  const numericInput = input.replace(/\D/g, '');
-
+  // const numericInput = input.replace(/\D/g, '');
+  const numericInput = input.replace(/[^0-9*]/g, '');
   const parts = [];
   for (let i = 0; i < numericInput.length; i += 4) {
       parts.push(numericInput.substring(i, Math.min(i + 4, numericInput.length)));

@@ -37,6 +37,7 @@ import PaymentResultScreen from './src/screens/mainpage/PaymentResultScreen';
 import useQrNavigation from './src/hooks/useQrNavigation';
 import useQrAndroidNavigation from './src/hooks/useQrAndroidNavigation';
 import { Platform } from 'react-native';
+import InfoCardBirthdayTemplate from './src/components/templates/homScreens/InfoCardBirthdayTemplate';
 const Stack = createNativeStackNavigator();
 
 // 여기서 스크린 등록하장 !!
@@ -118,6 +119,17 @@ function AppScreens({navigation}) {
             headerBackTitleVisible: false,
         }}
           />
+               <Stack.Screen name="InfoCardbirt" component={InfoCardBirthdayTemplate} 
+           options={{
+            title: '',
+            // headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+            headerBackTitleVisible: false,
+        }}
+          />
+
         {/* 운동하기 스크린 등록 */}
         <Stack.Screen name="ExSearchCenter" component={ExerciseSearchCenterScreen} 
           options={{

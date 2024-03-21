@@ -3,7 +3,7 @@ import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import {TouchableOpacity, Platform} from 'react-native';
 import FastImage from 'react-native-fast-image'
-function SearchListBoxGrid({searchListData,onPress, isSelected}) {
+function SearchListBoxGrid({searchListData,onPress, isSelected,isRegistCenter}) {
 
     const {id, name, address, programs, mainImage,isMainCenter} = searchListData;
 
@@ -12,7 +12,7 @@ function SearchListBoxGrid({searchListData,onPress, isSelected}) {
     return (
         <TouchableOpacity   
         onPress={() => onPress(id)}>
-            <InnerContainer isSelected={isSelected}>
+            <InnerContainer isSelected={isSelected} isRegistCenter={isRegistCenter}>
         <Container key={id} isSelected={isSelected}>
             <ContentsBox>
             <TitleText isSelected={isSelected}>{name}</TitleText>
@@ -70,7 +70,8 @@ const InnerContainer = styled.View`
     background-color: ${(props) => (props.isSelected ? COLORS.box : 'transparent')}; 
     box-shadow: ${(props) => (props.isSelected ? '0px 2px 4px rgba(0, 0, 0, 0.3)' : '0px 0px 0px rgba(0, 0, 0, 0)')};
     /* margin-bottom: 10px; */
-    padding: 0 4px;
+    /* padding: 0 10px; */
+    padding: ${(props) => (props.isRegistCenter ? '0 10px' : '0')};
 
 `
 
@@ -132,7 +133,7 @@ font-weight: 400;
 const MainSpotImage = styled(FastImage)`
 /* width: 130px;
 height: 114px; */
-width: ${Platform.OS === 'ios' ? '130px' : '100px'};
-height: ${Platform.OS === 'ios' ? '114px' : '94px'};
+width: ${Platform.OS === 'ios' ? '110px' : '100px'};
+height: ${Platform.OS === 'ios' ? '110px' : '100px'};
 border-radius: 15px;
 `

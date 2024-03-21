@@ -89,3 +89,13 @@ export const getAgreeTerms = async (id) => {
         throw error;
     }
 }
+
+// 카드 생일 등록
+export const postCardBirth = async (data) => {
+    try {
+        const response = await customAxios.put(`/api/members/v1/member/birth`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

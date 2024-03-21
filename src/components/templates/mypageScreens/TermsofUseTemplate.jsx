@@ -41,14 +41,14 @@ const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleItem
 
              <SettingListBtn 
                      activeOpacity={0.8}
-                     onPress={() => isAndroidLink('https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f914')}>
+                     onPress={() => isAndroidLink('https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148')}>
                     <SettingListText>이용약관 동의</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
 
                 <SettingListBtn 
                   activeOpacity={0.8}
-                  onPress={() => isAndroidLink('https://www.google.com')}>
+                  onPress={() => isAndroidLink('https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148')}>
                     <SettingListText>구독/P.T 약관</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
@@ -62,14 +62,14 @@ const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleItem
 
                 <SettingListBtn 
                   activeOpacity={0.8}
-                  onPress={() => isAndroidLink('https://www.google.com')}>
+                  onPress={() => isAndroidLink('https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148')}>
                     <SettingListText>마케팅 정보 수신 동의</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
 
                 <SettingListBtn 
                   activeOpacity={0.8}
-                  onPress={() => isAndroidLink('https://www.google.com')}>
+                  onPress={() => isAndroidLink('https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148')}>
                     <SettingListText>푸시 알림 수신 동의</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>

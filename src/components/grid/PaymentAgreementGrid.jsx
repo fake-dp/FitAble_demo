@@ -70,7 +70,7 @@ const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleLink
             <AgreementLink
             // 깜빡임 방지 하이라트 제어
             activeOpacity={1}
-            onPress={()=>isAndroidLink('https://www.naver.com')}
+            onPress={()=>isAndroidLink('https://fitable.notion.site/Privacy-Policy-fcfd2a7bbea3444fa49730fb12879755')}
             >
             <AgreementStringText>개인정보 제3자 제공동의</AgreementStringText>
             </AgreementLink>
@@ -93,7 +93,7 @@ const isAndroidLink = Platform.OS === 'android' ? handleAndroidLink : handleLink
                         />
             <AgreementLink
             activeOpacity={1}
-            onPress={()=>isAndroidLink('https://www.google.com')}
+            onPress={()=>isAndroidLink('https://fitable.notion.site/Terms-of-use-151276937bf842ad9eabc522978f9148')}
             >
             <AgreementStringText>취소 및 환불 규정</AgreementStringText>
             </AgreementLink>

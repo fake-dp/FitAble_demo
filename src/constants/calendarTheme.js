@@ -25,6 +25,6 @@ export const themeStyled = {
         textMonthFontSize: 16,
         textDayHeaderFontSize: 14,
         dotStyle:{
-          marginTop: 8,
+          marginTop: 7,
         }
   };

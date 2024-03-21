@@ -2,10 +2,10 @@ import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import GobackBlackGrid from '../../grid/GobackBlackGrid';
 import { useNavigation } from '@react-navigation/native';
-import { TextInput,Alert } from 'react-native';
+import { TextInput,Alert,TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import {getCardInfo,getIsExistCard, postCardInfo,postPaymentSubscription} from '../../../api/cardApi';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import {formatCardExpirationDate ,formatCardNumber} from '../../../utils/CustomUtils';
 import {showSubModalState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
@@ -20,17 +20,24 @@ function InfoCardTemplate(props) {
     const [cardDate, setCardDate] = useState('');
     const [cardPassword, setCardPassword] = useState('');
 
+    const [isFirstFocused, setIsFirstFocused] = useState(false);
+    const [isSecondFocused, setIsSecondFocused] = useState(false);
+    const [isThirdFocused, setIsThirdFocused] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [paymentModal, setPaymentModal] = useRecoilState(showSubModalState);
     const [paymentModalData, setPaymentModalData] = useState('');
     console.log('@@paymentModalData',subPaymentInfoData,isCardState)
 
-    
+    const firstRef = useRef();
+    const secondRef = useRef();
+    const thirdRef = useRef();
+
 
     const getCardInfoDate = async () => {
         try {
             const response = await getCardInfo();
-            console.log('response',response);
-            setCardNumber(response.cardNumber);
+            console.log('response123123',response);
+            setCardNumber(isCardState === 'isChange'&& response?.cardNumber?.length > 0 ? response.cardNumber+'********': '');
         } catch (error) {
             console.error('Error getting:', error);
         }
@@ -61,26 +68,31 @@ function InfoCardTemplate(props) {
                 return;
             }
         } catch (error) {
-            console.error('Error getting:', error.response.data);
-            if(error){
-                Alert.alert('결제 실패', '정기 결제가 정상적으로 이루어지지 않았습니다. \n다른 카드로 시도해주세요', [{ text: '확인', onPress: () => console.log(error.response.data) }]);
+            console.error('Error getting11:', error.response.data);
+            if(error.response.data.code === 10400){
+                Alert.alert('결제 실패', '정기 결제가 정상적으로 이루어지지 않았습니다 \n다른 카드로 시도해주세요', [{ text: '확인', onPress: () => console.log(error.response.data) }]);
+            }else if(error.response.data.code === 10407){
+                Alert.alert('정보 오류', '생년월일이 정확하지 않습니다 \n생년월일 확인 화면으로 이동합니다', [{ text: '확인', onPress: () => navigation.navigate('InfoCardbirt') }]);
+            }else if(error.response.data.code === 10408){
+                Alert.alert('결제 실패', '카드 비밀번호가 올바르지 않습니다', [{ text: '확인', onPress: () => console.log(error.response.data) }]);
+            }else if(error.response.data.code === 10401){
+                Alert.alert('결제 실패', '유효하지 않은 카드입니다 \n다른 카드로 시도해주세요', [{ text: '확인', onPress: () => console.log(error.response.data) }]);
+            }else{
+                Alert.alert('결제 실패', '정기 결제가 정상적으로 이루어지지 않았습니다 \n다른 카드로 시도해주세요', [{ text: '확인', onPress: () => console.log(error.response.data) }]);
             }
         }
             console.log('data',data)
-        }else{
-            console.log('카드정보를 확인해주세요')
         }
-  
-        // const data = {
-        //         cardNumber: "6243310018476280",
-        //         expirationYear: "27",
-        //         expirationMonth: "05",
-        //         password: "20"
-        // }
     }
 
     const subPaymentBtn = async(subPaymentInfoData) => {
         console.log('subPaymentInfoData@@!@#!@#',subPaymentInfoData)
+        if (isSubmitting) {
+            // 이미 제출 중이면 추가 처리를 방지
+            console.log('Already submitting, please wait...');
+            return;
+        }
+        setIsSubmitting(true);
             try{
                 const response = await postPaymentSubscription(subPaymentInfoData);
                 console.log('response',response)
@@ -94,10 +106,11 @@ function InfoCardTemplate(props) {
                 setTimeout(() => {
                     setPaymentModal(false);
                     navigation.navigate('Home');
+                    setIsSubmitting(false); 
                 }, 3000);
             }
         }
-
+        console.log('cardNumber',cardNumber)
 
 
     useEffect(() => {
@@ -114,6 +127,7 @@ function InfoCardTemplate(props) {
 const isValid = cardNumber?.length === 25 && cardDate?.length === 5 && cardPassword?.length === 2
 
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
             <GobackBlackGrid onPress={goBackScreens}>카드 등록</GobackBlackGrid>
                 <TitleContainer>
@@ -122,46 +136,75 @@ const isValid = cardNumber?.length === 25 && cardDate?.length === 5 && cardPassw
                 </TitleContainer>
 
                 <CardContainer>
-                    <CardIputBox>
-                        <TextInput
-                             style={{marginLeft: 10, fontSize: 16}}
+                        <CardInfoFirstInput
+                            isFocused={isFirstFocused}
+                            ref={firstRef}
                              placeholder="1234 - 1234 - 1234 -1234"
                              placeholderTextColor={COLORS.gray_300}
                              value={cardNumber&&formatCardNumber(cardNumber)}
-                             onChangeText={setCardNumber}
+                             onChangeText={(text)=>{
+                                    setCardNumber(text);
+                                    if (text.length === 25) {
+                                        secondRef.current.focus();
+                                    }
+                             }}
                              maxLength={25}
                              keyboardType="numeric"
-                             returnKeyType="done"
+                             onFocus={() => setIsFirstFocused(true)}
+                             onBlur={() => setIsFirstFocused(false)}
+                            //  returnKeyType="done"
                         />
-                    </CardIputBox>
-
                     <CardSmallBoxContainer>
-                    <CardInputSmallBox>
-                        <TextInput 
-                             style={{marginLeft: 10, fontSize: 16}}
+
+                        <CardInfoTextInput 
+                             isFocused={isSecondFocused}
+                            ref={secondRef}
                             placeholder="MM/YY"
                             placeholderTextColor={COLORS.gray_300}
                             value={cardDate&&formatCardExpirationDate(cardDate)}
-                            onChangeText={setCardDate}
+                            // onChangeText={setCardDate}
+                            onChangeText={(text)=>{
+                                setCardDate(text);
+                                if (text.length === 5) {
+                                    thirdRef.current.focus();
+                                }
+                            }}
+                            onKeyPress={({ nativeEvent }) => {
+                                if (nativeEvent.key === 'Backspace' && cardDate.length === 0) {
+                                    firstRef.current.focus();
+                                }
+                            }
+                            }
                             maxLength={5}
                             keyboardType="numeric"
-                            returnKeyType="done"
+                            // returnKeyType="done"
+                            onFocus={() => setIsSecondFocused(true)}
+                            onBlur={() => setIsSecondFocused(false)}
                             />
                         
-                    </CardInputSmallBox>
-                     <CardInputSmallBox>
-                     <TextInput
-                          style={{marginLeft: 10, fontSize: 16}} 
+
+                     <CardInfoTextInput
+                     isFocused={isThirdFocused}
+                            ref={thirdRef}
                             placeholder="비밀번호 앞 2자리"
                             placeholderTextColor={COLORS.gray_300}
                             value={cardPassword}
                             onChangeText={setCardPassword}
+                            onKeyPress={({ nativeEvent }) => {
+                                if (nativeEvent.key === 'Backspace' && cardPassword.length === 0) {
+                                    secondRef.current.focus();
+                                }
+                            }
+                            }
                             maxLength={2}
                             secureTextEntry={true}
                             keyboardType="numeric"
                             returnKeyType="done"
+                            onFocus={() => setIsThirdFocused(true)}
+                            onBlur={() => setIsThirdFocused(false)}
+                            onSubmitEditing={cardRegistrationBtn}
                             />
-                    </CardInputSmallBox>
+
                     </CardSmallBoxContainer>
 
                 <CardGuideContainer>
@@ -187,6 +230,7 @@ const isValid = cardNumber?.length === 25 && cardDate?.length === 5 && cardPassw
             )
         }
         </Container>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -212,30 +256,15 @@ const TitleText = styled.Text`
 
 const CardContainer = styled.View`
 margin-top: 46px;
+padding: 0px;
 `
-
-const CardIputBox = styled.View`
-    flex-direction: row;
-    border: 1px solid ${COLORS.gray_300}; 
-    border-radius: 13px;
-    height: 50px;
-    align-items: center;
-`
-
 
 const CardSmallBoxContainer = styled.View`
     flex-direction: row;
     margin-top: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     justify-content: space-between;
-`
-
-const CardInputSmallBox = styled.View`
-    flex-direction: row;
-    border: 1px solid ${COLORS.gray_300}; 
-    border-radius: 13px;
-    height: 50px;
-    width: 48%;
+    width: 100%;
 `
 
 const CardGuideContainer = styled.View`
@@ -270,3 +299,20 @@ const CardBtnText = styled.Text`
 `
 
 
+const CardInfoTextInput = styled.TextInput`
+    flex-direction: row;
+    border: 1px solid ${({ isFocused }) => (isFocused ? COLORS.sub : COLORS.gray_300)};
+    border-radius: 13px;
+    height: 50px;
+    align-items: center;
+    width: 48%;
+    padding-left: 10px;
+`
+
+const CardInfoFirstInput = styled.TextInput`
+    border: 1px solid ${({ isFocused }) => (isFocused ? COLORS.sub : COLORS.gray_300)};
+    border-radius: 13px;
+    height: 50px;
+    padding-left: 10px;
+    width: 100%;
+`;

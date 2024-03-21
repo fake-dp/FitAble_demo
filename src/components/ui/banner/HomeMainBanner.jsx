@@ -17,13 +17,17 @@ function HomeMainBanner({fitablesBanners}) {
 
       useEffect(() => {
         if (fitablesBanners && fitablesBanners.length > 0) {
-        const interval = setInterval(() => {
-          const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
-          setActiveButtonIndex(nextIndex);
-          if (scrollViewRef.current) {
-            scrollViewRef.current.scrollTo({ x: nextIndex * Dimensions.get('window').width, animated: true });
-          }
-        }, 2000);
+          const interval = setInterval(() => {
+            const nextIndex = (activeButtonIndex + 1) % fitablesBanners.length;
+            setActiveButtonIndex(nextIndex);
+            if (scrollViewRef.current) {
+              const isLastIndex = nextIndex === 0;
+              scrollViewRef.current.scrollTo({
+                x: nextIndex * Dimensions.get('window').width,
+                animated: !isLastIndex
+              });
+            }
+          }, 1000);
     
         return () => {
           clearInterval(interval);
@@ -39,6 +43,8 @@ function HomeMainBanner({fitablesBanners}) {
         console.log('Scrolling to index:', index);
         setActiveButtonIndex(index);
       };
+
+      
 
       // const gymIcon = require('../../../assets/img/gymIcon.png');
 

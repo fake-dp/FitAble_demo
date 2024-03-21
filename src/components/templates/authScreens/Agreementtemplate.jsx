@@ -1,12 +1,10 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import EctInput from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
-import React, {useCallback, useRef, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import { Text, StyleSheet, View, Platform,TouchableOpacity, Linking} from 'react-native';
+import {  Alert, Platform,TouchableOpacity, Linking} from 'react-native';
 import CheckBtn from '../../ui/buttonUi/CheckBtn';
-import AgreementModal from '../../ui/modal/AgreementModal';
 import { agreementList} from '../../../data/AgreementData';
 import GobackGrid from '../../grid/GobackGrid';
 import { useNavigation } from '@react-navigation/native';
@@ -205,10 +203,10 @@ console.log('업데이트bodyData',bodyData)
           }
       }
     //   const bodyData = {
-    //     name: '삐낑큐',
+    //     name: '카드등록용',
     //     birthDay: '1992-03-04',
     //     gender: 'MALE',
-    //     phone: '111-2311-3312',
+    //     phone: '11111131112',
     //     password: 'qwer1234!',
     //     fcmToken: fcmToken,
     //     agreements: {
@@ -231,6 +229,10 @@ console.log('업데이트bodyData',bodyData)
         }
       }catch(error){
         console.error('signUpinfoApi error:', error.response.data);
+        if(error.response.data.code === 10201){
+          console.log('회원가입 실패')
+          Alert.alert('회원가입 실패', '이미 가입된 회원입니다.', [{ text: '확인' }]);
+        }
       }
     }
     const rigthIcon = require('../../../assets/img/rightIcon.png');

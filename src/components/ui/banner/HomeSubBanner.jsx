@@ -16,11 +16,15 @@ function HomeSubBanner({ centersBanners }) {
       const interval = setInterval(() => {
         setCurrentPage((prevPage) => {
           const nextPage = (prevPage + 1) % centersBanners.length;
-          scrollRef.current?.scrollTo({ x: nextPage * width, animated: true });
+          const isLastPage = prevPage === centersBanners.length - 1;
+          scrollRef.current?.scrollTo({
+            x: nextPage * width,
+            animated: !isLastPage
+          });
           return nextPage;
         });
-      }, 1800);
-
+      }, 1000);
+  
       return () => clearInterval(interval);
     }
   }, [centersBanners]);
