@@ -18,7 +18,7 @@ function MyCenterSelectPicker({mainCenter,mainCenterId,centerName ,postMainCente
         pickerRef.current.togglePicker(true)
     };
 
-    const centerOptions = centerName.map(center => ({
+    const centerOptions = centerName?.map(center => ({
         label: center.name,
         value: center.id  
     }));

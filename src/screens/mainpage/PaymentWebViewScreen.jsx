@@ -1,4 +1,4 @@
-import React,{ useRef, useEffect, useState} from 'react';
+import React,{ useEffect, useState} from 'react';
 import { WebView } from 'react-native-webview';
 import { View,Text,ActivityIndicator } from 'react-native';
 import {postPaymentInfo,postNicepayPayment} from '../../api/cardApi';

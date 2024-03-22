@@ -21,12 +21,14 @@ function QrDoneModal({myTicketInfo}) {
         <ListContainer>
         <ListText>{myTicketInfo?.name}</ListText>
         <ContentContainer>
+
         <ListText>{myTicketInfo?.ticketName}</ListText>
         {/* <ListText>잔여일수 {myTicketInfo?.leftDay}일 / 잔여횟수 {myTicketInfo?.leftTime}회</ListText> */}
         <ListText>
             잔여일수 {myTicketInfo?.leftDay}일
             {myTicketInfo?.leftTime > 0 && ` / 잔여횟수 ${myTicketInfo?.leftTime}회`}
         </ListText>
+
         </ContentContainer>
         </ListContainer>
 
@@ -85,9 +87,16 @@ const ListContainer = styled.View`
 flex-direction: row;
 justify-content: space-between;
 width: 100%;
+/* background-color: blue; */
 `
 
-const ContentContainer = styled.View``
+const ContentContainer = styled.View`
+width: 80%;
+align-items: flex-end;
+text-align: right;
+`
+
+
 
 const ListText = styled.Text`
 font-size: 16px;

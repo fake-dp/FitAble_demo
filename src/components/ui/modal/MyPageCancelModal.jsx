@@ -34,7 +34,6 @@ export function BookCancelModal({closeModal ,text, postCancelReservation}) {
 }   
 
 export function SubNTicketCancelModal({closeModal,postSubNRefundBtn ,text}) {
-    
     return (
         <Modal
         // visible={modalVisible}

@@ -75,6 +75,7 @@ const MainTitleText = styled.Text`
 
 const SubTextContainer = styled.View`
     flex-direction: row;
+    margin-bottom: 6px;
     /* align-items: center; */
 `;
 

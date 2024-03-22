@@ -40,7 +40,7 @@ console.log('centerName',centerName)
         style={{ height: itemHeight }}
         contentContainerStyle={{  justifyContent: 'center', alignItems: 'center' }}
       >
-        {centerName.map((center) => (
+        {centerName && centerName?.map((center) => (
           <TextContainer key={center.id} style={{ height: itemHeight}}>
             <PickerBtn onPress={()=>goConsultingScreens(center.id, center.name)}>
             <PickerText>{center.name}</PickerText>

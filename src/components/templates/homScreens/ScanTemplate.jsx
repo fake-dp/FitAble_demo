@@ -15,14 +15,6 @@ import { useRecoilState } from 'recoil';
 import FastImage from 'react-native-fast-image'
 
 
-// if (Platform.OS === 'android') {
-//   // 안드로이드에서는 'react-native-camera-kit'를 사용하지 않음
-// } else {
-//     Camera = require('react-native-camera-kit').Camera;
-//     CameraType = require('react-native-camera-kit').CameraType;
-//     // console.log('@@',Camera, CameraType);
-// }
-
 function ScanTemplate(props) {
 
     const [centerId, setCenterId] = useRecoilState(mainCenterIdState);
@@ -45,6 +37,18 @@ function ScanTemplate(props) {
           // 종료후 재시작을 했을때 초기화
           setScaned(true);
         }, []);
+
+        useEffect(() => {
+            if (showQrModal || showCancelModal || showQrDoneModal) {
+                // 모달이 하나라도 열려 있으면 스캔을 멈춤
+                setScaned(false);
+            } else {
+                // 모든 모달이 닫혔으면 스캔을 재개
+                setTimeout(() => {
+                    setScaned(true);
+                }, 3000); // 재개 전에 약간의 지연을 주는 것이 좋을 수 있습니다.
+            }
+        }, [showQrModal, showCancelModal, showQrDoneModal]);
        
         const onBarCodeRead = async(event) => {
             if (!scaned) return;
@@ -144,7 +148,6 @@ function ScanTemplate(props) {
             <FastImage 
             style={{width: 28, height: 28}}
             source={closeIcon}/>
-          
             </GobackContainer>
             <QrContainer>
 
@@ -155,26 +158,33 @@ function ScanTemplate(props) {
         {
             Platform.OS === 'ios' ? (
             <Rectangular>
-            <Camera
-                 ref={ref}
-                 cameraType={CameraType.Back} // Front/Back(default)
-                 zoomMode
-                 //  focusMode
-                 style={{ width: '100%', height: '100%' }} 
-                 // Barcode Scanner Props
-                 scanBarcode
-                 showFrame={false}
-                 laserColor="rgba(0, 0, 0, 0)"
-                 frameColor="rgba(0, 0, 0, 0)"
-                 surfaceColor="rgba(0, 0, 0, 0)"
-                 onReadCode={onBarCodeRead}/>
+                {
+                    (
+                    !showQrModal && !showCancelModal && !showQrDoneModal &&
+                    <Camera
+                    ref={ref}
+                    cameraType={CameraType.Back} // Front/Back(default)
+                    zoomMode
+                    // focusMode
+                    style={{ width: '100%', height: '100%' }} 
+                    // Barcode Scanner Props
+                    scanBarcode
+                    showFrame={false}
+                    laserColor="rgba(0, 0, 0, 0)"
+                    frameColor="rgba(0, 0, 0, 0)"
+                    surfaceColor="rgba(0, 0, 0, 0)"
+                    onReadCode={onBarCodeRead}/>
+                    )
+                }
                  </Rectangular>
                 ):(
                     <Rectangular>
+                        {
+                            (
+                    !showQrModal && !showCancelModal && !showQrDoneModal &&
                     <Camera
                         ref={ref}
                         cameraType={CameraType.Back} // Front/Back(default)
-                  
                         //  focusMode
                         style={{ width: '100%', height: '100%' }} 
                         // Barcode Scanner Props
@@ -184,7 +194,8 @@ function ScanTemplate(props) {
                         frameColor="rgba(0, 0, 0, 0)"
                         surfaceColor="rgba(0, 0, 0, 0)"
                         onReadCode={onBarCodeRead}/>
-                    
+                        )
+                    }
                   </Rectangular>
                 )
             }

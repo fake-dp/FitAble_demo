@@ -119,15 +119,18 @@ function CenterTicketListTemplate(props) {
   }
 };
 
-  // 구독 취소 
+  // 구독 취소 혜지예약
   const postCancelSubscribeTicket = async (id) => {
   try {
       const response = await cancelSubscribeTicket(id);
       if(response){
           // console.log('구독 취소 확인용 콘솔',response)
-          Alert.alert("해지 예약 완료",`현재 보유한 구독권은 아래 날짜까지 사용 가능합니다.\n ${response.endDate}`,[
-          { text: '확인', onPress: () =>  setShowModal(false)}]);
-          // setShowModal(false)
+          Alert.alert("해지 예약 완료", `현재 보유한 구독권은 아래 날짜까지 사용 가능합니다.\n${response.endDate}`, [
+            { text: '확인', onPress: () => {
+                setShowModal(false); // 모달 닫기
+                getTypeTicketsListData('SUBSCRIBE'); // 구독 관련 데이터를 다시 호출하여 업데이트
+            }}
+        ]);
       }else{
           Alert.alert("알림","구독 해지 예약에 실패하였습니다.",['확인']);
       }

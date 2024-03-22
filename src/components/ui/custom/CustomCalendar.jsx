@@ -3,8 +3,7 @@ import { Calendar, LocaleConfig,ExpandableCalendar, AgendaList, CalendarProvider
 import { COLORS } from '../../../constants/color';
 import { themeStyled } from '../../../constants/calendarTheme';
 import styled, { css } from 'styled-components/native';
-import ToggleBtn from '../toggle/ToggleBtn';
-import CalenderToggleBtn from '../toggle/CalenderToggleBtn';
+
 import {getAvailableDates,getAvailableLessons} from '../../../api/lessonsApi';
 import { useRecoilState } from 'recoil';
 import {selectTodayState} from '../../../store/atom';
@@ -33,7 +32,7 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
   const handleDayPress = useCallback(day => {
     console.log('day',day)
     console.log('Selected day:', day.dateString);
-    console.log('Available dates:', availableDates);
+    // console.log('Available dates:', availableDates);
     
     // if (!availableDates[day.dateString]) {
     //     console.log('This date is not available for selection.');
@@ -77,7 +76,7 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
         };
         return acc;
       }, {});
-      console.log('Updated availableDates:', updatedAvailableDates);
+      // console.log('Updated availableDates:', updatedAvailableDates);
       setAvailableDates(updatedAvailableDates);
     }).catch((error) => {
       console.log('error',error)
@@ -117,7 +116,7 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
       fetchLessons(selected); // 오늘 날짜의 수업 목록을 불러옵니다.
   }
   }, [mainCenterId,isFocused]);
-
+  
 
   const renderCustomHeader = () => {
     return (
@@ -132,19 +131,21 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
   return (
     <>
 <CalendarProvider
-          date={todayString}
+          date={selected}
         theme={themeStyled}
-
+        hideExtraDays={true}
     >
       {weekView ? (
         <WeekCalendar  
-        firstDay={1} markedDates={availableDates}
+        firstDay={0} markedDates={availableDates}
+        hideExtraDays={false}
         />
       ) : (
         <>
    
         <ExpandableCalendar
-          showHeader={false}
+        disableAllTouchEventsForDisabledDays={true}
+        hideExtraDays={true}
         style={{
             ...Platform.select({
               ios: {
@@ -174,7 +175,7 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
           onMonthChange={(month) => {
             setCurrentMonth(`${month.year}.${String(month.month).padStart(2, '0')}`);
         }}
-          firstDay={1}
+          firstDay={0}
 
         />
       </>
