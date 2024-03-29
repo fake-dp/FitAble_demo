@@ -1,22 +1,22 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import EctInput from '../../ui/inputUi/EctInput';
+import {EctInput} from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect,useRef} from 'react';
 import {validatePassword} from '../../../utils/CustomUtils'
 import GobackGrid from '../../grid/GobackGrid';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
 import { useRoute } from '@react-navigation/native';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 function AuthUsePasswordtemplate({navigation}) {
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
     // console.log('signUpInfo:', signUpInfo.phone, pass
 
     const route = useRoute();
-
+    const phoneInputRef = useRef();
     const updateInfo = route.params?.data;
     console.log('dd@@@',updateInfo)
 
@@ -77,6 +77,7 @@ function AuthUsePasswordtemplate({navigation}) {
              <AuthText>사용하실 비밀번호를</AuthText>
              <AuthText>입력해주세요</AuthText>
           </PasswordContainer>
+          <KeyboardAwareScrollView extraScrollHeight={20} style={{flex: 1}}>
              <BtnContainer>
                 <EctInput 
                 text='비밀번호'
@@ -86,6 +87,7 @@ function AuthUsePasswordtemplate({navigation}) {
                 onBlur={validatePasswordInput} 
                 secureTextEntry={true}
                 hasError={!!passwordError} 
+                onSubmitEditing={() =>phoneInputRef.current.focus()} 
                 />
                 {
                    passwordError &&  
@@ -94,6 +96,7 @@ function AuthUsePasswordtemplate({navigation}) {
                    </ErrorTextContainer>
                 }
                 <EctInput 
+                ref={phoneInputRef}
                 text='비밀번호 확인'
                 placeholder="다시 입력해주세요"
                 value={passwordCheck}
@@ -110,7 +113,7 @@ function AuthUsePasswordtemplate({navigation}) {
                    </ErrorTextContainer>
                 }
              </BtnContainer>
-
+                </KeyboardAwareScrollView>
             <BottomBtnContainer>
                 <MainBtn
                 colorProp={password.length > 7 &&isSamePassword && passwordError.length === 0}
@@ -149,8 +152,8 @@ const BottomBtnContainer = styled.View`
   justify-content: center;
   position: absolute;
   bottom: 34px;
-  left: 0;
-  right: 0;
+  left: 20px;
+  right: 20px;
 `;
 
 const ErrorTextContainer = styled.View`

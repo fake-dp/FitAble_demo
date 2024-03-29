@@ -2,14 +2,18 @@
 import { COLORS } from "../../../constants/color";
 import { styled } from "styled-components/native";
 import { TextInput,Platform } from "react-native";
+import React, { forwardRef } from 'react';
 
-function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp,maxLength,secureTextEntry,hasError,onSubmitEditing}) {
 
-    // console.log('hasError@@@',hasError,'@@!@#',text)
+export const EctInput = forwardRef(({
+    placeholder, text, onChangeText, value, onBlur, isSignUp,
+    maxLength, secureTextEntry, hasError, onSubmitEditing
+}, ref) => {
     return (
         <AuthTextInputContainer hasError={hasError}>
             <AuthText>{text}</AuthText>
             <AuthTextInput 
+             ref={ref} 
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             onChangeText={onChangeText}
@@ -17,14 +21,14 @@ function EctInput({placeholder, text,onChangeText,value,onBlur, isSignUp,maxLeng
             onBlur={onBlur}
             maxLength={text==='연락처'? maxLength: text ==="인증번호" ? 6:null}
             keyboardType={text==='연락처' || text==='인증번호'? 'numeric':'default'}
-            returnKeyType={text==='연락처'|| text==='비밀번호 확인'? 'done':'next'}
+            returnKeyType={text==='연락처' || text==='인증번호'|| text==='비밀번호 확인'? 'done':'next'}
             onSubmitEditing={onSubmitEditing}
             />
         </AuthTextInputContainer>
     );
-}
+});
 
-export default EctInput;
+
 
 
 

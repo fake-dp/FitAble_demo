@@ -4,8 +4,8 @@ import styled from "styled-components/native"; // styled-components 임포트 �
 import { COLORS } from "../../../constants/color";
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image'
-const { width } = Dimensions.get("window");
-
+const { width,height } = Dimensions.get("window");
+console.log('dd',height)
 function HomeSubBanner({ centersBanners }) {
     const bannerLogo = require("../../../assets/img/bannerLogo.png");
   const scrollRef = useRef(null);
@@ -56,7 +56,7 @@ function HomeSubBanner({ centersBanners }) {
 
   // console.log('centersBanners',centersBanners)
 
-
+const isSmallDevice = height < 685;
   return (
     <>
         {
@@ -79,7 +79,7 @@ function HomeSubBanner({ centersBanners }) {
                 {centersBanners.map((banner, index) => (
                            <TouchableOpacity key={banner.id} onPress={() => handleBannerPress(banner)}>
                     <BannerImageContainer>
-                             <BannerImage key={index} source={{ uri: banner.imageUrl }} resizeMode="cover"/>
+                             <BannerImage key={index} source={{ uri: banner.imageUrl }} resizeMode={isSmallDevice ? "contain":"cover"}/>
                     </BannerImageContainer>
                            </TouchableOpacity>
                     ))}
@@ -141,15 +141,20 @@ const SubText = styled.Text`
 
 const BannerImage = styled(FastImage)`
   width: ${Dimensions.get('window').width - 40}px;
-  /* width: 90%; */
+  /* width: 100%; */
   height: 80px;
   border-radius: 13px;
-`;
+
+
+  `;
 
 const BannerImageContainer = styled.View`
-  width: ${Dimensions.get('window').width}px;
-  height: 80px;
+  /* width: ${Dimensions.get('window').width -40}px; */
+  /* height: 80px; */
   background-color: transparent;
+  border-radius: 13px;
+  /* background-color: red; */
+  /* padding: 10px; */
 `;
 
 const DotContainer = styled.View`

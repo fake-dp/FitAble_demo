@@ -2,8 +2,8 @@ import styled from 'styled-components/native';
 import {COLORS} from '../../../constants/color'
 import GobackGrid from '../../grid/GobackGrid';
 import {useNavigation} from '@react-navigation/native';
-import EctInput from '../../ui/inputUi/EctInput';
-import { useState } from 'react';
+import {EctInput} from '../../ui/inputUi/EctInput';
+import { useState,useRef } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {TextInput, Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
@@ -20,8 +20,7 @@ function SignUpInfoTemplate(props) {
 
     const findPass = route.params?.text;
 
-
-    
+    const phoneInputRef = useRef();
 //  console.log('route.params@', findPass)
 
     const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
@@ -147,7 +146,14 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
 
 
     const nextBtn = (phone) => {
+        const isNameValid = name.trim().split(/\s+/).length === 1 && /^[a-zA-Z가-힣\s]*$/.test(name);
         const phoneRegex = /^010\d{8}$/;
+        if(!isNameValid){
+            Alert.alert('이름 오류', '올바르게 이름을 입력해주세요', [
+                {text: '확인', onPress: () => console.log('OK Pressed')},
+                ]);
+            return;
+        }else
         if(!phoneRegex.test(phone)){
             Alert.alert('휴대폰번호 오류', '올바른 휴대폰번호로 11자리를 입력해주세요', [
                 {text: '확인', onPress: () => console.log('OK Pressed')},
@@ -173,6 +179,7 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
             // checkPhoneNum(phone);
         }
     }
+    
 
     const isNameValid = name.trim().split(/\s+/).length === 1 && /^[a-zA-Z가-힣\s]*$/.test(name);
     const isCertiActive = isNameValid && phone.length === 11;
@@ -207,14 +214,17 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                    placeholder="이름을 입력해주세요"
                    isSignUp={false}
                    onChangeText={handleNameTextChange}
+                   onSubmitEditing={() =>phoneInputRef.current.focus()} 
                    />
 
                    <EctInput 
+                   ref={phoneInputRef}
                    text='연락처'
                    placeholder="-없이 번호를 입력해주세요"
                    isSignUp={false}
                    maxLength={11}
-                     onChangeText={handlePhoneTextChange}
+                   onChangeText={handlePhoneTextChange}
+                   onSubmitEditing={findPass ? ()=>nextFindPasswordBtn(phone):()=>nextBtn(phone)}
                    />
 
                 {
@@ -227,7 +237,9 @@ const checkCerityNumberfindPasswrod = async (phone, number) => {
                    isSignUp={false}
                    onChangeText={handleCertiNumberTextChange}
                    maxLength={6}
-                     keyboardType="numeric"
+                   keyboardType="numeric"
+                   returnKeyType='done'
+                   onSubmitEditing={findPass ? ()=>checkCerityNumberfindPasswrod(phone,number):()=>checkCerityNumber(phone,number)}
                    />
                     <CertificationTimer>0{formatTime(secondsLeft)}</CertificationTimer>
                 </CertificationIputBox>
@@ -290,8 +302,8 @@ margin-top: 50px;
 const GetCertificationNextBtn = styled.TouchableOpacity`
     position: absolute;
     bottom: 40px;
-    left: 10px;
-    right: 10px;
+    left: 20px;
+    right: 20px;
     /* background-color: ${COLORS.box}; */
     background-color: ${props => props.isActive ? COLORS.main : COLORS.box};
     border-radius: 90px;

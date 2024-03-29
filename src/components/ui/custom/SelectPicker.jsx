@@ -92,7 +92,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
               fontSize: 20,
               fontWeight: 'bold',
               color: COLORS.white,
-              paddingRight: 20,
+              paddingRight: 4,
             },
             placeholder:{
               fontSize: 20,
@@ -130,7 +130,7 @@ function SelectPicker({setMyInfo,mainCenter,centerName,mainCenterId}) {
               height: 50,
               fontSize: 22,
               padding: 10,
-              marginRight: 30,
+              marginRight: 20,
             },
             iconContainer: {
               top: 14,

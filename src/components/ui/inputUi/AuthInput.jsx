@@ -12,7 +12,7 @@ export const AuthInput = React.forwardRef(({
   onSubmitEditing,
   onFocus,
   onBlur,
-}, ref) => { // ref를 여기로 옮김
+}, ref) => { 
 
     const [showPassword, setShowPassword] = useState(false);
     const isPasswordInput = placeholder === '비밀번호';

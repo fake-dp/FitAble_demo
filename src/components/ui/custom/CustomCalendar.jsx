@@ -30,15 +30,9 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
 
 
   const handleDayPress = useCallback(day => {
-    console.log('day',day)
+    console.log('day',day);
     console.log('Selected day:', day.dateString);
-    // console.log('Available dates:', availableDates);
-    
-    // if (!availableDates[day.dateString]) {
-    //     console.log('This date is not available for selection.');
-    //     return;
-    // }
-    // 사용자가 선택한 날짜가 오늘 날짜이면 selected를 false로 설정하고, 그렇지 않으면 해당 날짜를 selected로 설정합니다.
+
     if (mainCenterId && day.dateString === todayString) {
       setSelected(todayString);
       setSelectedToday(todayString);
@@ -46,42 +40,25 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
       setSelected(day.dateString);
       setSelectedToday(day.dateString);
     }
-
-    getAvailableLessons(mainCenterId, day.dateString)
-    .then(data => {
-      //  console.log('ddd응답',data.content)
-       setClassList(data.content)
-    })
-    .catch(error => {
-        console.error("Error fetching lesson list", error.response);
-    });
-
-    // if (!availableDates[day.dateString]) {
-    //   // 이 날짜는 선택할 수 없음
-    //   return;
-    // }
-  }, [todayString,mainCenterId,availableDates]);
- 
- 
+  
+    if (mainCenterId) {
+      getAvailableLessons(mainCenterId, day.dateString)
+        .then(data => {
+          setClassList(data.content);
+        })
+        .catch(error => {
+          console.error("Error fetching lesson list", error.response);
+        });
+    } else {
+      console.log('No main center ID provided');
+      setClassList([]);
+    }
+  }, [todayString, mainCenterId]);
 
 
-  const getAvailableDatesData = () => {
-    getAvailableDates(mainCenterId)
-    .then((data) => {
-      const updatedAvailableDates = data.reduce((acc, currItem) => {
-        acc[currItem.date] = { 
-          selectedTextColor: COLORS.white,
-          selected: true,
-          selectedColor: currItem.isExistReservedLesson ? COLORS.box : COLORS.sub,
-        };
-        return acc;
-      }, {});
-      // console.log('Updated availableDates:', updatedAvailableDates);
-      setAvailableDates(updatedAvailableDates);
-    }).catch((error) => {
-      console.log('error',error)
-    })
-  }
+
+
+
   
   const fetchLessons = (date = todayString) => {
     if (!mainCenterId) return;
@@ -99,13 +76,11 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
         console.log("mainCenterId updated:", mainCenterId);
         if(mainCenterId){
           getAvailableDatesData();
-        //   getAvailableLessons(mainCenterId, todayString)
         }
       }
-      ,[mainCenterId])
-
+      ,[mainCenterId]);
+      
     useEffect(() => {
-        // 현재 날짜 정보를 가져와서 초기 월과 년도 설정
         const currentDate = new Date();
         setCurrentMonth(`${currentDate.getFullYear()}.${String(currentDate.getMonth() + 1).padStart(2, '0')}`);
       }, []);  
@@ -113,10 +88,107 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
     useEffect(() => {
     if (isFocused) {
       setSelected(selected);
-      fetchLessons(selected); // 오늘 날짜의 수업 목록을 불러옵니다.
+      fetchLessons(selected); 
   }
   }, [mainCenterId,isFocused]);
   
+const getAvailableDatesData = (year, month) => {
+  console.log('year, month',year, month)
+  if(!year || !month) {
+    const currentDate = new Date();
+    year = currentDate.getFullYear();
+    month = currentDate.getMonth() + 1;
+
+    //현 날짜로 가능한 날 데이터 조회
+    getAvailableDates(mainCenterId)
+    .then((data) => {
+        const filteredData = data.filter(item => {
+            const [itemYear, itemMonth] = item.date.split('-');
+            return parseInt(itemYear) === year && parseInt(itemMonth) === month;
+        });
+
+        const updatedAvailableDates = filteredData.reduce((acc, currItem) => {
+            acc[currItem.date] = {
+                selectedTextColor: COLORS.white,
+                selected: true,
+                selectedColor: currItem.isExistReservedLesson ? COLORS.box : COLORS.sub,
+            };
+            return acc;
+        }, {});
+
+        setAvailableDates(updatedAvailableDates);
+    }).catch((error) => {
+        console.log('error', error);
+    });
+
+  }else{
+    getAvailableDates(mainCenterId)
+    .then((data) => {
+        const filteredData = data.filter(item => {
+            const [itemYear, itemMonth] = item.date.split('-');
+            return parseInt(itemYear) === year && parseInt(itemMonth) === month;
+        });
+
+        const updatedAvailableDates = filteredData.reduce((acc, currItem) => {
+            acc[currItem.date] = {
+                selectedTextColor: COLORS.white,
+                selected: true,
+                selectedColor: currItem.isExistReservedLesson ? COLORS.box : COLORS.sub,
+            };
+            return acc;
+        }, {});
+
+        setAvailableDates(updatedAvailableDates);
+    }).catch((error) => {
+        console.log('error', error);
+    });
+  }
+}
+
+const handleMonthChange = (month) => {
+  const newYear = month.year;
+  const newMonth = month.month;
+  setCurrentMonth(`${newYear}.${String(newMonth).padStart(2, '0')}`);
+  getAvailableDatesData(newYear, newMonth);
+};
+
+// const getAvailableDatesData = (year, month) => {
+//   if(!year || !month) {
+//     // 연도나 달이 제공되지 않은 경우 현재 날짜 사용
+//     const currentDate = new Date();
+//     year = currentDate.getFullYear();
+//     month = currentDate.getMonth() + 1;
+//   }
+
+//   getAvailableDates(mainCenterId)
+//     .then((data) => {
+//       const filteredData = data.filter(item => {
+//         const [itemYear, itemMonth] = item.date.split('-');
+//         return parseInt(itemYear) === year && parseInt(itemMonth) === month;
+//       });
+
+//       const updatedAvailableDates = filteredData.reduce((acc, currItem) => {
+//         acc[currItem.date] = {
+//           selectedTextColor: COLORS.white,
+//           selected: true,
+//           selectedColor: currItem.isExistReservedLesson ? COLORS.box : COLORS.sub,
+//         };
+//         return acc;
+//       }, {});
+
+//       setAvailableDates(updatedAvailableDates);
+//     }).catch((error) => {
+//       console.log('error', error);
+//     });
+// }
+
+// const handleMonthChange = (month) => {
+//   const newYear = month.year;
+//   const newMonth = month.month;
+//   setCurrentMonth(`${newYear}.${String(newMonth).padStart(2, '0')}`);
+//   getAvailableDatesData(newYear, newMonth);
+// };
+
 
   const renderCustomHeader = () => {
     return (
@@ -172,9 +244,10 @@ function CustomCalendar({selectedItem,showModal,classList,closeModal,handleBtn,h
         }}
           onDayPress={handleDayPress}
           theme={themeStyled&&themeStyled}
-          onMonthChange={(month) => {
-            setCurrentMonth(`${month.year}.${String(month.month).padStart(2, '0')}`);
-        }}
+        //   onMonthChange={(month) => {
+        //     setCurrentMonth(`${month.year}.${String(month.month).padStart(2, '0')}`);
+        // }}
+        onMonthChange={(month)=>handleMonthChange(month)}
           firstDay={0}
 
         />
@@ -229,10 +302,4 @@ border-top-width: 1px;
 border-color: #535258;
 margin-top: 30px;
 padding: 0 20px;
-`
-
-const TestView = styled.View`
-
-`
-const TestText = styled.Text`
 `

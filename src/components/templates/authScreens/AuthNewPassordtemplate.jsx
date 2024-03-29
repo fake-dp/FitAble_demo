@@ -1,14 +1,15 @@
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
-import EctInput from '../../ui/inputUi/EctInput';
+import {EctInput} from '../../ui/inputUi/EctInput';
 import MainBtn from '../../ui/buttonUi/MainBtn';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState,useRef} from 'react';
 import {validatePassword} from '../../../utils/CustomUtils'
 import GobackGrid from '../../grid/GobackGrid';
 import {signUpInfoState} from '../../../store/atom';
 import { useRecoilState } from 'recoil';
-import {TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {TouchableWithoutFeedback, Keyboard ,Alert} from 'react-native';
 import { findPassword } from '../../../api/certificationApi';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 function AuthNewPassordtemplate({navigation}) {
 
   // 비밀번호 상태관리
@@ -17,8 +18,8 @@ function AuthNewPassordtemplate({navigation}) {
   const [passwordError, setPasswordError] = useState('');
 
   const [signUpInfo, setSignUpInfo] = useRecoilState(signUpInfoState);
- 
-  console.log('signUpInfo:', signUpInfo.phone, password)
+  const phoneInputRef = useRef();
+  // console.log('signUpInfo:', signUpInfo.phone, password)
 
   // 비밀번호 입력
   const handlePassword = (text) => {
@@ -46,7 +47,10 @@ const findPass = async (phone, password) => {
       navigation.navigate('SignIn');
     }
   }catch(error){
-    console.error('findPass error:', error);
+    console.error('findPass error:', error.response.data.code);
+    if(error.response.data.code === 10200){
+      Alert.alert('알림', '회원정보가 없습니다 다시 시도해주세요');
+    }
   }
 }
 
@@ -78,6 +82,7 @@ const isSamePassword = password === passwordCheck;
              <AuthText>사용하실 새 비밀번호를</AuthText>
              <AuthText>입력해주세요</AuthText>
           </AuthTextContainer>
+          <KeyboardAwareScrollView extraScrollHeight={20} style={{flex: 1}}>
              <BtnContainer>
                 <EctInput 
                 text='비밀번호'
@@ -87,6 +92,7 @@ const isSamePassword = password === passwordCheck;
                 onBlur={validatePasswordInput}
                 secureTextEntry={true}
                 hasError={!!passwordError} 
+                onSubmitEditing={() =>phoneInputRef.current.focus()} 
                 />
                 {
                    passwordError &&  
@@ -95,6 +101,7 @@ const isSamePassword = password === passwordCheck;
                    </ErrorTextContainer>
                 }
                 <EctInput 
+                ref={phoneInputRef}
                 text='비밀번호 확인'
                 placeholder="다시 입력해주세요"
                 value={passwordCheck}
@@ -110,7 +117,7 @@ const isSamePassword = password === passwordCheck;
                    </ErrorTextContainer>
                 }
              </BtnContainer>
-
+                </KeyboardAwareScrollView>
             <BottomBtnContainer>
                 <MainBtn
                 colorProp={password.length > 7 &&isSamePassword && passwordError.length === 0}

@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil';
 import { myinfoState } from '../../../store/atom';
 import { useState } from 'react';
 import FastImage from 'react-native-fast-image'
+import { ScrollView } from 'react-native';
 function MyMainTemplate(props) {
 
     const navigation = useNavigation();
@@ -84,6 +85,10 @@ function MyMainTemplate(props) {
                 <AddTicketBtnText>이용권 추가 구매</AddTicketBtnText>
             </AddTicketBtn>
 
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            >
              <GridLine/>
 
                 <SettingListBtnFirst onPress={()=>goCenterRegistScreen(mainCenterId)}>
@@ -131,7 +136,7 @@ function MyMainTemplate(props) {
                     <SettingListText>핏에이블 문의</SettingListText>
                     <SettingListRightIcon source={rightIcon}/>
                 </SettingListBtn>
-
+        </ScrollView>
         </Container>
     );
 }

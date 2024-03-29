@@ -57,7 +57,7 @@ const cardWidth = deviceWidth - 2 * padding;
 
             <CardPeriodText>{detail}</CardPeriodText>
     
-            <ProgressBarContainer>
+            <ProgressBarContainer status={status}>
                 <ProgressBar percentage={usePercentage} status={status} />
               </ProgressBarContainer>
             <CardDateContainer>
@@ -156,15 +156,9 @@ const CardExpirationText = styled.Text`
 const ProgressBarContainer = styled.View`
   /* flex: 1; */
   height: 8px;
-  background-color: ${COLORS.white};
-  border-radius: 4px;
-  margin-right: 8px;
-`;
-
-const ProgressBar = styled.View`
-  width: ${({percentage}) => percentage}%;
-  height: 100%;
-  background-color: ${({status}) =>
+  
+  /* background-color: ${COLORS.white}; */
+    background-color: ${({status}) =>
     status === 'IN_USE'
       ? COLORS.main
       : status === 'STOP'
@@ -174,6 +168,24 @@ const ProgressBar = styled.View`
       : status === 'USING_SOON'
       ? COLORS.white
       : null};
+  border-radius: 4px;
+  margin-right: 8px;
+`;
+
+const ProgressBar = styled.View`
+  width: ${({percentage}) => percentage}%;
+  height: 100%;
+  background-color: white;
+  /* background-color: ${({status}) =>
+    status === 'IN_USE'
+      ? COLORS.main
+      : status === 'STOP'
+      ? COLORS.gray_400
+      : status === 'EXPIRING_SOON'
+      ? '#FF7A00'
+      : status === 'USING_SOON'
+      ? COLORS.white
+      : null}; */
   border-radius: 4px;
   /* margin-left: ${({percentage}) => 100 - percentage}%; */
 `;

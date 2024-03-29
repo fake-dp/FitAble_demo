@@ -30,11 +30,10 @@ function MyBookListTemplate(props) {
         } catch (error) {
             console.error('Error getting:', error);
         } finally {
-            setLoading(false);  // 데이터를 가져온 후에 로딩 상태를 false로 설정
+            setLoading(false);  
         }
     };
 
-    // console.log('bookListData',bookListData)
 
     const postCancelReservation = async (id) => {
         console.log('확인용아디',id)
@@ -176,12 +175,12 @@ function MyBookListTemplate(props) {
              showsVerticalScrollIndicator={false}
                 data={bookListData}
                 renderItem={renderItem}
-                keyExtractor={(item, index) => String(index)} // 고유한 키를 제공합니다.
-        // ListEmptyComponent={(
-        //   <NoListContainer windowHeight={windowHeight}>
-        //     <NoListText>예약 내역이 없습니다.</NoListText>
-        //   </NoListContainer>
-        // )}
+                keyExtractor={(item, index) => String(index)}
+        ListEmptyComponent={(
+          <NoListContainer windowHeight={windowHeight}>
+            <NoListText>예약 내역이 없습니다.</NoListText>
+          </NoListContainer>
+        )}
       />
       
     </BookListContainer>

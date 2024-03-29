@@ -34,18 +34,24 @@ const CustomPicker = ({trainerName, centerId,setShowPicker}) => {
            </ModalHdButton>
 
         </ModalHeaderContainer>
-      <ScrollView
-     showsVerticalScrollIndicator={false}
-     bounces={false}
-      >
-        {trainerName.map((trainer) => (
-          <TextContainer key={trainer.id}>
-            <PickerBtn onPress={()=>goConsultingScreens(centerId, trainer.id,trainer.name)}>
-            <PickerText>{trainer.name}</PickerText>
-            </PickerBtn>
-          </TextContainer>
-        ))}
-      </ScrollView>
+        <ScrollView
+  showsVerticalScrollIndicator={false}
+  bounces={false}
+>
+  {trainerName.length > 0 ? (
+    trainerName.map((trainer) => (
+      <TextContainer key={trainer.id}>
+        <PickerBtn onPress={() => goConsultingScreens(centerId, trainer.id, trainer.name)}>
+          <PickerText>{trainer.name}</PickerText>
+        </PickerBtn>
+      </TextContainer>
+    ))
+  ) : (
+    <TextContainer>
+      <NoListPickerText>등록된 트레이너가 없습니다</NoListPickerText>
+    </TextContainer>
+  )}
+</ScrollView>
     </Container>
     </PickerContainer>
     </Modal>
@@ -96,6 +102,15 @@ color: ${COLORS.main};
 font-size: 23px;
 font-weight: 400;
 line-height: 28px;
+`
+
+const NoListPickerText = styled.Text`
+/* color: rgba(60, 60, 67, 0.60); */
+color: ${COLORS.sub};
+font-size: 18px;
+font-weight: 400;
+line-height: 28px;
+margin-top: 38px;
 `
 
 const ModalTitle = styled.Text`

@@ -215,8 +215,8 @@ color: ${COLORS.gray_400};
 const GetCertificationNextBtn = styled.TouchableOpacity`
     position: absolute;
     bottom: 40px;
-    left: 10px;
-    right: 10px;
+    left: 20px;
+    right: 20px;
     /* background-color: ${COLORS.box}; */
     background-color: ${props => props.isActive ? COLORS.main : COLORS.box};
     border-radius: 90px;

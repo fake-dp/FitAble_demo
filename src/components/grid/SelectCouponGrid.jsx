@@ -132,7 +132,7 @@ const couponText= selectedCoupon ? null :'쿠폰을 선택해주세요'
             {
               couponInfo && updateCouponInfoData.length===0 ? '' :  (
                     <LeftContainer onPress={toggleCoupon} activeOpacity={1}>
-                         <SelectCouponText>{selectedCoupon?.endDate}</SelectCouponText>
+                         <SelectCouponText>{selectedCoupon?.endDate && `~${selectedCoupon?.endDate}`}</SelectCouponText>
                          {
                             selectedCoupon?.centerName === '선택 안함' || couponText ? (
                               <SelectCouponImg 
@@ -159,7 +159,7 @@ const couponText= selectedCoupon ? null :'쿠폰을 선택해주세요'
                       ) : (
                         <>
                           <CouponListText>[{item.centerName}] {item.couponName}</CouponListText>
-                          <CouponListText>{item.endDate}</CouponListText>
+                          <CouponListText>~{item.endDate}</CouponListText>
                         </>
                       )
                     }
@@ -298,11 +298,11 @@ const SelectCouponImg = styled(FastImage)`
 `;
 
 const SelectCouponText = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 22.40px;
   color: ${COLORS.gray_100};
-  margin-left: 8px;
+  /* margin-left: 8px; */
 `;
 
 const ContainerLine = styled.View`
@@ -323,7 +323,7 @@ const CouponListContainer = styled.View`
 `;
 
 const CouponListText = styled.Text`
-    font-size: 14px;
+    font-size: 13px;
 color: ${COLORS.gray_100};
 font-weight: 400;
 line-height: 22.40px;
@@ -363,3 +363,7 @@ margin-bottom: 10px;
   border-top-width: 1px;
   border-top-color: ${COLORS.box};
 `;
+
+const TestWrapper = styled.View`
+/* background: red; */
+`

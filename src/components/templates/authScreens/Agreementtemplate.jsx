@@ -3,7 +3,7 @@ import { COLORS } from '../../../constants/color';
 import MainBtn from '../../ui/buttonUi/MainBtn';
 import React, { useState, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import {  Alert, Platform,TouchableOpacity, Linking} from 'react-native';
+import {  Alert, Platform,TouchableOpacity, Linking, ScrollView,Dimensions} from 'react-native';
 import CheckBtn from '../../ui/buttonUi/CheckBtn';
 import { agreementList} from '../../../data/AgreementData';
 import GobackGrid from '../../grid/GobackGrid';
@@ -239,7 +239,7 @@ console.log('업데이트bodyData',bodyData)
     
 
     const isActiveBtn = isSelected[0] && isSelected[1] && isSelected[2];
-
+    const SmallDeivece = Dimensions.get('window').height < 680 ? true : false;
 
     return (
         <AuthContainer>
@@ -251,6 +251,11 @@ console.log('업데이트bodyData',bodyData)
         <CheckBtn 
           onPress={toggleAllCheck} allCheck={allCheck} 
         />
+        <ScrollView
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        >
+          <ListContainerListBox SmallDeivece={SmallDeivece}>
         {
             agreementList.map((item) => (
               
@@ -282,6 +287,8 @@ console.log('업데이트bodyData',bodyData)
                 </ListContainer>
             ))
         }
+                  </ListContainerListBox>
+        </ScrollView>
       <BottomBtnContainer>
         {
             isActiveBtn ? 
@@ -320,6 +327,12 @@ const CheckBoxStyle = styled(CheckBox)`
 width: 24px;
 height: 24px;
 `;
+
+const ListContainerListBox = styled.View`
+ margin-bottom: ${props => props.SmallDeivece ? '110px' : '0px'};
+
+  /* padding: 0 20px; */
+`
 
 const ListContainer = styled.View`
 flex-direction: row;
