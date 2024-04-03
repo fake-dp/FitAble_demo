@@ -90,21 +90,21 @@ function MyAppSettingTemplate(props) {
 // 회원탈퇴
     const handleDeleteMyInfo = async () => {
         //test할떄
-                    await AsyncStorage.removeItem("accessToken");
-                    await AsyncStorage.removeItem("refreshToken");
-                    setIsLoggedIn(false);
-        // try {
-        // const response = await deleteMyInfo();
-        // if(response){
-        //     console.log('res',response)
-        //     await AsyncStorage.removeItem("accessToken");
-        //     await AsyncStorage.removeItem("refreshToken");
-        //     // setFcmToken(null);
-        //     setIsLoggedIn(false);
-        //   }
-        // } catch (error) {
-        //   console.error('Error during logout:', error);
-        // }
+                    // await AsyncStorage.removeItem("accessToken");
+                    // await AsyncStorage.removeItem("refreshToken");
+                    // setIsLoggedIn(false);
+        try {
+        const response = await deleteMyInfo();
+        if(response){
+            console.log('res',response)
+            await AsyncStorage.removeItem("accessToken");
+            await AsyncStorage.removeItem("refreshToken");
+            // setFcmToken(null);
+            setIsLoggedIn(false);
+          }
+        } catch (error) {
+          console.error('Error during logout:', error);
+        }
       };
 
     const rightIcon = require('../../../assets/img/rightIcon.png');

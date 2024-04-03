@@ -121,7 +121,7 @@
 // export default Main;
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppInner from './AppInner';
 import { RecoilRoot } from 'recoil';
 import { useRecoilState } from 'recoil';
@@ -129,6 +129,8 @@ import { fcmTokenState } from './src/store/atom';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { Platform, PermissionsAndroid, Linking, Alert } from 'react-native';
+import SplashScreen from './src/screens/splash/SplashScreen';
 
 async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -141,6 +143,35 @@ async function requestUserPermission() {
   }
 }
 
+async function checkNotificationPermissionAndRedirect() {
+  const granted = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+  );
+  console.log('granted123', granted);
+  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    console.log('You can use notifications');
+  }else if(granted === PermissionsAndroid.RESULTS.DENIED||PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN){
+    Alert.alert(
+      '알림 권한 설정',
+      '알림 권한을 허용해주세요.',
+      [
+        {
+          text: '취소',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: '설정',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+
+}
 
 const configureNotificationChannel = () => {
   PushNotification.createChannel(
@@ -194,7 +225,9 @@ function App() {
     requestUserPermission();
     configureNotificationChannel();
     configureNotifications();
-
+    if(Platform.OS === 'android') {
+      checkNotificationPermissionAndRedirect();
+    }
     const unsubscribeToken = messaging().onTokenRefresh(token => {
       console.log("FCM Token Refresh >>> ", token);
       setFcmToken(token);
@@ -228,10 +261,22 @@ function App() {
   return <AppInner />;
 }
 
-const Main = () => (
-  <RecoilRoot>
-    <App />
-  </RecoilRoot>
-);
+const Main = () => {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <RecoilRoot>
+      {showSplash ? <SplashScreen /> : <App />}
+    </RecoilRoot>
+  );
+};
 
 export default Main;

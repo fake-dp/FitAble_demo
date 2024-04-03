@@ -29,7 +29,7 @@ function Agreementtemplate(props) {
     const [allCheck, setAllCheck] = useState(false);
     const [isSelected, setSelection] = useState({});
 
-    
+    const [deviceNotiCheck, setDeviceNotiCheck] = useState(false);
     console.log('isSelected11',signUpInfo.agreements)
 
 
@@ -203,10 +203,10 @@ console.log('업데이트bodyData',bodyData)
           }
       }
     //   const bodyData = {
-    //     name: '카드등록용',
+    //     name: '무드등',
     //     birthDay: '1992-03-04',
     //     gender: 'MALE',
-    //     phone: '11111131112',
+    //     phone: '18113131414',
     //     password: 'qwer1234!',
     //     fcmToken: fcmToken,
     //     agreements: {
@@ -215,6 +215,7 @@ console.log('업데이트bodyData',bodyData)
     //       storeMarketing: signUpInfo.agreements.storeMarketing
     //     }
     // }
+
       console.log('회원가입bodyData',bodyData)
       try{
         const response = await joinInfo(bodyData);

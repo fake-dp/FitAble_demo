@@ -1,4 +1,4 @@
-import {Image, Vibration, Alert } from 'react-native';
+import {PermissionsAndroid, Vibration, Alert,Linking,TextInput} from 'react-native';
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import { useNavigation } from '@react-navigation/native';
@@ -29,6 +29,74 @@ function ScanTemplate(props) {
 
     const [myTicketInfo, setMyTicketInfo] = useRecoilState(qrTicketListState);
     const [failText , setFailText] = useRecoilState(qrFailTextState);
+
+
+    const [cameraPermissionGranted, setCameraPermissionGranted] = useState(false);
+
+    useEffect(() => {
+        if (Platform.OS === 'android'){
+            requestCameraPermission();
+        }
+    }, []);
+
+
+
+    const openAppSettings = () => {
+    if(Platform.OS === 'android'){
+      Linking.openSettings().catch(() => {
+        Alert.alert("오류", "설정 화면을 여는 데 실패했습니다.");
+        navigation.navigate('HomeMain');
+      });
+    }else{
+        navigation.navigate('HomeMain');
+    }
+}
+    
+    const requestCameraPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA
+        );
+        console.log('grantednever_ask_again',granted,PermissionsAndroid.RESULTS.DENIED,PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN)
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          setCameraPermissionGranted(true);
+        } else if (granted === PermissionsAndroid.RESULTS.DENIED||PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+          Alert.alert("권한 거부", "카메라 권한이 없어 QR 코드를 스캔할 수 없습니다.",
+              [{ text: '확인', onPress: () => 
+              {
+                  openAppSettings()
+                  navigation.navigate('HomeMain');
+            }
+            }]);
+        } 
+      } catch (err) {
+        console.warn(err);
+      }
+    };
+    // useEffect(() => {
+    
+    //       if (Platform.OS !== "ios" && Platform.OS !== "android") return;
+    //       const platformPermissions =
+    //         Platform.OS === "ios"
+    //           ? PERMISSIONS.IOS.CAMERA
+    //           : PERMISSIONS.ANDROID.CAMERA;
+    //       const requestCameraPermission = async () => {
+    //         try {
+    //           const result = await request(platformPermissions);
+    //           result === RESULTS.GRANTED
+    //             ? setCameraPermissionGranted(true)
+    //             : Alert.alert("카메라 권한을 허용해주세요",
+
+    //             );
+    //         } catch (err) {
+    //           Alert.alert("Camera permission err");
+    //           console.warn(err);
+    //         }
+    //       };
+    //       requestCameraPermission();
+        
+    //   }, []);
+    
 
         const [scaned, setScaned] = useState(true);
         const ref = useRef(null);
@@ -139,7 +207,10 @@ function ScanTemplate(props) {
       };
 
       const closeIcon = require('../../../assets/img/whiteClose.png');
-      console.log('showQrDoneModal!',showQrDoneModal,showCancelModal)
+    //   console.log('showQrDoneModal!',showQrDoneModal,showCancelModal)
+
+
+
     return (
         <>
         <Container>
@@ -154,6 +225,7 @@ function ScanTemplate(props) {
             <MainContainer>
             <TitleText>입장하기</TitleText>
             <SubText>입장을 위해 QR코드를 인식해주세요</SubText>
+
             {/* <Rectangular /> */}
         {
             Platform.OS === 'ios' ? (
@@ -181,7 +253,7 @@ function ScanTemplate(props) {
                     <Rectangular>
                         {
                             (
-                    !showQrModal && !showCancelModal && !showQrDoneModal &&
+                    !showQrModal && !showCancelModal && !showQrDoneModal && cameraPermissionGranted &&
                     <Camera
                         ref={ref}
                         cameraType={CameraType.Back} // Front/Back(default)
