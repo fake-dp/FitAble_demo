@@ -17,7 +17,7 @@ function UseTicketList({ useTicketListData,openCancelModal,openStopModal }) {
       <View>
         {useTicketListData.map((data,index) => (
             <Fragment key={data.id}>
-          <Container>
+          <Container isLastLine={index === useTicketListData.length - 1}>
             <ContentsBox onPress={()=>detailScreen(data.id)}>
               <TextContainer>
                 <DateText>{data.createAt}</DateText>
@@ -71,6 +71,7 @@ const Container = styled.View`
     justify-content: space-between;
     width: 100%;
     flex:1;
+    margin-bottom: ${({ isLastLine }) => (isLastLine ? '30px' : '0px')};
 `
 
 const LineStyle = styled.View`

@@ -24,7 +24,48 @@ export const themeStyled = {
         textDayFontSize: 16,
         textMonthFontSize: 16,
         textDayHeaderFontSize: 14,
+        
         dotStyle:{
-          marginTop: 7,
-        }
+          marginTop: 9,
+          zIndex: 999,
+        },
+        textDayStyle: {
+          zIndex: 999,
+        },
+        // expandableKnobColor: COLORS.gray_300,
+
+        stylesheet: {    
+          expandable: {
+            main: {
+              knobContainer: {
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                height: 12,
+                bottom: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: COLORS.sub,
+                },
+                knob: {
+                  width: 40,
+                  height: 4,
+                  borderRadius: 3,
+                  backgroundColor: COLORS.gray_300,
+                },
+                weekCalendar: {
+                  // marginTop: 20, 
+                  marginBottom: 4
+                },
+                week: {
+                  marginTop: 14,
+                  marginBottom: 14,
+                  paddingRight: 15,
+                  paddingLeft: 15,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around'
+                },
+            },
+          },
+        },
   };

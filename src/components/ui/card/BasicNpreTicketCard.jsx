@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { COLORS } from '../../../constants/color';
 import {formatCommaNumber} from '../../../utils/CustomUtils';
+import { Platform } from 'react-native';
 function BasicNpreTicketCard({name, price,type,isSelected}) {
 
     return (
@@ -46,7 +47,7 @@ const UpTextContainer = styled.View`
 `
 
 const MainTitleText = styled.Text`
-font-size: 24px;
+font-size: ${Platform.OS === 'ios' ? '24px' : '22px'};
 font-weight: 700;
 line-height: 32.40px;
 color: ${({ isSelected }) => isSelected ? COLORS.main : COLORS.gray_400};

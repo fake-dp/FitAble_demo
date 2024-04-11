@@ -65,6 +65,7 @@ const MainTitleText = styled.Text`
 const SubTextContainer = styled.View`
     flex-direction: row;
     align-items: center;
+    padding-right: 20px;
 `
 
 const SubTextContainerBtn = styled.TouchableOpacity`

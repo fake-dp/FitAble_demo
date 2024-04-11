@@ -1,4 +1,4 @@
-import {Image ,Linking,TouchableOpacity,Text, Platform} from 'react-native';
+import {Image ,Linking,TouchableOpacity,Text, Platform,Dimensions} from 'react-native';
 import { styled } from 'styled-components/native';
 import { COLORS } from '../../constants/color';
 import ConsultBtn from '../ui/buttonUi/ConsultBtn';
@@ -50,6 +50,8 @@ function GymBasicInfoGrid({onPress,address,phone,name}) {
 }
 
 export default GymBasicInfoGrid;
+const deviceWidth = Dimensions.get('window').width;
+
 
 const Container = styled.View`
     /* background-color: ${COLORS.main}; */
@@ -76,7 +78,7 @@ const MainTitleText = styled.Text`
 const SubTextContainer = styled.View`
     flex-direction: row;
     margin-bottom: 6px;
-    /* align-items: center; */
+    width: ${deviceWidth-40}px;
 `;
 
 const SubTextContainerBtn = styled.TouchableOpacity`

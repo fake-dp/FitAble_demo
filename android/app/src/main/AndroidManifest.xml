@@ -16,10 +16,7 @@
 
 <!-- 카메라 권한 -->
  <uses-permission android:name="android.permission.ACCEPT_HANDOVER" />
-  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+
   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
   <uses-permission android:name="com.android.voicemail.permission.ADD_VOICEMAIL" />
   <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
@@ -33,9 +30,9 @@
   <uses-permission android:name="android.permission.GET_ACCOUNTS" />
   <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-  <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+
   <uses-permission android:name="android.permission.READ_CALENDAR" />
-  <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
   <uses-permission android:name="android.permission.READ_CONTACTS" />
   <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
   <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
@@ -44,16 +41,13 @@
   <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
   <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-  <uses-permission android:name="android.permission.READ_SMS" />
-  <uses-permission android:name="android.permission.RECEIVE_MMS" />
-  <uses-permission android:name="android.permission.RECEIVE_SMS" />
-  <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
+
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
-  <uses-permission android:name="android.permission.SEND_SMS" />
+
   <uses-permission android:name="android.permission.USE_SIP" />
   <uses-permission android:name="android.permission.UWB_RANGING" />
   <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-  <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -65,11 +59,16 @@
       android:roundIcon="@mipmap/ic_fitablet_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
-                    android:value="true"/>
-        <!-- Change the resource name to your App's accent color - or any other color you want -->
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-                    android:resource="@color/ic_fitablet_background"/>
+
+              <meta-data
+    android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@drawable/ic_noti_icons"
+    />
+      <!-- <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+                    android:value="true"/> -->
+
+        <!-- <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
+                    android:resource="@color/ic_fitablet_background"/> -->
 
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />

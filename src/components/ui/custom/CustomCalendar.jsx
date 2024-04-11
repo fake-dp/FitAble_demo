@@ -152,6 +152,8 @@ const handleMonthChange = (month) => {
   getAvailableDatesData(newYear, newMonth);
 };
 
+console.log('availableDatesavailableDates',availableDates)
+
 // const getAvailableDatesData = (year, month) => {
 //   if(!year || !month) {
 //     // 연도나 달이 제공되지 않은 경우 현재 날짜 사용
@@ -210,33 +212,37 @@ const handleMonthChange = (month) => {
       {weekView ? (
         <WeekCalendar  
         firstDay={0} markedDates={availableDates}
-        hideExtraDays={false}
+        hideExtraDays={true}
+        disableAllTouchEventsForDisabledDays={true}
+        disableAllTouchEventsForInactiveDays={true}
         />
       ) : (
         <>
-   
         <ExpandableCalendar
         disableAllTouchEventsForDisabledDays={true}
+        disableAllTouchEventsForInactiveDays={true}
         hideExtraDays={true}
+        allowSelectionOutOfRange={false}
         style={{
             ...Platform.select({
               ios: {
                 shadowColor: 'transparent',
                 zIndex: 99,
-                backgroundColor: '#fff',
+                backgroundColor: 'transparent',
               },
               android: {
-                elevation: 0
+                elevation: 0,
+                backgroundColor: COLORS.sub,
               },
               
-            })
+            }),
+        
         }}
         renderHeader={renderCustomHeader}
         hideArrows
         markedDates={{
           ...availableDates,
           ...{[selected]: { selected: true, disableTouchEvent: true,selectedColor: COLORS.main,selectedTextColor: COLORS.sub }},
-          // ...{[todayString]: { dotColor: '#FF7A00',marked: true, selected: selected === todayString}},
           ...{[todayString]: selected === todayString ? 
             { selected: true, selectedColor: COLORS.main, selectedTextColor: COLORS.sub, dotColor: '#FF7A00', marked: true } : 
             { dotColor: '#FF7A00', marked: true }
@@ -249,11 +255,12 @@ const handleMonthChange = (month) => {
         // }}
         onMonthChange={(month)=>handleMonthChange(month)}
           firstDay={0}
-
+          hideKnob={false}
         />
       </>
       )
       }
+  
       <CalenderLine/>
 
       <CalenderClassList 
@@ -298,8 +305,9 @@ const TitleText = styled.Text`
 `
 
 const CalenderLine = styled.View`
-border-top-width: 1px;
+border-bottom-width: 1px;
 border-color: #535258;
-margin-top: 30px;
+margin-top: 12px;
 padding: 0 20px;
+z-index: 1;
 `

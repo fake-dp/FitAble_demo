@@ -27,7 +27,9 @@ function SelectOptionGrid({ optionData, selectedOption, onSelectOption }) {
                   <OptionContainer>
                     <ScrollView
                     horizontal={true}
-                    showsHorizontalScrollIndicator={false}>
+                    showsHorizontalScrollIndicator={false}
+                    bounces={false}
+                    >
         {updateOptionData?.map((item) => (
                
           <OptionBox

@@ -241,12 +241,13 @@ function App() {
     const unsubscribeMessage = messaging().onMessage(async remoteMessage => {
       const {title, body} = remoteMessage.notification;
       PushNotification.localNotification({
-        smallIcon: "ic_fitablet_round",
+        smallIcon: "ic_noti_icons",
         channelId: "fitable-client",
         title: title,
         message: body,
         playSound: true,
         soundName: 'default',
+        color: '#1F1F1F',
       });
     });
 

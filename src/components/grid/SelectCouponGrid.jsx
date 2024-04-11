@@ -157,10 +157,10 @@ const couponText= selectedCoupon ? null :'쿠폰을 선택해주세요'
                       item.centerName === '선택 안함' ? (
                         <CouponListText>{item.centerName}</CouponListText>
                       ) : (
-                        <>
+                        <SelectCouponListContainer>
                           <CouponListText>[{item.centerName}] {item.couponName}</CouponListText>
                           <CouponListText>~{item.endDate}</CouponListText>
-                        </>
+                        </SelectCouponListContainer>
                       )
                     }
                   </CouponListContainer>
@@ -297,12 +297,18 @@ const SelectCouponImg = styled(FastImage)`
   height: 22px;
 `;
 
+const SelectCouponListContainer = styled.View`
+/* background-color: red; */
+width: 100%;
+`
+
 const SelectCouponText = styled.Text`
   font-size: 13px;
   font-weight: 400;
   line-height: 22.40px;
   color: ${COLORS.gray_100};
   /* margin-left: 8px; */
+  
 `;
 
 const ContainerLine = styled.View`
@@ -327,6 +333,7 @@ const CouponListText = styled.Text`
 color: ${COLORS.gray_100};
 font-weight: 400;
 line-height: 22.40px;
+width: auto;
 `
 const NoCouponListText = styled.Text`
 font-size: 14px;

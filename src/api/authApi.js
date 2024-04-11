@@ -70,7 +70,6 @@ export const autoLoginApi = async () => {
 }
 
 // 회원탈퇴
-
 export const deleteMyInfo = async () => {
   try {
       const response = await customAxios.delete('/api/members/v1/member');
