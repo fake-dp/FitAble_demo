@@ -1,6 +1,6 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { COLORS } from './src/constants/color';
-import { MainTabScreen } from './BottomTab';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {COLORS} from './src/constants/color';
+import {MainTabScreen} from './BottomTab';
 // 홈 관련 스크린
 import HomeScan from './src/screens/mainpage/HomeScan';
 import BellScreen from './src/screens/mainpage/BellScreen';
@@ -51,7 +51,7 @@ import SearchAddress from './src/components/ui/modal/postAddressModal';
 
 import useQrNavigation from './src/hooks/useQrNavigation';
 import useQrAndroidNavigation from './src/hooks/useQrAndroidNavigation';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import InfoCardBirthdayTemplate from './src/components/templates/homScreens/InfoCardBirthdayTemplate';
 const Stack = createNativeStackNavigator();
 
@@ -61,135 +61,267 @@ function AppScreens({navigation}) {
 
   if (Platform.OS === 'android') {
     useQrAndroidNavigation();
-    console.log('ff')
-  }else{
+    console.log('ff');
+  } else {
     useQrNavigation();
   }
 
-
-
   return (
-      <Stack.Navigator
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: COLORS.sub,
+          borderBottomWidth: 0,
+          shadowColor: 'transparent',
+          elevation: 0,
+        },
+        // title 없에기
+        // headerShown: false,
+        headerShadowVisible: false,
+        headerBackTitleVisible: false,
+      }}>
+      <Stack.Screen
+        name="MainTab"
+        component={MainTabScreen}
+        options={{headerShown: false}}
+      />
+
+      {/* 홈 스크린 등록 */}
+      <Stack.Group
         screenOptions={{
-          headerTintColor: 'white',
-            headerStyle: {
-                backgroundColor: COLORS.sub,
-                borderBottomWidth: 0,
-                shadowColor: 'transparent',
-                elevation: 0, 
-              },
-              // title 없에기
-                // headerShown: false,
-                headerShadowVisible: false,
-                headerBackTitleVisible: false,
-               
-          }}>
-        <Stack.Screen name="MainTab" component={MainTabScreen} options={{ headerShown: false }} />
-
-        {/* 홈 스크린 등록 */}
-        <Stack.Group
-          screenOptions={{
-              title: '',
-              headerBackVisible: false,
-          }}>
-            {/* 여기다 웹뷰 스크린 넣어요 ? */}
-          <Stack.Screen name="BannerWebView" component={WebViewScreen} 
+          title: '',
+          headerBackVisible: false,
+        }}>
+        {/* 여기다 웹뷰 스크린 넣어요 ? */}
+        <Stack.Screen
+          name="BannerWebView"
+          component={WebViewScreen}
           options={{
             title: '',
             headerBackVisible: true,
-          }}
-          />
-          <Stack.Screen name="PaymentWebView" component={PaymentWebViewScreen} 
-           options={{
-            title: '',
-            headerBackVisible: true,
-          }}
-          />
-          <Stack.Screen name="Scan" component={HomeScan} 
-          // options={{title: '알람',headerBackVisible:true,}}
-          />
-
-          <Stack.Screen name="Bell" component={BellScreen} 
-          // options={{title: '알람',headerBackVisible:true,}}
-          />
-          <Stack.Screen name="SearchCenter" component={SearchCenterScreen}/>
-          <Stack.Screen name="Consulting" component={ConsultingScreen} />
-          <Stack.Screen name="DetailCenter" component={DetailCenterScreen} options={{ headerShown: false, }}/>
-          <Stack.Screen name="Subscribe" component={SubscribeScreen} />
-          <Stack.Screen name="PT" component={PtScreen}/>
-          <Stack.Screen name="PtDetail" component={PtDetailSrceen} options={{ headerShown: false,}}/>
-          <Stack.Screen name="Use" component={UseScreen} />
-
-          <Stack.Screen name="PaymentResult" component={PaymentResultScreen}/>
-
-          </Stack.Group>
-
-          <Stack.Screen name="InfoCard" component={InfoCardScreen} 
-           options={{
-            title: '',
-            // headerBackVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-            headerBackTitleVisible: false,
-        }}
-          />
-               <Stack.Screen name="InfoCardbirt" component={InfoCardBirthdayTemplate} 
-           options={{
-            title: '',
-            // headerBackVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-            headerBackTitleVisible: false,
-        }}
-          />
-
-        {/* 운동하기 스크린 등록 */}
-        <Stack.Screen name="ExSearchCenter" component={ExerciseSearchCenterScreen} 
-          options={{
-            title: '',
-            headerBackVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.sub,
-            },
-            headerBackTitleVisible: false,
           }}
         />
-
-        {/* 스토어 스크린 등록 */}
-
-
-        {/* 마이 스크린 등록 */}
-        <Stack.Group
-          screenOptions={{
+        <Stack.Screen
+          name="PaymentWebView"
+          component={PaymentWebViewScreen}
+          options={{
             title: '',
-            headerBackVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.white,
-            },
-            headerBackTitleVisible: false,
+            headerBackVisible: true,
+          }}
+        />
+        <Stack.Screen
+          name="Scan"
+          component={HomeScan}
+          // options={{title: '알람',headerBackVisible:true,}}
+        />
+
+        <Stack.Screen
+          name="Bell"
+          component={BellScreen}
+          // options={{title: '알람',headerBackVisible:true,}}
+        />
+        <Stack.Screen name="SearchCenter" component={SearchCenterScreen} />
+        <Stack.Screen name="Consulting" component={ConsultingScreen} />
+        <Stack.Screen
+          name="DetailCenter"
+          component={DetailCenterScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Subscribe" component={SubscribeScreen} />
+        <Stack.Screen name="PT" component={PtScreen} />
+        <Stack.Screen
+          name="PtDetail"
+          component={PtDetailSrceen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Use" component={UseScreen} />
+
+        <Stack.Screen name="PaymentResult" component={PaymentResultScreen} />
+      </Stack.Group>
+
+      <Stack.Screen
+        name="InfoCard"
+        component={InfoCardScreen}
+        options={{
+          title: '',
+          // headerBackVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+          headerBackTitleVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="InfoCardbirt"
+        component={InfoCardBirthdayTemplate}
+        options={{
+          title: '',
+          // headerBackVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+          headerBackTitleVisible: false,
+        }}
+      />
+
+      {/* 운동하기 스크린 등록 */}
+      <Stack.Screen
+        name="ExSearchCenter"
+        component={ExerciseSearchCenterScreen}
+        options={{
+          title: '',
+          headerBackVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.sub,
+          },
+          headerBackTitleVisible: false,
+        }}
+      />
+
+      {/* 스토어 스크린 등록 */}
+      <Stack.Screen
+        name="DetailItem"
+        component={ItemDetailScreen}
+        options={{
+          headerBackVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ItemReview"
+        component={ItemReviewScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="ItemInquiry"
+        component={ItemInquiryScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+
+      {/* 장바구니 페이지 */}
+      <Stack.Screen
+        name="ItemCart"
+        component={CartScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+
+      {/* 결제하기 페이지 */}
+      <Stack.Screen
+        name="ItemOrder"
+        component={OrderScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+
+      {/* 배송지 등록 페이지 */}
+      <Stack.Screen
+        name="DeliveryAddress"
+        component={OrderAdressScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+
+      {/* 주문상품 상세내역 */}
+      <Stack.Screen
+        name="OrderItemDetail"
+        component={OrderItemDetailScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+      />
+      {/* 스토어 결제 */}
+      <Stack.Screen
+        name="StorePaymentWebView"
+        component={StorePaymentWebViewScreen}
+        options={{
+          title: '',
+          headerBackVisible: true,
+        }}
+      />
+
+      {/* 스토어 결제 성공 */}
+      <Stack.Screen
+        name="StorePaymentResult"
+        component={StorePaymentResultScreen}
+        options={{
+          title: '',
+          headerBackVisible: true,
+        }}
+      />
+
+      {/* 마이 스크린 등록 */}
+      <Stack.Group
+        screenOptions={{
+          title: '',
+          headerBackVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+          headerBackTitleVisible: false,
         }}>
-            <Stack.Screen name="MyProfile" component={MyProfileScreen} />
-            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-            <Stack.Screen name="ChangePhoneNumber" component={ChangePhoneNumberScreen} />
+        <Stack.Screen name="MyProfile" component={MyProfileScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen
+          name="ChangePhoneNumber"
+          component={ChangePhoneNumberScreen}
+        />
 
-            <Stack.Screen name="AppSetting" component={MyAppSettingScreen} />
-            <Stack.Screen name="CenterRegist" component={CenterRegistration} options={{headerStyle: {backgroundColor: COLORS.sub,},}}/>
-            <Stack.Screen name="MyBookList" component={MyBookListScreen}  />
-            <Stack.Screen name="CenterTicket" component={CenterTicketListScreen}  />
-            <Stack.Screen name="MyCenter" component={MyCenterMarkScreen}  options={{headerShown:false}}/>
-            <Stack.Screen name="DetailNotice" component={NoticeDetailScreen} />
+        <Stack.Screen name="AppSetting" component={MyAppSettingScreen} />
+        <Stack.Screen
+          name="CenterRegist"
+          component={CenterRegistration}
+          options={{headerStyle: {backgroundColor: COLORS.sub}}}
+        />
+        <Stack.Screen name="MyBookList" component={MyBookListScreen} />
+        <Stack.Screen name="CenterTicket" component={CenterTicketListScreen} />
+        <Stack.Screen
+          name="MyCenter"
+          component={MyCenterMarkScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="DetailNotice" component={NoticeDetailScreen} />
 
-            <Stack.Screen name="Mileage" component={MileageScreen}  />
-            <Stack.Screen name="Product" component={MyProductScreen}  />
-            <Stack.Screen name="FitableQnA" component={FitableQnAScreen}  />
-            {/* 문의, 상품 문의 이용약관 정책 이용권 목록 */}
-            <Stack.Screen name='Terms'component={TermsofUseScreen} />
-            <Stack.Screen name='ProductQnA' component={ProductQnAScreen} options={{headerStyle: {backgroundColor: COLORS.gray_100,},}} />
-            <Stack.Screen name='TicketDetail' component={TicketListDetailScreen} options={{headerShown:false}} />
-       
-            <Stack.Screen
+        <Stack.Screen name="Mileage" component={MileageScreen} />
+        <Stack.Screen name="Product" component={MyProductScreen} />
+        <Stack.Screen name="FitableQnA" component={FitableQnAScreen} />
+        {/* 문의, 상품 문의 이용약관 정책 이용권 목록 */}
+        <Stack.Screen name="Terms" component={TermsofUseScreen} />
+        <Stack.Screen
+          name="ProductQnA"
+          component={ProductQnAScreen}
+          options={{headerStyle: {backgroundColor: COLORS.gray_100}}}
+        />
+        <Stack.Screen
+          name="TicketDetail"
+          component={TicketListDetailScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
           name="ProductReview"
           component={ProductWriteReviewTemplate}
           options={{
@@ -199,11 +331,9 @@ function AppScreens({navigation}) {
           }}
         />
 
-            <Stack.Screen name="searchAddress" component={SearchAddress} />
-
-        </Stack.Group>
-       
-      </Stack.Navigator>
+        <Stack.Screen name="searchAddress" component={SearchAddress} />
+      </Stack.Group>
+    </Stack.Navigator>
   );
 }
 

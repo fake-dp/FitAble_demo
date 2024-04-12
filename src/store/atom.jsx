@@ -1,15 +1,14 @@
 // 로그인 상태관리
-import { atom } from 'recoil';
+import {atom} from 'recoil';
 export const isLoginState = atom({
-    key: 'isLoginState',
-    default: false,
+  key: 'isLoginState',
+  default: false,
 });
 
 export const fcmTokenState = atom({
   key: 'fcmTokenState',
   default: '',
 });
-
 
 export const signUpInfoState = atom({
   key: 'signUpInfoState',
@@ -34,35 +33,34 @@ export const selectTodayState = atom({
 });
 
 export const phoneState = atom({
-    key: 'phoneState',
-    default: '',
-  });
-  
+  key: 'phoneState',
+  default: '',
+});
 
 export const detailCenterState = atom({
-    key: 'detailCenterState',
-    default: {
-      address: "",
-      description: "",
-      facilities: "",
-      id: "",
-      images: [],
-  links: {
-    blog: "",
-    homepage: "",
-    instagram: "",
-    kakao: "",
-  },
-  mainImage: "",
-  name: "",
-  operationTimes: [],
-  phone: "",
-  programs: "",
-  pt: false,
-  subscription: false,
-  tags: [],
-  ticket: false,
+  key: 'detailCenterState',
+  default: {
+    address: '',
+    description: '',
+    facilities: '',
+    id: '',
+    images: [],
+    links: {
+      blog: '',
+      homepage: '',
+      instagram: '',
+      kakao: '',
     },
+    mainImage: '',
+    name: '',
+    operationTimes: [],
+    phone: '',
+    programs: '',
+    pt: false,
+    subscription: false,
+    tags: [],
+    ticket: false,
+  },
 });
 
 export const threeBtnState = atom({
@@ -90,7 +88,6 @@ export const ticketState = atom({
     description: '',
   },
 });
-
 
 export const ptState = atom({
   key: 'ptState',
@@ -129,20 +126,17 @@ export const inquiryListState = atom({
   default: [],
 });
 
-
 // 구독권 내역 목록 상태 관리
 export const subscribeListState = atom({
   key: 'subscribeListState',
   default: [],
 });
 
-
 // 이용권 내역 목록 상태 관리
 export const ticketListState = atom({
   key: 'ticketListState',
   default: [],
 });
-
 
 // 홈 이용권 목록 상태 관리
 export const homeTicketListState = atom({
@@ -195,4 +189,17 @@ export const qrFailTextState = atom({
 export const QRState = atom({
   key: 'QRState',
   default: false,
+});
+
+//스토어
+// 스토어 결제 예정 상품 list Data
+export const itemListData = atom({
+  key: 'itemListData',
+  default: [],
+});
+
+// 스토어 배송지 Data
+export const buyerData = atom({
+  key: 'buyerData',
+  default: [],
 });

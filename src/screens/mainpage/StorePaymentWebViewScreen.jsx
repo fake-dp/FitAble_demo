@@ -2,7 +2,8 @@ import React, {useRef, useEffect, useState} from 'react';
 import {WebView} from 'react-native-webview';
 import {View, Text, ActivityIndicator} from 'react-native';
 import {postPaymentInfo} from '../../api/storeApi';
-import {v4 as uuidv4} from "uuid";
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 import {COLORS} from '../../constants/color';
 import {useNavigation} from '@react-navigation/native';
 import {getParameterByName} from '../../utils/CustomUtils';
@@ -16,9 +17,9 @@ function StorePaymentWebViewScreen(props) {
 
   const [memberTicketId, setMemberTicketId] = useState(null);
   // const [moid, setMoid] = useState(null);
- const moid = uuidv4();
+  const moid = uuidv4();
 
- console.log('moid',moid)
+  console.log('moid', moid);
   // const postInfoPaymentId = async () => {
   //   try {
   //     const response = await postPaymentInfo(paymentInfoData);
@@ -38,9 +39,12 @@ function StorePaymentWebViewScreen(props) {
       console.log('결제정보', response);
       if (response) {
         setIsPaymentProcessed(true);
-        console.log('결제성공', response.tid)
-        navigation.pop()
-        navigation.navigate('StorePaymentResult', {data:paymentInfoData, tid:response.tid});
+        console.log('결제성공', response.tid);
+        navigation.pop();
+        navigation.navigate('StorePaymentResult', {
+          data: paymentInfoData,
+          tid: response.tid,
+        });
       }
     } catch (error) {
       setIsPaymentProcessed(true);
@@ -104,9 +108,9 @@ function StorePaymentWebViewScreen(props) {
         cardQuota,
       };
 
-  if(!isPaymentProcessed){
-    handleNicePayment(paymentData);
-  }
+      if (!isPaymentProcessed) {
+        handleNicePayment(paymentData);
+      }
 
       console.log(`MOID: ${moid}, 
       Payment Amount: ${paymentAmt},

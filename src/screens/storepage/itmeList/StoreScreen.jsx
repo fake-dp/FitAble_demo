@@ -3,10 +3,11 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  FlatList,
-  SafeAreaView,
+  // FlatList,
+  // SafeAreaView,
   Dimensions,
 } from 'react-native';
+import {FlatList, SafeAreaView} from 'react-native';
 import * as styles from './styles';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -28,6 +29,7 @@ function StoreScreen(props) {
   const route = useRoute();
   const isFocused = useIsFocused();
 
+  console.log(itemList);
   const getStoreProductList = async () => {
     try {
       setIsLoading(true);
@@ -68,6 +70,7 @@ function StoreScreen(props) {
 
   const renderItem = ({item, index}) => {
     const isLastItem = index === itemList.length - 1;
+    console.log('item', item);
     return (
       <styles.Data
         key={item.id}
@@ -75,7 +78,7 @@ function StoreScreen(props) {
           navigation.navigate('DetailItem', item.id);
         }}
         isLastItem={isLastItem}>
-          <styles.DataInnercontainer>
+        {/* <styles.DataInnercontainer> */}
         <styles.ItemImage
           // source={require('../../../assets/img/pricetestproduct.png')}
           source={{uri: item?.mainImage}}
@@ -122,7 +125,7 @@ function StoreScreen(props) {
             </styles.TitleText>
           </View>
         </View>
-        </styles.DataInnercontainer>
+        {/* </styles.DataInnercontainer> */}
       </styles.Data>
     );
   };
