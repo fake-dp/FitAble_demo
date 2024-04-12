@@ -13,6 +13,18 @@ import UseScreen from './src/screens/mainpage/UseScreen';
 import InfoCardScreen from './src/screens/mainpage/InfoCardScreen';
 import PtDetailSrceen from './src/screens/mainpage/PtDetailSrceen';
 
+// 스토어 관련 스크린
+
+import ItemDetailScreen from './src/screens/storepage/itemDetail/ItemDetailScreen';
+import ItemReviewScreen from './src/screens/storepage/itemReview/ItemReviewScreen';
+import ItemInquiryScreen from './src/screens/storepage/itemInquiry/ItemInquiryScreen';
+import CartScreen from './src/screens/storepage/shoppingCart/CartScreen';
+import OrderScreen from './src/screens/storepage/order/OrderScreen';
+import OrderAdressScreen from './src/screens/storepage/order/OrderAdressScreen';
+import OrderItemDetailScreen from './src/screens/storepage/OrderDetail/OrderItemDetailScreen';
+import StorePaymentWebViewScreen from './src/screens/mainpage/StorePaymentWebViewScreen';
+import StorePaymentResultScreen from './src/screens/mainpage/StorePaymentResultScreen';
+
 // 마이페이지 관련 스크린
 import MyAppSettingScreen from './src/screens/mypage/MyAppSettingScreen';
 import MyProfileScreen from './src/screens/mypage/MyProfileScreen';
@@ -33,6 +45,9 @@ import ExerciseSearchCenterScreen from './src/screens/exercisepage/ExerciseSearc
 import NoticeDetailScreen from './src/screens/mypage/NoticeDetailScreen';
 import PaymentWebViewScreen from './src/screens/mainpage/PaymentWebViewScreen';
 import PaymentResultScreen from './src/screens/mainpage/PaymentResultScreen';
+import ProductWriteReviewTemplate from './src/screens/storepage/itemReview/WriteReview';
+
+import SearchAddress from './src/components/ui/modal/postAddressModal';
 
 import useQrNavigation from './src/hooks/useQrNavigation';
 import useQrAndroidNavigation from './src/hooks/useQrAndroidNavigation';
@@ -174,6 +189,18 @@ function AppScreens({navigation}) {
             <Stack.Screen name='ProductQnA' component={ProductQnAScreen} options={{headerStyle: {backgroundColor: COLORS.gray_100,},}} />
             <Stack.Screen name='TicketDetail' component={TicketListDetailScreen} options={{headerShown:false}} />
        
+            <Stack.Screen
+          name="ProductReview"
+          component={ProductWriteReviewTemplate}
+          options={{
+            headerStyle: {
+              backgroundColor: COLORS.white,
+            },
+          }}
+        />
+
+            <Stack.Screen name="searchAddress" component={SearchAddress} />
+
         </Stack.Group>
        
       </Stack.Navigator>

@@ -141,3 +141,16 @@ export const deleteFitAbleInquiry = async (id) => {
         throw error;
     }
 }
+
+// get 주문상품 list
+export const getOrderList = async id => {
+    try {
+      const response = await customAxios.get(
+        `/api/members/stores/v1/orders?page=0&size=100`,
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  

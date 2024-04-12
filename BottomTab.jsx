@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainExerciseSreen from './src/screens/exercisepage/MainExerciseScreen';
-import StoreScreen from './src/screens/storepage/StoreScreen';
+import StoreScreen from './src/screens/storepage/itmeList/StoreScreen';
 import MyScreen from './src/screens/mypage/MyScreen';
 import HomeMainScreen from './src/screens/mainpage/HomeMainScreen';
 import HomeHeader from './src/components/ui/custom/HomeHeader';
@@ -147,7 +147,7 @@ export function MainTabScreen() {
         ),
             }}
       />
-      {/* <Tab.Screen name="Store" component={StoreMainScreens} 
+      <Tab.Screen name="Store" component={StoreMainScreens} 
               options={{
                 title: '스토어',
                 tabBarIcon: ({ focused }) => (
@@ -159,7 +159,7 @@ export function MainTabScreen() {
                 />
                 ),
                     }}
-      /> */}
+      />
       <Tab.Screen name="Mypage" component={MyMainScreen} 
           options={{
             title: '마이',

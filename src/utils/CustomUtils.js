@@ -77,3 +77,16 @@ export function getParameterByName(name,url) {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+//결제 상태
+export function changeStatus(code) {
+  if (code === 'PAYMENT_SUCCESS') return '결제완료';
+  if (code === 'PAYMENT_CANCELLED') return '결제취소';
+  if (code === 'AWAITING_SHIPMENT') return '배송대기';
+  if (code === 'SHIPPED') return '배송중';
+  if (code === 'DELIVERED') return '배송완료';
+  if (code === 'EXCHANGE_PROCESSING') return '교환처리중';
+  if (code === 'EXCHANGE_COMPLETED') return '교환완료';
+  if (code === 'REFUND_PROCESSING') return '환불처리중';
+  if (code === 'REFUND_COMPLETED') return '환불완료';
+}

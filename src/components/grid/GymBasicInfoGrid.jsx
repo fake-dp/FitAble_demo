@@ -91,4 +91,6 @@ const SubText = styled.Text`
     line-height: 22.40px;
     color: ${COLORS.gray_100};
     margin-left: 8px;
+    width: ${deviceWidth-40}px;
+    padding-right: 30px;
 `

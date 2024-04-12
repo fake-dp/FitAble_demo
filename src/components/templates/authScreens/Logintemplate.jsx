@@ -35,11 +35,6 @@ function Logintempate({navigation}) {
       const toInfoFindPassScreens = useCallback(() => {
         navigation.navigate('SignUpInfo',{text:'비밀번호 찾기'});
       }, [navigation]);
-    
-    // pass 페이지 이동
-    const toPass = useCallback(() => {
-        navigation.navigate('Pass');
-        }, [navigation]);
 
 
     const handleLogin = async () => {
