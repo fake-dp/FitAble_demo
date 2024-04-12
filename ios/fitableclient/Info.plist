@@ -107,9 +107,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>센터의 QR코드를 촬영하기 위해 카메라 권한이 필요합니다</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>귀하의 위치 정보는 앱에서 근처의 센터를 찾기 위해 사용됩니다</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>For saving photos</string>
+	<string>핏에이블에서는 사용자의 프로필 사진을 설정하거나 게시글에 사진을 업로드하기 위해 사진 라이브러리 접근이 필요합니다</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
